@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.melawai.ppuc.model.User;
 import com.melawai.ppuc.services.UserManager;
+import com.melawai.ppuc.utils.Email;
 
 
 
@@ -23,6 +24,9 @@ public class LoginListener implements ApplicationListener<AbstractAuthentication
 
     private UserManager userManager;
     private HttpServletRequest httpServletRequest;
+    
+    @Autowired
+    private Email email;
 
     @Autowired
     public void setUserManager(UserManager userManager) {
@@ -47,6 +51,8 @@ public class LoginListener implements ApplicationListener<AbstractAuthentication
 
 	    UsernamePasswordAuthenticationToken upat = (UsernamePasswordAuthenticationToken) ((AuthenticationFailureBadCredentialsEvent) event).getSource();
 	    String username = (String) upat.getPrincipal();
+	    
+//	    email.send(true, null, new String []{"brais_surya@yahoo.com"}, null, null, "Testing", "Test Aja apakah emailnya sampai atau <b>GA</b>", null);
 	    
 	    //TODO: mau ngapain klo gagal login
 	   /* User user = null;

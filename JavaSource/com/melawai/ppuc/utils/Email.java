@@ -128,6 +128,8 @@ public class Email {
 			String[] bcc, String subject, String message, List<File> attachments) {
 		if (new Boolean(props.getProperty("email.enabled"))) {
 			EmailSender emailSender = new EmailSender(props);
+			
+			if(from==null)from=props.getProperty("admin.email.from");
 
 			List<String> lsattachment = null;
 			if (attachments != null) {
@@ -195,7 +197,9 @@ public class Email {
 			throws MailException, MessagingException, EmailException {
 		if (new Boolean(props.getProperty("email.enabled"))) {
 			EmailSender emailSender = new EmailSender(props);
-
+			
+			if(from==null)from=props.getProperty("admin.email.from");
+			
 			List<String> lsattachment = null;
 			if (attachments != null) {
 				lsattachment = new ArrayList<String>();

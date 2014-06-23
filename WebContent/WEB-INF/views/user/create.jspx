@@ -4,13 +4,15 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_com_melawai_ppuc_model_user" modelAttribute="user" path="/master/user" render="${ empty dependencies }">
        <field:input field="user_id" label="User Id" id="c_com_melawai_ppuc_model_user_user_id" required="true" max="50"/>
-       <field:input field="password" label="Password" id="c_com_melawai_ppuc_model_user_password"  max="100"/>
+       <field:input type="password" field="password" label="Password" id="c_com_melawai_ppuc_model_user_password"  max="100"/>
+      
        <field:input field="user_name" label="User Name" id="c_com_melawai_ppuc_model_user_user_name"  max="100"/>
        <field:input field="no_hp" label="No Hp" id="c_com_melawai_ppuc_model_user_no_hp"  max="25"/>
        <field:input field="email" label="Email" id="c_com_melawai_ppuc_model_user_email"  max="100"/>
-       <field:input field="kd_fungsi" label="Kd Fungsi" id="c_com_melawai_ppuc_model_user_kd_fungsi"  max="5"/>
+       <field:select field="kd_fungsi" label="Kd Fungsi"  id="c_com_melawai_ppuc_model_user_kd_fungsi" items="${mfungsiList}" itemLabel="nm_fungsi" itemValue="kd_fungsi"  path="/master/mfungsi"/>
        <field:input field="group_kd" label="Group Kd" id="c_com_melawai_ppuc_model_user_group_kd" required="true" max="5"/>
-       <field:input field="f_aktif" label="F Aktif" id="c_com_melawai_ppuc_model_user_f_aktif"  validationMessageCode="field_invalid_integer" />
+      
+    
        <field:input field="user_create" label="User Create" id="c_com_melawai_ppuc_model_user_user_create" readonly="true" validationMessageCode="field_invalid_number" />
        <field:input field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_user_tgl_create" readonly="true" validationMessageCode="field_invalid_number" />
        <field:input field="jam_create" label="Jam Create" id="c_com_melawai_ppuc_model_user_jam_create" readonly="true" validationMessageCode="field_invalid_number" />

@@ -9,10 +9,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.NumberFormat;
-import org.springframework.format.annotation.NumberFormat.Style;
-
-import com.melawai.ppuc.model.BaseObject;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -22,6 +18,9 @@ import com.melawai.ppuc.model.BaseObject;
  */
 
 public class Divisi extends BaseObject implements Serializable  {
+
+	private static final long serialVersionUID = 4205222752833921897L;
+	
 
 	//****************** COLOMN FROM TABLE START HERE ******************/
 	@NotNull
@@ -54,6 +53,7 @@ public class Divisi extends BaseObject implements Serializable  {
 	//****************** OTHERS START HERE ******************/
 
 	public String itemId;
+	public Upload upload=new Upload();
 	//****************** OTHERS END HERE ******************/
 
 
@@ -90,6 +90,11 @@ public class Divisi extends BaseObject implements Serializable  {
 
 	public String getItemId() {return ""+divisi_kd;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}
+
+	public Upload getUpload() {	return upload;	}
+	public void setUpload(Upload upload) {	this.upload = upload;}
+	
+	
 
 	//****************** GETTER SETTER END HERE ******************/
 

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
@@ -22,6 +23,9 @@ public abstract class ParentController {
 	
 	@Autowired
 	protected Properties props;
+	
+	@Autowired
+	protected MessageSource messageSource;
 
 	String encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {
 		String enc = httpServletRequest.getCharacterEncoding();

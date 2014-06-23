@@ -1,11 +1,15 @@
 package com.melawai.ppuc.utils.scheduller;
 
+import java.util.Date;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Component;
+
+import com.melawai.ppuc.model.User;
 
 /**
  * TaskScheduler Spring
@@ -86,18 +90,23 @@ public class MainScheduler {
 	@Autowired
 	private Properties props;
 	
+	@Autowired
+	private SessionRegistry sessionRegistry;
+	
 	@Scheduled(fixedDelay=10000) //tiap 10 detik, baru akan berjalan setelah task sebelumnya selesai 
 	public void tiapSepuluhDetik() {
-		//logger.debug("=== TIAP 10 DETIK (fixedDelay) === " + new Date());
+		logger.debug("=== TIAP 10 DETIK (fixedDelay) === " + new Date());
 
-		//remove this, untuk test session replication saja
-//		System.out.println("CURRENTLY LOGGED-IN USER:");
-//		for(String s : sessionRegistry.getUserMap().keySet()) {
-//			System.out.print("- Username: ");
-//			System.out.print(sessionRegistry.getUserMap().get(s).username);
-//			System.out.print(", Login Time: ");
-//			System.out.println(sessionRegistry.getUserMap().get(s).loginTime);
-//		}		
+//		remove this, untuk test session replication saja
+		System.out.println("CURRENTLY LOGGED-IN USER:");
+		
+		
+		for(int i=0;i < sessionRegistry.getAllPrincipals().size();i++) {
+			User user=(User) sessionRegistry.getAllPrincipals().get(i);
+			
+			System.out.print("- Username: ");
+			System.out.print(user.getUser_name());
+		}		
 	}
 
 	@Scheduled(fixedRate=20000) //tiap 20 detik, akan selalu jalan, tidak peduli task sebelumnya selesai/belum 
@@ -105,9 +114,10 @@ public class MainScheduler {
 		//logger.debug("=== TIAP 20 DETIK (fixedRate) === " + new Date());
 	}
 
-	@Scheduled(cron="0 0/1 * * * ?") //tiap 1 menit, akan selalu jalan, tidak peduli task sebelumnya selesai/belum
+	@Scheduled(cron="${scheduller.satumenit}") //tiap 1 menit, akan selalu jalan, tidak peduli task sebelumnya selesai/belum
 	public void tiapSatuMenit() {
-		//logger.debug("=== TIAP 1 MENIT (cron) === " + new Date());		
+		logger.debug("=== TIAP 1 MENIT (cron) === " + new Date());		
+		System.out.println("=== TIAP 1 MENIT (cron) === " + new Date());
 	}
 	
 	

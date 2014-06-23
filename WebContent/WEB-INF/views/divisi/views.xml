@@ -13,5 +13,8 @@
 	<definition extends="default" name="divisi/update">
         <put-attribute name="body" value="/WEB-INF/views/divisi/update.jspx"/>
     </definition>
+    <definition extends="default" name="divisi/upload">
+        <put-attribute name="body" value="/WEB-INF/views/divisi/upload.jspx"/>
+    </definition>
 </tiles-definitions>
 

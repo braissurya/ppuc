@@ -30,6 +30,10 @@ public class MFungsiManager {
 	public MFungsi get(String kd_fungsi) {
 		return mfungsiMapper.get(kd_fungsi);
 	}
+	
+	public List<MFungsi> getAll() {
+		return mfungsiMapper.getAll();
+	}
 
 	/** Apakah data dengan kd_fungsi ini ada? **/
 	public boolean exists(String kd_fungsi) {	

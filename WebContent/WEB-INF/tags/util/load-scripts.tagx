@@ -6,11 +6,17 @@
   <spring:url value="/${roo_css}" var="roo_css_url" />
   <spring:url value="/resources/dojo/dojo.js" var="dojo_url" />
   <spring:url value="/resources/dijit/themes/tundra/tundra.css" var="tundra_url" />
+  <spring:url value="/resources/styles/ddlevelsmenu-base.css" var="ddlevelsmenu_base" />
+  <spring:url value="/resources/styles/ddlevelsmenu-topbar.css" var="ddlevelsmenu_topbar" />
   <spring:url value="/resources/spring/Spring.js" var="spring_url" />
   <spring:url value="/resources/spring/Spring-Dojo.js" var="spring_dojo_url" />
   <spring:url value="/resources/images/favicon.ico" var="favicon" />
+  <spring:url value="/resources/static/ddlevelsmenu.js" var="ddlevelsmenu" />
   <link rel="stylesheet" type="text/css" href="${tundra_url}" />
   <link rel="stylesheet" type="text/css" media="screen" href="${roo_css_url}" />
+  <link rel="stylesheet" type="text/css" href="${ddlevelsmenu_base }"  media="screen" />
+  <link rel="stylesheet" type="text/css" href="${ddlevelsmenu_topbar }"  media="screen" />
+	
   <link rel="SHORTCUT ICON" href="${favicon}" />
 
   <!-- Get the user local from the page context (it was set by Spring MVC's locale resolver) -->
@@ -19,11 +25,19 @@
     <c:out value="${fn:replace(plocale, '_', '-')}" default="en" />
   </c:set>
 
-  <script type="text/javascript">var djConfig = {parseOnLoad: false, isDebug: false, locale: '${fn:toLowerCase(userLocale)}'};</script>
+  <script type="text/javascript">var djConfig = {parseOnLoad: false, isDebug: true, locale: '${fn:toLowerCase(userLocale)}'};</script>
 
   <script src="${dojo_url}" type="text/javascript"><!-- required for FF3 and Opera --></script>
   <script src="${spring_url}" type="text/javascript"><!-- /required for FF3 and Opera --></script>
   <script src="${spring_dojo_url}" type="text/javascript"><!-- required for FF3 and Opera --></script>
+  <script type="text/javascript" src="${ddlevelsmenu }">
+		/***********************************************
+		* All Levels Navigational Menu- (c) Dynamic Drive DHTML code library (http://www.dynamicdrive.com)
+		* This notice MUST stay intact for legal use
+		* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+		***********************************************/	
+   </script>
+ 
   <script language="JavaScript" type="text/javascript">dojo.require("dojo.parser");</script>
 
 </jsp:root>
