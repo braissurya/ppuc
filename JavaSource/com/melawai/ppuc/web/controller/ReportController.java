@@ -173,7 +173,7 @@ public class ReportController extends ParentController{
 	
 	@RequestMapping("/test/{payment_id}/{format}")
 	public String print_test(HttpSession session, HttpServletRequest request, HttpServletResponse response,@PathVariable Integer payment_id,@PathVariable String format) throws Exception{
-		String jenisReport = "kwitansi";
+		String jenisReport = "test";
 		logger.debug("Halaman: REPORT " + jenisReport);
 		
 		

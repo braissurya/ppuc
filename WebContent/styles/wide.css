@@ -32,7 +32,7 @@ body {
 /* header and footer elements */
 
 .banner {
-	width: 100%;
+	/* width: 100%; */
 }
 
 #main {
@@ -374,4 +374,30 @@ fieldset th {
 .flag {
 	height: 11px;
 	width: 16px;
+}
+
+/* overide */
+
+.tundra .dijitTitlePaneTitle{
+	background: #BF2E1A;
+}
+
+.tundra .dijitTitlePaneTitle div{
+	color: white !important;
+}
+
+#footer a:link {
+	color: #BF2E1A;
+}
+
+#footer a {
+	color: #BF2E1A;
+}
+
+#menu h2 {
+	background: #BF2E1A;
+}
+
+table th {
+	background: #BF2E1A;
 }
