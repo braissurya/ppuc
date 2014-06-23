@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+    
+    <display-name>Ppuc</display-name>
+    
+    <description>Ppuc Application</description>
+
+    
+    <!-- Enable escaping of form submission contents -->
+    <context-param>
+        <param-name>defaultHtmlEscape</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath*:META-INF/spring/applicationContext*.xml</param-value>
+    </context-param>
+    
+    <filter>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    
+    
+    
+    <filter>
+        <filter-name>HttpMethodFilter</filter-name>
+        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+    </filter>
+    
+     <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    
+    
+    
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+    <filter-mapping>
+        <filter-name>HttpMethodFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+     <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+    <!-- Creates the Spring Container shared by all Servlets and Filters -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    
+     <listener>
+		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+	</listener>
+    
+    <!-- Handles Spring requests -->
+    <servlet>
+        <servlet-name>ppuc</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>WEB-INF/spring/webmvc-config.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>ppuc</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    
+    <session-config>
+        <session-timeout>10</session-timeout>
+    </session-config>
+    
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/uncaughtException</location>
+    </error-page>
+    
+    <error-page>
+        <error-code>404</error-code>
+        <location>/resourceNotFound</location>
+    </error-page>
+    
+    <!-- 	filter kompresi gzip -->
+<!-- 	<filter>
+	    <filter-name>CompressingFilter</filter-name>
+	    <filter-class>com.planetj.servlet.filter.compression.CompressingFilter</filter-class>
+	    <init-param><param-name>includeContentTypes</param-name><param-value>text/html, text/xml,text/plain,text/javascript,text/css</param-value></init-param>
+	    <init-param><param-name>compressionThreshold</param-name><param-value>2048</param-value></init-param>
+	</filter>
+		
+	<filter-mapping>
+	    <filter-name>CompressingFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping> -->
+	
+		
+<!-- 	Cache expired setting -->
+	<!-- <filter>
+	    <filter-name>UrlRewriteFilter</filter-name>
+	    <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	    <filter-name>UrlRewriteFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	    <dispatcher>REQUEST</dispatcher>
+	    <dispatcher>FORWARD</dispatcher>
+	</filter-mapping> -->
+    
+    <!-- Jasper Reports Servlet (Untuk Image Filler di format HTML) -->
+	<servlet>
+		<servlet-name>ImageServlet</servlet-name>
+		<servlet-class>net.sf.jasperreports.j2ee.servlets.ImageServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ImageServlet</servlet-name>
+		<url-pattern>/jasper/image</url-pattern>
+	</servlet-mapping>
+	<!-- Jasper Reports Servlet (Untuk Export Format PDF) -->
+	<servlet>
+		<servlet-name>PdfServlet</servlet-name>
+		<servlet-class>net.sf.jasperreports.j2ee.servlets.PdfServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PdfServlet</servlet-name>
+		<url-pattern>/jasper/pdf</url-pattern>
+	</servlet-mapping>
+	<!-- Jasper Reports Servlet (Untuk Export Format XLS) -->
+	<servlet>
+		<servlet-name>XlsServlet</servlet-name>
+		<servlet-class>net.sf.jasperreports.j2ee.servlets.XlsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>XlsServlet</servlet-name>
+		<url-pattern>/jasper/xls</url-pattern>
+	</servlet-mapping>
+	<!-- Jasper Reports Servlet (Untuk Export Format XLS) -->
+	<servlet>
+		<servlet-name>JExcelApiServlet</servlet-name>
+		<servlet-class>net.sf.jasperreports.j2ee.servlets.JExcelApiServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JExcelApiServlet</servlet-name>
+		<url-pattern>/jasper/jxl</url-pattern>
+	</servlet-mapping>
+	<!-- Jasper Reports Servlet (Untuk Export Format RTF) -->
+	<servlet>
+		<servlet-name>RtfServlet</servlet-name>
+		<servlet-class>net.sf.jasperreports.j2ee.servlets.RtfServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RtfServlet</servlet-name>
+		<url-pattern>/jasper/rtf</url-pattern>
+	</servlet-mapping>
+	<!-- Jasper Reports Servlet (Untuk Export Format ODT) -->
+	<servlet>
+		<servlet-name>OdtServlet</servlet-name>
+		<servlet-class>net.sf.jasperreports.j2ee.servlets.OdtServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>OdtServlet</servlet-name>
+		<url-pattern>/jasper/odt</url-pattern>
+	</servlet-mapping>
+	<!-- Jasper Reports Servlet (Untuk Export Format ODS) -->
+	<servlet>
+		<servlet-name>OdsServlet</servlet-name>
+		<servlet-class>net.sf.jasperreports.j2ee.servlets.OdsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>OdsServlet</servlet-name>
+		<url-pattern>/jasper/ods</url-pattern>
+	</servlet-mapping>
+	<!-- Jasper Reports Servlet (Untuk Export Format DOCX) -->
+	<servlet>
+		<servlet-name>DocxServlet</servlet-name>
+		<servlet-class>net.sf.jasperreports.j2ee.servlets.DocxServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DocxServlet</servlet-name>
+		<url-pattern>/jasper/docx</url-pattern>
+	</servlet-mapping>
+	<!-- Jasper Reports Servlet (Untuk Export Format PPTX) -->
+	<servlet>
+		<servlet-name>PptxServlet</servlet-name>
+		<servlet-class>net.sf.jasperreports.j2ee.servlets.PptxServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PptxServlet</servlet-name>
+		<url-pattern>/jasper/pptx</url-pattern>
+	</servlet-mapping>
+	<!-- Jasper Reports Servlet (Untuk Export Format XLSX) -->
+	<servlet>
+		<servlet-name>XlsxServlet</servlet-name>
+		<servlet-class>net.sf.jasperreports.j2ee.servlets.XlsxServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>XlsxServlet</servlet-name>
+		<url-pattern>/jasper/xlsx</url-pattern>
+	</servlet-mapping>
+</web-app>
+
+
