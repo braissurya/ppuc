@@ -2,6 +2,7 @@ package com.melawai.ppuc.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,6 +23,11 @@ import com.melawai.ppuc.model.BaseObject;
  */
 
 public class GroupUser extends BaseObject implements Serializable  {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8946818516215179670L;
 
 	//****************** COLOMN FROM TABLE START HERE ******************/
 	@NotNull
@@ -49,6 +55,9 @@ public class GroupUser extends BaseObject implements Serializable  {
 	//****************** OTHERS START HERE ******************/
 
 	public String itemId;
+	public Role role;
+
+	public Set<Menu> menus;
 	//****************** OTHERS END HERE ******************/
 
 
@@ -82,6 +91,16 @@ public class GroupUser extends BaseObject implements Serializable  {
 
 	public String getItemId() {return ""+group_kd;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}
+
+	public Role getRole() {	return role;}
+	public void setRole(Role role) {this.role = role;}
+
+	public Set<Menu> getMenus() {return menus;}
+	public void setMenus(Set<Menu> menus) {	this.menus = menus;	}
+	
+	
+	
+	
 
 	//****************** GETTER SETTER END HERE ******************/
 

@@ -4,7 +4,7 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_com_melawai_ppuc_model_user" modelAttribute="user" path="/master/user" idField="itemId" versionField="none" >
        <field:input field="user_id" label="User Id" id="c_com_melawai_ppuc_model_user_user_id" required="true" />
-       <field:input field="password" label="Password" id="c_com_melawai_ppuc_model_user_password"  />
+<!--        <field:input field="password" label="Password" id="c_com_melawai_ppuc_model_user_password"  /> -->
        <field:input field="user_name" label="User Name" id="c_com_melawai_ppuc_model_user_user_name"  />
        <field:input field="no_hp" label="No Hp" id="c_com_melawai_ppuc_model_user_no_hp"  />
        <field:input field="email" label="Email" id="c_com_melawai_ppuc_model_user_email"  />

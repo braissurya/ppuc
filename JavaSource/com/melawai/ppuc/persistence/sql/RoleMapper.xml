@@ -8,7 +8,6 @@
 	<!-- result map-->
 	<resultMap type="Role" id="RoleMap">
 		<id property="id_role" column="id_role"  />  
-		<result property="id_role" column="id_role" />
 		<result property="role_name" column="role_name" />
 	</resultMap>
 

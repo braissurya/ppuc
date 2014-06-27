@@ -70,6 +70,10 @@ public class Menu extends BaseObject implements Serializable  {
 	//****************** OTHERS START HERE ******************/
 
 	public String itemId;
+	public Menu menu_parent;
+	public String parent_nama;
+	public String parent_link;
+	
 	//****************** OTHERS END HERE ******************/
 
 
@@ -127,6 +131,28 @@ public class Menu extends BaseObject implements Serializable  {
 
 	public String getItemId() {return ""+menu_id;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}
+
+	public Menu getMenu_parent() {	return menu_parent;	}
+
+	public void setMenu_parent(Menu menu_parent) {	this.menu_parent = menu_parent;	}
+
+	public String getParent_nama() {
+		return parent_nama;
+	}
+
+	public void setParent_nama(String parent_nama) {
+		this.parent_nama = parent_nama;
+	}
+
+	public String getParent_link() {
+		return parent_link;
+	}
+
+	public void setParent_link(String parent_link) {
+		this.parent_link = parent_link;
+	}
+	
+	
 
 	//****************** GETTER SETTER END HERE ******************/
 

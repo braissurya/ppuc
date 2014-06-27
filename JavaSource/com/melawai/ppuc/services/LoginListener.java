@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.melawai.ppuc.model.User;
 import com.melawai.ppuc.services.UserManager;
+import com.melawai.ppuc.utils.CommonUtil;
 import com.melawai.ppuc.utils.Email;
 
 
@@ -47,6 +48,8 @@ public class LoginListener implements ApplicationListener<AbstractAuthentication
 	    /*User user = userManager.getUserByUsername(username);
 	    userManager.logLoginSuccess(user, httpServletRequest.getRemoteHost());*/
 	    //TODO: mau ngapain klo berhasil login
+	  //generate menu
+
 	} else if (event instanceof AuthenticationFailureBadCredentialsEvent) {
 
 	    UsernamePasswordAuthenticationToken upat = (UsernamePasswordAuthenticationToken) ((AuthenticationFailureBadCredentialsEvent) event).getSource();

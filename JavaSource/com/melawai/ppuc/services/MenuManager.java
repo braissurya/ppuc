@@ -2,8 +2,9 @@ package com.melawai.ppuc.services;
 
 import java.util.Date;
 import java.util.List;
-import org.apache.log4j.Logger;
+import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,9 +14,10 @@ import com.melawai.ppuc.persistence.MenuMapper;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
- * @since		: Thu Jun 19 23:42:35 ICT 2014
+ * 
+ * @since : Thu Jun 19 23:42:35 ICT 2014
  * @Description: Services for table menu
- * @Revision	:
+ * @Revision :
  */
 
 @Service("menuManager")
@@ -32,8 +34,8 @@ public class MenuManager {
 	}
 
 	/** Apakah data dengan menu_id ini ada? **/
-	public boolean exists(Long menu_id) {	
-		return get(menu_id)!=null;
+	public boolean exists(Long menu_id) {
+		return get(menu_id) != null;
 	}
 
 	/** Delete data berdasarkan menu_id **/
@@ -44,16 +46,17 @@ public class MenuManager {
 
 	/** Ambil jumlah seluruh data **/
 	public int selectPagingCount(String search) {
-		Menu menu=new Menu();
+		Menu menu = new Menu();
 		menu.setSearch(search);
 		return menuMapper.selectPagingCount(menu);
 	}
 
 	/** Ambil data paging **/
-	public List<Menu> selectPagingList(String search, String sort,String sortOrder, int page, int rowcount) {
-		Menu menu=new Menu();
+	public List<Menu> selectPagingList(String search, String sort, String sortOrder, int page, int rowcount) {
+		Menu menu = new Menu();
 		menu.setSearch(search);
-		 if(sort!=null)menu.setSort(sort+" "+sortOrder);
+		if (sort != null)
+			menu.setSort(sort + " " + sortOrder);
 		menu.setPage(page);
 		menu.setRowcount(rowcount);
 		return menuMapper.selectPagingList(menu);
@@ -62,13 +65,17 @@ public class MenuManager {
 	/** Save Model **/
 	@Transactional
 	public Menu save(Menu menu) {
-		if (menu.getMenu_id()==null) {
+		if (menu.getMenu_id() == null) {
 			menuMapper.insert(menu);
 		} else {
 			menuMapper.update(menu);
-		} 
+		}
 		return menu;
 	}
 	/** Others Method **/
 
+	public Set<Menu> selectMenuAccess(String group_kd,Integer root,String path){
+		return menuMapper.selectMenuAccess(group_kd, root, path);
 	}
+
+}

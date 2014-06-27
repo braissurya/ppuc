@@ -9,6 +9,7 @@
   <jsp:directive.attribute name="create" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'create' link into table (default true)" />
   <jsp:directive.attribute name="update" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'update' link into table (default true)" />
   <jsp:directive.attribute name="delete" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'delete' link into table (default true)" />
+  <jsp:directive.attribute name="upload" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'upload' link into table (default false)" />
   <jsp:directive.attribute name="render" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'true')" />
   <jsp:directive.attribute name="z" type="java.lang.String" required="false" description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
 
@@ -191,6 +192,19 @@
               </a>
             </span>
             <c:out value=" " />
+            <c:if test="${upload }">
+	            <span class="upload">
+	            	<c:set var="upl" value="/upload" />
+	              <spring:url value="${path}${upl}" var="upload_url" >
+	                <spring:param name="form" />
+	              </spring:url>
+	              <a href="${upload_url}">
+	                <spring:url value="/resources/images/upload.jpg" var="upload_img_url" />
+	                <spring:message arguments="${typeName}" code="global_menu_upload" var="upload_message" htmlEscape="false" />
+	                <img alt="${fn:escapeXml(upload_message)}" src="${upload_img_url}" title="${fn:escapeXml(upload_message)}" />
+	              </a>
+	            </span>
+            </c:if>
           </c:if>
           <c:if test="${not empty maxPages}">
             <util:pagination maxPages="${maxPages}" page="${param.page}" size="${param.size}" />

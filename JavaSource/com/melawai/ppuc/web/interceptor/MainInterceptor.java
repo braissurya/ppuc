@@ -2,6 +2,7 @@ package com.melawai.ppuc.web.interceptor;
 
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,9 +15,8 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.melawai.ppuc.model.Menu;
 import com.melawai.ppuc.model.User;
+import com.melawai.ppuc.services.UserManager;
 import com.melawai.ppuc.utils.CommonUtil;
-
-
 
 /**
  * 
@@ -32,90 +32,110 @@ import com.melawai.ppuc.utils.CommonUtil;
  *           #====#===========#===================#===========================#
  */
 public class MainInterceptor extends HandlerInterceptorAdapter {
-    @Autowired
-    private Properties props;
-  
-    private static Logger logger = Logger.getLogger(MainInterceptor.class);
+	@Autowired
+	private Properties props;
 
-    public void setProps(Properties props) {
-	this.props = props;
-    }
+	@Autowired
+	private UserManager userManager;
 
-    private final String[] bolehLewat = new String[] { "/login", "/error", "/welcome", "/main", "/logout" };
+	private static Logger logger = Logger.getLogger(MainInterceptor.class);
 
-    @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-	String uri = request.getRequestURI();
-
-	request.setAttribute("ver", props.getProperty("app.version"));
-
-	// bypass menu
-	for (String boleh : bolehLewat) {
-	    if (uri.contains(boleh)) {
-		return true;
-	    }
+	public void setProps(Properties props) {
+		this.props = props;
 	}
 
-	// cek apakah user sudah ada session atau belum
-	HttpSession session = request.getSession(false); // kenapa false? karena
-							 // kalau tidak, dia
-							 // akan selalu create
-							 // session baru, makan
-							 // memory
-	if (session != null) {
-	    // cek user logged in
-	    User currentUser = CommonUtil.getCurrentUser();
-	    if (currentUser != null) {// kalau sudah login masuk sini
-		List<Menu> lMenu = (List<Menu>) request.getSession().getAttribute("leftMenu");
-		if (lMenu != null) {// cek menu ada atau ga
-		    boolean ada = false;
+	private final String[] bolehLewat = new String[] { "/resources","/static","/login", "/403","/uncaughtException","/resourceNotFound","/dataAccessFailure", "/welcome", "/main", "/logout" };
 
-		    if (uri.contains("/report")) { // kalau path report baca
-						   // dulu nama reportnya apa
-			String reportName = (String) request.getParameter("fname");
-			if (CommonUtil.isEmpty(reportName))
-			    reportName = (String) request.getParameter("_R_reportName");
+	@Override
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		String uri = request.getRequestURI();
 
-			for (Menu b : lMenu) {
-			    String url = b.getLink();
-			    if (url == null)
-				continue;
-			    if (url.contains(reportName)) {
-				ada = true;
-				break;
-			    }
+		request.setAttribute("ver", props.getProperty("app.version"));
+		
+		// bypass menu
+		for (String boleh : bolehLewat) {
+			if (uri.contains(boleh)) {
+				return true;
 			}
-		    } else {
-			for (Menu b : lMenu) {
-			    String url = b.getLink();
-			    if (url == null)
-				continue;
-			    if (uri.contains(url)) {
-				ada = true;
-				break;
-			    }
-			}
-		    }
-		    if (!ada) {// kalau tidak ada otorisasi tendang ke 403
-			response.sendRedirect(request.getContextPath() + "/403.jsp");
-			return false;
-		    }
 		}
-		return true;
-	    } else {
-		return true;
-	    }
-	} else {
-	    return true;
+		
+		if (request.getSession().getAttribute("leftMenu") == null){
+			User currentUser = CommonUtil.getCurrentUser();
+			if (currentUser != null) {
+				request.getSession().removeAttribute("leftmenu");
+				
+				request.getSession().setAttribute("leftmenu", userManager.generateMenu(request.getContextPath(), CommonUtil.getCurrentUser()));
+			}
+		}
+
+		
+		if(uri.endsWith(request.getContextPath()+"/" ))return true;
+		
+		
+
+		// cek apakah user sudah ada session atau belum
+		HttpSession session = request.getSession(false); // kenapa false? karena
+		// kalau tidak, dia
+		// akan selalu create
+		// session baru, makan
+		// memory
+		if (session != null) {
+			// cek user logged in
+			User currentUser = CommonUtil.getCurrentUser();
+			if (currentUser != null) {// kalau sudah login masuk sini
+				
+				Set<Menu> lMenu = currentUser.getGroupUser().getMenus();
+
+				if (lMenu != null) {// cek menu ada atau ga
+					boolean ada = false;
+
+					/*if (uri.contains("/report")) { // kalau path report baca
+						// dulu nama reportnya apa
+						String reportName = (String) request.getParameter("fname");
+						if (CommonUtil.isEmpty(reportName))
+							reportName = (String) request.getParameter("_R_reportName");
+
+						for (Menu b : lMenu) {
+							String url = b.getLink();
+							if (url == null)
+								continue;
+							if (url.contains(reportName)) {
+								ada = true;
+								break;
+							}
+						}
+					} else {*/
+						for (Menu b : lMenu) {
+							String url = b.getLink();
+							if (url == null)
+								continue;
+							if (uri.contains(url)) {
+								ada = true;
+								break;
+							}
+						}
+//					}
+						
+					if (!ada) {// kalau tidak ada otorisasi tendang ke 403
+						response.sendRedirect(request.getContextPath() + "/403");
+						return false;
+					}
+				}
+				return true;
+			} else {
+				return true;
+			}
+		} else {
+			return true;
+		}
+
 	}
 
-    }
+	@Override
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+		logger.debug("postHandle: " + handler);
 
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-	logger.debug("postHandle: " + handler);
-
-	super.postHandle(request, response, handler, modelAndView);
-    }
+		super.postHandle(request, response, handler, modelAndView);
+	}
 
 }

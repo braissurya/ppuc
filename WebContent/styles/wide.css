@@ -40,7 +40,7 @@ body {
 	display:box;
 }
 
-#menu {
+/* #menu {
 	background: #eee;
 	position:relative;
 	float:left;  	
@@ -85,7 +85,7 @@ body {
 #menu a:hover {
 	color: #648C1D;
 	background: #fff;
-}
+} */
 
 #footer {
 	background:#fff;
@@ -399,5 +399,5 @@ fieldset th {
 }
 
 table th {
-	background: #BF2E1A;
+	background: #414141;
 }

@@ -7,8 +7,14 @@
   <jsp:directive.attribute name="labelPlural" type="java.lang.String" required="false" rtexprvalue="true" description="The label used for this object, will default to a message bundle if not supplied" />
   <jsp:directive.attribute name="render" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'true')" />
   <jsp:directive.attribute name="openPane" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Control if the title pane is opened or closed by default (default: true)" />
+  <jsp:directive.attribute name="upload" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'upload' link into table (default false)" />
+  <jsp:directive.attribute name="path" type="java.lang.String" required="false" rtexprvalue="true" description="Specify the URL path" />
   <jsp:directive.attribute name="z" type="java.lang.String" required="false" description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
 
+  <c:if test="${empty upload}">
+      <c:set var="upload" value="false" />
+    </c:if>
+ 
   <c:if test="${empty render or render}">
     <c:if test="${empty label}">
       <spring:message code="label_${fn:toLowerCase(fn:substringAfter(id,'_'))}" var="label" htmlEscape="false" />
@@ -24,6 +30,30 @@
         </c:when>
         <c:otherwise>
           <spring:message arguments="${label}" code="entity_not_found" />
+          <br/>
+           <span class="new">
+              <spring:url value="${path}" var="create_url">
+                <spring:param name="form" />
+              </spring:url>
+              <a href="${create_url}">
+                <spring:url value="/resources/images/add.png" var="create_img_url" />
+                <spring:message arguments="${typeName}" code="global_menu_new" var="add_message" htmlEscape="false" />
+                <img alt="${fn:escapeXml(add_message)}" src="${create_img_url}" title="${fn:escapeXml(add_message)}" />
+              </a>
+            </span>
+            <c:if test="${upload }">
+	            <span class="upload">
+	            	<c:set var="upl" value="/upload" />
+	              <spring:url value="${path}${upl}" var="upload_url" >
+	                <spring:param name="form" />
+	              </spring:url>
+	              <a href="${upload_url}">
+	                <spring:url value="/resources/images/upload.jpg" var="upload_img_url" />
+	                <spring:message arguments="${typeName}" code="global_menu_upload" var="upload_message" htmlEscape="false" />
+	                <img alt="${fn:escapeXml(upload_message)}" src="${upload_img_url}" title="${fn:escapeXml(upload_message)}" />
+	              </a>
+	            </span>
+            </c:if>
         </c:otherwise>
       </c:choose>
     </util:panel>

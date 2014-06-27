@@ -2,8 +2,11 @@ package com.melawai.ppuc.persistence;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+
 import org.springframework.dao.DataAccessException;
 import org.apache.ibatis.annotations.Param;
+
 import com.melawai.ppuc.model.Menu;
 
 /**
@@ -31,5 +34,5 @@ public interface MenuMapper {
 
 	// QUERY CUSTOM yang lain dibawah sini
 
-
+	public Set<Menu> selectMenuAccess(@Param("group_kd")String group_kd,@Param("root")Integer root,@Param("path")String path) throws DataAccessException;
 }

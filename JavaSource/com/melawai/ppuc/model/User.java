@@ -27,6 +27,10 @@ import com.melawai.ppuc.model.BaseObject;
  * @Revision	:
  */
 
+/**
+ * @author Bertho
+ *
+ */
 public class User extends BaseObject implements Serializable , UserDetails {
 
 	//****************** COLOMN FROM TABLE START HERE ******************/
@@ -94,6 +98,10 @@ public class User extends BaseObject implements Serializable , UserDetails {
 	public String oldPassword;
 	public String newPassword;
 	public String confirmPassword;
+	public Date loginTime;
+	public GroupUser groupUser;
+	public MFungsi mFungsi;
+	public String menu;
 
 	//****************** OTHERS END HERE ******************/
 
@@ -171,12 +179,30 @@ public class User extends BaseObject implements Serializable , UserDetails {
 	public String getConfirmPassword() {return confirmPassword;}
 	public void setConfirmPassword(String confirmPassword) {this.confirmPassword = confirmPassword;	}
 
+	public MFungsi getmFungsi() {return mFungsi;}
+	public void setmFungsi(MFungsi mFungsi) {this.mFungsi = mFungsi;}
+
+	public GroupUser getGroupUser() {return groupUser;}
+	public void setGroupUser(GroupUser groupUser) {	this.groupUser = groupUser;}
+
+	public Date getLoginTime() {return loginTime;}
+	public void setLoginTime(Date loginTime) {	this.loginTime = loginTime;}
+	
+	public String getMenu() {return menu;}
+	public void setMenu(String menu) {this.menu = menu;	}
+	
+	
+	
 	//****************** GETTER SETTER END HERE ******************/
+
+	
+
+	
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Set<GrantedAuthority> authorities = new LinkedHashSet<GrantedAuthority>();
-		authorities.add(new Role(Role.ROLE_NAME_USER));
+		authorities.add(new Role(groupUser.role.role_name));
 		return authorities;
 	}
 

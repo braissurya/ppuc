@@ -1,5 +1,8 @@
 /* ######### Drop Down ULs CSS ######### */
 
+.menuHorisontal{
+	margin-bottom: 5px;
+}
 
 .ddsubmenustyle, .ddsubmenustyle ul{ /*topmost and sub ULs, respectively*/
 font: normal 13px Verdana;
@@ -20,10 +23,9 @@ z-index: 100;
 display: block;
 width: 250px; /*width of menu (not including side paddings)*/
 color: white;
-background-color: #0289d1;
+background-color: #BF2E1A;
 text-decoration: none;
 padding: 4px 5px;
-border-bottom: 1px solid white;
 }
 
 * html .ddsubmenustyle li{ /*IE6 CSS hack*/
@@ -32,7 +34,7 @@ width: 260px; /*width of menu (include side paddings of LI A*/
 }
 
 .ddsubmenustyle li a:hover{
-background-color: #4dd3ff;
+background-color: #414141;
 color: white;
 }
 

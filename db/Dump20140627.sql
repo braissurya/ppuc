@@ -108,6 +108,7 @@ CREATE TABLE `divisi` (
 
 LOCK TABLES `divisi` WRITE;
 /*!40000 ALTER TABLE `divisi` DISABLE KEYS */;
+INSERT INTO `divisi` VALUES ('OPT','OPTIK','',NULL,'','',NULL);
 /*!40000 ALTER TABLE `divisi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,7 +164,7 @@ CREATE TABLE `group_user` (
 
 LOCK TABLES `group_user` WRITE;
 /*!40000 ALTER TABLE `group_user` DISABLE KEYS */;
-INSERT INTO `group_user` VALUES ('ADMIN','ADMIN',NULL,'',NULL,'');
+INSERT INTO `group_user` VALUES ('ADMIN','ADMIN',1,'',NULL,'');
 /*!40000 ALTER TABLE `group_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -398,7 +399,7 @@ CREATE TABLE `menu` (
   `sys_tgl_nonaktif` datetime DEFAULT NULL COMMENT 'tanggal menonaktifkan',
   `sys_jam_nonaktif` varchar(8) DEFAULT NULL COMMENT 'jam menonaktifkan',
   PRIMARY KEY (`sys_menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='table list menu';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='table list menu';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -407,7 +408,7 @@ CREATE TABLE `menu` (
 
 LOCK TABLES `menu` WRITE;
 /*!40000 ALTER TABLE `menu` DISABLE KEYS */;
-INSERT INTO `menu` VALUES (1,0,'ROOT',NULL,0,0,'0.0',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(2,1,'MASTER',NULL,1,1,'0.1',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(3,1,'TRANSAKSI',NULL,1,2,'0.1.2',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `menu` VALUES (1,0,'ROOT',NULL,0,1,'0.1',1,NULL,NULL,NULL,NULL,NULL,NULL),(2,1,'Master',NULL,1,1,'0.1.1',1,NULL,NULL,NULL,NULL,NULL,NULL),(3,1,'Transaksi',NULL,1,2,'0.1.2',1,NULL,NULL,NULL,NULL,NULL,NULL),(4,2,'User','master/user',2,1,'0.1.1.1',1,NULL,NULL,NULL,NULL,NULL,NULL),(5,2,'Menu','master/menu',2,2,'0.1.1.2',1,NULL,NULL,NULL,NULL,NULL,NULL),(6,2,'Divisi','master/divisi',2,3,'0.1.1.3',1,NULL,NULL,NULL,NULL,NULL,NULL),(7,2,'Group User','master/groupuser',2,4,'0.1.1.4',1,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `menu` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -423,7 +424,7 @@ DELIMITER ;;
 BEFORE INSERT ON `PPUC`.`menu`
 FOR EACH ROW
 -- Edit trigger body code below this line. Do not edit lines above this one
-SET NEW.sys_path = CONCAT(IFNULL((select sys_path from menu where sys_menu_id = NEW.parent), '0'), '.', New.urut) */;;
+SET NEW.sys_path =  CONCAT(IFNULL((select sys_path from menu where sys_menu_id = NEW.parent), '0'), '.', New.urut) */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -442,7 +443,7 @@ DELIMITER ;;
 BEFORE UPDATE ON `PPUC`.`menu`
 FOR EACH ROW
 -- Edit trigger body code below this line. Do not edit lines above this one
-SET NEW.sys_path = CONCAT(IFNULL((select sys_path from menu where sys_menu_id = NEW.parent), '0'), '.', New.urut) */;;
+SET NEW.sys_path = CONCAT(IFNULL((select sys_path from menu where sys_menu_id = NEW.parent), '0'), '.',  New.urut) */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -660,10 +661,10 @@ DROP TABLE IF EXISTS `role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `role` (
-  `id_role` int(11) NOT NULL,
+  `id_role` int(11) NOT NULL AUTO_INCREMENT,
   `role_name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id_role`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -672,6 +673,7 @@ CREATE TABLE `role` (
 
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
+INSERT INTO `role` VALUES (1,'ROLE_ADMIN'),(2,'ROLE_USER');
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -835,6 +837,7 @@ CREATE TABLE `sys_akses_menu` (
 
 LOCK TABLES `sys_akses_menu` WRITE;
 /*!40000 ALTER TABLE `sys_akses_menu` DISABLE KEYS */;
+INSERT INTO `sys_akses_menu` VALUES ('ADMIN',1,NULL,NULL),('ADMIN',2,NULL,NULL),('ADMIN',3,NULL,NULL),('ADMIN',4,NULL,NULL),('ADMIN',5,NULL,NULL),('ADMIN',6,NULL,NULL),('ADMIN',7,NULL,NULL);
 /*!40000 ALTER TABLE `sys_akses_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1107,4 +1110,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-06-24  1:28:47
+-- Dump completed on 2014-06-27 23:50:01

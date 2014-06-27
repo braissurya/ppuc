@@ -1,6 +1,9 @@
 package com.melawai.ppuc.services;
 
 import java.util.Collection;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,63 +20,64 @@ import org.springframework.stereotype.Component;
 
 import com.melawai.ppuc.model.User;
 import com.melawai.ppuc.services.UserManager;
-
+import com.melawai.ppuc.utils.Utils;
 
 @Component
 public class ModifiedUserAuthenticationProvider implements AuthenticationProvider {
 
-    protected final Log logger = LogFactory.getLog(ModifiedUserAuthenticationProvider.class);
+	protected final Log logger = LogFactory.getLog(ModifiedUserAuthenticationProvider.class);
 
-    private final UserManager userManager;
-    
-    private PasswordEncoder passwordEncoder;
+	private final UserManager userManager;
 
-    @Autowired(required = false)
-    private SaltSource saltSource;
-
-    @Autowired
-    public ModifiedUserAuthenticationProvider(UserManager userManager) {
-	if (userManager == null) {
-	    throw new IllegalArgumentException("UserManager cannot be null");
-	}
-	this.userManager = userManager;
-    }
-
-   
-
-    @Autowired
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-	this.passwordEncoder = passwordEncoder;
-    }
-
-    @Override
-    public Authentication authenticate(Authentication authentication)
-	    throws AuthenticationException {
-
-	boolean isAuthenticated = true;
-	UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
-
-	User loginUser = userManager.getUserByUsername(token.getName());
-	if (loginUser == null) {
-		logger.error("Class : ModifiedUserAuthentication --- Login Mode : AD");
-	    throw new UsernameNotFoundException("Invalid username / password");
-	}
-
-	logger.info("hasil encode"+passwordEncoder.encodePassword((String) token.getCredentials(), saltSource.getSalt(loginUser)));
-    isAuthenticated = passwordEncoder.isPasswordValid(loginUser.getPassword(), (String) token.getCredentials(), saltSource.getSalt(loginUser));
+	private PasswordEncoder passwordEncoder;
 	
+	@Autowired
+	private HttpServletRequest request;
 
-	if (!isAuthenticated)
-	    throw new UsernameNotFoundException("Invalid username / password");
+	@Autowired(required = false)
+	private SaltSource saltSource;
 
-	Collection<? extends GrantedAuthority> authorities = loginUser.getAuthorities();
-	return new UsernamePasswordAuthenticationToken(loginUser, token.getCredentials(), authorities);
-    }
+	@Autowired
+	public ModifiedUserAuthenticationProvider(UserManager userManager) {
+		if (userManager == null) {
+			throw new IllegalArgumentException("UserManager cannot be null");
+		}
+		this.userManager = userManager;
+	}
 
-    @Override
-    public boolean supports(Class<?> authentication) {
-    	return UsernamePasswordAuthenticationToken.class.equals(authentication);
-    }
+	@Autowired
+	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+		this.passwordEncoder = passwordEncoder;
+	}
+
+	@Override
+	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+
+		boolean isAuthenticated = true;
+		UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
+
+		User loginUser = userManager.getUserByUsername(token.getName());
+		if (loginUser == null) {
+			logger.error("Class : ModifiedUserAuthentication --- Login Mode : AD");
+			throw new UsernameNotFoundException("Invalid username / password");
+		}
+
+		logger.info("hasil encode" + passwordEncoder.encodePassword((String) token.getCredentials(), saltSource.getSalt(loginUser)));
+		isAuthenticated = passwordEncoder.isPasswordValid(loginUser.getPassword(), (String) token.getCredentials(), saltSource.getSalt(loginUser));
+
+		if (!isAuthenticated)
+			throw new UsernameNotFoundException("Invalid username / password");
+
+		Collection<? extends GrantedAuthority> authorities = loginUser.getAuthorities();
+		
+		loginUser.setLoginTime(new Date());
+
+		return new UsernamePasswordAuthenticationToken(loginUser, token.getCredentials(), authorities);
+	}
+
+	@Override
+	public boolean supports(Class<?> authentication) {
+		return UsernamePasswordAuthenticationToken.class.equals(authentication);
+	}
 
 }
-

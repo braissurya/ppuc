@@ -8,7 +8,6 @@
 	<!-- result map-->
 	<resultMap type="User" id="UserMap">
 		<id property="user_id" column="user_id"  />  
-		<result property="user_id" column="user_id" />
 		<result property="password" column="password" />
 		<result property="user_name" column="user_name" />
 		<result property="no_hp" column="no_hp" />
@@ -25,6 +24,42 @@
 		<result property="user_nonaktif" column="user_nonaktif" />
 		<result property="tgl_nonaktif" column="tgl_nonaktif" />
 		<result property="jam_nonaktif" column="jam_nonaktif" />
+		<association property="groupUser" javaType="GroupUser"  >
+			<id property="group_kd" column="gu_group_kd"  />  
+			<result property="group_kd" column="gu_group_kd" />
+			<result property="group_nm" column="gu_group_nm" />
+			<result property="id_role" column="gu_id_role" />
+			<association property="role" javaType="Role"  >
+				<id property="id_role" column="r_id_role"  />  
+				<result property="role_name" column="r_role_name" />
+			</association>
+			<collection property="menus" ofType="Menu" >
+				<id property="menu_id" column="cm_menu_id"  />  
+				<result property="parent" column="cm_parent" />
+				<result property="nama" column="cm_nama" />
+				<result property="link" column="cm_link" />
+				<result property="level" column="cm_level" />
+				<result property="urut" column="cm_urut" />
+				<result property="path" column="cm_path" />
+				<result property="f_aktif" column="cm_f_aktif" />
+				<association property="menu_parent" javaType="Menu">
+					<id property="menu_id" column="pm_menu_id"  />  
+					<result property="parent" column="pm_parent" />
+					<result property="nama" column="pm_nama" />
+					<result property="link" column="pm_link" />
+					<result property="level" column="pm_level" />
+					<result property="urut" column="pm_urut" />
+					<result property="path" column="pm_path" />
+					<result property="f_aktif" column="pm_f_aktif" />
+				</association>
+			</collection>
+		</association>
+		<association property="mFungsi" javaType="MFungsi">
+			<id property="kd_fungsi" column="mf_kd_fungsi"  />  
+			<result property="kd_fungsi" column="mf_kd_fungsi" />
+			<result property="nm_fungsi" column="mf_nm_fungsi" />
+			<result property="mail_seq" column="mf_mail_seq" />
+		</association>
 	</resultMap>
 
 	<!-- nama kolom yang ingin ditampilkan -->
@@ -45,7 +80,31 @@
 		C.SYS_JAM_UPDATE as jam_update,
 		C.SYS_USER_NONAKTIF as user_nonaktif,
 		C.SYS_TGL_NONAKTIF as tgl_nonaktif,
-		C.SYS_JAM_NONAKTIF as jam_nonaktif
+		C.SYS_JAM_NONAKTIF as jam_nonaktif,
+		GU.GROUP_KD as gu_group_kd,
+		GU.GROUP_NM as gu_group_nm,
+		GU.ID_ROLE as gu_id_role,
+		R.ID_ROLE as r_id_role,
+		R.ROLE_NAME as r_role_name,
+		MF.KD_FUNGSI as mf_kd_fungsi,
+		MF.NM_FUNGSI as mf_nm_fungsi,
+		MF.MAIL_SEQ as mf_mail_seq,
+		CM.SYS_MENU_ID as cm_menu_id,
+		CM.PARENT as cm_parent,
+		CM.NAMA as cm_nama,
+		CM.LINK as cm_link,
+		CM.LEVEL as cm_level,
+		CM.URUT as cm_urut,
+		CM.SYS_PATH as cm_path,
+		CM.F_AKTIF as cm_f_aktif,
+		PM.SYS_MENU_ID as pm_menu_id,
+		PM.PARENT as pm_parent,
+		PM.NAMA as pm_nama,
+		PM.LINK as pm_link,
+		PM.LEVEL as pm_level,
+		PM.URUT as pm_urut,
+		PM.SYS_PATH as pm_path,
+		PM.F_AKTIF as pm_f_aktif
 	</sql>
 
 	<!-- query select, dengan kolom yang default di atas, apabila mau ditambahkan join juga bisa disini
@@ -53,6 +112,14 @@
 	<sql id="selectQuery">
 		select * from (
 			select <include refid="defaultColoumn" /> from user C
+			left outer join group_user gu on c.group_kd = gu.group_kd
+			left outer join role r on gu.id_role = r.id_role
+			left outer join m_fungsi mf on c.kd_fungsi = mf.kd_fungsi
+			left outer join sys_akses_menu am on gu.group_kd = am.group_kd
+			left outer join menu cm on am.menu_id = cm.sys_menu_id
+			left outer join menu pm on cm.parent = pm.sys_menu_id
+			where cm.f_aktif =1
+			order by cm.sys_path, cm.urut
 		)T
 	</sql>
 

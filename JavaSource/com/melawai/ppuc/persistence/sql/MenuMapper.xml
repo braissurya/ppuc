@@ -8,7 +8,6 @@
 	<!-- result map-->
 	<resultMap type="Menu" id="MenuMap">
 		<id property="menu_id" column="menu_id"  />  
-		<result property="menu_id" column="menu_id" />
 		<result property="parent" column="parent" />
 		<result property="nama" column="nama" />
 		<result property="link" column="link" />
@@ -175,5 +174,20 @@
 	</select>
 
 	<!-- QUERY CUSTOM LAIN-LAIN bisa dimasukkan dibawah ini -->
-
+	
+	<select id="selectMenuAccess" resultType="Menu">
+		select child.sys_path,child.parent, parent.nama parent_nama, parent.link parent_link,
+			   child.sys_menu_id, child.nama, child.link, child.level, child.urut from menu child
+		INNER JOIN menu parent on child.parent = parent.sys_menu_id and parent.f_aktif=1
+		where child.f_aktif=1 and exists (select * from sys_akses_menu am where am.group_kd =#{group_kd}
+		and child.f_aktif=1 and menu_id = child.sys_menu_id )
+		<if test="root != null">
+			AND not exists (SELECT * from menu WHERE parent = 1 AND sys_menu_id = child.sys_menu_id)
+			and child.parent=#{root}
+		</if>
+		<if test="path != null">
+			and child.sys_path like concat(#{path},'%')
+		</if>
+		order by child.sys_path, child.urut
+	</select>
 </mapper>

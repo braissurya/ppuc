@@ -8,7 +8,6 @@
 	<!-- result map-->
 	<resultMap type="GroupUser" id="GroupUserMap">
 		<id property="group_kd" column="group_kd"  />  
-		<result property="group_kd" column="group_kd" />
 		<result property="group_nm" column="group_nm" />
 		<result property="id_role" column="id_role" />
 		<result property="user_create" column="user_create" />
