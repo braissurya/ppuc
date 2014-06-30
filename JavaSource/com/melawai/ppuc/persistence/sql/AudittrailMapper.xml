@@ -10,6 +10,7 @@
 		<id property="id_audittrail" column="id_audittrail"  />  
 		<result property="id_audittrail" column="id_audittrail" />
 		<result property="type_audit" column="type_audit" />
+		<result property="subtype_audit" column="subtype_audit" />
 		<result property="model" column="model" />
 		<result property="model_id" column="model_id" />
 		<result property="ip" column="ip" />
@@ -22,6 +23,7 @@
 	<sql id="defaultColoumn">
 		C.SYS_ID_AUDITTRAIL as id_audittrail,
 		C.SYS_TYPE_AUDIT as type_audit,
+		C.SYS_SUBTYPE_AUDIT as subtype_audit,
 		C.SYS_MODEL as model,
 		C.SYS_MODEL_ID as model_id,
 		C.SYS_IP as ip,
@@ -48,6 +50,7 @@
 	<sql id="search">
 		WHERE 1=1 AND (
 			 type_audit like  CONCAT('%', #{search}, '%')
+			 OR subtype_audit like  CONCAT('%', #{search}, '%')
 			 OR model like  CONCAT('%', #{search}, '%')
 			 OR model_id like  CONCAT('%', #{search}, '%')
 			 OR ip like  CONCAT('%', #{search}, '%')
@@ -59,8 +62,8 @@
 	<!-- insert query untuk table ini -->
 	<insert id="insert" parameterType="Audittrail" useGeneratedKeys="true" keyColumn="SYS_ID_AUDITTRAIL" keyProperty="id_audittrail">
 		INSERT INTO sys_audittrail (
-			SYS_ID_AUDITTRAIL,
 			SYS_TYPE_AUDIT,
+			SYS_SUBTYPE_AUDIT,
 			SYS_MODEL,
 			SYS_MODEL_ID,
 			SYS_IP,
@@ -68,8 +71,8 @@
 			SYS_USER_CREATE,
 			SYS_TGL_CREATE
 		) values (
-			#{id_audittrail},
 			#{type_audit},
+			#{subtype_audit},
 			#{model},
 			#{model_id},
 			#{ip},
@@ -85,6 +88,7 @@
 		<set>
 			<if test="id_audittrail != null">SYS_ID_AUDITTRAIL = #{id_audittrail}, </if>
 			<if test="type_audit != null">SYS_TYPE_AUDIT = #{type_audit}, </if>
+			<if test="subtype_audit != null">SYS_SUBTYPE_AUDIT = #{subtype_audit}, </if>
 			<if test="model != null">SYS_MODEL = #{model}, </if>
 			<if test="model_id != null">SYS_MODEL_ID = #{model_id}, </if>
 			<if test="ip != null">SYS_IP = #{ip}, </if>

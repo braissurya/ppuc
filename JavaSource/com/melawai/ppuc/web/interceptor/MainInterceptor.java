@@ -59,7 +59,7 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 			}
 		}
 		
-		if (request.getSession().getAttribute("leftMenu") == null){
+		if (request.getSession().getAttribute("leftmenu") == null){
 			User currentUser = CommonUtil.getCurrentUser();
 			if (currentUser != null) {
 				request.getSession().removeAttribute("leftmenu");

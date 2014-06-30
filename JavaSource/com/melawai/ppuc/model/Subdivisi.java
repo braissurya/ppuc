@@ -13,6 +13,7 @@ import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
 import com.melawai.ppuc.model.BaseObject;
+import com.melawai.ppuc.utils.Utils;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -22,6 +23,9 @@ import com.melawai.ppuc.model.BaseObject;
  */
 
 public class Subdivisi extends BaseObject implements Serializable  {
+
+	
+	private static final long serialVersionUID = -4358864468672803061L;
 
 	//****************** COLOMN FROM TABLE START HERE ******************/
 	@NotNull
@@ -58,6 +62,7 @@ public class Subdivisi extends BaseObject implements Serializable  {
 	//****************** OTHERS START HERE ******************/
 
 	public String itemId;
+	public Upload upload=new Upload();
 	//****************** OTHERS END HERE ******************/
 
 
@@ -65,6 +70,17 @@ public class Subdivisi extends BaseObject implements Serializable  {
 	public Subdivisi(){
 		//TODO: standard constructor free to change
 	}
+	
+	
+
+	public Subdivisi( String divisi_kd, String subdiv_kd,String subdiv_nm) {
+		super();
+		this.subdiv_kd = subdiv_kd;
+		this.divisi_kd = divisi_kd;
+		this.subdiv_nm = subdiv_nm;
+	}
+
+
 
 	//****************** CONSTRUCTOR END HERE ******************/
 
@@ -83,7 +99,12 @@ public class Subdivisi extends BaseObject implements Serializable  {
 	public void setUser_update(String user_update){ this.user_update = user_update; }
 
 	public Date getTgl_update(){ return tgl_update; }
-	public void setTgl_update(Date tgl_update){ this.tgl_update = tgl_update; }
+	public void setTgl_update(Date tgl_update){
+		this.tgl_update = tgl_update; 
+		if(tgl_update!=null){
+			this.jam_update=Utils.convertDateToString(tgl_update,jam_format);
+		}
+	}
 
 	public String getJam_update(){ return jam_update; }
 	public void setJam_update(String jam_update){ this.jam_update = jam_update; }
@@ -95,8 +116,15 @@ public class Subdivisi extends BaseObject implements Serializable  {
 	public void setTgl_create(Date tgl_create){ this.tgl_create = tgl_create; }
 
 
-	public String getItemId() {return ""+subdiv_kd;	}
+	public String getItemId() {return ""+subdiv_kd+"/"+divisi_kd;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}
+
+
+
+	public Upload getUpload() {	return upload;}
+	public void setUpload(Upload upload) {this.upload = upload;	}
+	
+	
 
 	//****************** GETTER SETTER END HERE ******************/
 

@@ -9,7 +9,7 @@
   <a href="${home}" name="${fn:escapeXml(home_label)}" title="${fn:escapeXml(home_label)}">
     <img src="${banner}" class="banner"/>
   </a>
-  
+ 
   <div style="float: right;">
    <img src="${ppuc}" />
   </div>

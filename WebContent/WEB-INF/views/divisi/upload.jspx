@@ -4,7 +4,11 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_com_melawai_ppuc_model_divisi" multipart="true" modelAttribute="divisi" path="/master/divisi/upload" render="${ empty dependencies }">
        <field:input field="upload.importStartLine" label="Start Line" id="c_com_melawai_ppuc_model_divisi_upload_importStartLine" required="true" max="3"/>
-       <field:input field="upload.uploadFile" type="file" label="File Upload"  id="c_com_melawai_ppuc_model_divisi_upload_uploadFile"></field:input>
+       <field:input field="upload.uploadFile" type="file" label="File Upload" required="true"   id="c_com_melawai_ppuc_model_divisi_upload_uploadFile" formatFile="${divisi.upload.filetypeAllow }"/> 
+       <field:input field="upload.maxSize" type="hidden" id="c_com_melawai_ppuc_model_divisi_upload_maxSize"/>
+       <field:input field="upload.required" type="hidden" id="c_com_melawai_ppuc_model_divisi_upload_required"/>
+       <field:input field="upload.filetypeAllow" type="hidden" id="c_com_melawai_ppuc_model_divisi_upload_filetypeAllow"/>
+       
     </form:create>
     
    

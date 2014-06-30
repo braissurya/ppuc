@@ -22,6 +22,38 @@ import com.melawai.ppuc.model.BaseObject;
  */
 
 public class Audittrail extends BaseObject implements Serializable  {
+	
+
+	private static final long serialVersionUID = -7425784022134568436L;
+	
+	static public class Activity {
+		public static final String APP = "APP";
+		public static final String LOGIN = "LOGIN";
+		public static final String TRANS = "TRANS";
+		public static final String AUTO = "AUTO";
+		public static final String EXIM = "EXIM";
+	}
+	
+	static public class APPType {
+		public static final String STARTED = "STARTED";
+		public static final String STOPPED = "STOPPED";
+	}
+
+	static public class LoginType {
+		public static final String SUCCESS = "SUCCESS";
+		public static final String FAILED = "FAILED";
+	}
+
+	static public class TransType {
+		public static final String ADD = "ADD";
+		public static final String UPDATE = "UPDATE";
+		public static final String DELETE = "DELETE";
+	}
+	
+	static public class EximType {
+		public static final String SUCCESS = "SUCCESS";
+		public static final String FAILED = "FAILED";
+	}
 
 	//****************** COLOMN FROM TABLE START HERE ******************/
 	@NotNull
@@ -29,6 +61,9 @@ public class Audittrail extends BaseObject implements Serializable  {
 
 	@Size(max=10)
 	public String type_audit;
+	
+	@Size(max=10)
+	public String subtype_audit;
 
 	@Size(max=50)
 	public String model;
@@ -72,6 +107,9 @@ public class Audittrail extends BaseObject implements Serializable  {
 
 	public String getType_audit(){ return type_audit; }
 	public void setType_audit(String type_audit){ this.type_audit = type_audit; }
+	
+	public String getSubtype_audit() {return subtype_audit;	}
+	public void setSubtype_audit(String subtype_audit) {this.subtype_audit = subtype_audit;}
 
 	public String getModel(){ return model; }
 	public void setModel(String model){ this.model = model; }

@@ -13,6 +13,7 @@ import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
 import com.melawai.ppuc.model.BaseObject;
+import com.melawai.ppuc.utils.Utils;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -22,6 +23,11 @@ import com.melawai.ppuc.model.BaseObject;
  */
 
 public class Departmen extends BaseObject implements Serializable  {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4539182142457484816L;
 
 	//****************** COLOMN FROM TABLE START HERE ******************/
 	@NotNull
@@ -62,6 +68,7 @@ public class Departmen extends BaseObject implements Serializable  {
 	//****************** OTHERS START HERE ******************/
 
 	public String itemId;
+	public Upload upload=new Upload();
 	//****************** OTHERS END HERE ******************/
 
 
@@ -69,6 +76,18 @@ public class Departmen extends BaseObject implements Serializable  {
 	public Departmen(){
 		//TODO: standard constructor free to change
 	}
+	
+	
+
+	public Departmen( String divisi_kd, String subdiv_kd,String dept_kd, String dept_nm) {
+		super();
+		this.dept_kd = dept_kd;
+		this.divisi_kd = divisi_kd;
+		this.subdiv_kd = subdiv_kd;
+		this.dept_nm = dept_nm;
+	}
+
+
 
 	//****************** CONSTRUCTOR END HERE ******************/
 
@@ -90,7 +109,12 @@ public class Departmen extends BaseObject implements Serializable  {
 	public void setUser_update(String user_update){ this.user_update = user_update; }
 
 	public Date getTgl_update(){ return tgl_update; }
-	public void setTgl_update(Date tgl_update){ this.tgl_update = tgl_update; }
+	public void setTgl_update(Date tgl_update){ 
+		this.tgl_update = tgl_update; 
+		if(tgl_update!=null){
+			this.jam_update=Utils.convertDateToString(tgl_update,jam_format);
+		}
+	}
 
 	public String getJam_update(){ return jam_update; }
 	public void setJam_update(String jam_update){ this.jam_update = jam_update; }
@@ -101,9 +125,13 @@ public class Departmen extends BaseObject implements Serializable  {
 	public Date getTgl_create(){ return tgl_create; }
 	public void setTgl_create(Date tgl_create){ this.tgl_create = tgl_create; }
 
-
-	public String getItemId() {return ""+dept_kd;	}
+	public String getItemId() {return ""+dept_kd+"/"+subdiv_kd+"/"+divisi_kd;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}
+
+	public Upload getUpload() {	return upload;}
+	public void setUpload(Upload upload) {this.upload = upload;	}
+	
+	
 
 	//****************** GETTER SETTER END HERE ******************/
 

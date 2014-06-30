@@ -55,7 +55,6 @@
 	<!-- insert query untuk table ini -->
 	<insert id="insert" parameterType="AudittrailDetail" useGeneratedKeys="true" keyColumn="SYS_ID_AUDITTRAIL_DETAIL" keyProperty="id_audittrail_detail">
 		INSERT INTO sys_audittrail_detail (
-			SYS_ID_AUDITTRAIL_DETAIL,
 			SYS_ID_AUDITTRAIL,
 			SYS_FIELD,
 			SYS_BEFORE,
@@ -63,7 +62,6 @@
 			SYS_USER_CREATE,
 			SYS_TGL_CREATE
 		) values (
-			#{id_audittrail_detail},
 			#{id_audittrail},
 			#{field},
 			#{before},

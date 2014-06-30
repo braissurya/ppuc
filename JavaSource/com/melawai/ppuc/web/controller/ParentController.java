@@ -13,6 +13,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
+import com.melawai.ppuc.web.validator.UploadValidator;
+
 /**
 * Abstract ParentController sebagai parent dari semua controller
 * Cuman untuk meletakkan reference data saja dan beberapa variable
@@ -26,6 +28,9 @@ public abstract class ParentController {
 	
 	@Autowired
 	protected MessageSource messageSource;
+	
+	@Autowired
+	protected UploadValidator uploadValidator;
 
 	String encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {
 		String enc = httpServletRequest.getCharacterEncoding();

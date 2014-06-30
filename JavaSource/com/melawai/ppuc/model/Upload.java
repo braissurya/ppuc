@@ -26,17 +26,16 @@ public class Upload implements Serializable {
 	public MultipartFile uploadFile;
 	public Integer maxSize ;// < default 5 mb
 	public boolean required = false;
+	
+	public String filetypeAllow;
+	
 
-	public Upload(Integer importStartLine, MultipartFile uploadFile, Integer maxSize, Boolean required) {
-		this.uploadFile = uploadFile;
-		
-		if (importStartLine != null)
-			this.importStartLine = importStartLine;
-		if (maxSize != null)
-			this.maxSize = maxSize;
-		if (required != null)
-			this.required = required;
-
+	public Upload(Integer importStartLine, Integer maxSize, boolean required, String filetypeAllow) {
+		super();
+		this.importStartLine = importStartLine;
+		this.maxSize = maxSize;
+		this.required = required;
+		this.filetypeAllow = filetypeAllow;
 	}
 
 	public Upload() {
@@ -76,4 +75,40 @@ public class Upload implements Serializable {
 		this.required = required;
 	}
 
+	public String getFiletypeAllow() {
+		return filetypeAllow;
+	}
+
+	public void setFiletypeAllow(String filetypeAllow) {
+		this.filetypeAllow = filetypeAllow;
+	}
+
+	public Integer getSize() {
+		return size;
+	}
+
+	
+	public String getOriginalFilename(){
+		String filename=null;
+		if(uploadFile.getSize() != 0){
+			filename=uploadFile.getOriginalFilename();
+		}
+		return filename;
+	}
+	public String getFileName(){
+		String filename=null;
+		if(uploadFile.getSize() != 0){
+			filename=uploadFile.getOriginalFilename().split("\\.")[0];
+		}
+		return filename;
+	}
+	
+	public String getFileExt(){
+		String filename=null;
+		if(uploadFile.getSize() != 0){
+			filename=uploadFile.getOriginalFilename().split("\\.")[1];
+		}
+		return filename;
+	}
+	
 }

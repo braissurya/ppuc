@@ -10,7 +10,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -20,29 +19,18 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.joda.time.DateMidnight;
-import org.joda.time.Months;
-import org.joda.time.Years;
 import org.springframework.context.MessageSource;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.DataBinder;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.ServletRequestUtils;
 
 import com.melawai.ppuc.model.DropDown;
-import com.melawai.ppuc.model.Menu;
-import com.melawai.ppuc.model.User;
 
 /**
  * Utility classes, rata2 function/vars disini static saja
@@ -254,6 +242,14 @@ public class Utils {
 		return errorMessage;
 	}
 
+	public static String errorListToString(List<String> errorList){
+		String message="";
+		for(String err:errorList){
+			if(!(err.trim().contains("diisi")||err.trim().contains("may not be null")||err.trim().contains("tidak ditemukan")))
+			message+="\n"+err;
+		}
+		return message;
+	}
 	/**
 	 * 
 	 * @Method_name : isFileExist

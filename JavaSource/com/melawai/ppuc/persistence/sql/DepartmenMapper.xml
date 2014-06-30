@@ -88,9 +88,6 @@
 	<update id="update" parameterType="Departmen">
 		UPDATE departmen
 		<set>
-			<if test="dept_kd != null">DEPT_KD = #{dept_kd}, </if>
-			<if test="divisi_kd != null">DIVISI_KD = #{divisi_kd}, </if>
-			<if test="subdiv_kd != null">SUBDIV_KD = #{subdiv_kd}, </if>
 			<if test="dept_nm != null">DEPT_NM = #{dept_nm}, </if>
 			<if test="user_update != null">SYS_USER_UPDATE = #{user_update}, </if>
 			<if test="tgl_update != null">SYS_TGL_UPDATE = #{tgl_update}, </if>
@@ -98,18 +95,26 @@
 			<if test="user_create != null">SYS_USER_CREATE = #{user_create}, </if>
 			<if test="tgl_create != null">SYS_TGL_CREATE = #{tgl_create} </if>
 		</set>
-		WHERE  
-			DEPT_KD= #{dept_kd} 
+		WHERE DEPT_KD= #{dept_kd}
+		AND SUBDIV_KD=#{subdiv_kd} 
+		AND DIVISI_KD = #{divisi_kd}
 	</update>
 
 	<!-- remove query untuk table ini -->
-	<delete id="remove" parameterType="String">
-		delete from departmen where DEPT_KD=#{value}
+	<delete id="remove" >
+		delete from departmen 
+		where DEPT_KD=#{dept_kd} 
+		AND SUBDIV_KD=#{subdiv_kd} 
+		AND DIVISI_KD = #{divisi_kd}
 	</delete>
 
 	<!-- get berdasarkan primary key -->
-	<select id="get" parameterType="String" resultMap="DepartmenMap">
-		<include refid="selectQuery" />	where T.dept_kd=#{value}
+	<select id="get"  resultMap="DepartmenMap">
+		<include refid="selectQuery" />	
+		where T.dept_kd=#{dept_kd} 
+		AND T.subdiv_kd=#{subdiv_kd} 
+		AND T.divisi_kd = #{divisi_kd}
+		
 	</select>
 
 	<!-- get ALL row -->

@@ -13,5 +13,8 @@
 	<definition extends="default" name="departmen/update">
         <put-attribute name="body" value="/WEB-INF/views/departmen/update.jspx"/>
     </definition>
+    <definition extends="default" name="departmen/upload">
+        <put-attribute name="body" value="/WEB-INF/views/departmen/upload.jspx"/>
+    </definition>
 </tiles-definitions>
 

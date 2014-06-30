@@ -1,6 +1,9 @@
 package com.melawai.ppuc.model;
 
 import java.io.Serializable;
+import java.util.Properties;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -15,6 +18,9 @@ public class BaseObject implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -6552694768967147551L;
+	
+	public final String jam_format="HH:mm";
+	
 	//search helper
 	public Integer rowcount;
 	public Integer page;

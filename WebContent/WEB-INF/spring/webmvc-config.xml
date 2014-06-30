@@ -9,7 +9,7 @@
     <!-- Turns on support for mapping requests to Spring MVC @Controller methods
          Also registers default Formatters and Validators for use across all @Controllers -->
    <!-- <mvc:annotation-driven conversion-service="applicationConversionService"/> -->
-   
+   <context:component-scan base-package="com.melawai.ppuc.web.interceptor" />
     <!-- <bean class="com.maibro.web.ApplicationConversionServiceFactoryBean" id="applicationConversionService"/> -->
     
     <!-- setting otomatis untuk spring mvc, salah satunya untuk jsr-303 validation (lihat docs utk lengkapnya) -->

@@ -1,7 +1,11 @@
 package com.melawai.ppuc.model;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -9,6 +13,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.melawai.ppuc.utils.Utils;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -58,12 +64,19 @@ public class Divisi extends BaseObject implements Serializable  {
 
 
 	//****************** CONSTRUCTOR START HERE ******************/
-	public Divisi(){
-		//TODO: standard constructor free to change
+	public Divisi(String divisi_kd, String divisi_nm) {
+		super();
+		this.divisi_kd = divisi_kd;
+		this.divisi_nm = divisi_nm;
 	}
-
+	
+	public Divisi(){
+		
+	}
 	//****************** CONSTRUCTOR END HERE ******************/
 
+
+	
 
 	//****************** GETTER SETTER START HERE ******************/
 	public String getDivisi_kd(){ return divisi_kd; }
@@ -76,7 +89,12 @@ public class Divisi extends BaseObject implements Serializable  {
 	public void setUser_update(String user_update){ this.user_update = user_update; }
 
 	public Date getTgl_update(){ return tgl_update; }
-	public void setTgl_update(Date tgl_update){ this.tgl_update = tgl_update; }
+	public void setTgl_update(Date tgl_update){ 
+		this.tgl_update = tgl_update; 
+		if(tgl_update!=null){
+			this.jam_update=Utils.convertDateToString(tgl_update,jam_format);
+		}
+	}
 
 	public String getJam_update(){ return jam_update; }
 	public void setJam_update(String jam_update){ this.jam_update = jam_update; }
@@ -85,7 +103,7 @@ public class Divisi extends BaseObject implements Serializable  {
 	public void setUser_create(String user_create){ this.user_create = user_create; }
 
 	public Date getTgl_create(){ return tgl_create; }
-	public void setTgl_create(Date tgl_create){ this.tgl_create = tgl_create; }
+	public void setTgl_create(Date tgl_create){ this.tgl_create = tgl_create;}
 
 
 	public String getItemId() {return ""+divisi_kd;	}
@@ -97,5 +115,7 @@ public class Divisi extends BaseObject implements Serializable  {
 	
 
 	//****************** GETTER SETTER END HERE ******************/
+	
+	
 
 }

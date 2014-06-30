@@ -1,27 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" id="footer" version="2.0">
-  <jsp:directive.page contentType="text/html;charset=UTF-8"/>
-  <jsp:output omit-xml-declaration="yes"/>
-
- 
-
- 
- <!--  <span id="language">
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" id="footer" version="2.0">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	<!--  <span id="language">
     <c:out value=" | "/>
     <spring:message code="global_language"/>
     <c:out value=": "/>
   <util:language label="English" locale="en"/>
     </span>
   <util:theme/> -->
-
-  <spring:url value="/resources/images/rby.png" var="logo"/>
-  <spring:message code="global_sponsored" htmlEscape="false" var="sponsored"/>
- 
-  <span>
-  	
-    <a href="#" title="${fn:escapeXml(sponsored)}">
-      <img align="left" alt="${fn:escapeXml(sponsored)}" src="${logo}" height="20px"/>
-    </a>
-  </span>
-  <div style="float:right; ">(C) 2014 |  v1.0</div>
+	<spring:url value="/resources/images/rby.png" var="logo" />
+	<spring:message code="global_sponsored" htmlEscape="false" var="sponsored" />
+	<spring:message code="version_app" var="version_app" htmlEscape="false" />
+	<spring:message code="copy_right" var="copy_right" htmlEscape="false" />
+	<table style="border: none;">
+		<tr>
+			<td align="left" width="40%" style="border: none;">
+				${copy_right }
+			</td>
+			<td align="center" width="20%" style="border: none;">
+				${version_app}
+			</td>
+			<td align="right" width="40%" style="border: none;text-align: right;"	>
+				<span style="float: right;">
+					<a href="#" title="${fn:escapeXml(sponsored)}"> 
+						<img align="left" alt="${fn:escapeXml(sponsored)}" src="${logo}" height="20px" />
+					</a>
+				</span>
+			</td>
+		</tr>
+	</table>
+	
 </div>

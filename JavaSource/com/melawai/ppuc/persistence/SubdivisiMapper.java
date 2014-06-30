@@ -1,9 +1,10 @@
 package com.melawai.ppuc.persistence;
 
-import java.util.Date;
 import java.util.List;
-import org.springframework.dao.DataAccessException;
+
 import org.apache.ibatis.annotations.Param;
+import org.springframework.dao.DataAccessException;
+
 import com.melawai.ppuc.model.Subdivisi;
 
 /**
@@ -19,9 +20,9 @@ public interface SubdivisiMapper {
 
 	public void update(Subdivisi subdivisi) throws DataAccessException;
 
-	public void remove(String subdiv_kd) throws DataAccessException;
+	public void remove(@Param("subdiv_kd")String subdiv_kd,@Param("divisi_kd")String divisi_kd) throws DataAccessException;
 
-	public Subdivisi get(String subdiv_kd) throws DataAccessException;
+	public Subdivisi get(@Param("subdiv_kd")String subdiv_kd,@Param("divisi_kd")String divisi_kd) throws DataAccessException;
 
 	public List<Subdivisi> getAll() throws DataAccessException;
 

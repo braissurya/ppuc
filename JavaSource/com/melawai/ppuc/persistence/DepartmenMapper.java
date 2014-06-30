@@ -1,9 +1,10 @@
 package com.melawai.ppuc.persistence;
 
-import java.util.Date;
 import java.util.List;
-import org.springframework.dao.DataAccessException;
+
 import org.apache.ibatis.annotations.Param;
+import org.springframework.dao.DataAccessException;
+
 import com.melawai.ppuc.model.Departmen;
 
 /**
@@ -19,9 +20,9 @@ public interface DepartmenMapper {
 
 	public void update(Departmen departmen) throws DataAccessException;
 
-	public void remove(String dept_kd) throws DataAccessException;
+	public void remove(@Param("dept_kd")String dept_kd,@Param("subdiv_kd")String subdiv_kd,@Param("divisi_kd")String divisi_kd) throws DataAccessException;
 
-	public Departmen get(String dept_kd) throws DataAccessException;
+	public Departmen get(@Param("dept_kd")String dept_kd,@Param("subdiv_kd")String subdiv_kd,@Param("divisi_kd")String divisi_kd) throws DataAccessException;
 
 	public List<Departmen> getAll() throws DataAccessException;
 

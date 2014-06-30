@@ -23,6 +23,9 @@ import com.melawai.ppuc.model.BaseObject;
 
 public class AudittrailDetail extends BaseObject implements Serializable  {
 
+	
+	private static final long serialVersionUID = 1306133885745974070L;
+
 	//****************** COLOMN FROM TABLE START HERE ******************/
 	@NotNull
 	public Long id_audittrail_detail;
@@ -56,8 +59,17 @@ public class AudittrailDetail extends BaseObject implements Serializable  {
 
 
 	//****************** CONSTRUCTOR START HERE ******************/
+	
+	
 	public AudittrailDetail(){
 		//TODO: standard constructor free to change
+	}
+
+	public AudittrailDetail(String field, String before, String after) {
+		super();
+		this.field = field;
+		this.before = before;
+		this.after = after;
 	}
 
 	//****************** CONSTRUCTOR END HERE ******************/
@@ -89,6 +101,14 @@ public class AudittrailDetail extends BaseObject implements Serializable  {
 	public String getItemId() {return ""+id_audittrail_detail;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}
 
+	@Override
+	public String toString() {
+		return "AudittrailDetail [id_audittrail_detail=" + id_audittrail_detail + ", id_audittrail=" + id_audittrail + ", field=" + field + ", before=" + before + ", after=" + after
+				+ ", user_create=" + user_create + ", tgl_create=" + tgl_create + ", itemId=" + itemId + "]";
+	}
+
 	//****************** GETTER SETTER END HERE ******************/
+	
+	
 
 }

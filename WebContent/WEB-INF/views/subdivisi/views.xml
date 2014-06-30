@@ -13,5 +13,8 @@
 	<definition extends="default" name="subdivisi/update">
         <put-attribute name="body" value="/WEB-INF/views/subdivisi/update.jspx"/>
     </definition>
+    <definition extends="default" name="subdivisi/upload">
+        <put-attribute name="body" value="/WEB-INF/views/subdivisi/upload.jspx"/>
+    </definition>
 </tiles-definitions>
 

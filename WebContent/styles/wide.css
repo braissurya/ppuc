@@ -401,3 +401,20 @@ fieldset th {
 table th {
 	background: #414141;
 }
+
+.required{
+	color: red;	
+}
+
+.labelError{
+	color:red;
+}
+
+.doubleDot{
+	margin-left: 5px;
+	margin-right: 10px;
+}
+
+.info{
+	color: blue;
+}
