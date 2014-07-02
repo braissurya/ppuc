@@ -424,9 +424,27 @@ public class Utils {
 
 	public static String nvl(String value) {
 		if (value != null)
-			return value;
+			return value.trim();
 		else
-			return "";
+			return null;
+	}
+	
+	
+	
+	
+	
+	public static Date convertImportDate(String dateImport,Properties props) throws ParseException{
+		Date convertedDate=null;
+		if(dateImport==null)convertedDate=null;
+		else if(dateImport.length()==props.getProperty("dateformat.import").length()){
+			convertedDate=convertStringToDate2(dateImport, props.getProperty("dateformat.import"));
+		}else if(dateImport.length()==props.getProperty("dateformat.import.full").length()){
+			convertedDate=convertStringToDate2(dateImport, props.getProperty("dateformat.import.full"));
+		}else{
+			throw new RuntimeException ("Date Format Not VALID");
+		}
+		
+		return convertedDate;
 	}
 
 	

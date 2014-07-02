@@ -1,6 +1,5 @@
 package com.melawai.ppuc.web.interceptor;
 
-import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 

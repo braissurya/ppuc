@@ -1,15 +1,10 @@
 package com.melawai.ppuc.web.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,12 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.util.UriUtils;
-import org.springframework.web.util.WebUtils;
 
-import com.melawai.ppuc.services.RoleManager;
-import com.melawai.ppuc.web.controller.ParentController;
 import com.melawai.ppuc.model.Role;
+import com.melawai.ppuc.services.RoleManager;
 import com.melawai.ppuc.web.validator.RoleValidator;
 
 @RequestMapping("/master/role")

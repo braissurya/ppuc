@@ -1,9 +1,6 @@
 package com.melawai.ppuc.model;
 
 import java.io.Serializable;
-import java.util.Properties;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * GENERATE BY BraisSpringMVCHelp

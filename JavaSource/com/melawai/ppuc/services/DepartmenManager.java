@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.melawai.ppuc.model.Audittrail;
 import com.melawai.ppuc.model.AudittrailDetail;
 import com.melawai.ppuc.model.Departmen;
-import com.melawai.ppuc.model.Subdivisi;
 import com.melawai.ppuc.persistence.DepartmenMapper;
 import com.melawai.ppuc.utils.CommonUtil;
 

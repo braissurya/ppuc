@@ -1,7 +1,6 @@
 package com.melawai.ppuc.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 

@@ -1,8 +1,5 @@
 package com.melawai.ppuc.web.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -19,12 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.util.UriUtils;
-import org.springframework.web.util.WebUtils;
 
-import com.melawai.ppuc.services.AudittrailManager;
-import com.melawai.ppuc.web.controller.ParentController;
 import com.melawai.ppuc.model.Audittrail;
+import com.melawai.ppuc.services.AudittrailManager;
 import com.melawai.ppuc.web.validator.AudittrailValidator;
 
 @RequestMapping("/master/audittrail")

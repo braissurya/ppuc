@@ -1,40 +1,51 @@
-/* ######### Matt Black Strip Main Menu Bar CSS ######### */
-
-.mattblackmenu ul{
-margin: 0;
-padding: 0;
-font: bold 12px Verdana;
-list-style-type: none;
-border-bottom: 1px solid gray;
-background: #414141;
-overflow: hidden;
-width: 100%;
+/* ######### Slanted Divider Menu CSS ######### */
+.slantedmenu {
+	font-weight: bold;
 }
 
-.mattblackmenu li{
-display: inline;
-margin: 0;
+.slantedmenu:after {
+	/*Add margin between menu and rest of content in Firefox*/
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+	margin: 2px;
 }
 
-.mattblackmenu li a{
-float: left;
-display: block;
-text-decoration: none;
-margin: 0;
-padding: 6px 8px; /*padding inside each tab*/
-border-right: 1px solid white; /*right divider between tabs*/
-color: white;
-background: #414141;
+.slantedmenu ul {
+	text-indent: 10px;
+	padding: 3px 0;
+	margin: 0;
+	background: black url(../images/blockdefault.gif) center center repeat-x;
+	border: 1px solid #bebebe;
+	text-align: center;
+	/*set value to "center" for example to center items*/
+	text-align: left;
 }
 
-.mattblackmenu li a:visited{
-color: white;
+.slantedmenu ul li {
+	display: inline;
 }
 
-.mattblackmenu li a:hover{
-background: #BF2E1A; /*background of tabs for hover state */
+.slantedmenu ul li a {
+	color: white;
+	padding: 3px 0;
+	padding-left: 5px;
+	padding-right: 25px;
+	text-indent: -10px;
+	margin: 0;
+	text-decoration: none;
+	/* background: transparent url(../images/icons/slantdivider.gif) top right
+		no-repeat; */
 }
 
-.mattblackmenu a.selected{
-background: #BF2E1A; /*background of tab with "selected" class assigned to its LI */
+.slantedmenu ul li a:visited {
+	color: white;
 }
+
+.slantedmenu ul li a:hover,.slantedmenu li a.selected  {
+	color: white;
+	background: transparent url(../images/blockactive.gif) center center repeat-x;
+}
+

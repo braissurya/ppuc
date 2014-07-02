@@ -2,7 +2,6 @@ package com.melawai.ppuc.web.validator;
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import com.melawai.ppuc.model.Upload;

@@ -13,5 +13,8 @@
 	<definition extends="default" name="lokasi/update">
         <put-attribute name="body" value="/WEB-INF/views/lokasi/update.jspx"/>
     </definition>
+    <definition extends="default" name="lokasi/upload">
+        <put-attribute name="body" value="/WEB-INF/views/lokasi/upload.jspx"/>
+    </definition>
 </tiles-definitions>
 

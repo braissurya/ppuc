@@ -15,8 +15,8 @@
 		<result property="lok_nm" column="lok_nm" />
 		<result property="f_tutup" column="f_tutup" />
 		<result property="tgl_tutup" column="tgl_tutup" />
-		<result property="counter" column="counter" />
-		<result property="max_counter" column="max_counter" />
+<!-- 		<result property="counter" column="counter" /> -->
+<!-- 		<result property="max_counter" column="max_counter" /> -->
 		<result property="user_update" column="user_update" />
 		<result property="tgl_update" column="tgl_update" />
 		<result property="jam_update" column="jam_update" />
@@ -33,8 +33,8 @@
 		C.LOK_NM as lok_nm,
 		C.F_TUTUP as f_tutup,
 		C.TGL_TUTUP as tgl_tutup,
-		C.COUNTER as counter,
-		C.MAX_COUNTER as max_counter,
+<!-- 		C.COUNTER as counter, -->
+<!-- 		C.MAX_COUNTER as max_counter, -->
 		C.SYS_USER_UPDATE as user_update,
 		C.SYS_TGL_UPDATE as tgl_update,
 		C.SYS_JAM_UPDATE as jam_update,
@@ -81,8 +81,8 @@
 			LOK_NM,
 			F_TUTUP,
 			TGL_TUTUP,
-			COUNTER,
-			MAX_COUNTER,
+<!-- 			COUNTER, -->
+<!-- 			MAX_COUNTER, -->
 			SYS_USER_UPDATE,
 			SYS_TGL_UPDATE,
 			SYS_JAM_UPDATE,
@@ -96,8 +96,8 @@
 			#{lok_nm},
 			#{f_tutup},
 			#{tgl_tutup},
-			#{counter},
-			#{max_counter},
+<!-- 			#{counter}, -->
+<!-- 			#{max_counter}, -->
 			#{user_update},
 			#{tgl_update},
 			#{jam_update},
@@ -110,33 +110,38 @@
 	<update id="update" parameterType="Lokasi">
 		UPDATE lokasi
 		<set>
-			<if test="lok_kd != null">LOK_KD = #{lok_kd}, </if>
-			<if test="divisi_kd != null">DIVISI_KD = #{divisi_kd}, </if>
-			<if test="subdiv_kd != null">SUBDIV_KD = #{subdiv_kd}, </if>
-			<if test="dept_kd != null">DEPT_KD = #{dept_kd}, </if>
 			<if test="lok_nm != null">LOK_NM = #{lok_nm}, </if>
 			<if test="f_tutup != null">F_TUTUP = #{f_tutup}, </if>
 			<if test="tgl_tutup != null">TGL_TUTUP = #{tgl_tutup}, </if>
-			<if test="counter != null">COUNTER = #{counter}, </if>
-			<if test="max_counter != null">MAX_COUNTER = #{max_counter}, </if>
+<!-- 			<if test="counter != null">COUNTER = #{counter}, </if> -->
+<!-- 			<if test="max_counter != null">MAX_COUNTER = #{max_counter}, </if> -->
 			<if test="user_update != null">SYS_USER_UPDATE = #{user_update}, </if>
 			<if test="tgl_update != null">SYS_TGL_UPDATE = #{tgl_update}, </if>
 			<if test="jam_update != null">SYS_JAM_UPDATE = #{jam_update}, </if>
 			<if test="user_create != null">SYS_USER_CREATE = #{user_create}, </if>
 			<if test="tgl_create != null">SYS_TGL_CREATE = #{tgl_create} </if>
 		</set>
-		WHERE  
-			LOK_KD= #{lok_kd} 
+		WHERE LOK_KD= #{lok_kd} 
+		AND	DEPT_KD= #{dept_kd}
+		AND SUBDIV_KD=#{subdiv_kd} 
+		AND DIVISI_KD = #{divisi_kd}
 	</update>
 
 	<!-- remove query untuk table ini -->
-	<delete id="remove" parameterType="String">
-		delete from lokasi where LOK_KD=#{value}
+	<delete id="remove" >
+		delete from lokasi 
+		where LOK_KD= #{lok_kd} 
+		AND	DEPT_KD= #{dept_kd}
+		AND SUBDIV_KD=#{subdiv_kd} 
+		AND DIVISI_KD = #{divisi_kd}
 	</delete>
 
 	<!-- get berdasarkan primary key -->
-	<select id="get" parameterType="String" resultMap="LokasiMap">
-		<include refid="selectQuery" />	where T.lok_kd=#{value}
+	<select id="get" resultMap="LokasiMap">
+		<include refid="selectQuery" />	where T.lok_kd=#{lok_kd}
+		AND T.dept_kd=#{dept_kd} 
+		AND T.subdiv_kd=#{subdiv_kd} 
+		AND T.divisi_kd = #{divisi_kd}
 	</select>
 
 	<!-- get ALL row -->

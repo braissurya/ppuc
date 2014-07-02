@@ -1,11 +1,7 @@
 package com.melawai.ppuc.model;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;

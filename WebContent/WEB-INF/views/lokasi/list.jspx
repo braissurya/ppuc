@@ -2,8 +2,8 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_com_melawai_ppuc_model_lokasi"  items="${lokasiList}" >
-        <table:table data="${lokasiList}" id="l_com_melawai_ppuc_model_Lokasi" typeIdFieldName="itemId" path="/master/lokasi" >
+    <page:list id="pl_com_melawai_ppuc_model_lokasi"  items="${lokasiList}" upload="true" path="/master/lokasi" >
+        <table:table data="${lokasiList}" id="l_com_melawai_ppuc_model_Lokasi" typeIdFieldName="itemId" path="/master/lokasi" upload="true" >
        <table:column id="c_com_melawai_ppuc_model_lokasi_lok_kd" property="lok_kd" label="Lok Kd" />
        <table:column id="c_com_melawai_ppuc_model_lokasi_divisi_kd" property="divisi_kd" label="Divisi Kd" />
        <table:column id="c_com_melawai_ppuc_model_lokasi_subdiv_kd" property="subdiv_kd" label="Subdiv Kd" />

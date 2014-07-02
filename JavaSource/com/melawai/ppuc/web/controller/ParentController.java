@@ -1,7 +1,5 @@
 package com.melawai.ppuc.web.controller;
 
-import org.apache.log4j.Logger;
-
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 

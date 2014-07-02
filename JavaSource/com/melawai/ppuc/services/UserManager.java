@@ -1,7 +1,6 @@
 package com.melawai.ppuc.services;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -109,11 +108,11 @@ public class UserManager {
 		Long tingkat = 0l;
 
 		List<Long> parentIdList = new ArrayList<Long>();
-		result.append("<div id=\"ddtopmenubar\" class=\"mattblackmenu\" >");
+		result.append("<div id=\"ddtopmenubar\" class=\"slantedmenu\" >");
 		result.append("<ul class=\"box\" >\n");
 		result.append("<li><a href=\"" + path + "\" ><span>Home</span></a></li>\n");
 		
-		Set<Menu> daftarMenu = currentUser.getGroupUser().getMenus();
+		List<Menu> daftarMenu = menuManager.selectMenuAccess(currentUser.getGroup_kd(), null, null);
 		// menu tingkat 1
 		for (Menu baris : daftarMenu) {
 			if (baris.level.intValue() == 1) {
@@ -141,7 +140,7 @@ public class UserManager {
 
 		for (Long parentId : parentIdList) {
 
-			Set<Menu> daftarMenuNoRootPath = menuManager.selectMenuAccess(currentUser.group_kd, null, "0.1." + parentId);
+			List<Menu> daftarMenuNoRootPath = menuManager.selectMenuAccess(currentUser.group_kd, null, "0.1." + parentId);
 			if (!daftarMenuNoRootPath.isEmpty()) {
 				result.append("<ul id=\"ddsubmenu" + parentId + "\" class=\"ddsubmenustyle\">\n");
 				tingkat = 2l;
@@ -217,6 +216,8 @@ public class UserManager {
 			}
 
 		}
+		
+		logger.debug(result.toString());
 		return result.toString();
 	}
 

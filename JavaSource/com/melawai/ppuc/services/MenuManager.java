@@ -1,6 +1,5 @@
 package com.melawai.ppuc.services;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -74,7 +73,7 @@ public class MenuManager {
 	}
 	/** Others Method **/
 
-	public Set<Menu> selectMenuAccess(String group_kd,Integer root,String path){
+	public List<Menu> selectMenuAccess(String group_kd,Integer root,String path){
 		return menuMapper.selectMenuAccess(group_kd, root, path);
 	}
 

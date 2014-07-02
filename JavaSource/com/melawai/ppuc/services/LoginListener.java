@@ -9,12 +9,8 @@ import org.springframework.security.authentication.event.AbstractAuthenticationE
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.melawai.ppuc.model.User;
-import com.melawai.ppuc.services.UserManager;
-import com.melawai.ppuc.utils.CommonUtil;
 import com.melawai.ppuc.utils.Email;
 
 

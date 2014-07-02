@@ -10,14 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-
-
-
-
-
-
-
-
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;

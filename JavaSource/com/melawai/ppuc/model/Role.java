@@ -1,19 +1,11 @@
 package com.melawai.ppuc.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.NumberFormat;
-import org.springframework.format.annotation.NumberFormat.Style;
 import org.springframework.security.core.GrantedAuthority;
-
-import com.melawai.ppuc.model.BaseObject;
 
 /**
  * GENERATE BY BraisSpringMVCHelp

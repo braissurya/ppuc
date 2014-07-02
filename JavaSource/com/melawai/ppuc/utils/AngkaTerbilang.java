@@ -1,7 +1,6 @@
 package com.melawai.ppuc.utils;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 /**
  * Class yang digunakan untuk terbilang dalam bahasa inggris maupun indonesia

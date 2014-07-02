@@ -19,8 +19,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import com.melawai.ppuc.model.User;
-import com.melawai.ppuc.services.UserManager;
-import com.melawai.ppuc.utils.Utils;
 
 @Component
 public class ModifiedUserAuthenticationProvider implements AuthenticationProvider {
