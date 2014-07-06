@@ -72,6 +72,8 @@ public class DepartmenManager extends BaseService {
 	/** Save Model **/
 	@Transactional
 	public Departmen save(Departmen departmen) {
+		departmen.subdiv_kd=departmen.subdiv_kd.substring(departmen.subdiv_kd.lastIndexOf(".") + 1);
+		
 		if (departmen.getTgl_create() == null) {
 			departmen.setTgl_create(new Date());
 			departmen.setUser_create(CommonUtil.getCurrentUserId());

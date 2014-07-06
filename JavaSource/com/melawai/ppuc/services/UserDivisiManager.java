@@ -25,20 +25,20 @@ public class UserDivisiManager {
 	@Autowired
 	private UserDivisiMapper userdivisiMapper;
 
-	/** Ambil DATA berdasarkan id_user_divisi **/
-	public UserDivisi get(Long id_user_divisi) {
-		return userdivisiMapper.get(id_user_divisi);
+	/** Ambil DATA berdasarkan id_user_divisi, user_id, divisi_kd, subdiv_kd, dept_kd **/
+	public UserDivisi get(Long id_user_divisi, String user_id, String divisi_kd, String subdiv_kd, String dept_kd) {
+		return userdivisiMapper.get(id_user_divisi, user_id, divisi_kd, subdiv_kd, dept_kd);
 	}
 
-	/** Apakah data dengan id_user_divisi ini ada? **/
-	public boolean exists(Long id_user_divisi) {	
-		return get(id_user_divisi)!=null;
+	/** Apakah data dengan id_user_divisi, user_id, divisi_kd, subdiv_kd, dept_kd ini ada? **/
+	public boolean exists(Long id_user_divisi, String user_id, String divisi_kd, String subdiv_kd, String dept_kd) {	
+		return get(id_user_divisi, user_id, divisi_kd, subdiv_kd, dept_kd)!=null;
 	}
 
 	/** Delete data berdasarkan id_user_divisi **/
 	@Transactional
-	public void remove(Long id_user_divisi) {
-		userdivisiMapper.remove(id_user_divisi);
+	public void remove(Long id_user_divisi, String user_id, String divisi_kd, String subdiv_kd, String dept_kd) {
+		userdivisiMapper.remove(id_user_divisi, user_id, divisi_kd, subdiv_kd, dept_kd);
 	}
 
 	/** Ambil jumlah seluruh data **/

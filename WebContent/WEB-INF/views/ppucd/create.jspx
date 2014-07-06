@@ -19,6 +19,8 @@
        <field:input field="harga_old" label="Harga Old" id="c_com_melawai_ppuc_model_ppucd_harga_old"  max="0"/>
        <field:input field="total_old" label="Total Old" id="c_com_melawai_ppuc_model_ppucd_total_old"  max="0"/>
        <field:input field="keterangan" label="Keterangan" id="c_com_melawai_ppuc_model_ppucd_keterangan"  max="65535"/>
+       <field:input field="ket_approve" label="Ket Approve" id="c_com_melawai_ppuc_model_ppucd_ket_approve"  max="65535"/>
+       <field:input field="no_realisasi" label="No Realisasi" id="c_com_melawai_ppuc_model_ppucd_no_realisasi" required="true" max="25"/>
        <field:input field="qty_real_cbg" label="Qty Real Cbg" id="c_com_melawai_ppuc_model_ppucd_qty_real_cbg"  validationMessageCode="field_invalid_integer" />
        <field:input field="harga_real_cbg" label="Harga Real Cbg" id="c_com_melawai_ppuc_model_ppucd_harga_real_cbg"  max="0"/>
        <field:input field="total_real_cbg" label="Total Real Cbg" id="c_com_melawai_ppuc_model_ppucd_total_real_cbg"  max="0"/>

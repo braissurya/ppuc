@@ -61,10 +61,10 @@ public class Audittrail extends BaseObject implements Serializable  {
 	@Size(max=10)
 	public String subtype_audit;
 
-	@Size(max=50)
+	@Size(max=100)
 	public String model;
 
-	@Size(max=50)
+	@Size(max=100)
 	public String model_id;
 
 	@Size(max=100)

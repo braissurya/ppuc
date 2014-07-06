@@ -9,6 +9,8 @@
 	<resultMap type="HakBiaya" id="HakBiayaMap">
 		<id property="divisi_kd" column="divisi_kd"  />  
 		<id property="subdiv_kd" column="subdiv_kd"  />  
+		<id property="dept_kd" column="dept_kd"  />  
+		<id property="lok_kd" column="lok_kd"  />  
 		<id property="kd_group" column="kd_group"  />  
 		<id property="kd_biaya" column="kd_biaya"  />  
 		<result property="divisi_kd" column="divisi_kd" />
@@ -30,6 +32,8 @@
 	<sql id="defaultColoumn">
 		C.DIVISI_KD as divisi_kd,
 		C.SUBDIV_KD as subdiv_kd,
+		C.DEPT_KD as dept_kd,
+		C.LOK_KD as lok_kd,
 		C.KD_GROUP as kd_group,
 		C.KD_BIAYA as kd_biaya,
 		C.F_AKTIF as f_aktif,
@@ -62,6 +66,8 @@
 		WHERE 1=1 AND (
 			 divisi_kd like  CONCAT('%', #{search}, '%')
 			 OR subdiv_kd like  CONCAT('%', #{search}, '%')
+			 OR dept_kd like  CONCAT('%', #{search}, '%')
+			 OR lok_kd like  CONCAT('%', #{search}, '%')
 			 OR kd_group like  CONCAT('%', #{search}, '%')
 			 OR kd_biaya like  CONCAT('%', #{search}, '%')
 			 OR user_create like  CONCAT('%', #{search}, '%')
@@ -76,6 +82,8 @@
 		INSERT INTO hak_biaya (
 			DIVISI_KD,
 			SUBDIV_KD,
+			DEPT_KD,
+			LOK_KD,
 			KD_GROUP,
 			KD_BIAYA,
 			F_AKTIF,
@@ -90,6 +98,8 @@
 		) values (
 			#{divisi_kd},
 			#{subdiv_kd},
+			#{dept_kd},
+			#{lok_kd},
 			#{kd_group},
 			#{kd_biaya},
 			#{f_aktif},
@@ -110,6 +120,8 @@
 		<set>
 			<if test="divisi_kd != null">DIVISI_KD = #{divisi_kd}, </if>
 			<if test="subdiv_kd != null">SUBDIV_KD = #{subdiv_kd}, </if>
+			<if test="dept_kd != null">DEPT_KD = #{dept_kd}, </if>
+			<if test="lok_kd != null">LOK_KD = #{lok_kd}, </if>
 			<if test="kd_group != null">KD_GROUP = #{kd_group}, </if>
 			<if test="kd_biaya != null">KD_BIAYA = #{kd_biaya}, </if>
 			<if test="f_aktif != null">F_AKTIF = #{f_aktif}, </if>
@@ -125,6 +137,8 @@
 		WHERE  
 			DIVISI_KD= #{divisi_kd} 
 			AND SUBDIV_KD= #{subdiv_kd}
+			AND DEPT_KD= #{dept_kd}
+			AND LOK_KD= #{lok_kd}
 			AND KD_GROUP= #{kd_group}
 			AND KD_BIAYA= #{kd_biaya}
 	</update>
@@ -135,6 +149,8 @@
 		 <where> 
 			<if test="divisi_kd != null">DIVISI_KD= #{divisi_kd} </if>
 			<if test="subdiv_kd != null"> AND SUBDIV_KD= #{subdiv_kd} </if>
+			<if test="dept_kd != null"> AND DEPT_KD= #{dept_kd} </if>
+			<if test="lok_kd != null"> AND LOK_KD= #{lok_kd} </if>
 			<if test="kd_group != null"> AND KD_GROUP= #{kd_group} </if>
 			<if test="kd_biaya != null"> AND KD_BIAYA= #{kd_biaya} </if>
 		 </where> 
@@ -146,6 +162,8 @@
 		 <where> 
 			<if test="divisi_kd != null"> T.divisi_kd= #{divisi_kd} </if>
 			<if test="subdiv_kd != null"> AND T.subdiv_kd= #{subdiv_kd} </if>
+			<if test="dept_kd != null"> AND T.dept_kd= #{dept_kd} </if>
+			<if test="lok_kd != null"> AND T.lok_kd= #{lok_kd} </if>
 			<if test="kd_group != null"> AND T.kd_group= #{kd_group} </if>
 			<if test="kd_biaya != null"> AND T.kd_biaya= #{kd_biaya} </if>
 		 </where> 

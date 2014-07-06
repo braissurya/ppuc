@@ -4,7 +4,6 @@
     <jsp:output omit-xml-declaration="yes"/>
 	<page:show id="ps_com_melawai_ppuc_model_user" object="${user}" path="/master/user">
 		<field:display field="user_id" label="User Id" id="c_com_melawai_ppuc_model_user_user_id" object="${user}" />
-		<%--        <field:display field="password" label="Password" id="c_com_melawai_ppuc_model_user_password"  object="${user}" /> --%>
 		<field:display field="user_name" label="User Name" id="c_com_melawai_ppuc_model_user_user_name" object="${user}" />
 		<field:display field="no_hp" label="No Hp" id="c_com_melawai_ppuc_model_user_no_hp" object="${user}" />
 		<field:display field="email" label="Email" id="c_com_melawai_ppuc_model_user_email" object="${user}" />

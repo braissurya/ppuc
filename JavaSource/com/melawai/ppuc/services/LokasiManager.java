@@ -74,6 +74,9 @@ public class LokasiManager extends BaseService {
 	/** Save Model **/
 	@Transactional
 	public Lokasi save(Lokasi lokasi) {
+		lokasi.subdiv_kd=lokasi.subdiv_kd.substring(lokasi.subdiv_kd.lastIndexOf(".") + 1);
+		lokasi.dept_kd=lokasi.dept_kd.substring(lokasi.dept_kd.lastIndexOf(".") + 1);
+		
 		if (lokasi.getTgl_create() == null) {
 			lokasi.setTgl_create(new Date());
 			lokasi.setUser_create(CommonUtil.getCurrentUserId());

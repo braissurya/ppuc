@@ -49,7 +49,7 @@
 	</sql>
 
 	<!-- insert query untuk table ini -->
-	<insert id="insert" parameterType="Counter">
+	<insert id="insert" parameterType="Counter" useGeneratedKeys="true" keyColumn="SYS_ID" keyProperty="id">
 		INSERT INTO sys_counter (
 			SYS_ID,
 			SYS_NM_COUNTER,

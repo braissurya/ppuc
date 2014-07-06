@@ -68,16 +68,19 @@ public class LokasiValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(e, "lok_nm",  "NotEmpty", new String[]{"Lokasi Nama"},null);
 		
 		if(!e.hasErrors()){
+			lokasi.subdiv_kd=lokasi.subdiv_kd.substring(lokasi.subdiv_kd.lastIndexOf(".") + 1);
+			lokasi.dept_kd=lokasi.dept_kd.substring(lokasi.dept_kd.lastIndexOf(".") + 1);
+			
 			if(!divisiManager.exists(lokasi.getDivisi_kd())){
-				e.rejectValue("upload.uploadFile", "entity_not_found_single", new String[]{"DIVISI KD ["+lokasi.divisi_kd+"]"}, null);
+				e.rejectValue("divisi_kd", "entity_not_found_single", new String[]{"DIVISI KD ["+lokasi.divisi_kd+"]"}, null);
 			}
 			
 			if(!subdivisiManager.exists(lokasi.subdiv_kd, lokasi.divisi_kd)){
-				e.rejectValue("upload.uploadFile", "entity_not_found_single", new String[]{"DIVISI KD ["+lokasi.divisi_kd+"]"+" | SUBDIVISI KD ["+lokasi.subdiv_kd+"]"}, null);
+				e.rejectValue("subdiv_kd", "entity_not_found_single", new String[]{"DIVISI KD ["+lokasi.divisi_kd+"]"+" | SUBDIVISI KD ["+lokasi.subdiv_kd+"]"}, null);
 			}
 			
 			if(!departmenManager.exists(lokasi.dept_kd, lokasi.subdiv_kd, lokasi.divisi_kd)){
-				e.rejectValue("upload.uploadFile", "entity_not_found_single", new String[]{"DIVISI KD ["+lokasi.divisi_kd+"]"+" | SUBDIVISI KD ["+lokasi.subdiv_kd+"]"+" | DEPARTMEN KD ["+lokasi.dept_kd+"]"}, null);
+				e.rejectValue("dept_kd", "entity_not_found_single", new String[]{"DIVISI KD ["+lokasi.divisi_kd+"]"+" | SUBDIVISI KD ["+lokasi.subdiv_kd+"]"+" | DEPARTMEN KD ["+lokasi.dept_kd+"]"}, null);
 			}
 		}
 	}

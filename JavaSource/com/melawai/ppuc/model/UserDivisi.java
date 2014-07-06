@@ -98,7 +98,7 @@ public class UserDivisi extends BaseObject implements Serializable  {
 	public void setJam_create(String jam_create){ this.jam_create = jam_create; }
 
 
-	public String getItemId() {return ""+id_user_divisi;	}
+	public String getItemId() {return ""+id_user_divisi+"/"+user_id+"/"+divisi_kd+"/"+subdiv_kd+"/"+dept_kd;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}
 
 	//****************** GETTER SETTER END HERE ******************/

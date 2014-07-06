@@ -8,7 +8,7 @@
 			<table:column id="c_com_melawai_ppuc_model_groupuser_group_nm" property="group_nm" label="Group Nm" />
 			<table:column id="c_com_melawai_ppuc_model_groupuser_user_create" property="user_create" label="User Create" />
 			<table:column id="c_com_melawai_ppuc_model_groupuser_jam_create" property="jam_create" label="Jam Create" />
-			<table:column id="c_com_melawai_ppuc_model_groupuser_user" label=" " custom="true" property="user">
+			<table:column id="c_com_melawai_ppuc_model_groupuser_group_kd" label=" " custom="true" property="group_kd">
 				<spring:url value="/master/user" var="update_form_url">
 					<spring:param name="group" />
 				</spring:url>

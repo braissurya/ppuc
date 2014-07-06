@@ -19,6 +19,8 @@
        <field:display field="harga_old" label="Harga Old" id="c_com_melawai_ppuc_model_ppucd_harga_old"  object="${ppucd}" />
        <field:display field="total_old" label="Total Old" id="c_com_melawai_ppuc_model_ppucd_total_old"  object="${ppucd}" />
        <field:display field="keterangan" label="Keterangan" id="c_com_melawai_ppuc_model_ppucd_keterangan"  object="${ppucd}" />
+       <field:display field="ket_approve" label="Ket Approve" id="c_com_melawai_ppuc_model_ppucd_ket_approve"  object="${ppucd}" />
+       <field:display field="no_realisasi" label="No Realisasi" id="c_com_melawai_ppuc_model_ppucd_no_realisasi"  object="${ppucd}" />
        <field:display field="qty_real_cbg" label="Qty Real Cbg" id="c_com_melawai_ppuc_model_ppucd_qty_real_cbg"  object="${ppucd}" />
        <field:display field="harga_real_cbg" label="Harga Real Cbg" id="c_com_melawai_ppuc_model_ppucd_harga_real_cbg"  object="${ppucd}" />
        <field:display field="total_real_cbg" label="Total Real Cbg" id="c_com_melawai_ppuc_model_ppucd_total_real_cbg"  object="${ppucd}" />

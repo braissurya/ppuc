@@ -13,10 +13,18 @@
 		<result property="subdiv_kd" column="subdiv_kd" />
 		<result property="dept_kd" column="dept_kd" />
 		<result property="lok_nm" column="lok_nm" />
+		<result property="propinsi" column="propinsi" />
+		<result property="kota" column="kota" />
+		<result property="email" column="email" />
 		<result property="f_tutup" column="f_tutup" />
 		<result property="tgl_tutup" column="tgl_tutup" />
-<!-- 		<result property="counter" column="counter" /> -->
-<!-- 		<result property="max_counter" column="max_counter" /> -->
+		<result property="ctr_ppuc" column="ctr_ppuc" />
+		<result property="max_ctr_ppuc" column="max_ctr_ppuc" />
+		<result property="ctr_batch" column="ctr_batch" />
+		<result property="max_ctr_batch" column="max_ctr_batch" />
+		<result property="ctr_realisasi" column="ctr_realisasi" />
+		<result property="max_ctr_realisasi" column="max_ctr_realisasi" />
+		<result property="curr_ctr_date" column="curr_ctr_date" />
 		<result property="user_update" column="user_update" />
 		<result property="tgl_update" column="tgl_update" />
 		<result property="jam_update" column="jam_update" />
@@ -31,10 +39,18 @@
 		C.SUBDIV_KD as subdiv_kd,
 		C.DEPT_KD as dept_kd,
 		C.LOK_NM as lok_nm,
+		C.PROPINSI as propinsi,
+		C.KOTA as kota,
+		C.EMAIL as email,
 		C.F_TUTUP as f_tutup,
 		C.TGL_TUTUP as tgl_tutup,
-<!-- 		C.COUNTER as counter, -->
-<!-- 		C.MAX_COUNTER as max_counter, -->
+		C.CTR_PPUC as ctr_ppuc,
+		C.MAX_CTR_PPUC as max_ctr_ppuc,
+		C.CTR_BATCH as ctr_batch,
+		C.MAX_CTR_BATCH as max_ctr_batch,
+		C.CTR_REALISASI as ctr_realisasi,
+		C.MAX_CTR_REALISASI as max_ctr_realisasi,
+		C.CURR_CTR_DATE as curr_ctr_date,
 		C.SYS_USER_UPDATE as user_update,
 		C.SYS_TGL_UPDATE as tgl_update,
 		C.SYS_JAM_UPDATE as jam_update,
@@ -64,6 +80,9 @@
 			 OR subdiv_kd like  CONCAT('%', #{search}, '%')
 			 OR dept_kd like  CONCAT('%', #{search}, '%')
 			 OR lok_nm like  CONCAT('%', #{search}, '%')
+			 OR propinsi like  CONCAT('%', #{search}, '%')
+			 OR kota like  CONCAT('%', #{search}, '%')
+			 OR email like  CONCAT('%', #{search}, '%')
 			 OR f_tutup like  CONCAT('%', #{search}, '%')
 			 OR user_update like  CONCAT('%', #{search}, '%')
 			 OR jam_update like  CONCAT('%', #{search}, '%')
@@ -79,10 +98,18 @@
 			SUBDIV_KD,
 			DEPT_KD,
 			LOK_NM,
+			PROPINSI,
+			KOTA,
+			EMAIL,
 			F_TUTUP,
 			TGL_TUTUP,
-<!-- 			COUNTER, -->
-<!-- 			MAX_COUNTER, -->
+			CTR_PPUC,
+			MAX_CTR_PPUC,
+			CTR_BATCH,
+			MAX_CTR_BATCH,
+			CTR_REALISASI,
+			MAX_CTR_REALISASI,
+			CURR_CTR_DATE,
 			SYS_USER_UPDATE,
 			SYS_TGL_UPDATE,
 			SYS_JAM_UPDATE,
@@ -94,10 +121,18 @@
 			#{subdiv_kd},
 			#{dept_kd},
 			#{lok_nm},
+			#{propinsi},
+			#{kota},
+			#{email},
 			#{f_tutup},
 			#{tgl_tutup},
-<!-- 			#{counter}, -->
-<!-- 			#{max_counter}, -->
+			#{ctr_ppuc},
+			#{max_ctr_ppuc},
+			#{ctr_batch},
+			#{max_ctr_batch},
+			#{ctr_realisasi},
+			#{max_ctr_realisasi},
+			#{curr_ctr_date},
 			#{user_update},
 			#{tgl_update},
 			#{jam_update},
@@ -111,10 +146,18 @@
 		UPDATE lokasi
 		<set>
 			<if test="lok_nm != null">LOK_NM = #{lok_nm}, </if>
+			<if test="propinsi != null">PROPINSI = #{propinsi}, </if>
+			<if test="kota != null">KOTA = #{kota}, </if>
+			<if test="email != null">EMAIL = #{email}, </if>
 			<if test="f_tutup != null">F_TUTUP = #{f_tutup}, </if>
 			<if test="tgl_tutup != null">TGL_TUTUP = #{tgl_tutup}, </if>
-<!-- 			<if test="counter != null">COUNTER = #{counter}, </if> -->
-<!-- 			<if test="max_counter != null">MAX_COUNTER = #{max_counter}, </if> -->
+			<if test="ctr_ppuc != null">CTR_PPUC = #{ctr_ppuc}, </if>
+			<if test="max_ctr_ppuc != null">MAX_CTR_PPUC = #{max_ctr_ppuc}, </if>
+			<if test="ctr_batch != null">CTR_BATCH = #{ctr_batch}, </if>
+			<if test="max_ctr_batch != null">MAX_CTR_BATCH = #{max_ctr_batch}, </if>
+			<if test="ctr_realisasi != null">CTR_REALISASI = #{ctr_realisasi}, </if>
+			<if test="max_ctr_realisasi != null">MAX_CTR_REALISASI = #{max_ctr_realisasi}, </if>
+			<if test="curr_ctr_date != null">CURR_CTR_DATE = #{curr_ctr_date}, </if>
 			<if test="user_update != null">SYS_USER_UPDATE = #{user_update}, </if>
 			<if test="tgl_update != null">SYS_TGL_UPDATE = #{tgl_update}, </if>
 			<if test="jam_update != null">SYS_JAM_UPDATE = #{jam_update}, </if>
@@ -130,18 +173,23 @@
 	<!-- remove query untuk table ini -->
 	<delete id="remove" >
 		delete from lokasi 
-		where LOK_KD= #{lok_kd} 
-		AND	DEPT_KD= #{dept_kd}
-		AND SUBDIV_KD=#{subdiv_kd} 
-		AND DIVISI_KD = #{divisi_kd}
+		 <where> 
+			<if test="lok_kd != null">LOK_KD= #{lok_kd} </if>
+			<if test="divisi_kd != null"> AND DIVISI_KD= #{divisi_kd} </if>
+			<if test="subdiv_kd != null"> AND SUBDIV_KD= #{subdiv_kd} </if>
+			<if test="dept_kd != null"> AND DEPT_KD= #{dept_kd} </if>
+		 </where> 
 	</delete>
 
 	<!-- get berdasarkan primary key -->
 	<select id="get" resultMap="LokasiMap">
-		<include refid="selectQuery" />	where T.lok_kd=#{lok_kd}
-		AND T.dept_kd=#{dept_kd} 
-		AND T.subdiv_kd=#{subdiv_kd} 
-		AND T.divisi_kd = #{divisi_kd}
+		<include refid="selectQuery" />
+		 <where> 
+			<if test="lok_kd != null"> T.lok_kd= #{lok_kd} </if>
+			<if test="divisi_kd != null"> AND T.divisi_kd= #{divisi_kd} </if>
+			<if test="subdiv_kd != null"> AND T.subdiv_kd= #{subdiv_kd} </if>
+			<if test="dept_kd != null"> AND T.dept_kd= #{dept_kd} </if>
+		 </where> 
 	</select>
 
 	<!-- get ALL row -->

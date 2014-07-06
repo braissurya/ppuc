@@ -29,6 +29,14 @@ public class HakBiaya extends BaseObject implements Serializable  {
 	public String subdiv_kd;
 
 	@NotNull
+	@Size(max=3)
+	public String dept_kd;
+
+	@NotNull
+	@Size(max=5)
+	public String lok_kd;
+
+	@NotNull
 	@Size(max=5)
 	public String kd_group;
 
@@ -90,6 +98,12 @@ public class HakBiaya extends BaseObject implements Serializable  {
 	public String getSubdiv_kd(){ return subdiv_kd; }
 	public void setSubdiv_kd(String subdiv_kd){ this.subdiv_kd = subdiv_kd; }
 
+	public String getDept_kd(){ return dept_kd; }
+	public void setDept_kd(String dept_kd){ this.dept_kd = dept_kd; }
+
+	public String getLok_kd(){ return lok_kd; }
+	public void setLok_kd(String lok_kd){ this.lok_kd = lok_kd; }
+
 	public String getKd_group(){ return kd_group; }
 	public void setKd_group(String kd_group){ this.kd_group = kd_group; }
 
@@ -124,7 +138,7 @@ public class HakBiaya extends BaseObject implements Serializable  {
 	public void setJam_nonaktif(String jam_nonaktif){ this.jam_nonaktif = jam_nonaktif; }
 
 
-	public String getItemId() {return ""+divisi_kd+"/"+subdiv_kd+"/"+kd_group+"/"+kd_biaya;	}
+	public String getItemId() {return ""+divisi_kd+"/"+subdiv_kd+"/"+dept_kd+"/"+lok_kd+"/"+kd_group+"/"+kd_biaya;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}
 
 	//****************** GETTER SETTER END HERE ******************/

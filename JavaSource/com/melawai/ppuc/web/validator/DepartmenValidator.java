@@ -58,12 +58,15 @@ public class DepartmenValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(e, "dept_nm",  "NotEmpty", new String[]{"Departmen NM"},null);
 		
 		if(!e.hasErrors()){
+			
+			departmen.subdiv_kd=departmen.subdiv_kd.substring(departmen.subdiv_kd.lastIndexOf(".") + 1);
+			
 			if(!divisiManager.exists(departmen.getDivisi_kd())){
-				e.rejectValue("upload.uploadFile", "entity_not_found_single", new String[]{"DIVISI KD ["+departmen.divisi_kd+"]"}, null);
+				e.rejectValue("divisi_kd", "entity_not_found_single", new String[]{"DIVISI KD ["+departmen.divisi_kd+"]"}, null);
 			}
 			
 			if(!subdivisiManager.exists(departmen.subdiv_kd, departmen.divisi_kd)){
-				e.rejectValue("upload.uploadFile", "entity_not_found_single", new String[]{"DIVISI KD ["+departmen.divisi_kd+"]"+" | SUBDIVISI KD ["+departmen.subdiv_kd+"]"}, null);
+				e.rejectValue("subdiv_kd", "entity_not_found_single", new String[]{"DIVISI KD ["+departmen.divisi_kd+"]"+" | SUBDIVISI KD ["+departmen.subdiv_kd+"]"}, null);
 			}
 		}
 	}

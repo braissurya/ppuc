@@ -35,7 +35,7 @@ public class User extends BaseObject implements Serializable , UserDetails {
 	private static final long serialVersionUID = 761598147495279228L;
 
 	//****************** COLOMN FROM TABLE START HERE ******************/
-	@NotEmpty
+	@NotNull
 	@Size(max=50)
 	public String user_id;
 
@@ -45,7 +45,7 @@ public class User extends BaseObject implements Serializable , UserDetails {
 	@Size(max=100)
 	public String user_name;
 
-	@NotEmpty
+	@NotNull
 	@Size(max=25)
 	public String no_hp;
 	
@@ -53,11 +53,11 @@ public class User extends BaseObject implements Serializable , UserDetails {
 	@Size(max=100)
 	public String email;
 
-	@NotEmpty
+	@NotNull
 	@Size(max=5)
 	public String kd_fungsi;
 
-	@NotEmpty
+	@NotNull
 	@Size(max=5)
 	public String group_kd;
 
@@ -234,7 +234,6 @@ public class User extends BaseObject implements Serializable , UserDetails {
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
 		return user_id;
 	}
 

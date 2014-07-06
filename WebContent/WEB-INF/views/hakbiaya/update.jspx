@@ -5,6 +5,8 @@
     <form:update id="fu_com_melawai_ppuc_model_hakbiaya" modelAttribute="hakbiaya" path="/master/hakbiaya" idField="itemId" versionField="none" >
        <field:input field="divisi_kd" label="Divisi Kd" id="c_com_melawai_ppuc_model_hakbiaya_divisi_kd" required="true" />
        <field:input field="subdiv_kd" label="Subdiv Kd" id="c_com_melawai_ppuc_model_hakbiaya_subdiv_kd" required="true" />
+       <field:input field="dept_kd" label="Dept Kd" id="c_com_melawai_ppuc_model_hakbiaya_dept_kd" required="true" />
+       <field:input field="lok_kd" label="Lok Kd" id="c_com_melawai_ppuc_model_hakbiaya_lok_kd" required="true" />
        <field:input field="kd_group" label="Kd Group" id="c_com_melawai_ppuc_model_hakbiaya_kd_group" required="true" />
        <field:input field="kd_biaya" label="Kd Biaya" id="c_com_melawai_ppuc_model_hakbiaya_kd_biaya" required="true" />
        <field:input field="f_aktif" label="F Aktif" id="c_com_melawai_ppuc_model_hakbiaya_f_aktif"  validationMessageCode="field_invalid_integer" />

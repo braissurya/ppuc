@@ -8,6 +8,10 @@
 	<!-- result map-->
 	<resultMap type="UserDivisi" id="UserDivisiMap">
 		<id property="id_user_divisi" column="id_user_divisi"  />  
+		<id property="user_id" column="user_id"  />  
+		<id property="divisi_kd" column="divisi_kd"  />  
+		<id property="subdiv_kd" column="subdiv_kd"  />  
+		<id property="dept_kd" column="dept_kd"  />  
 		<result property="id_user_divisi" column="id_user_divisi" />
 		<result property="user_id" column="user_id" />
 		<result property="divisi_kd" column="divisi_kd" />
@@ -100,16 +104,34 @@
 		</set>
 		WHERE  
 			ID_USER_DIVISI= #{id_user_divisi} 
+			AND USER_ID= #{user_id}
+			AND DIVISI_KD= #{divisi_kd}
+			AND SUBDIV_KD= #{subdiv_kd}
+			AND DEPT_KD= #{dept_kd}
 	</update>
 
 	<!-- remove query untuk table ini -->
-	<delete id="remove" parameterType="Long">
-		delete from user_divisi where ID_USER_DIVISI=#{value}
+	<delete id="remove" parameterType="HashMap">
+		delete from user_divisi
+		 <where> 
+			<if test="id_user_divisi != null">ID_USER_DIVISI= #{id_user_divisi} </if>
+			<if test="user_id != null"> AND USER_ID= #{user_id} </if>
+			<if test="divisi_kd != null"> AND DIVISI_KD= #{divisi_kd} </if>
+			<if test="subdiv_kd != null"> AND SUBDIV_KD= #{subdiv_kd} </if>
+			<if test="dept_kd != null"> AND DEPT_KD= #{dept_kd} </if>
+		 </where> 
 	</delete>
 
 	<!-- get berdasarkan primary key -->
-	<select id="get" parameterType="Long" resultMap="UserDivisiMap">
-		<include refid="selectQuery" />	where T.id_user_divisi=#{value}
+	<select id="get" parameterType="HashMap" resultMap="UserDivisiMap">
+		<include refid="selectQuery" />
+		 <where> 
+			<if test="id_user_divisi != null"> T.id_user_divisi= #{id_user_divisi} </if>
+			<if test="user_id != null"> AND T.user_id= #{user_id} </if>
+			<if test="divisi_kd != null"> AND T.divisi_kd= #{divisi_kd} </if>
+			<if test="subdiv_kd != null"> AND T.subdiv_kd= #{subdiv_kd} </if>
+			<if test="dept_kd != null"> AND T.dept_kd= #{dept_kd} </if>
+		 </where> 
 	</select>
 
 	<!-- get ALL row -->

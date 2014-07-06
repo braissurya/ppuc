@@ -70,6 +70,13 @@ public class PpucD extends BaseObject implements Serializable  {
 	@Size(max=65535)
 	public String keterangan;
 
+	@Size(max=65535)
+	public String ket_approve;
+
+	@NotNull
+	@Size(max=25)
+	public String no_realisasi;
+
 	public Long qty_real_cbg;
 
 	public double harga_real_cbg;
@@ -156,6 +163,12 @@ public class PpucD extends BaseObject implements Serializable  {
 
 	public String getKeterangan(){ return keterangan; }
 	public void setKeterangan(String keterangan){ this.keterangan = keterangan; }
+
+	public String getKet_approve(){ return ket_approve; }
+	public void setKet_approve(String ket_approve){ this.ket_approve = ket_approve; }
+
+	public String getNo_realisasi(){ return no_realisasi; }
+	public void setNo_realisasi(String no_realisasi){ this.no_realisasi = no_realisasi; }
 
 	public Long getQty_real_cbg(){ return qty_real_cbg; }
 	public void setQty_real_cbg(Long qty_real_cbg){ this.qty_real_cbg = qty_real_cbg; }

@@ -26,19 +26,19 @@ public class HakBiayaManager {
 	private HakBiayaMapper hakbiayaMapper;
 
 	/** Ambil DATA berdasarkan divisi_kd, subdiv_kd, kd_group, kd_biaya **/
-	public HakBiaya get(String divisi_kd, String subdiv_kd, String kd_group, String kd_biaya) {
-		return hakbiayaMapper.get(divisi_kd, subdiv_kd, kd_group, kd_biaya);
+	public HakBiaya get(String divisi_kd, String subdiv_kd,String dept_kd,String lok_kd, String kd_group, String kd_biaya) {
+		return hakbiayaMapper.get(divisi_kd, subdiv_kd, dept_kd, lok_kd, kd_group, kd_biaya);
 	}
 
 	/** Apakah data dengan divisi_kd, subdiv_kd, kd_group, kd_biaya ini ada? **/
-	public boolean exists(String divisi_kd, String subdiv_kd, String kd_group, String kd_biaya) {	
-		return get(divisi_kd, subdiv_kd, kd_group, kd_biaya)!=null;
+	public boolean exists(String divisi_kd, String subdiv_kd,String dept_kd,String lok_kd, String kd_group, String kd_biaya) {	
+		return get(divisi_kd, subdiv_kd, dept_kd, lok_kd, kd_group, kd_biaya)!=null;
 	}
 
 	/** Delete data berdasarkan id **/
 	@Transactional
-	public void remove(String divisi_kd, String subdiv_kd, String kd_group, String kd_biaya) {
-		hakbiayaMapper.remove(divisi_kd, subdiv_kd, kd_group, kd_biaya);
+	public void remove(String divisi_kd, String subdiv_kd,String dept_kd,String lok_kd, String kd_group, String kd_biaya) {
+		hakbiayaMapper.remove(divisi_kd, subdiv_kd, dept_kd, lok_kd, kd_group, kd_biaya);
 	}
 
 	/** Ambil jumlah seluruh data **/

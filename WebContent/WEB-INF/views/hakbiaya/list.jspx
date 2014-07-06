@@ -6,6 +6,8 @@
         <table:table data="${hakbiayaList}" id="l_com_melawai_ppuc_model_HakBiaya" typeIdFieldName="itemId" path="/master/hakbiaya" >
        <table:column id="c_com_melawai_ppuc_model_hakbiaya_divisi_kd" property="divisi_kd" label="Divisi Kd" />
        <table:column id="c_com_melawai_ppuc_model_hakbiaya_subdiv_kd" property="subdiv_kd" label="Subdiv Kd" />
+       <table:column id="c_com_melawai_ppuc_model_hakbiaya_dept_kd" property="dept_kd" label="Dept Kd" />
+       <table:column id="c_com_melawai_ppuc_model_hakbiaya_lok_kd" property="lok_kd" label="Lok Kd" />
        <table:column id="c_com_melawai_ppuc_model_hakbiaya_kd_group" property="kd_group" label="Kd Group" />
        <table:column id="c_com_melawai_ppuc_model_hakbiaya_kd_biaya" property="kd_biaya" label="Kd Biaya" />
        <table:column id="c_com_melawai_ppuc_model_hakbiaya_user_create" property="user_create" label="User Create" />

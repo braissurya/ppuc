@@ -30,6 +30,8 @@
 		<result property="harga_old" column="harga_old" />
 		<result property="total_old" column="total_old" />
 		<result property="keterangan" column="keterangan" />
+		<result property="ket_approve" column="ket_approve" />
+		<result property="no_realisasi" column="no_realisasi" />
 		<result property="qty_real_cbg" column="qty_real_cbg" />
 		<result property="harga_real_cbg" column="harga_real_cbg" />
 		<result property="total_real_cbg" column="total_real_cbg" />
@@ -59,6 +61,8 @@
 		C.HARGA_OLD as harga_old,
 		C.TOTAL_OLD as total_old,
 		C.KETERANGAN as keterangan,
+		C.KET_APPROVE as ket_approve,
+		C.NO_REALISASI as no_realisasi,
 		C.QTY_REAL_CBG as qty_real_cbg,
 		C.HARGA_REAL_CBG as harga_real_cbg,
 		C.TOTAL_REAL_CBG as total_real_cbg,
@@ -96,6 +100,8 @@
 			 OR kd_biaya like  CONCAT('%', #{search}, '%')
 			 OR no_batch like  CONCAT('%', #{search}, '%')
 			 OR keterangan like  CONCAT('%', #{search}, '%')
+			 OR ket_approve like  CONCAT('%', #{search}, '%')
+			 OR no_realisasi like  CONCAT('%', #{search}, '%')
 			 OR user_create like  CONCAT('%', #{search}, '%')
 		)
 	</sql>
@@ -119,6 +125,8 @@
 			HARGA_OLD,
 			TOTAL_OLD,
 			KETERANGAN,
+			KET_APPROVE,
+			NO_REALISASI,
 			QTY_REAL_CBG,
 			HARGA_REAL_CBG,
 			TOTAL_REAL_CBG,
@@ -145,6 +153,8 @@
 			#{harga_old},
 			#{total_old},
 			#{keterangan},
+			#{ket_approve},
+			#{no_realisasi},
 			#{qty_real_cbg},
 			#{harga_real_cbg},
 			#{total_real_cbg},
@@ -177,6 +187,8 @@
 			<if test="harga_old != null">HARGA_OLD = #{harga_old}, </if>
 			<if test="total_old != null">TOTAL_OLD = #{total_old}, </if>
 			<if test="keterangan != null">KETERANGAN = #{keterangan}, </if>
+			<if test="ket_approve != null">KET_APPROVE = #{ket_approve}, </if>
+			<if test="no_realisasi != null">NO_REALISASI = #{no_realisasi}, </if>
 			<if test="qty_real_cbg != null">QTY_REAL_CBG = #{qty_real_cbg}, </if>
 			<if test="harga_real_cbg != null">HARGA_REAL_CBG = #{harga_real_cbg}, </if>
 			<if test="total_real_cbg != null">TOTAL_REAL_CBG = #{total_real_cbg}, </if>

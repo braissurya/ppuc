@@ -39,13 +39,10 @@ public class UserValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(e, "email", "NotEmpty", new String[] { "Email" }, null);
 
 		if (!e.hasErrors()) {
-			if (!Utils.isEmpty(user.getUser_id())) {
-				if (userManager.exists(user.getUser_id()))
-					e.rejectValue("user_id", "duplicate", new String[] { "User ID" }, null);
-			}
+			
 			
 			if (!Utils.isEmpty(user.getNo_hp())) {
-				if (userManager.selectCountTable("user", "no_hp = '" + user.getNo_hp() + "'") > 0)
+				if (userManager.selectCountTable("user", "no_hp = '" + user.getNo_hp() + "' and user_id <> '"+user.getUser_id()+"'") > 0)
 					e.rejectValue("no_hp", "duplicate", new String[] { "No HP" }, null);
 				else if(!Utils.validPhone(Utils.mobileNoContryCode(user.no_hp)))
 					e.rejectValue("no_hp", "field_invalid_mobile",null,null);
@@ -53,7 +50,7 @@ public class UserValidator implements Validator {
 			}
 			
 			if (!Utils.isEmpty(user.getEmail())) {
-				if (userManager.selectCountTable("user", "email = '" + user.getEmail() + "'") > 0)
+				if (userManager.selectCountTable("user", "email = '" + user.getEmail() + "' and user_id <> '"+user.getUser_id()+"'") > 0)
 					e.rejectValue("email", "duplicate", new String[] { "Email" }, null);
 			}
 		}

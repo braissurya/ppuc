@@ -9,6 +9,9 @@
        <table:column id="c_com_melawai_ppuc_model_lokasi_subdiv_kd" property="subdiv_kd" label="Subdiv Kd" />
        <table:column id="c_com_melawai_ppuc_model_lokasi_dept_kd" property="dept_kd" label="Dept Kd" />
        <table:column id="c_com_melawai_ppuc_model_lokasi_lok_nm" property="lok_nm" label="Lok Nm" />
+       <table:column id="c_com_melawai_ppuc_model_lokasi_propinsi" property="propinsi" label="Propinsi" />
+       <table:column id="c_com_melawai_ppuc_model_lokasi_kota" property="kota" label="Kota" />
+       <table:column id="c_com_melawai_ppuc_model_lokasi_email" property="email" label="Email" />
        <table:column id="c_com_melawai_ppuc_model_lokasi_f_tutup" property="f_tutup" label="F Tutup" />
        <table:column id="c_com_melawai_ppuc_model_lokasi_user_update" property="user_update" label="User Update" />
        <table:column id="c_com_melawai_ppuc_model_lokasi_jam_update" property="jam_update" label="Jam Update" />

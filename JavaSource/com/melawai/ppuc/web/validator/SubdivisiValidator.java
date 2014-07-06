@@ -49,7 +49,7 @@ public class SubdivisiValidator implements Validator {
 		
 		if(!e.hasErrors()){
 			if(!divisiManager.exists(subdivisi.getDivisi_kd())){
-				e.rejectValue("upload.uploadFile", "entity_not_found_single", new String[]{"DIVISI KD ["+subdivisi.divisi_kd+"]"}, null);
+				e.rejectValue("divisi_kd", "entity_not_found_single", new String[]{"DIVISI KD ["+subdivisi.divisi_kd+"]"}, null);
 			}
 		}
 	}

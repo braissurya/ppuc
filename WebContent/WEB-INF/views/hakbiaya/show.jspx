@@ -5,6 +5,8 @@
     <page:show id="ps_com_melawai_ppuc_model_hakbiaya" object="${hakbiaya}" path="/master/hakbiaya">
        <field:display field="divisi_kd" label="Divisi Kd" id="c_com_melawai_ppuc_model_hakbiaya_divisi_kd"  object="${hakbiaya}" />
        <field:display field="subdiv_kd" label="Subdiv Kd" id="c_com_melawai_ppuc_model_hakbiaya_subdiv_kd"  object="${hakbiaya}" />
+       <field:display field="dept_kd" label="Dept Kd" id="c_com_melawai_ppuc_model_hakbiaya_dept_kd"  object="${hakbiaya}" />
+       <field:display field="lok_kd" label="Lok Kd" id="c_com_melawai_ppuc_model_hakbiaya_lok_kd"  object="${hakbiaya}" />
        <field:display field="kd_group" label="Kd Group" id="c_com_melawai_ppuc_model_hakbiaya_kd_group"  object="${hakbiaya}" />
        <field:display field="kd_biaya" label="Kd Biaya" id="c_com_melawai_ppuc_model_hakbiaya_kd_biaya"  object="${hakbiaya}" />
        <field:display field="f_aktif" label="F Aktif" id="c_com_melawai_ppuc_model_hakbiaya_f_aktif"  object="${hakbiaya}" />

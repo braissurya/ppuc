@@ -44,15 +44,37 @@ public class Lokasi extends BaseObject implements Serializable {
 	@Size(max = 50)
 	public String lok_nm;
 
+	@NotNull
+	@Size(max = 100)
+	public String propinsi;
+
+	@NotNull
+	@Size(max = 100)
+	public String kota;
+
+	@Size(max = 100)
+	public String email;
 	public Integer f_tutup;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(style = "MM")
 	public Date tgl_tutup;
 
-	public Long counter;
+	public Long ctr_ppuc;
 
-	public Long max_counter;
+	public Long max_ctr_ppuc;
+
+	public Long ctr_batch;
+
+	public Long max_ctr_batch;
+
+	public Long ctr_realisasi;
+
+	public Long max_ctr_realisasi;
+
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(style = "M-")
+	public Date curr_ctr_date;
 
 	@Size(max = 50)
 	public String user_update;
@@ -95,6 +117,9 @@ public class Lokasi extends BaseObject implements Serializable {
 		this.dept_kd = dept_kd;
 		this.lok_nm = lok_nm;
 		this.tgl_tutup = tgl_tutup;
+		this.email = email;
+		this.kota = kota;
+		this.propinsi = propinsi;
 	}
 
 	// ****************** GETTER SETTER START HERE ******************/
@@ -138,8 +163,28 @@ public class Lokasi extends BaseObject implements Serializable {
 		this.lok_nm = lok_nm;
 	}
 
-	public Date getTgl_tutup() {
-		return tgl_tutup;
+	public String getPropinsi() {
+		return propinsi;
+	}
+
+	public void setPropinsi(String propinsi) {
+		this.propinsi = propinsi;
+	}
+
+	public String getKota() {
+		return kota;
+	}
+
+	public void setKota(String kota) {
+		this.kota = kota;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public Integer getF_tutup() {
@@ -150,24 +195,68 @@ public class Lokasi extends BaseObject implements Serializable {
 		this.f_tutup = f_tutup;
 	}
 
+	public Date getTgl_tutup() {
+		return tgl_tutup;
+	}
+
 	public void setTgl_tutup(Date tgl_tutup) {
 		this.tgl_tutup = tgl_tutup;
 	}
 
-	public Long getCounter() {
-		return counter;
+	public Long getCtr_ppuc() {
+		return ctr_ppuc;
 	}
 
-	public void setCounter(Long counter) {
-		this.counter = counter;
+	public void setCtr_ppuc(Long ctr_ppuc) {
+		this.ctr_ppuc = ctr_ppuc;
 	}
 
-	public Long getMax_counter() {
-		return max_counter;
+	public Long getMax_ctr_ppuc() {
+		return max_ctr_ppuc;
 	}
 
-	public void setMax_counter(Long max_counter) {
-		this.max_counter = max_counter;
+	public void setMax_ctr_ppuc(Long max_ctr_ppuc) {
+		this.max_ctr_ppuc = max_ctr_ppuc;
+	}
+
+	public Long getCtr_batch() {
+		return ctr_batch;
+	}
+
+	public void setCtr_batch(Long ctr_batch) {
+		this.ctr_batch = ctr_batch;
+	}
+
+	public Long getMax_ctr_batch() {
+		return max_ctr_batch;
+	}
+
+	public void setMax_ctr_batch(Long max_ctr_batch) {
+		this.max_ctr_batch = max_ctr_batch;
+	}
+
+	public Long getCtr_realisasi() {
+		return ctr_realisasi;
+	}
+
+	public void setCtr_realisasi(Long ctr_realisasi) {
+		this.ctr_realisasi = ctr_realisasi;
+	}
+
+	public Long getMax_ctr_realisasi() {
+		return max_ctr_realisasi;
+	}
+
+	public void setMax_ctr_realisasi(Long max_ctr_realisasi) {
+		this.max_ctr_realisasi = max_ctr_realisasi;
+	}
+
+	public Date getCurr_ctr_date() {
+		return curr_ctr_date;
+	}
+
+	public void setCurr_ctr_date(Date curr_ctr_date) {
+		this.curr_ctr_date = curr_ctr_date;
 	}
 
 	public String getUser_update() {

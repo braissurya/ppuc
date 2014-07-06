@@ -42,7 +42,7 @@ public class UserDivisiController extends ParentController{
 		}
 		uiModel.asMap().clear();
 		userdivisiManager.save(userdivisi);
-		return "redirect:/master/userdivisi/" + encodeUrlPathSegment(userdivisi.getId_user_divisi().toString(), httpServletRequest);
+		return "redirect:/master/userdivisi/" + encodeUrlPathSegment(userdivisi.getId_user_divisi().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(userdivisi.getUser_id().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(userdivisi.getDivisi_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(userdivisi.getSubdiv_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(userdivisi.getDept_kd().toString(), httpServletRequest);
 	}
 
 	@RequestMapping(params = "form", produces = "text/html")
@@ -51,11 +51,11 @@ public class UserDivisiController extends ParentController{
 		return "userdivisi/create";
 	}
 
-	@RequestMapping(value = "/{id_user_divisi}", produces = "text/html")
-	public String show(@PathVariable("id_user_divisi") Long id_user_divisi, Model uiModel) {
+	@RequestMapping(value = "/{id_user_divisi}/{user_id}/{divisi_kd}/{subdiv_kd}/{dept_kd}", produces = "text/html")
+	public String show(@PathVariable("id_user_divisi") Long id_user_divisi, @PathVariable("user_id") String user_id, @PathVariable("divisi_kd") String divisi_kd, @PathVariable("subdiv_kd") String subdiv_kd, @PathVariable("dept_kd") String dept_kd, Model uiModel) {
 		addDateTimeFormatPatterns(uiModel);
-		uiModel.addAttribute("userdivisi", userdivisiManager.get(id_user_divisi));
-		uiModel.addAttribute("itemId", id_user_divisi);
+		uiModel.addAttribute("userdivisi", userdivisiManager.get(id_user_divisi, user_id, divisi_kd, subdiv_kd, dept_kd));
+		uiModel.addAttribute("itemId", id_user_divisi+"/"+user_id+"/"+divisi_kd+"/"+subdiv_kd+"/"+dept_kd);
 		return "userdivisi/show";
 	}
 
@@ -82,19 +82,19 @@ public class UserDivisiController extends ParentController{
 		}
 		uiModel.asMap().clear();
 		userdivisiManager.save(userdivisi);
-		return "redirect:/master/userdivisi/" + encodeUrlPathSegment(userdivisi.getId_user_divisi().toString(), httpServletRequest);
+		return "redirect:/master/userdivisi/" + encodeUrlPathSegment(userdivisi.getId_user_divisi().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(userdivisi.getUser_id().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(userdivisi.getDivisi_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(userdivisi.getSubdiv_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(userdivisi.getDept_kd().toString(), httpServletRequest);
 	}
 
-	@RequestMapping(value = "/{id_user_divisi}", params = "form", produces = "text/html")
-	public String updateForm(@PathVariable("id_user_divisi") Long id_user_divisi, Model uiModel) {
-		populateEditForm(uiModel, userdivisiManager.get(id_user_divisi));
+	@RequestMapping(value = "/{id_user_divisi}/{user_id}/{divisi_kd}/{subdiv_kd}/{dept_kd}", params = "form", produces = "text/html")
+	public String updateForm(@PathVariable("id_user_divisi") Long id_user_divisi, @PathVariable("user_id") String user_id, @PathVariable("divisi_kd") String divisi_kd, @PathVariable("subdiv_kd") String subdiv_kd, @PathVariable("dept_kd") String dept_kd, Model uiModel) {
+		populateEditForm(uiModel, userdivisiManager.get(id_user_divisi, user_id, divisi_kd, subdiv_kd, dept_kd));
 		return "userdivisi/update";
 	}
 
-	@RequestMapping(value = "/{id_user_divisi}", method = RequestMethod.DELETE, produces = "text/html")
-	public String delete(@PathVariable("id_user_divisi") Long id_user_divisi, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-		UserDivisi userdivisi = userdivisiManager.get(id_user_divisi);
-		userdivisiManager.remove(id_user_divisi);
+	@RequestMapping(value = "/{id_user_divisi}/{user_id}/{divisi_kd}/{subdiv_kd}/{dept_kd}", method = RequestMethod.DELETE, produces = "text/html")
+	public String delete(@PathVariable("id_user_divisi") Long id_user_divisi, @PathVariable("user_id") String user_id, @PathVariable("divisi_kd") String divisi_kd, @PathVariable("subdiv_kd") String subdiv_kd, @PathVariable("dept_kd") String dept_kd, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+		UserDivisi userdivisi = userdivisiManager.get(id_user_divisi, user_id, divisi_kd, subdiv_kd, dept_kd);
+		userdivisiManager.remove(id_user_divisi, user_id, divisi_kd, subdiv_kd, dept_kd);
 		uiModel.asMap().clear();
 		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
 		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());

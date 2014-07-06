@@ -95,15 +95,21 @@
 	</update>
 
 	<!-- remove query untuk table ini -->
-	<delete id="remove">
-		delete from subdivisi where SUBDIV_KD=#{subdiv_kd} AND 	DIVISI_KD = #{divisi_kd}
+	<delete id="remove" parameterType="HashMap">
+		delete from subdivisi
+		 <where> 
+			<if test="subdiv_kd != null">SUBDIV_KD= #{subdiv_kd} </if>
+			<if test="divisi_kd != null"> AND DIVISI_KD= #{divisi_kd} </if>
+		 </where> 
 	</delete>
 
 	<!-- get berdasarkan primary key -->
 	<select id="get" resultMap="SubdivisiMap">
 		<include refid="selectQuery" />	
-		where T.subdiv_kd=#{subdiv_kd} 
-		 AND  T.divisi_kd = #{divisi_kd}
+		 <where> 
+			<if test="subdiv_kd != null"> T.subdiv_kd= #{subdiv_kd} </if>
+			<if test="divisi_kd != null"> AND T.divisi_kd= #{divisi_kd} </if>
+		 </where> 
 	</select>
 
 	<!-- get ALL row -->

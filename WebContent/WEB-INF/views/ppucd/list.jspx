@@ -13,6 +13,8 @@
        <table:column id="c_com_melawai_ppuc_model_ppucd_kd_biaya" property="kd_biaya" label="Kd Biaya" />
        <table:column id="c_com_melawai_ppuc_model_ppucd_no_batch" property="no_batch" label="No Batch" />
        <table:column id="c_com_melawai_ppuc_model_ppucd_keterangan" property="keterangan" label="Keterangan" />
+       <table:column id="c_com_melawai_ppuc_model_ppucd_ket_approve" property="ket_approve" label="Ket Approve" />
+       <table:column id="c_com_melawai_ppuc_model_ppucd_no_realisasi" property="no_realisasi" label="No Realisasi" />
        <table:column id="c_com_melawai_ppuc_model_ppucd_user_create" property="user_create" label="User Create" />
         </table:table>
     </page:list>

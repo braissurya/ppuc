@@ -42,7 +42,7 @@ public class HakBiayaController extends ParentController{
 		}
 		uiModel.asMap().clear();
 		hakbiayaManager.save(hakbiaya);
-		return "redirect:/master/hakbiaya/" + encodeUrlPathSegment(hakbiaya.getDivisi_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(hakbiaya.getSubdiv_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(hakbiaya.getKd_group().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(hakbiaya.getKd_biaya().toString(), httpServletRequest);
+		return "redirect:/master/hakbiaya/" + encodeUrlPathSegment(hakbiaya.getDivisi_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(hakbiaya.getSubdiv_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(hakbiaya.getDept_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(hakbiaya.getLok_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(hakbiaya.getKd_group().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(hakbiaya.getKd_biaya().toString(), httpServletRequest);
 	}
 
 	@RequestMapping(params = "form", produces = "text/html")
@@ -51,11 +51,11 @@ public class HakBiayaController extends ParentController{
 		return "hakbiaya/create";
 	}
 
-	@RequestMapping(value = "/{divisi_kd}/{subdiv_kd}/{kd_group}/{kd_biaya}", produces = "text/html")
-	public String show(@PathVariable("divisi_kd") String divisi_kd, @PathVariable("subdiv_kd") String subdiv_kd, @PathVariable("kd_group") String kd_group, @PathVariable("kd_biaya") String kd_biaya, Model uiModel) {
+	@RequestMapping(value = "/{divisi_kd}/{subdiv_kd}/{dept_kd}/{lok_kd}/{kd_group}/{kd_biaya}", produces = "text/html")
+	public String show(@PathVariable("divisi_kd") String divisi_kd, @PathVariable("subdiv_kd") String subdiv_kd, @PathVariable("dept_kd") String dept_kd, @PathVariable("lok_kd") String lok_kd, @PathVariable("kd_group") String kd_group, @PathVariable("kd_biaya") String kd_biaya, Model uiModel) {
 		addDateTimeFormatPatterns(uiModel);
-		uiModel.addAttribute("hakbiaya", hakbiayaManager.get(divisi_kd, subdiv_kd, kd_group, kd_biaya));
-		uiModel.addAttribute("itemId", divisi_kd+"/"+subdiv_kd+"/"+kd_group+"/"+kd_biaya);
+		uiModel.addAttribute("hakbiaya", hakbiayaManager.get(divisi_kd, subdiv_kd, dept_kd, lok_kd, kd_group, kd_biaya));
+		uiModel.addAttribute("itemId", divisi_kd+"/"+subdiv_kd+"/"+dept_kd+"/"+lok_kd+"/"+kd_group+"/"+kd_biaya);
 		return "hakbiaya/show";
 	}
 
@@ -82,19 +82,19 @@ public class HakBiayaController extends ParentController{
 		}
 		uiModel.asMap().clear();
 		hakbiayaManager.save(hakbiaya);
-		return "redirect:/master/hakbiaya/" + encodeUrlPathSegment(hakbiaya.getDivisi_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(hakbiaya.getSubdiv_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(hakbiaya.getKd_group().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(hakbiaya.getKd_biaya().toString(), httpServletRequest);
+		return "redirect:/master/hakbiaya/" + encodeUrlPathSegment(hakbiaya.getDivisi_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(hakbiaya.getSubdiv_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(hakbiaya.getDept_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(hakbiaya.getLok_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(hakbiaya.getKd_group().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(hakbiaya.getKd_biaya().toString(), httpServletRequest);
 	}
 
-	@RequestMapping(value = "/{divisi_kd}/{subdiv_kd}/{kd_group}/{kd_biaya}", params = "form", produces = "text/html")
-	public String updateForm(@PathVariable("divisi_kd") String divisi_kd, @PathVariable("subdiv_kd") String subdiv_kd, @PathVariable("kd_group") String kd_group, @PathVariable("kd_biaya") String kd_biaya, Model uiModel) {
-		populateEditForm(uiModel, hakbiayaManager.get(divisi_kd, subdiv_kd, kd_group, kd_biaya));
+	@RequestMapping(value = "/{divisi_kd}/{subdiv_kd}/{dept_kd}/{lok_kd}/{kd_group}/{kd_biaya}", params = "form", produces = "text/html")
+	public String updateForm(@PathVariable("divisi_kd") String divisi_kd, @PathVariable("subdiv_kd") String subdiv_kd, @PathVariable("dept_kd") String dept_kd, @PathVariable("lok_kd") String lok_kd, @PathVariable("kd_group") String kd_group, @PathVariable("kd_biaya") String kd_biaya, Model uiModel) {
+		populateEditForm(uiModel, hakbiayaManager.get(divisi_kd, subdiv_kd, dept_kd, lok_kd, kd_group, kd_biaya));
 		return "hakbiaya/update";
 	}
 
-	@RequestMapping(value = "/{divisi_kd}/{subdiv_kd}/{kd_group}/{kd_biaya}", method = RequestMethod.DELETE, produces = "text/html")
-	public String delete(@PathVariable("divisi_kd") String divisi_kd, @PathVariable("subdiv_kd") String subdiv_kd, @PathVariable("kd_group") String kd_group, @PathVariable("kd_biaya") String kd_biaya, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-		HakBiaya hakbiaya = hakbiayaManager.get(divisi_kd, subdiv_kd, kd_group, kd_biaya);
-		hakbiayaManager.remove(divisi_kd, subdiv_kd, kd_group, kd_biaya);
+	@RequestMapping(value = "/{divisi_kd}/{subdiv_kd}/{dept_kd}/{lok_kd}/{kd_group}/{kd_biaya}", method = RequestMethod.DELETE, produces = "text/html")
+	public String delete(@PathVariable("divisi_kd") String divisi_kd, @PathVariable("subdiv_kd") String subdiv_kd, @PathVariable("dept_kd") String dept_kd, @PathVariable("lok_kd") String lok_kd, @PathVariable("kd_group") String kd_group, @PathVariable("kd_biaya") String kd_biaya, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+		HakBiaya hakbiaya = hakbiayaManager.get(divisi_kd, subdiv_kd, dept_kd, lok_kd, kd_group, kd_biaya);
+		hakbiayaManager.remove(divisi_kd, subdiv_kd, dept_kd, lok_kd, kd_group, kd_biaya);
 		uiModel.asMap().clear();
 		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
 		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());

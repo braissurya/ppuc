@@ -21,6 +21,7 @@ import com.melawai.ppuc.model.User;
 import com.melawai.ppuc.services.GroupUserManager;
 import com.melawai.ppuc.services.MFungsiManager;
 import com.melawai.ppuc.services.UserManager;
+import com.melawai.ppuc.utils.Utils;
 import com.melawai.ppuc.web.validator.UserValidator;
 
 @RequestMapping("/master/user")
@@ -43,6 +44,11 @@ public class UserController extends ParentController {
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	public String create(@Valid User user, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+		
+		if (!Utils.isEmpty(user.getUser_id())) {
+			if (userManager.exists(user.getUser_id()))
+				bindingResult.rejectValue("user_id", "duplicate", new String[] { "User ID" }, null);
+		}
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, user);
 			return "user/create";

@@ -150,6 +150,13 @@ public class LokasiController extends ParentController {
 		uiModel.addAttribute("lokasi", lokasi);
 		
 		uiModel.addAttribute("divisiList", baseService.selectDropDown("divisi_nm", "divisi_kd", "divisi", null, "divisi_nm"));
+		
+		uiModel.addAttribute("propinsiList", baseService.selectDropDown("propinsi", "propinsi", "propinsi", null, "propinsi"));
+		
+		if (!Utils.isEmpty(lokasi.propinsi))
+			uiModel.addAttribute("kotaList", baseService.selectDropDown("kota", "kota", "kota", "propinsi = '"+lokasi.propinsi+"'", "kota"));
+		else
+			uiModel.addAttribute("kotaList", baseService.selectDropDown("kota", "kota", "kota", null, "kota"));
 
 		if (!Utils.isEmpty(lokasi.divisi_kd))
 			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "concat(divisi_kd, '.', subdiv_kd)", "subdivisi", "divisi_kd = '" + lokasi.divisi_kd + "'", "subdiv_nm"));
