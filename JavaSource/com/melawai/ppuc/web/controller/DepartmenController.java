@@ -48,7 +48,7 @@ public class DepartmenController extends ParentController {
 
 	@Autowired
 	private DepartmenManager departmenManager;
-	
+
 	@Autowired
 	private DepartmenValidator departmenValidator;
 
@@ -61,16 +61,17 @@ public class DepartmenController extends ParentController {
 	public String create(@Valid Departmen departmen, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		// tambahan validasi khusus
 		if (departmenManager.exists(departmen.dept_kd, departmen.subdiv_kd, departmen.divisi_kd)) {
-			bindingResult.rejectValue("dept_kd", "duplicate", new String[] { "DIVISI KD : " + departmen.divisi_kd + " | SUBDIVISI KD : " + departmen.subdiv_kd +  " | DEPARTMEN KD : " + departmen.dept_kd + ", " }, null);
+			bindingResult.rejectValue("dept_kd", "duplicate", new String[] { "DIVISI KD : " + departmen.divisi_kd + " | SUBDIVISI KD : " + departmen.subdiv_kd + " | DEPARTMEN KD : "
+					+ departmen.dept_kd + ", " }, null);
 		}
-		
+
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, departmen);
 			return "departmen/create";
 		}
 		uiModel.asMap().clear();
 		departmenManager.save(departmen);
-		return "redirect:/master/departmen/"  + encodeUrlPathSegment(departmen.getDept_kd().toString(), httpServletRequest) + "/" 
+		return "redirect:/master/departmen/" + encodeUrlPathSegment(departmen.getDept_kd().toString(), httpServletRequest) + "/"
 				+ encodeUrlPathSegment(departmen.getSubdiv_kd().toString(), httpServletRequest) + "/" + encodeUrlPathSegment(departmen.getDivisi_kd().toString(), httpServletRequest);
 	}
 
@@ -113,7 +114,7 @@ public class DepartmenController extends ParentController {
 		}
 		uiModel.asMap().clear();
 		departmenManager.save(departmen);
-		return "redirect:/master/departmen/" + encodeUrlPathSegment(departmen.getDept_kd().toString(), httpServletRequest) + "/" 
+		return "redirect:/master/departmen/" + encodeUrlPathSegment(departmen.getDept_kd().toString(), httpServletRequest) + "/"
 				+ encodeUrlPathSegment(departmen.getSubdiv_kd().toString(), httpServletRequest) + "/" + encodeUrlPathSegment(departmen.getDivisi_kd().toString(), httpServletRequest);
 	}
 
@@ -141,9 +142,16 @@ public class DepartmenController extends ParentController {
 
 	void populateEditForm(Model uiModel, Departmen departmen) {
 		uiModel.addAttribute("departmen", departmen);
+		uiModel.addAttribute("divisiList", baseService.selectDropDown("divisi_nm", "divisi_kd", "divisi", null, "divisi_nm"));
+
+		if (!Utils.isEmpty(departmen.divisi_kd))
+			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "concat(divisi_kd, '.', subdiv_kd)", "subdivisi", "divisi_kd = '" + departmen.divisi_kd + "'", "subdiv_nm"));
+		else
+			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "concat(divisi_kd, '.', subdiv_kd)", "subdivisi", null, "subdiv_nm"));
+
 		addDateTimeFormatPatterns(uiModel);
 	}
-	
+
 	@RequestMapping(value = "/upload", method = RequestMethod.POST, produces = "text/html")
 	public String upload(Departmen departmen, BindingResult bindingResult, Model uiModel, RedirectAttributes ra, HttpServletRequest httpServletRequest) {
 		BindException errors = new BindException(bindingResult);
@@ -210,7 +218,8 @@ public class DepartmenController extends ParentController {
 								Departmen tempDepartmen = new Departmen();
 
 								try {
-									tempDepartmen = new Departmen(Utils.isEmpty(nextLine[0]) ? null : nextLine[0].trim(), Utils.isEmpty(nextLine[1]) ? null : nextLine[1].trim(),Utils.isEmpty(nextLine[2]) ? null : nextLine[2].trim(),Utils.isEmpty(nextLine[3]) ? null : nextLine[3].trim());
+									tempDepartmen = new Departmen(Utils.isEmpty(nextLine[0]) ? null : nextLine[0].trim(), Utils.isEmpty(nextLine[1]) ? null : nextLine[1].trim(),
+											Utils.isEmpty(nextLine[2]) ? null : nextLine[2].trim(), Utils.isEmpty(nextLine[3]) ? null : nextLine[3].trim());
 								} catch (Exception e) {
 									e.printStackTrace();
 									errorMessage.add("(filename= " + departmen.upload.getOriginalFilename() + ")\n Format kolom salah pada baris ke-" + baris + " :\n" + e.getMessage());

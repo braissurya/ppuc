@@ -17,6 +17,8 @@
         <intercept-url pattern="/resources/**" access="permitAll" />
         <intercept-url pattern="/login/**" access="permitAll" />
         <intercept-url pattern="/**" access="isAuthenticated()" />
+        <intercept-url pattern="/json/**" access="isAuthenticated()" />
+        
         
         <session-management>
         	<concurrency-control max-sessions="1" 

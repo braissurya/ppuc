@@ -43,7 +43,7 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 		this.props = props;
 	}
 
-	private final String[] bolehLewat = new String[] { "/resources","/static","/login", "/403","/uncaughtException","/resourceNotFound","/dataAccessFailure", "/welcome", "/main", "/logout" };
+	private final String[] bolehLewat = new String[] { "/resources","/static","/login","/json","/403","/uncaughtException","/resourceNotFound","/dataAccessFailure", "/welcome", "/main", "/logout" };
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

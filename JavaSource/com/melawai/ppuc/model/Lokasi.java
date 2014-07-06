@@ -44,8 +44,7 @@ public class Lokasi extends BaseObject implements Serializable {
 	@Size(max = 50)
 	public String lok_nm;
 
-	@Size(max = 45)
-	public String f_tutup;
+	public Integer f_tutup;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(style = "MM")
@@ -96,7 +95,6 @@ public class Lokasi extends BaseObject implements Serializable {
 		this.dept_kd = dept_kd;
 		this.lok_nm = lok_nm;
 		this.tgl_tutup = tgl_tutup;
-		//TODO : belum bikin tambahan param
 	}
 
 	// ****************** GETTER SETTER START HERE ******************/
@@ -140,16 +138,16 @@ public class Lokasi extends BaseObject implements Serializable {
 		this.lok_nm = lok_nm;
 	}
 
-	public String getF_tutup() {
+	public Date getTgl_tutup() {
+		return tgl_tutup;
+	}
+
+	public Integer getF_tutup() {
 		return f_tutup;
 	}
 
-	public void setF_tutup(String f_tutup) {
+	public void setF_tutup(Integer f_tutup) {
 		this.f_tutup = f_tutup;
-	}
-
-	public Date getTgl_tutup() {
-		return tgl_tutup;
 	}
 
 	public void setTgl_tutup(Date tgl_tutup) {

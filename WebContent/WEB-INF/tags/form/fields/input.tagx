@@ -6,6 +6,9 @@
 	<jsp:directive.attribute name="formatFile" type="java.lang.String" required="false" rtexprvalue="true" description="File format permit by  this upload modul" />
 	<jsp:directive.attribute name="labelCode" type="java.lang.String" required="false" rtexprvalue="true" description="Key for label message bundle if label is not supplied" />
 	<jsp:directive.attribute name="required" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicates if this field is required (default false)" />
+	<jsp:directive.attribute name="email" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicates if this field is email address" />
+	<jsp:directive.attribute name="mobile" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicates if this field is mobile number" />
+	<jsp:directive.attribute name="isusername" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicates if this field is user name" />
 	<jsp:directive.attribute name="disabled" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Specify if this field should be enabled" />
 	<jsp:directive.attribute name="readonly" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Specify if this field should be readonly" />
 	<jsp:directive.attribute name="validationRegex" type="java.lang.String" required="false" rtexprvalue="true" description="Specify regular expression to be used for the validation of the input contents" />
@@ -32,6 +35,23 @@
 		<c:set var="sec_field">
 			<spring:escapeBody javaScriptEscape="true">${field}</spring:escapeBody>
 		</c:set>
+		
+		<c:if test="${email}">
+			<c:set var="validationRegex" value="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" />
+			<c:set var="validationMessageCode" value="field_invalid_email" />
+		</c:if>
+		
+		<c:if test="${mobile}">
+			<c:set var="validationRegex" value="^(?:\\+?)+\\d*" />
+			<c:set var="validationMessageCode" value="field_invalid_mobile" />
+		</c:if>
+		
+		<c:if test="${isusername}">
+			<c:set var="validationRegex" value="^\\w*$" />
+			<c:set var="validationMessageCode" value="field_invalid_user" />
+		</c:if>
+		
+		
 		<c:choose>
 			<c:when test="${type eq 'hidden'}">
 				<form:hidden path="${sec_field}" id="_${sec_field}_id" />

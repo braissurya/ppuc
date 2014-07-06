@@ -18,13 +18,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.melawai.ppuc.model.User;
+import com.melawai.ppuc.services.GroupUserManager;
 import com.melawai.ppuc.services.MFungsiManager;
 import com.melawai.ppuc.services.UserManager;
 import com.melawai.ppuc.web.validator.UserValidator;
 
 @RequestMapping("/master/user")
 @Controller
-public class UserController extends ParentController{
+public class UserController extends ParentController {
 
 	protected static Logger logger = Logger.getLogger(UserController.class);
 
@@ -32,12 +33,14 @@ public class UserController extends ParentController{
 	private UserManager userManager;
 	
 	@Autowired
-	private MFungsiManager mFungsiManager;
+	private UserValidator userValidator;
+
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		binder.setValidator(new UserValidator());
+		binder.setValidator(this.userValidator);
 	}
+
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	public String create(@Valid User user, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
@@ -64,16 +67,18 @@ public class UserController extends ParentController{
 	}
 
 	@RequestMapping(produces = "text/html")
-	public String list(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size,@RequestParam(value = "search", required = false) String search, @RequestParam(value = "sortFieldName", required = false) String sortFieldName, @RequestParam(value = "sortOrder", required = false) String sortOrder, Model uiModel) {
+	public String list(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size,
+			@RequestParam(value = "search", required = false) String search, @RequestParam(value = "sortFieldName", required = false) String sortFieldName,
+			@RequestParam(value = "sortOrder", required = false) String sortOrder, Model uiModel) {
 		if (page == null) {
-			page=1;
+			page = 1;
 		}
 
-			int sizeNo = size == null ? 10 : size.intValue();
-			final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-			uiModel.addAttribute("userList",userManager.selectPagingList(search,sortFieldName,sortOrder, firstResult, sizeNo) );
-			float nrOfPages = (float) userManager.selectPagingCount(search) / sizeNo;
-			uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
+		int sizeNo = size == null ? 10 : size.intValue();
+		final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
+		uiModel.addAttribute("userList", userManager.selectPagingList(search, sortFieldName, sortOrder, firstResult, sizeNo));
+		float nrOfPages = (float) userManager.selectPagingCount(search) / sizeNo;
+		uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
 		addDateTimeFormatPatterns(uiModel);
 		return "user/list";
 	}
@@ -96,7 +101,8 @@ public class UserController extends ParentController{
 	}
 
 	@RequestMapping(value = "/{user_id}", method = RequestMethod.DELETE, produces = "text/html")
-	public String delete(@PathVariable("user_id") String user_id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+	public String delete(@PathVariable("user_id") String user_id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size,
+			Model uiModel) {
 		User user = userManager.get(user_id);
 		userManager.remove(user_id);
 		uiModel.asMap().clear();
@@ -104,14 +110,29 @@ public class UserController extends ParentController{
 		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
 		return "redirect:/master/user";
 	}
+
 	void addDateTimeFormatPatterns(Model uiModel) {
 		uiModel.addAttribute("user_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 		uiModel.addAttribute("user_sys_tgl_update_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 		uiModel.addAttribute("user_sys_tgl_nonaktif_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
+
 	void populateEditForm(Model uiModel, User user) {
 		uiModel.addAttribute("user", user);
 		addDateTimeFormatPatterns(uiModel);
-		 uiModel.addAttribute("mfungsiList", mFungsiManager.getAll());
+		uiModel.addAttribute("mfungsiList",baseService.selectDropDown("nm_fungsi", "kd_fungsi", "m_fungsi", null, "nm_fungsi"));
+		uiModel.addAttribute("groupKodeList", baseService.selectDropDown("group_nm", "group_kd", "group_user", null, "group_nm"));
+	}
+
+	@RequestMapping(value = "/reset/{user_id}", method = RequestMethod.GET, produces = "text/html")
+	public String reset(@PathVariable("user_id") String user_id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size,
+			Model uiModel) {
+		User user = userManager.get(user_id);
+		user.setNewPassword(props.getProperty("password.default"));
+		userManager.saveUserLogin(user);
+		uiModel.asMap().clear();
+		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
+		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
+		return "redirect:/master/user";
 	}
 }

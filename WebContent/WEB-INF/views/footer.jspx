@@ -17,10 +17,10 @@
 	<table style="border: none;">
 		<tr>
 			<td align="left" width="40%" style="border: none;">
-				${copy_right }
+				${version_app}
 			</td>
 			<td align="center" width="20%" style="border: none;">
-				${version_app}
+				${copy_right }
 			</td>
 			<td align="right" width="40%" style="border: none;text-align: right;"	>
 				<span style="float: right;">

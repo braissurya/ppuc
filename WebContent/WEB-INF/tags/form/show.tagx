@@ -47,6 +47,11 @@
       <c:choose>
         <c:when test="${not empty object}">
           <jsp:doBody />
+           <div class="submit" id="${fn:escapeXml(id)}_submit">
+	           <spring:url value="${path}" var="form_url" />
+	          <spring:message code="button_cancel" var="cancel_button" htmlEscape="false" />
+	          <input id="cancel" type="button" value="${fn:escapeXml(cancel_button)}" onclick="window.location='${form_url}'"/>
+          </div>
           <div class="quicklinks">
             <span>
               <c:if test="${delete}">

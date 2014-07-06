@@ -11,6 +11,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
+import com.melawai.ppuc.services.BaseService;
 import com.melawai.ppuc.web.validator.UploadValidator;
 
 /**
@@ -20,6 +21,9 @@ import com.melawai.ppuc.web.validator.UploadValidator;
 public abstract class ParentController {
 
 	protected static Logger logger = Logger.getLogger(ParentController.class);
+	
+	@Autowired
+	protected BaseService baseService;
 	
 	@Autowired
 	protected Properties props;

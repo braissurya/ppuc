@@ -15,6 +15,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomBooleanEditor;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
@@ -56,6 +57,7 @@ public class LokasiController extends ParentController {
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.setValidator(this.lokasiValidator);
+
 	}
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
@@ -146,6 +148,22 @@ public class LokasiController extends ParentController {
 
 	void populateEditForm(Model uiModel, Lokasi lokasi) {
 		uiModel.addAttribute("lokasi", lokasi);
+		
+		uiModel.addAttribute("divisiList", baseService.selectDropDown("divisi_nm", "divisi_kd", "divisi", null, "divisi_nm"));
+
+		if (!Utils.isEmpty(lokasi.divisi_kd))
+			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "concat(divisi_kd, '.', subdiv_kd)", "subdivisi", "divisi_kd = '" + lokasi.divisi_kd + "'", "subdiv_nm"));
+		else
+			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "concat(divisi_kd, '.', subdiv_kd)", "subdivisi", null, "subdiv_nm"));
+
+		uiModel.addAttribute("divisiList", baseService.selectDropDown("divisi_nm", "divisi_kd", "divisi", null, "divisi_nm"));
+
+		if (!Utils.isEmpty(lokasi.divisi_kd)&&!Utils.isEmpty(lokasi.subdiv_kd))
+			uiModel.addAttribute("deptList", baseService.selectDropDown("dept_nm","concat(divisi_kd, '.', subdiv_kd, '.', dept_kd)", "departmen", " divisi_kd = '" + lokasi.divisi_kd + "' and subdiv_kd = '" + lokasi.subdiv_kd + "'", "dept_nm"));
+		else
+			uiModel.addAttribute("deptList", baseService.selectDropDown("dept_nm","concat(divisi_kd, '.', subdiv_kd, '.', dept_kd)",  "departmen", null, "dept_nm"));
+
+		
 		addDateTimeFormatPatterns(uiModel);
 	}
 

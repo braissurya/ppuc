@@ -25,7 +25,7 @@ import com.melawai.ppuc.utils.Utils;
  */
 
 @Service("userManager")
-public class UserManager {
+public class UserManager extends BaseService {
 
 	private static Logger logger = Logger.getLogger(UserManager.class);
 
@@ -72,13 +72,20 @@ public class UserManager {
 			user.setSort(sort + " " + sortOrder);
 		user.setPage(page);
 		user.setRowcount(rowcount);
-		return userMapper.selectPagingList(user);
+		List<User> lsUser=userMapper.selectPagingList(user);
+		List<User> result=new ArrayList<User>();
+		for(User u:lsUser){
+			if(u.password.equals(passwordEncoder.encodePassword(props.getProperty("password.default"), saltSource.getSalt(u))))u.passwordDefault=props.getProperty("password.default");
+			else u.passwordDefault="***";
+			result.add(u);
+		}
+		return result;
 	}
 
 	/** Save Model **/
 	@Transactional
 	public User save(User user) {
-		if (user.getTgl_create() == null) {
+		if (!exists(user.user_id) ) {
 			userMapper.insert(user);
 		} else {
 			userMapper.update(user);
@@ -93,7 +100,7 @@ public class UserManager {
 	}
 
 	public User saveUserLogin(User user) {
-		if (user.getTgl_create() == null) {
+		if (!exists(user.user_id) ) {
 			user.setPassword(passwordEncoder.encodePassword(user.getPassword(), saltSource.getSalt(user)));
 		} else if (user.getNewPassword() != null) {
 			user.setPassword(passwordEncoder.encodePassword(user.getNewPassword(), saltSource.getSalt(user)));
@@ -102,6 +109,7 @@ public class UserManager {
 		}
 		return save(user);
 	}
+	
 	
 	public  String generateMenu(String path, User currentUser) {
 		StringBuffer result = new StringBuffer();

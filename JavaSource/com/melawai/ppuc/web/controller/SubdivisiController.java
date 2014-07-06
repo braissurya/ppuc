@@ -140,6 +140,7 @@ public class SubdivisiController extends ParentController {
 
 	void populateEditForm(Model uiModel, Subdivisi subdivisi) {
 		uiModel.addAttribute("subdivisi", subdivisi);
+		uiModel.addAttribute("divisiList", baseService.selectDropDown("divisi_nm", "divisi_kd", "divisi", null, "divisi_nm"));
 		addDateTimeFormatPatterns(uiModel);
 	}
 

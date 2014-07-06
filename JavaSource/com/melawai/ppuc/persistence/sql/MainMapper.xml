@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.melawai.ppuc.persistence.MainMapper">
+
+	<cache />
+	
+	<select id="selectSysdate" parameterType="String" resultType="Date" useCache="false">
+		select sysdate()
+	</select>
+
+	<select id="selectDropDown"  resultType="DropDown">
+		SELECT ${keycol} "key", ${valcol} "value" FROM ${tablename}
+		<if test="where != null">
+			WHERE ${where}
+		</if>
+		ORDER BY ${ordercol}
+	</select>
+
+	<select id="selectCountTable"  resultType="Integer">
+		SELECT count(*) FROM ${tablename}
+		<if test="where != null">
+			WHERE ${where}
+		</if>
+	</select>
+	
+</mapper>

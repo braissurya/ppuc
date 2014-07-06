@@ -34,10 +34,13 @@
 
     <script type="text/javascript">dojo.require('dijit.form.DateTextBox')</script>
     <div id="_${sec_id}_id">
-      <label for="_${sec_field}_id">
-        <c:out value="${label}" />
-        :
-      </label>
+      <form:label path="${sec_field}" cssClass="label" cssErrorClass="label labelError">
+        <c:out value="${label}" /> 
+        <c:if test="${required}">
+			<span class="required"> * </span>
+		</c:if>       
+      </form:label>
+      <span class="doubleDot">:</span>
       <c:choose>
         <c:when test="${disableFormBinding}">
           <input id="_${sec_field}_id" name="${sec_field}" />

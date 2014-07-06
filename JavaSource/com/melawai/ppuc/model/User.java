@@ -11,9 +11,13 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.melawai.ppuc.utils.Utils;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -22,14 +26,16 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @Revision	:
  */
 
-/**
- * @author Bertho
- *
- */
+
 public class User extends BaseObject implements Serializable , UserDetails {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 761598147495279228L;
+
 	//****************** COLOMN FROM TABLE START HERE ******************/
-	@NotNull
+	@NotEmpty
 	@Size(max=50)
 	public String user_id;
 
@@ -39,16 +45,19 @@ public class User extends BaseObject implements Serializable , UserDetails {
 	@Size(max=100)
 	public String user_name;
 
+	@NotEmpty
 	@Size(max=25)
 	public String no_hp;
-
+	
+	@Email
 	@Size(max=100)
 	public String email;
 
+	@NotEmpty
 	@Size(max=5)
 	public String kd_fungsi;
 
-	@NotNull
+	@NotEmpty
 	@Size(max=5)
 	public String group_kd;
 
@@ -93,6 +102,8 @@ public class User extends BaseObject implements Serializable , UserDetails {
 	public String oldPassword;
 	public String newPassword;
 	public String confirmPassword;
+	public String passwordDefault;
+	
 	public Date loginTime;
 	public GroupUser groupUser;
 	public MFungsi mFungsi;
@@ -119,8 +130,8 @@ public class User extends BaseObject implements Serializable , UserDetails {
 	public String getUser_name(){ return user_name; }
 	public void setUser_name(String user_name){ this.user_name = user_name; }
 
-	public String getNo_hp(){ return no_hp; }
-	public void setNo_hp(String no_hp){ this.no_hp = no_hp; }
+	public String getNo_hp(){ return Utils.mobileNoStdFormat(no_hp); }
+	public void setNo_hp(String no_hp){ this.no_hp = Utils.mobileNoStdFormat(no_hp); }
 
 	public String getEmail(){ return email; }
 	public void setEmail(String email){ this.email = email; }
@@ -226,4 +237,14 @@ public class User extends BaseObject implements Serializable , UserDetails {
 		// TODO Auto-generated method stub
 		return user_id;
 	}
+
+	public String getPasswordDefault() {
+		return passwordDefault;
+	}
+
+	public void setPasswordDefault(String passwordDefault) {
+		this.passwordDefault = passwordDefault;
+	}
+	
+	
 }

@@ -3,16 +3,15 @@
 //** Usage Terms: http://www.dynamicdrive.com/notice.htm
 
 //** Current version: 3.03 See changelog.txt for details
-
 if (typeof dd_domreadycheck=="undefined") //global variable to detect if DOM is ready
-	var dd_domreadycheck=false
+	var dd_domreadycheck=false;
 
 var ddlevelsmenu={
 enableshim: true, //enable IFRAME shim to prevent drop down menus from being hidden below SELECT or FLASH elements? (tip: disable if not in use, for efficiency)
 
 arrowpointers:{
-	downarrow: ["resources/images/icons/arrow-down.gif", 11,7], //[path_to_down_arrow, arrowwidth, arrowheight]
-	rightarrow: ["resources/images/icons/arrow-right.gif", 12,12], //[path_to_right_arrow, arrowwidth, arrowheight]
+	downarrow: [resourceUrl+"/images/icons/arrow-down.gif", 11,7], //[path_to_down_arrow, arrowwidth, arrowheight]
+	rightarrow: [resourceUrl+"/images/icons/arrow-right.gif", 12,12], //[path_to_right_arrow, arrowwidth, arrowheight]
 	showarrow: {toplevel: true, sublevel: true} //Show arrow images on top level items and sub level items, respectively?
 },
 hideinterval: 200, //delay in milliseconds before entire menu disappears onmouseout.

@@ -6,6 +6,7 @@
   <jsp:directive.attribute name="path" type="java.lang.String" required="true" rtexprvalue="true" description="The relative path to the referenced resource" />
   <jsp:directive.attribute name="items" type="java.util.Collection" required="true" rtexprvalue="true" description="The name of the collection displayed in the select box" />
   <jsp:directive.attribute name="label" type="java.lang.String" required="false" rtexprvalue="true" description="The label used for this field, will default to a message bundle if not supplied" />
+  <jsp:directive.attribute name="blank" type="java.lang.Boolean" required="false" rtexprvalue="true" description="first choice blank used for this field" />
   <jsp:directive.attribute name="itemLabel" type="java.lang.String" required="false" rtexprvalue="true" description="Name of the property mapped to the inner text of the 'option' tag (will override the configured converter)" />
   <jsp:directive.attribute name="itemValue" type="java.lang.String" required="false" rtexprvalue="true" description="The identifier used as value in the select box (defaults to 'id' for non enum types)" />
   <jsp:directive.attribute name="required" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicates if this field is required (default false)" />
@@ -44,10 +45,13 @@
     <div id="_${fn:escapeXml(id)}_id">
       <c:choose>
         <c:when test="${not empty items}">
-          <label for="_${sec_field}_id">
-            <c:out value="${fn:escapeXml(label)}" />
-            :
-          </label>
+         <form:label path="${sec_field}" cssClass="label" cssErrorClass="label labelError">
+						<c:out value="${fn:escapeXml(label)}" />
+						<c:if test="${required}">
+							<span class="required"> * </span>
+						</c:if>
+					</form:label>
+          <span class="doubleDot">:</span>
           <c:choose>
             <c:when test="${empty itemValue}">
               <c:choose>
@@ -55,6 +59,10 @@
                   <c:choose>
                     <c:when test="${multiple}">
                       <select id="_${sec_field}_id" name="${sec_field}" multiple="${multiple}">
+                      <c:if test="${blank }">
+                       <spring:message arguments="${fn:escapeXml(label)}" code="field_choice" var="choice" htmlEscape="false" />
+                      	<option  value="">${choice }</option>
+                      </c:if>
                       <c:forEach items="${items}" var="item">
                         <option value="${item}">
                         <c:choose>
@@ -71,6 +79,10 @@
                     </c:when>
                     <c:otherwise>
                       <select id="_${sec_field}_id" name="${sec_field}">
+                      <c:if test="${blank }">
+                       <spring:message arguments="${fn:escapeXml(label)}" code="field_choice" var="choice" htmlEscape="false" />
+                      	<option value="" >${choice }</option>
+                      </c:if>
                       <c:forEach items="${items}" var="item">
                         <option value="${item}">
                         <c:choose>
@@ -95,7 +107,14 @@
                           <form:select id="_${sec_field}_id" items="${items}" path="${sec_field}" disabled="${disabled}" multiple="${multiple}" />
                         </c:when>
                         <c:otherwise>
-                          <form:select id="_${sec_field}_id" items="${items}" path="${sec_field}" disabled="${disabled}" />
+                          <form:select id="_${sec_field}_id"  path="${sec_field}" disabled="${disabled}">
+                          	<c:if test="${blank }">
+		                       <spring:message arguments="${fn:escapeXml(label)}" code="field_choice" var="choice" htmlEscape="false" />
+		                      	<option  value="">${choice }</option>
+	                      	</c:if>
+                          	<form:options items="${items}"/>
+                          </form:select>
+                          
                         </c:otherwise>
                      </c:choose>
                     </c:when>
@@ -105,7 +124,13 @@
                           <form:select id="_${sec_field}_id" items="${items}" path="${sec_field}" disabled="${disabled}" multiple="${multiple}" itemLabel="${sec_itemLabel}"/>
                         </c:when>
                         <c:otherwise>
-                          <form:select id="_${sec_field}_id" items="${items}" path="${sec_field}" disabled="${disabled}" itemLabel="${sec_itemLabel}"/>
+                          <form:select id="_${sec_field}_id"  path="${sec_field}" disabled="${disabled}" >
+                       		<c:if test="${blank }">
+		                       <spring:message arguments="${fn:escapeXml(label)}" code="field_choice" var="choice" htmlEscape="false" />
+		                      	<option  value="" >${choice }</option>
+	                      	</c:if>
+                          	<form:options items="${items}" itemLabel="${sec_itemLabel}"/>
+                          </form:select>
                         </c:otherwise>
                       </c:choose>
                     </c:otherwise>
@@ -137,6 +162,10 @@
                     </c:when>
                     <c:otherwise>
                       <select id="_${sec_field}_id" name="${sec_field}" multiple="${multiple}">
+                     	<c:if test="${blank }">
+		                       <spring:message arguments="${fn:escapeXml(label)}" code="field_choice" var="choice" htmlEscape="false" />
+		                      	<option  value="">${choice }</option>
+	                      	</c:if>
                         <c:forEach items="${items}" var="item">
                           <option value="${item[fn:escapeXml(itemValue)]}">
                             <c:choose>
@@ -161,7 +190,13 @@
                           <form:select id="_${sec_field}_id" items="${items}" path="${sec_field}" disabled="${disabled}" multiple="${multiple}" itemValue="${fn:escapeXml(itemValue)}" />
                         </c:when>
                         <c:otherwise>
-                          <form:select id="_${sec_field}_id" items="${items}" path="${sec_field}" disabled="${disabled}" itemValue="${fn:escapeXml(itemValue)}" />
+                          <form:select id="_${sec_field}_id"  path="${sec_field}" disabled="${disabled}"  >
+                          	<c:if test="${blank }">
+		                       <spring:message arguments="${fn:escapeXml(label)}" code="field_choice" var="choice" htmlEscape="false" />
+		                      	<option  value=""> ${choice } </option>
+	                      	</c:if>
+	                      	<form:options items="${items}" itemValue="${fn:escapeXml(itemValue)}"/>
+                          </form:select>
                         </c:otherwise>
                       </c:choose>
                     </c:when>
@@ -171,7 +206,13 @@
                           <form:select id="_${sec_field}_id" items="${items}" path="${sec_field}" disabled="${disabled}" multiple="${multiple}" itemValue="${fn:escapeXml(itemValue)}" itemLabel="${sec_itemLabel}"/>
                         </c:when>
                         <c:otherwise>
-                          <form:select id="_${sec_field}_id" items="${items}" path="${sec_field}" disabled="${disabled}" itemValue="${fn:escapeXml(itemValue)}" itemLabel="${sec_itemLabel}"/>
+                          <form:select id="_${sec_field}_id"  path="${sec_field}" disabled="${disabled}" >
+                          	<c:if test="${blank }">
+		                       <spring:message arguments="${fn:escapeXml(label)}" code="field_choice" var="choice" htmlEscape="false" />
+		                      	<option value=""> ${choice } </option>
+	                      	</c:if>
+	                      	<form:options items="${items}" itemValue="${fn:escapeXml(itemValue)}" itemLabel="${sec_itemLabel}"/>
+                          </form:select>
                         </c:otherwise>
                       </c:choose>
                     </c:otherwise>

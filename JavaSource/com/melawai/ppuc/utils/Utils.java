@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.MessageSource;
@@ -447,6 +448,327 @@ public class Utils {
 		return convertedDate;
 	}
 
+	/**
+	 * apakah tanggal valid
+	 * @author Bertho Rafitya Iwasurya
+	 * @since Feb 27, 2011 10:29:05 PM
+	 * @param dd
+	 * @param mm
+	 * @param yyyy
+	 * @return
+	 */
+	public static boolean validDate(String dd, String mm, String yyyy){
+			
+			int thn=Integer.parseInt(yyyy);
+			int day=Integer.parseInt(dd);
+			int month=Integer.parseInt(mm);
+			int Jumlah_hari=0;
+			String bln1="01,03,05,07,08,10,12";
+			//String bln2="04,06,09,11";
+			
+			if((thn%4)==0){//tahun kabisat
+				if(mm.equals("02")){
+					Jumlah_hari=29;
+				}else if(bln1.contains(mm)){
+					Jumlah_hari=31;
+				}else{
+					Jumlah_hari=30;
+				}
+			}else{
+				if(mm.equals("02")){
+					Jumlah_hari=28;
+				}else if(bln1.contains(mm)){
+					Jumlah_hari=31;
+				}else{
+					Jumlah_hari=30;
+				}
+			}
+			
+			if(month>12|month<1){
+				return false;
+			}
+			
+			System.out.print(Jumlah_hari);
+			if(day<=Jumlah_hari&&day>0){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		
+		/**
+		 * Validasi alpha numeric
+		 * di kutip dari : http://www.beginner-java-tutorial.com/java-string-class.html
+		 * @author Berto
+		 * @since Aug 24, 2007 3:25:33 PM
+		 * @param input
+		 */
+		public static boolean isAlpha(final String input) {
+	        boolean isCharFlag=false;
+	       
+	       
+	        final char[] chars = input.toCharArray();
+	            for (int x = 0; x < chars.length; x++) {
+	           	 char c = chars[x];
+//	           	 lowercase && uppercase alphabet
+	                if ((c >= 'a') && (c <= 'z') ||(c >= 'A') && (c <= 'Z')){ 
+	               	 isCharFlag=true;
+	               	 continue;
+	                }else{
+	                	return false;
+	                }
+	        }
+	        return isCharFlag;
+		}
+		
+		/**
+		 * apakah username valid
+		 * @author Bertho Rafitya Iwasurya
+		 * @since Feb 27, 2011 10:28:33 PM
+		 * @param input
+		 * @return
+		 */
+		public static boolean isUserName(final String input) {
+	        boolean isCharFlag=false;
+	       
+	       
+	       
+	        final char[] chars = input.toCharArray();
+	            for (int x = 0; x < chars.length; x++) {
+	           	 char c = chars[x];
+//	           	 lowercase && uppercase alphabet
+	                if ((c >= 'a') && (c <= 'z') ||(c >= 'A') && (c <= 'Z')||(c >= '0') && (c <= '9')||(c=='_')){ 
+		               	 isCharFlag=true;
+		               	 continue;
+	                }else{
+	                	return false;
+	                }
+	        }
+	        return isCharFlag;
+		}
+		
+		/**
+		 * apakah hanya angka
+		 * @author Bertho Rafitya Iwasurya
+		 * @since Feb 27, 2011 10:28:16 PM
+		 * @param input
+		 * @return
+		 */
+		public static boolean isNumeric(final String input) {
+	        
+	        boolean isNumberFlag=false;
+	       
+	        final char[] chars = input.toCharArray();
+	            for (int x = 0; x < chars.length; x++) {
+	           	 char c = chars[x];
+	           	 if ((c >= '0') && (c <= '9')){ // numeric
+	            	 isNumberFlag=true;
+	            	 continue;
+	             }else{
+	            	 return false;
+	             }
+	                
+	        }
+	        return isNumberFlag;
+		}
+		
+		/**
+		 * apakah no telepon valid
+		 * @author Bertho Rafitya Iwasurya
+		 * @since Feb 27, 2011 10:28:00 PM
+		 * @param no
+		 * @return
+		 */
+		public static boolean validPhone(String no){
+			 boolean isNumberFlag=false;
+			 if(no==null)no="";
+			 
+			 no=no;
+			 String [] splitNo=no.replace("-", "").trim().split("");
+			
+			for (int i = 0; i < splitNo.length; i++) {
+				String c=splitNo[i];
+				if(i==1){
+					if(c.equals("+"))c="0";
+				}
+				
+				char[] x=c.toCharArray();
+				 
+				 for (int j = 0; j < x.length; j++) {
+		           	 char y =x[j];
+		           	 if ((y >= '0') && (y <= '9')){ // numeric
+		            	 isNumberFlag=true;
+		            	 continue;
+		             }else{
+		            	 return false;
+		             }
+		        }
+				
+			}
+			
+			return isNumberFlag;
+		}
+		
+		
+		public static boolean validPhoneSimple(String no){
+			 boolean isNumberFlag=false;
+			 if(no==null)no="";
+			 if(no.split("-").length!=2)return false;
+			 no=no;
+			 String [] splitNo=no.replace("-", "").trim().split("");
+			 
+			 
+			
+			for (int i = 0; i < splitNo.length; i++) {
+				String c=splitNo[i];
+				if(i==1){
+					if(c.equals("+"))c="0";
+				}
+				
+				char[] x=c.toCharArray();
+				 
+				 for (int j = 0; j < x.length; j++) {
+		           	 char y =x[j];
+		           	 if ((y >= '0') && (y <= '9')){ // numeric
+		            	 isNumberFlag=true;
+		            	 continue;
+		             }else{
+		            	 return false;
+		             }
+		        }
+				
+			}
+			
+			return isNumberFlag;
+		}
+		
+		/**
+		 * apakah format email valid 
+		 * @author Bertho Rafitya Iwasurya
+		 * @since Feb 27, 2011 10:27:35 PM
+		 * @param email
+		 * @return
+		 */
+		public static boolean validEmail(String email){
+			if(isEmpty(email))return false;
+			try {
+				InternetAddress.parse(email.trim());
+			} catch (Exception e) {
+				return false;
+			} finally {
+				if(!email.trim().toLowerCase().matches("^.+@[^\\.].*\\.[a-z]{2,}$")) {
+					return false;
+				}
+			}
+			return true;
+		}
+		
+		public static String mobileNoStdFormat(String mobileNo)
+		{
+			if(!isEmpty( mobileNo)){
+				
+				if(mobileNo.substring(0, 1).equals("0")){
+					mobileNo="+62"+mobileNo.substring(1,mobileNo.length());
+				}else if(!mobileNo.contains("+")){
+					mobileNo="+"+mobileNo;
+				}
+				
+				mobileNo=translate(mobileNo, "0123456789+abcdefghijklmnopqrstuvwxyz!@#$%^&*()_-=<>,./?~` ", "0123456789+");
+				
+				
+			}
+			
+			return mobileNo;
+		}
+		
+		public static String mobileNoContryCode(String mobileNo)
+		{
+			if(mobileNo!=null){
+				//mobileNo=translate(mobileNo, "0123456789+abcdefghijklmnopqrstuvwxyz!@#$%^&*()_-=<>,./?~` ", "0123456789+");
+				
+				if(mobileNo.length()>2){
+				if(!mobileNo.substring(0, 1).equals("0")){
+					mobileNo=mobileNo.replace("+", "").substring(2);
+				}else {
+					mobileNo=mobileNo.substring(1);
+				}			
+				}
+			}
+			
+			return mobileNo;
+		}
+		
+		public static String onlyNumber(String mobileNo)
+		{
+			if(mobileNo!=null){
+				mobileNo=translate(mobileNo, "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()_-=<>,./?~` ", "0123456789");
+			}
+			
+			return mobileNo;
+		}
+		
+		
+		
+		/**
+		 * Fungsi yang mengikuti fungsi lPAD di Oracle, contoh: rpad("0", "YUSUF",
+		 * 10) menghasilkan "YUSUF00000"
+		 * 
+		 * @param karakter
+		 *            Karakter untuk melengkapi sisa string
+		 * @param kata
+		 *            String yang mau dipanjangkan
+		 * @param panjang
+		 *            Panjang dari string hasilnya
+		 * @return String hasil penggabungan dari karakter dan kata
+		 * @see Fungsi LPAD di Oracle
+		 */
+		
+		public static String lpad(String karakter, String kata, int panjang) {
+			if(kata==null) return null;
+			StringBuffer result = new StringBuffer();
+			if (kata.length() < panjang) {
+				result.append(kata);
+				for (int i = kata.length(); i < panjang; i++) {
+					result.append(karakter);
+				}
+				
+				return result.toString();
+			} else {
+				return kata;
+			}
+		}
+		
+		public static String mergePhone(String kodearea,String phone){
+			if(!isEmpty(kodearea)|!isEmpty(phone))
+			return translate(kodearea+"-"+phone, "0123456789-abcdefghijklmnopqrstuvwxyz!@#$%^&*()_+=<>,./?~` ", "0123456789-");
+			else return null;
+		}
+		
+	
+		public static String translate(String kata,String  seq1, String  seq2){
+			String result="";
+			if(kata!=null&seq1!=null&seq2!=null){
+				String[] a=kata.split("");
+				for (int j = 1; j < a.length; j++) {
+					String b=a[j];						
+					String[]seq1split=seq1.split("");
+					String[]seq2split=seq2.split("");
+					int hint=seq1.indexOf(b)+1;
+					
+					String sq="";
+					if(seq1split.length>hint)
+						sq=seq1split[hint];
+					String sq1="";
+					if(seq2split.length>hint)
+						sq1=seq2split[hint];
+					
+					b=b.replace(sq, sq1);
+
+					result=result+b;
+				}
+			}
+			return result;
+		}
 	
 
 }
