@@ -159,7 +159,7 @@ public class SubdivisiController extends ParentController {
 		if (binder.getBindingResult().hasErrors()) {
 			errors.rejectValue("upload.uploadFile", null, Utils.errorBinderToList(binder.getBindingResult(), messageSource).get(0));
 		} else {
-			Date sekarang = new Date();
+			Date sekarang = subdivisiManager.selectSysdate();
 			// nama file yang ingin disimpan
 			String filename = "subdivisi" + Utils.convertDateToString(sekarang, "ddMMyyyyHHmmss") + ".csv";
 			// jumlah coloumn data yang ingin di proses

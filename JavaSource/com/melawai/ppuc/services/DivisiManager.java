@@ -72,7 +72,7 @@ public class DivisiManager extends BaseService  {
 	@Transactional
 	public Divisi save(Divisi divisi) {
 		if (divisi.getTgl_create() == null) {
-			divisi.setTgl_create(new Date());
+			divisi.setTgl_create(selectSysdate());
 			divisi.setUser_create(CommonUtil.getCurrentUserId());
 			
 			Set<AudittrailDetail> changes=CommonUtil.changes(divisi,get(divisi.getDivisi_kd()));
@@ -81,7 +81,7 @@ public class DivisiManager extends BaseService  {
 			
 			audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.ADD, divisi.getClass().getSimpleName(), divisi.getItemId(), CommonUtil.getIpAddr(httpServletRequest), "ADD DIVISI", CommonUtil.getCurrentUser(), changes);
 		} else {
-			divisi.setTgl_update(new Date());
+			divisi.setTgl_update(selectSysdate());
 			divisi.setUser_update(CommonUtil.getCurrentUserId());
 			
 			Set<AudittrailDetail> changes=CommonUtil.changes(divisi,get(divisi.getDivisi_kd()));			

@@ -68,7 +68,7 @@ public class ModifiedUserAuthenticationProvider implements AuthenticationProvide
 
 		Collection<? extends GrantedAuthority> authorities = loginUser.getAuthorities();
 		
-		loginUser.setLoginTime(new Date());
+		loginUser.setLoginTime(userManager.selectSysdate());
 
 		return new UsernamePasswordAuthenticationToken(loginUser, token.getCredentials(), authorities);
 	}

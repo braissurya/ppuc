@@ -9,8 +9,12 @@ import org.springframework.security.authentication.event.AbstractAuthenticationE
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.melawai.ppuc.model.Audittrail;
+import com.melawai.ppuc.model.User;
+import com.melawai.ppuc.utils.CommonUtil;
 import com.melawai.ppuc.utils.Email;
 
 
@@ -41,20 +45,16 @@ public class LoginListener implements ApplicationListener<AbstractAuthentication
 	if (event instanceof AuthenticationSuccessEvent) {
 
 	    String username = ((UserDetails) event.getAuthentication().getPrincipal()).getUsername();
-	    /*User user = userManager.getUserByUsername(username);
-	    userManager.logLoginSuccess(user, httpServletRequest.getRemoteHost());*/
-	    //TODO: mau ngapain klo berhasil login
-	  //generate menu
+	    User user = userManager.getUserByUsername(username);
+	  
+	    userManager.audittrail(Audittrail.Activity.LOGIN, Audittrail.LoginType.SUCCESS, User.class.getSimpleName(), username, CommonUtil.getIpAddr(httpServletRequest), "LOGIN SUCCESS", user, null);
 
 	} else if (event instanceof AuthenticationFailureBadCredentialsEvent) {
 
 	    UsernamePasswordAuthenticationToken upat = (UsernamePasswordAuthenticationToken) ((AuthenticationFailureBadCredentialsEvent) event).getSource();
 	    String username = (String) upat.getPrincipal();
 	    
-//	    email.send(true, null, new String []{"brais_surya@yahoo.com"}, null, null, "Testing", "Test Aja apakah emailnya sampai atau <b>GA</b>", null);
-	    
-	    //TODO: mau ngapain klo gagal login
-	   /* User user = null;
+	    User user = null;
 	    if (username != null && username.trim().length() > 0) {
 		try {
 		    user = userManager.getUserByUsername(username);
@@ -62,7 +62,8 @@ public class LoginListener implements ApplicationListener<AbstractAuthentication
 		}
 	    }
 		
-	    userManager.logLoginFail(user, httpServletRequest.getRemoteHost());*/
+	    
+	    userManager.audittrail(Audittrail.Activity.LOGIN, Audittrail.LoginType.FAILED, User.class.getSimpleName(), username, CommonUtil.getIpAddr(httpServletRequest), "LOGIN FAILED", user, null);
 	}
     }
 

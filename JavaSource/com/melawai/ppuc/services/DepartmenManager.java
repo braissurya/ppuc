@@ -75,7 +75,7 @@ public class DepartmenManager extends BaseService {
 		departmen.subdiv_kd=departmen.subdiv_kd.substring(departmen.subdiv_kd.lastIndexOf(".") + 1);
 		
 		if (departmen.getTgl_create() == null) {
-			departmen.setTgl_create(new Date());
+			departmen.setTgl_create(selectSysdate());
 			departmen.setUser_create(CommonUtil.getCurrentUserId());
 
 			Set<AudittrailDetail> changes = CommonUtil.changes(departmen, get(departmen.dept_kd,departmen.subdiv_kd, departmen.divisi_kd));
@@ -85,7 +85,7 @@ public class DepartmenManager extends BaseService {
 			audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.ADD, departmen.getClass().getSimpleName(), departmen.getItemId(), CommonUtil.getIpAddr(httpServletRequest), "ADD DEPARTMENT",
 					CommonUtil.getCurrentUser(), changes);
 		} else {
-			departmen.setTgl_update(new Date());
+			departmen.setTgl_update(selectSysdate());
 			departmen.setUser_update(CommonUtil.getCurrentUserId());
 
 			Set<AudittrailDetail> changes = CommonUtil.changes(departmen,get(departmen.dept_kd, departmen.subdiv_kd, departmen.divisi_kd));

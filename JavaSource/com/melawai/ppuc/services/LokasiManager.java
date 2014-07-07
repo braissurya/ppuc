@@ -78,7 +78,7 @@ public class LokasiManager extends BaseService {
 		lokasi.dept_kd=lokasi.dept_kd.substring(lokasi.dept_kd.lastIndexOf(".") + 1);
 		
 		if (lokasi.getTgl_create() == null) {
-			lokasi.setTgl_create(new Date());
+			lokasi.setTgl_create(selectSysdate());
 			lokasi.setUser_create(CommonUtil.getCurrentUserId());
 
 			Set<AudittrailDetail> changes = CommonUtil.changes(lokasi, get(lokasi.lok_kd, lokasi.dept_kd, lokasi.subdiv_kd, lokasi.divisi_kd));
@@ -87,7 +87,7 @@ public class LokasiManager extends BaseService {
 			audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.ADD, lokasi.getClass().getSimpleName(), lokasi.getItemId(), CommonUtil.getIpAddr(httpServletRequest), "ADD Lokasi",
 					CommonUtil.getCurrentUser(), changes);
 		} else {
-			lokasi.setTgl_update(new Date());
+			lokasi.setTgl_update(selectSysdate());
 			lokasi.setUser_update(CommonUtil.getCurrentUserId());
 
 			Set<AudittrailDetail> changes = CommonUtil.changes(lokasi, get(lokasi.lok_kd, lokasi.dept_kd, lokasi.subdiv_kd, lokasi.divisi_kd));

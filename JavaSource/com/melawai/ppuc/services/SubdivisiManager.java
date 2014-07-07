@@ -75,7 +75,7 @@ public class SubdivisiManager extends BaseService {
 	@Transactional
 	public Subdivisi save(Subdivisi subdivisi) {
 		if (subdivisi.getTgl_create() == null) {
-			subdivisi.setTgl_create(new Date());
+			subdivisi.setTgl_create(selectSysdate());
 			subdivisi.setUser_create(CommonUtil.getCurrentUserId());
 
 			Set<AudittrailDetail> changes = CommonUtil.changes(subdivisi, get(subdivisi.getSubdiv_kd(), subdivisi.getDivisi_kd()));
@@ -85,7 +85,7 @@ public class SubdivisiManager extends BaseService {
 			audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.ADD, subdivisi.getClass().getSimpleName(), subdivisi.getItemId(), CommonUtil.getIpAddr(httpServletRequest), "ADD SUB DIVISI",
 					CommonUtil.getCurrentUser(), changes);
 		} else {
-			subdivisi.setTgl_update(new Date());
+			subdivisi.setTgl_update(selectSysdate());
 			subdivisi.setUser_update(CommonUtil.getCurrentUserId());
 
 			Set<AudittrailDetail> changes = CommonUtil.changes(subdivisi, get(subdivisi.getSubdiv_kd(), subdivisi.getDivisi_kd()));

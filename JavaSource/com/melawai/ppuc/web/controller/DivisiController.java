@@ -158,7 +158,7 @@ public class DivisiController extends ParentController {
 		if (binder.getBindingResult().hasErrors()) {
 			errors.rejectValue("upload.uploadFile", null, Utils.errorBinderToList(binder.getBindingResult(), messageSource).get(0));
 		} else {
-			Date sekarang = new Date();
+			Date sekarang = divisiManager.selectSysdate();
 			// nama file yang ingin disimpan
 			String filename = "divisi" + Utils.convertDateToString(sekarang, "ddMMyyyyHHmmss") + ".csv";
 			// jumlah coloumn data yang ingin di proses

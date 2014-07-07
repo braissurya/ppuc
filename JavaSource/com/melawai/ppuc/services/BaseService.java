@@ -55,8 +55,10 @@ public class BaseService {
 
 		auditLog.setInfo(info);
 
+		if(createdBy!=null)
 		auditLog.setUser_create(createdBy.user_id);
-		auditLog.setTgl_create(new Date());
+		
+		auditLog.setTgl_create(selectSysdate());
 
 		audittrailManager.save(auditLog);
 
@@ -64,7 +66,7 @@ public class BaseService {
 			for (AudittrailDetail det : changes) {
 				det.setId_audittrail(auditLog.getId_audittrail());
 				det.setUser_create(createdBy.user_id);
-				det.setTgl_create(new Date());
+				det.setTgl_create(selectSysdate());
 				audittrailDetailManager.save(det);
 			}
 		}
