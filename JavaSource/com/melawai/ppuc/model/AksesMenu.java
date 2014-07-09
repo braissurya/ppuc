@@ -47,6 +47,16 @@ public class AksesMenu extends BaseObject implements Serializable  {
 	public AksesMenu(){
 		//TODO: standard constructor free to change
 	}
+	
+	
+
+	public AksesMenu(String group_kd, Long menu_id) {
+		super();
+		this.group_kd = group_kd;
+		this.menu_id = menu_id;
+	}
+
+
 
 	//****************** CONSTRUCTOR END HERE ******************/
 

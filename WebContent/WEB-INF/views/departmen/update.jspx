@@ -13,11 +13,15 @@
 	<spring:url value="/" var="path" />
 	<script type="text/javascript">
 		dojo.ready(function() {
-			
-			autoPopulateSelect("${path}", "subdivisi2", "_divisi_kd_id",
-					"_subdiv_kd_id", true,
+					
+			autoPopulateSelect(
+					"${path}",
+					"subdivisi2",
+					"_divisi_kd_id",
+					true,
+					"${choice_deptkd}",
 					"${departmen.divisi_kd}.${departmen.subdiv_kd}",
-					"${choice_subdivkd}");
+					"_subdiv_kd_id");
 		});
 	</script>
 </div>

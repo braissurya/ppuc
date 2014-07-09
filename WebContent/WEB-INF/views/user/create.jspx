@@ -11,6 +11,7 @@
        <field:input field="email" label="Email" id="c_com_melawai_ppuc_model_user_email"  max="100" required="true" email="true"/>
        <field:select field="kd_fungsi" label="Kd Fungsi"  id="c_com_melawai_ppuc_model_user_kd_fungsi" items="${mfungsiList}" itemLabel="key" itemValue="value" required="true" blank="true"  path="/master/mfungsi"/>
        <field:select field="group_kd" label="Group Kd"  id="c_com_melawai_ppuc_model_user_group_kd" items="${groupKodeList}" itemLabel="key" itemValue="value" required="true" blank="true"  path="/master/mfungsi"/>
+   	   <field:checkbox field="f_aktif" id="c_com_melawai_ppuc_model_user_f_aktif" value="1" label="F Aktif" />
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_com_melawai_ppuc_model_user" render="${ not empty dependencies }"/>
    

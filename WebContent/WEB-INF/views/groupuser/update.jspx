@@ -1,14 +1,70 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:formtag="urn:jsptagdir:/WEB-INF/tags/form" xmlns:form="http://www.springframework.org/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_com_melawai_ppuc_model_groupuser" modelAttribute="groupuser" path="/master/groupuser" idField="itemId" versionField="none" >
+    <formtag:update id="fu_com_melawai_ppuc_model_groupuser" modelAttribute="groupuser" path="/master/groupuser" idField="itemId" versionField="none" >
        <field:input field="group_kd" label="Group Kd" id="c_com_melawai_ppuc_model_groupuser_group_kd" required="true" />
        <field:input field="group_nm" label="Group Nm" id="c_com_melawai_ppuc_model_groupuser_group_nm"  />
-       <field:input field="id_role" label="Id Role" id="c_com_melawai_ppuc_model_groupuser_id_role"  validationMessageCode="field_invalid_integer" />
+       <field:select field="id_role" label="Id Role" id="c_com_melawai_ppuc_model_groupuser_id_role" items="${roleList}" itemLabel="key" itemValue="value" required="true" />
        <field:input field="user_create" label="User Create" id="c_com_melawai_ppuc_model_groupuser_user_create" readonly="true" validationMessageCode="field_invalid_number" />
        <field:input field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_groupuser_tgl_create" readonly="true" validationMessageCode="field_invalid_number" />
        <field:input field="jam_create" label="Jam Create" id="c_com_melawai_ppuc_model_groupuser_jam_create" readonly="true" validationMessageCode="field_invalid_number" />
-	</form:update>
+	
+		<script>
+			require([ "dojo/query", "dojo/on", "dojo/domReady!" ],
+					function(query, on) {
+						var masterSelect = null;
+	
+						query("input.masterSelectBox_menu_id").forEach(function(node) {
+								masterSelect = node;
+								on(	node,"click",function(e) {
+									query("table td.selectBox input[type=checkbox]")
+										.forEach(
+											function(node) {
+												node.checked = masterSelect.checked;
+											});
+								})
+							})
+						masterSelect.checked=true;
+						query("table td.selectBox input[type=checkbox]")
+							.forEach(
+								function(node) {
+									
+									if(node.checked ==false	){
+										masterSelect.checked=false;
+									}
+								});
+					});
+		</script>
+		
+			<table >
+				<thead>
+					<tr>
+						<th><input class="masterSelectBox_menu_id" type="checkbox" name="menu_id" /></th>
+						<th>Nama</th>
+						<th>Parent</th>
+						<th>Link</th>
+						
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${groupuser.menus}" var="item" varStatus="vs">
+						<tr>
+							<td class="selectBox utilbox">
+								<form:checkbox path="menus[${vs.index}].akses"/>
+								<form:hidden path="menus[${vs.index}].menu_id"/>
+							</td>
+							<td style="padding-left: ${item.level*20}px;">${item.nama }</td>
+							<td>${item.parent_nama }</td>
+							<td>${item.link }</td>
+							
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+			<br/>
+		
+	</formtag:update>
 </div>
 

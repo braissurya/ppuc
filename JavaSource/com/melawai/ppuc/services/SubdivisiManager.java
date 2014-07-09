@@ -74,7 +74,7 @@ public class SubdivisiManager extends BaseService {
 	/** Save Model **/
 	@Transactional
 	public Subdivisi save(Subdivisi subdivisi) {
-		if (subdivisi.getTgl_create() == null) {
+		if (!exists(subdivisi.subdiv_kd, subdivisi.divisi_kd)) {
 			subdivisi.setTgl_create(selectSysdate());
 			subdivisi.setUser_create(CommonUtil.getCurrentUserId());
 

@@ -58,20 +58,22 @@ public class UserManager extends BaseService {
 	}
 
 	/** Ambil jumlah seluruh data **/
-	public int selectPagingCount(String search) {
+	public int selectPagingCount(String search,String group_kd) {
 		User user = new User();
+		user.setGroup_kd(group_kd);
 		user.setSearch(search);
 		return userMapper.selectPagingCount(user);
 	}
 
 	/** Ambil data paging **/
-	public List<User> selectPagingList(String search, String sort, String sortOrder, int page, int rowcount) {
+	public List<User> selectPagingList(String search, String sort, String sortOrder, int page, int rowcount, String group_kd) {
 		User user = new User();
 		user.setSearch(search);
 		if (sort != null)
 			user.setSort(sort + " " + sortOrder);
 		user.setPage(page);
 		user.setRowcount(rowcount);
+		user.setGroup_kd(group_kd);
 		List<User> lsUser=userMapper.selectPagingList(user);
 		List<User> result=new ArrayList<User>();
 		for(User u:lsUser){

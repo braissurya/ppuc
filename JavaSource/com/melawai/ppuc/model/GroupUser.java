@@ -2,6 +2,7 @@ package com.melawai.ppuc.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Temporal;
@@ -10,6 +11,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.melawai.ppuc.utils.Utils;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -52,8 +55,9 @@ public class GroupUser extends BaseObject implements Serializable  {
 
 	public String itemId;
 	public Role role;
+	public String role_name;
 
-	public Set<Menu> menus;
+	public List<Menu> menus;
 	//****************** OTHERS END HERE ******************/
 
 
@@ -79,7 +83,12 @@ public class GroupUser extends BaseObject implements Serializable  {
 	public void setUser_create(String user_create){ this.user_create = user_create; }
 
 	public Date getTgl_create(){ return tgl_create; }
-	public void setTgl_create(Date tgl_create){ this.tgl_create = tgl_create; }
+	public void setTgl_create(Date tgl_create){ 
+		this.tgl_create = tgl_create; 
+		if (tgl_create != null) {
+			this.jam_create = Utils.convertDateToString(tgl_create, jam_format);
+		}
+	}
 
 	public String getJam_create(){ return jam_create; }
 	public void setJam_create(String jam_create){ this.jam_create = jam_create; }
@@ -91,8 +100,23 @@ public class GroupUser extends BaseObject implements Serializable  {
 	public Role getRole() {	return role;}
 	public void setRole(Role role) {this.role = role;}
 
-	public Set<Menu> getMenus() {return menus;}
-	public void setMenus(Set<Menu> menus) {	this.menus = menus;	}
+	public List<Menu> getMenus() {
+		return menus;
+	}
+
+	public void setMenus(List<Menu> menus) {
+		this.menus = menus;
+	}
+
+	public String getRole_name() {
+		return role.getRole_name();
+	}
+
+	public void setRole_name(String role_name) {
+		this.role_name = role_name;
+	}
+
+	
 	
 	
 	

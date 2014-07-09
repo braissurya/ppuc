@@ -86,19 +86,19 @@
 					<span class="doubleDot">:</span>
 					<c:choose>
 						<c:when test="${disableFormBinding}">
-							<input id="_${sec_field}_id" name="${sec_field}" type="${fn:escapeXml(type)}" />
+							<input id="_${sec_field}_id" name="${sec_field}" type="${fn:escapeXml(type)}" max="${max}" />
 						</c:when>
 						<c:otherwise>
 							<c:choose>
 								<c:when test="${type eq 'password'}">
-									<form:password id="_${sec_field}_id" path="${sec_field}" disabled="${disabled}" readonly="${readonly}" />
+									<form:password id="_${sec_field}_id" path="${sec_field}" disabled="${disabled}" readonly="${readonly}" maxlength="${max}" />
 								</c:when>
 								<c:when test="${type eq 'file'}">
 									<spring:message arguments=" " code="upload_file_format_label" var="file_format_label" htmlEscape="true" />
 									<INPUT type="file" name="${sec_field}" id="_${sec_field}_id" /> <span class="info">  ${file_format_label} ${formatFile }</span>
 								</c:when>
 								<c:otherwise>
-									<form:input id="_${sec_field}_id" path="${sec_field}" disabled="${disabled}" readonly="${readonly}" cssClass="input" cssErrorClass="input inputError" />
+									<form:input id="_${sec_field}_id" path="${sec_field}" disabled="${disabled}" readonly="${readonly}"  maxlength="${max}" cssClass="input" cssErrorClass="input inputError" />
 								</c:otherwise>
 							</c:choose>
 							<br />

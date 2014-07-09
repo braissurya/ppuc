@@ -116,9 +116,8 @@
 			left outer join role r on gu.id_role = r.id_role
 			left outer join m_fungsi mf on c.kd_fungsi = mf.kd_fungsi
 			left outer join sys_akses_menu am on gu.group_kd = am.group_kd
-			left outer join menu cm on am.menu_id = cm.sys_menu_id
-			left outer join menu pm on cm.parent = pm.sys_menu_id
-			where cm.f_aktif =1
+			left outer join menu cm on am.menu_id = cm.sys_menu_id and cm.f_aktif = 1
+			left outer join menu pm on cm.parent = pm.sys_menu_id and pm.f_aktif = 1
 			order by cm.sys_path, cm.urut
 		)T
 	</sql>
@@ -126,7 +125,7 @@
 	<!-- kolom apa aja yang mau disearching -->
 	<sql id="searchTambahan">
 		Where 1=1
-			<!--!!TAMBAHAN parameter untuk search-->
+			<if test="group_kd != null">AND T.group_kd = #{group_kd} </if>
 	</sql>
 
 	<!-- kolom apa aja yang mau disearching -->
@@ -221,7 +220,7 @@
 	</delete>
 
 	<!-- get berdasarkan primary key -->
-	<select id="get" parameterType="String" resultMap="UserMap">
+	<select id="get" parameterType="String" resultMap="UserMap" useCache="false">
 		<include refid="selectQuery" />	where T.user_id=#{value}
 	</select>
 
@@ -231,7 +230,7 @@
 	</select>
 
 	<!-- select berdasarkan paging parameter -->
-	<select id="selectPagingList" parameterType="User" resultMap="UserMap">
+	<select id="selectPagingList" parameterType="User" resultMap="UserMap" useCache="false">
 			SELECT x.* from (
 				select * from (
 					<include refid="selectQuery" />
@@ -248,7 +247,7 @@
 	</select>
 
 	<!-- select jumlah seluruh data yang akan di paging -->
-	<select id="selectPagingCount" parameterType="User" resultType="Integer">
+	<select id="selectPagingCount" parameterType="User" resultType="Integer" useCache="false">
 		select count(*) from(
 			SELECT x.* from (
 				select * from (
@@ -264,7 +263,7 @@
 
 	<!-- QUERY CUSTOM LAIN-LAIN bisa dimasukkan dibawah ini -->
 
-	<select id="loadUserByUsername" parameterType="String" resultMap="UserMap">
+	<select id="loadUserByUsername" parameterType="String" resultMap="UserMap" useCache="false">
 		<include refid="selectQuery" />
 		where T.user_id=#{value}
 	</select>

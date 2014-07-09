@@ -46,8 +46,24 @@
 		***********************************************/	
    </script>
  
-  <script language="JavaScript" type="text/javascript">dojo.require("dojo.parser");</script>
+  <script language="JavaScript" type="text/javascript">
+	  dojo.require("dojo.parser");
+	  dojo.require("dijit.Dialog");
+   </script>
   
+  <script>
+	  require([ "dojo/query","dojo/on", "dojo/domReady!" ],
+				function(query, on) {	
+		  
+		  var pesan = '${param.pesan}';
+			if(pesan!=''){
+				dialogAlert("Info",pesan);
+				
+				
+			}
+			
+	});
+  </script>
   
 
 </jsp:root>

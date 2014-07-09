@@ -3,7 +3,7 @@
 
   <jsp:directive.attribute name="id" type="java.lang.String" required="true" rtexprvalue="true" description="The identifier for this tag (do not change!)" />
   <jsp:directive.attribute name="field" type="java.lang.String" required="true" rtexprvalue="true" description="The field exposed from the form backing object" />
-  <jsp:directive.attribute name="path" type="java.lang.String" required="true" rtexprvalue="true" description="The relative path to the referenced resource" />
+  <jsp:directive.attribute name="path" type="java.lang.String" required="false" rtexprvalue="true" description="The relative path to the referenced resource" />
   <jsp:directive.attribute name="items" type="java.util.Collection" required="true" rtexprvalue="true" description="The name of the collection displayed in the select box" />
   <jsp:directive.attribute name="label" type="java.lang.String" required="false" rtexprvalue="true" description="The label used for this field, will default to a message bundle if not supplied" />
   <jsp:directive.attribute name="blank" type="java.lang.Boolean" required="false" rtexprvalue="true" description="first choice blank used for this field" />

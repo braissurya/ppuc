@@ -1,23 +1,49 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_com_melawai_ppuc_model_lokasi" modelAttribute="lokasi" path="/master/lokasi" idField="itemId" versionField="none" >
-       <field:input field="lok_kd" label="Lok Kd" id="c_com_melawai_ppuc_model_lokasi_lok_kd" required="true" />
-       <field:input field="divisi_kd" label="Divisi Kd" id="c_com_melawai_ppuc_model_lokasi_divisi_kd" required="true" />
-       <field:input field="subdiv_kd" label="Subdiv Kd" id="c_com_melawai_ppuc_model_lokasi_subdiv_kd" required="true" />
-       <field:input field="dept_kd" label="Dept Kd" id="c_com_melawai_ppuc_model_lokasi_dept_kd" required="true" />
-       <field:input field="lok_nm" label="Lok Nm" id="c_com_melawai_ppuc_model_lokasi_lok_nm"  />
-       <field:input field="propinsi" label="Propinsi" id="c_com_melawai_ppuc_model_lokasi_propinsi" required="true" />
-       <field:input field="kota" label="Kota" id="c_com_melawai_ppuc_model_lokasi_kota" required="true" />
-       <field:input field="email" label="Email" id="c_com_melawai_ppuc_model_lokasi_email"  />
-       <field:input field="f_tutup" label="F Tutup" id="c_com_melawai_ppuc_model_lokasi_f_tutup"  />
-       <field:datetime field="tgl_tutup" label="Tgl Tutup" id="c_com_melawai_ppuc_model_lokasi_tgl_tutup"  dateTimePattern="${lokasi_tgl_tutup_date_format}" />
-       <field:input field="user_update" label="User Update" id="c_com_melawai_ppuc_model_lokasi_user_update" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="tgl_update" label="Tgl Update" id="c_com_melawai_ppuc_model_lokasi_tgl_update" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="jam_update" label="Jam Update" id="c_com_melawai_ppuc_model_lokasi_jam_update" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="user_create" label="User Create" id="c_com_melawai_ppuc_model_lokasi_user_create" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_lokasi_tgl_create" readonly="true" validationMessageCode="field_invalid_number" />
+      <field:select field="divisi_kd" label="Divisi Kd" id="c_com_melawai_ppuc_model_lokasi_divisi_kd" items="${divisiList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/divisi" />
+		<field:select field="subdiv_kd" label="Subdiv Kd" id="c_com_melawai_ppuc_model_lokasi_subdiv_kd" items="${subdivList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/subdivisi" />
+		<field:select field="dept_kd" label="Dept Kd" id="c_com_melawai_ppuc_model_lokasi_dept_kd" items="${deptList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/departmen" />
+		<field:input field="lok_kd" label="Lok Kd" id="c_com_melawai_ppuc_model_lokasi_lok_kd" required="true" max="5" />
+		<field:input field="lok_nm" label="Lok Nm" id="c_com_melawai_ppuc_model_lokasi_lok_nm" max="50" />
+		<field:select field="propinsi" label="Propinsi" id="c_com_melawai_ppuc_model_lokasi_propinsi" items="${propinsiList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/propinsi" />
+		<field:select field="kota" label="Kota" id="c_com_melawai_ppuc_model_lokasi_kota" items="${kotaList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/kota" />
+		<field:input field="email" label="Email" id="c_com_melawai_ppuc_model_lokasi_email" max="100" />
+		<field:checkbox field="f_tutup" id="c_com_melawai_ppuc_model_lokasi_f_tutup" value="1" label="F Tutup" />
+		<field:datetime field="tgl_tutup" label="Tgl Tutup" id="c_com_melawai_ppuc_model_lokasi_tgl_tutup" dateTimePattern="${lokasi_tgl_tutup_date_format}" />
 	</form:update>
+	
+	<spring:message arguments="Subdivisi KD" code="field_choice" var="choice_subdivkd" htmlEscape="false" />
+	<spring:message arguments="Departmen KD" code="field_choice" var="choice_deptkd" htmlEscape="false" />
+	<spring:url value="/" var="path" />
+	<script type="text/javascript">
+		dojo
+				.ready(function() {
+
+					autoPopulateSelect2("${path}", "subdivisi2",
+							"_divisi_kd_id", true, "${choice_subdivkd}",
+							"${lokasi.divisi_kd}.${lokasi.subdiv_kd}",
+							"_subdiv_kd_id", "_dept_kd_id");
+					autoPopulateSelect(
+							"${path}",
+							"departmen",
+							"_subdiv_kd_id",
+							true,
+							"${choice_deptkd}",
+							"${lokasi.divisi_kd}.${lokasi.subdiv_kd}.${lokasi.dept_kd}",
+							"_dept_kd_id");
+					autoPopulateSelect(
+							"${path}",
+							"kota",
+							"_propinsi_id",
+							false,
+							"",
+							"${lokasi.kota}",
+							"_kota_id");
+				});
+	</script>
 </div>
+
 

@@ -9,6 +9,8 @@
 	<jsp:directive.attribute name="update" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'update' link into table (default true)" />
 	<jsp:directive.attribute name="delete" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'delete' link into table (default true)" />
 	<jsp:directive.attribute name="upload" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'upload' link into table (default false)" />
+	<jsp:directive.attribute name="multiselect" type="java.lang.String" required="false" rtexprvalue="false" description="The name for multiselection checkboxes." />
+	<jsp:directive.attribute name="show" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'show' link into table (default true)" />
 	<jsp:directive.attribute name="render" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'true')" />
 	<jsp:directive.attribute name="z" type="java.lang.String" required="false" description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
 	<c:if test="${empty render or render}">
@@ -40,10 +42,33 @@
 		<c:set var="customs" value="${fn:split(columnCustoms, '&#9999;')}" scope="request" />
 		<c:set var="badane" value="${fn:split(badans, '&#9999;')}" scope="request" />
 		
+		 <c:if test="${not empty multiselect}">
+		     <script>
+		      require( [ "dojo/query", "dojo/on", "dojo/domReady!" ], function( query, on ) {
+		       var masterSelect = null ;
+		        
+		       query( "table#${menu_id} input.masterSelectBox_${multiselect}" ).forEach( function( node ){
+		        masterSelect = node ;
+		        on( node, "click", function( e ) {
+		         query( "table#${menu_id} td.selectBox input[type=checkbox]").forEach( function( node ) {
+		          node.checked = masterSelect.checked ;
+		         }) ;
+		        })
+		       })
+		      }) ;
+		       
+		     </script>
+		  </c:if>
 		<spring:eval var="colCounter" expression="1" />
 		<table>
 			<thead>
 				<tr>
+					 <c:if test="${not empty multiselect}">
+			            <th >
+			  				  <input class="masterSelectBox_${multiselect}" type="checkbox" name="${column}" />
+			            </th>
+			            <spring:eval var="colCounter" expression="colCounter  + 1" />
+			          </c:if>
 					<c:forTokens items="${columnLabels}" delims="${'&#9999;'}" var="columnHeading" varStatus="num">
 						<c:choose>
 							<c:when test="${customs[num.count-1]}">
@@ -95,7 +120,10 @@
 							</c:otherwise>
 						</c:choose>
 					</c:forTokens>
-					<th></th>
+					<c:if test="${show}">
+					 <th></th>
+					 <spring:eval var="colCounter" expression="colCounter  + 1" />
+					</c:if>
 					<c:if test="${update}">
 						<th></th>
 						<spring:eval var="colCounter" expression="colCounter  + 1" />
@@ -108,6 +136,11 @@
 			</thead>
 			<c:forEach items="${data}" var="item">
 				<tr>
+					 <c:if test="${not empty multiselect}">
+			            <td class="selectBox">
+			           <input type="checkbox" name="${multiselect}" value="${item.menu_id}" />
+			          </td>
+			          </c:if>
 					<c:set var="itemId">
 						<spring:eval expression="item.${typeIdFieldName}" />
 					</c:set>
@@ -148,8 +181,16 @@
 								
 					</c:forTokens>
 					
-					<td class="utilbox"><spring:url value="${path}/${itemId}" var="show_form_url" /> <spring:url value="/resources/images/show.png" var="show_image_url" /> <spring:message arguments="${typeName}" code="entity_show" var="show_label" htmlEscape="false" /> <a href="${show_form_url}" alt="${fn:escapeXml(show_label)}" title="${fn:escapeXml(show_label)}"> <img alt="${fn:escapeXml(show_label)}" class="image" src="${show_image_url}" title="${fn:escapeXml(show_label)}" />
-					</a></td>
+					<c:if test="${show}">
+				           <td class="utilbox">
+				             <spring:url value="${path}/${itemId}" var="show_form_url" />
+				             <spring:url value="/resources/images/show.png" var="show_image_url" />
+				             <spring:message arguments="${typeName}" code="entity_show" var="show_label" htmlEscape="false" />
+				             <a href="${show_form_url}" alt="${fn:escapeXml(show_label)}" title="${fn:escapeXml(show_label)}">
+				               <img alt="${fn:escapeXml(show_label)}" class="image" src="${show_image_url}" title="${fn:escapeXml(show_label)}" />
+				             </a>
+				           </td>
+				   </c:if> 
 					<c:if test="${update}">
 						<td class="utilbox">
 							<spring:url value="${path}/${itemId}" var="update_form_url">

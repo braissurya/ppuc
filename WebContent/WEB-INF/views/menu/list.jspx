@@ -1,17 +1,82 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
-    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
-    <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_com_melawai_ppuc_model_menu"  items="${menuList}" >
-        <table:table data="${menuList}" id="l_com_melawai_ppuc_model_Menu" typeIdFieldName="itemId" path="/master/menu" >
-       <table:column id="c_com_melawai_ppuc_model_menu_nama" property="nama" label="Nama" />
-       <table:column id="c_com_melawai_ppuc_model_menu_link" property="link" label="Link" />
-       <table:column id="c_com_melawai_ppuc_model_menu_path" property="path" label="Path" />
-       <table:column id="c_com_melawai_ppuc_model_menu_user_create" property="user_create" label="User Create" />
-       <table:column id="c_com_melawai_ppuc_model_menu_jam_create" property="jam_create" label="Jam Create" />
-       <table:column id="c_com_melawai_ppuc_model_menu_user_nonaktif" property="user_nonaktif" label="User Nonaktif" />
-       <table:column id="c_com_melawai_ppuc_model_menu_jam_nonaktif" property="jam_nonaktif" label="Jam Nonaktif" />
-        </table:table>
-    </page:list>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:spring="http://www.springframework.org/tags" xmlns:form="http://www.springframework.org/tags/form" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" version="2.0">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	<c:set value="/master/menu" var="path" />
+	<c:set value="c_com_melawai_ppuc_model_menu" var="id" />
+	<spring:message var="typeName" code="menu_item_menu_new_label" htmlEscape="false" />
+	<spring:message arguments="${typeName}" code="entity_delete" var="delete_label" htmlEscape="false" />
+	<page:list id="pl_com_melawai_ppuc_model_menu" items="${menuList}">
+		<table>
+			<thead>
+				<tr>
+					<th>Nama</th>
+					<th>Parent</th>
+					<th>Link</th>
+					<th>User Create</th>
+					<th>Tgl Create</th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${menuList}" var="item">
+					<tr>
+						<td style="padding-left: ${item.level*20}px;">${item.nama }</td>
+						<td>${item.parent_nama }</td>
+						<td>${item.link }</td>
+						<td>${item.user_create }</td>
+						<td>${item.tgl_create }</td>
+						<td class="utilbox"><spring:url value="${path}?form&amp;parent_id=${item.parent}" var="parent_form_url" /> <spring:url value="/resources/images/icons/branch.png" var="parent_image_url" /> <spring:message arguments="Branch" code="entity_create" var="show_label" htmlEscape="false" /> <a href="${parent_form_url}" alt="${fn:escapeXml(show_label)}" title="${fn:escapeXml(show_label)}"> <img alt="${fn:escapeXml(show_label)}" class="image" src="${parent_image_url}"
+								title="${fn:escapeXml(show_label)}" />
+						</a></td>
+						<td class="utilbox"><spring:url value="${path}/${item.itemId}" var="show_form_url" /> <spring:url value="/resources/images/show.png" var="show_image_url" /> <spring:message arguments="${typeName}" code="entity_show" var="show_label" htmlEscape="false" /> <a href="${show_form_url}" alt="${fn:escapeXml(show_label)}" title="${fn:escapeXml(show_label)}"> <img alt="${fn:escapeXml(show_label)}" class="image" src="${show_image_url}" title="${fn:escapeXml(show_label)}" />
+						</a></td>
+						<td class="utilbox"><spring:url value="${path}/${item.itemId}" var="update_form_url">
+								<spring:param name="form" />
+							</spring:url> <spring:url value="/resources/images/update.png" var="update_image_url" /> <spring:message arguments="${typeName}" code="entity_update" var="update_label" htmlEscape="false" /> <a href="${update_form_url}" alt="${fn:escapeXml(update_label)}" title="${fn:escapeXml(update_label)}"> <img alt="${fn:escapeXml(update_label)}" class="image" src="${update_image_url}" title="${fn:escapeXml(update_label)}" />
+						</a></td>
+						<td class="utilbox"><spring:url value="${path}/${item.itemId}" var="delete_form_url" /> <spring:url value="/resources/images/delete.png" var="delete_image_url" /> <form:form action="${delete_form_url}" method="DELETE">
+								<spring:message arguments="${typeName}" code="entity_delete" var="delete_label" htmlEscape="false" />
+								<c:set var="delete_confirm_msg">
+									<spring:escapeBody javaScriptEscape="true">
+										<spring:message code="entity_delete_confirm" />
+									</spring:escapeBody>
+								</c:set>
+								<input alt="${fn:escapeXml(delete_label)}" class="image" src="${delete_image_url}" title="${fn:escapeXml(delete_label)}" type="image" value="${fn:escapeXml(delete_label)}" onclick="return confirm('${delete_confirm_msg}');" />
+								<c:if test="${not empty param.page}">
+									<input name="page" type="hidden" value="1" />
+								</c:if>
+								<c:if test="${not empty param.size}">
+									<input name="size" type="hidden" value="${fn:escapeXml(param.size)}" />
+								</c:if>
+							</form:form></td>
+					</tr>
+				</c:forEach>
+			</tbody>
+			<tr class="footer">
+				<td colspan="9"><c:if test="${empty create or create}">
+						<span class="new"> <spring:url value="${path}" var="create_url">
+								<spring:param name="form" />
+							</spring:url> <a href="${create_url}"> <spring:url value="/resources/images/add.png" var="create_img_url" /> <spring:message arguments="${typeName}" code="global_menu_new" var="add_message" htmlEscape="false" /> <img alt="${fn:escapeXml(add_message)}" src="${create_img_url}" title="${fn:escapeXml(add_message)}" />
+						</a>
+						</span>
+						<c:out value=" " />
+						<c:if test="${upload }">
+							<span class="upload"> <c:set var="upl" value="/upload" /> <spring:url value="${path}${upl}" var="upload_url">
+									<spring:param name="form" />
+								</spring:url> <a href="${upload_url}"> <spring:url value="/resources/images/upload.jpg" var="upload_img_url" /> <spring:message arguments="${typeName}" code="global_menu_upload" var="upload_message" htmlEscape="false" /> <img alt="${fn:escapeXml(upload_message)}" src="${upload_img_url}" title="${fn:escapeXml(upload_message)}" />
+							</a>
+							</span>
+						</c:if>
+					</c:if> <c:if test="${not empty maxPages}">
+						<util:pagination maxPages="${maxPages}" page="${param.page}" size="${param.size}" />
+					</c:if> <page:find finderName="search" label="Search" id="sc_${id}" path="${path }">
+						<input name="search" type="text" />
+					</page:find></td>
+			</tr>
+		</table>
+	</page:list>
 </div>
-

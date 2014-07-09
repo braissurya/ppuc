@@ -19,6 +19,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class Menu extends BaseObject implements Serializable  {
 
+	
+	private static final long serialVersionUID = 2062694598974079208L;
+
 	//****************** COLOMN FROM TABLE START HERE ******************/
 	@NotNull
 	public Long menu_id;
@@ -69,6 +72,8 @@ public class Menu extends BaseObject implements Serializable  {
 	public Menu menu_parent;
 	public String parent_nama;
 	public String parent_link;
+	
+	public Boolean akses;
 	
 	//****************** OTHERS END HERE ******************/
 
@@ -147,6 +152,16 @@ public class Menu extends BaseObject implements Serializable  {
 	public void setParent_link(String parent_link) {
 		this.parent_link = parent_link;
 	}
+
+	public Boolean getAkses() {
+		return akses;
+	}
+
+	public void setAkses(Boolean akses) {
+		this.akses = akses;
+	}
+
+	
 	
 	
 

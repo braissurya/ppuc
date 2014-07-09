@@ -1,7 +1,3 @@
-/*$().ready(function(){	
-	setting();
-	
-})*/
 
 function formatCurrency(num) {
 	num = num.toString().replace(/\,/g, '');
@@ -17,6 +13,15 @@ function formatCurrency(num) {
 		num = num.substring(0, num.length - (4 * i + 3)) + ','
 				+ num.substring(num.length - (4 * i + 3));
 	return (((sign) ? '' : '-') + num + '.' + cents);
+}
+
+function dialogAlert(txtTitle, txtContent)
+{
+    var thisdialog = new dijit.Dialog({ title: txtTitle, content: txtContent, style: "width: 300px; " });
+    dojo.body().appendChild(thisdialog.domNode);
+    thisdialog.startup();
+	thisdialog.show();
+
 }
 
 /* Popup Window, persis ditengah layar */

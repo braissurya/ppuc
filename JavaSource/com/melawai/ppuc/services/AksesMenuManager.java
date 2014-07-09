@@ -61,11 +61,13 @@ public class AksesMenuManager {
 	/** Save Model **/
 	@Transactional
 	public AksesMenu save(AksesMenu aksesmenu) {
-		if (aksesmenu.getTgl_create()==null) {
+		
+		if(!exists(aksesmenu.group_kd, aksesmenu.menu_id))
 			aksesmenuMapper.insert(aksesmenu);
-		} else {
-			aksesmenuMapper.update(aksesmenu);
-		} 
+		
+			//NO UPDATE
+//			aksesmenuMapper.update(aksesmenu);
+		
 		return aksesmenu;
 	}
 	/** Others Method **/

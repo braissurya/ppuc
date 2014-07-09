@@ -77,7 +77,7 @@ public class LokasiManager extends BaseService {
 		lokasi.subdiv_kd=lokasi.subdiv_kd.substring(lokasi.subdiv_kd.lastIndexOf(".") + 1);
 		lokasi.dept_kd=lokasi.dept_kd.substring(lokasi.dept_kd.lastIndexOf(".") + 1);
 		
-		if (lokasi.getTgl_create() == null) {
+		if (!exists(lokasi.lok_kd, lokasi.dept_kd, lokasi.subdiv_kd, lokasi.divisi_kd)) {
 			lokasi.setTgl_create(selectSysdate());
 			lokasi.setUser_create(CommonUtil.getCurrentUserId());
 

@@ -46,8 +46,10 @@ public class MenuController extends ParentController{
 	}
 
 	@RequestMapping(params = "form", produces = "text/html")
-	public String createForm(Model uiModel) {
-		populateEditForm(uiModel, new Menu());
+	public String createForm(@RequestParam(value = "parent_id", required = false)Long parent_id,Model uiModel) {
+		Menu menu=new Menu();
+		menu.parent=parent_id;
+		populateEditForm(uiModel,menu );
 		return "menu/create";
 	}
 
@@ -65,7 +67,7 @@ public class MenuController extends ParentController{
 			page=1;
 		}
 
-			int sizeNo = size == null ? 10 : size.intValue();
+			int sizeNo = size == null ? 100 : size.intValue();
 			final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
 			uiModel.addAttribute("menuList",menuManager.selectPagingList(search,sortFieldName,sortOrder, firstResult, sizeNo) );
 			float nrOfPages = (float) menuManager.selectPagingCount(search) / sizeNo;
@@ -97,7 +99,7 @@ public class MenuController extends ParentController{
 		menuManager.remove(menu_id);
 		uiModel.asMap().clear();
 		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
-		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
+		uiModel.addAttribute("size", (size == null) ? "100" : size.toString());
 		return "redirect:/master/menu";
 	}
 	void addDateTimeFormatPatterns(Model uiModel) {
@@ -106,6 +108,7 @@ public class MenuController extends ParentController{
 	}
 	void populateEditForm(Model uiModel, Menu menu) {
 		uiModel.addAttribute("menu", menu);
+		uiModel.addAttribute("parentlist", menuManager.selectDropDown("concat(REPEAT('___', level),nama)", "sys_menu_id", "menu", "f_aktif =1","sys_path"));
 		addDateTimeFormatPatterns(uiModel);
 	}
 }

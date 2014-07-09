@@ -1,5 +1,6 @@
 package com.melawai.ppuc.web.interceptor;
 
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -83,7 +84,7 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 			User currentUser = CommonUtil.getCurrentUser();
 			if (currentUser != null) {// kalau sudah login masuk sini
 				
-				Set<Menu> lMenu = currentUser.getGroupUser().getMenus();
+				List<Menu> lMenu = currentUser.getGroupUser().getMenus();
 
 				if (lMenu != null) {// cek menu ada atau ga
 					boolean ada = false;

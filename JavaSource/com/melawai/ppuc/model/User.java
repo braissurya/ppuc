@@ -149,7 +149,12 @@ public class User extends BaseObject implements Serializable , UserDetails {
 	public void setUser_create(String user_create){ this.user_create = user_create; }
 
 	public Date getTgl_create(){ return tgl_create; }
-	public void setTgl_create(Date tgl_create){ this.tgl_create = tgl_create; }
+	public void setTgl_create(Date tgl_create){ 
+		this.tgl_create = tgl_create;
+		if (tgl_create != null) {
+			this.jam_create = Utils.convertDateToString(tgl_create, jam_format);
+		}
+	}
 
 	public String getJam_create(){ return jam_create; }
 	public void setJam_create(String jam_create){ this.jam_create = jam_create; }
@@ -158,7 +163,12 @@ public class User extends BaseObject implements Serializable , UserDetails {
 	public void setUser_update(String user_update){ this.user_update = user_update; }
 
 	public Date getTgl_update(){ return tgl_update; }
-	public void setTgl_update(Date tgl_update){ this.tgl_update = tgl_update; }
+	public void setTgl_update(Date tgl_update){ 
+		this.tgl_update = tgl_update;
+		if (tgl_update != null) {
+			this.jam_update = Utils.convertDateToString(tgl_update, jam_format);
+		}
+	}
 
 	public String getJam_update(){ return jam_update; }
 	public void setJam_update(String jam_update){ this.jam_update = jam_update; }

@@ -74,7 +74,7 @@ public class DepartmenManager extends BaseService {
 	public Departmen save(Departmen departmen) {
 		departmen.subdiv_kd=departmen.subdiv_kd.substring(departmen.subdiv_kd.lastIndexOf(".") + 1);
 		
-		if (departmen.getTgl_create() == null) {
+		if (!exists(departmen.dept_kd, departmen.subdiv_kd, departmen.divisi_kd)) {
 			departmen.setTgl_create(selectSysdate());
 			departmen.setUser_create(CommonUtil.getCurrentUserId());
 

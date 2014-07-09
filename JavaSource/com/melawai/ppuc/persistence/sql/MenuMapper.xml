@@ -10,6 +10,7 @@
 		<id property="menu_id" column="menu_id"  />  
 		<result property="parent" column="parent" />
 		<result property="nama" column="nama" />
+		<result property="parent_nama" column="parent_nama" />
 		<result property="link" column="link" />
 		<result property="level" column="level" />
 		<result property="urut" column="urut" />
@@ -21,6 +22,16 @@
 		<result property="user_nonaktif" column="user_nonaktif" />
 		<result property="tgl_nonaktif" column="tgl_nonaktif" />
 		<result property="jam_nonaktif" column="jam_nonaktif" />
+		<association property="menu_parent" javaType="Menu">
+			<id property="menu_id" column="pm_menu_id"  />  
+			<result property="parent" column="pm_parent" />
+			<result property="nama" column="pm_nama" />
+			<result property="link" column="pm_link" />
+			<result property="level" column="pm_level" />
+			<result property="urut" column="pm_urut" />
+			<result property="path" column="pm_path" />
+			<result property="f_aktif" column="pm_f_aktif" />
+		</association>
 	</resultMap>
 
 	<!-- nama kolom yang ingin ditampilkan -->
@@ -28,6 +39,7 @@
 		C.SYS_MENU_ID as menu_id,
 		C.PARENT as parent,
 		C.NAMA as nama,
+		PM.NAMA parent_nama,
 		C.LINK as link,
 		C.LEVEL as level,
 		C.URUT as urut,
@@ -38,7 +50,15 @@
 		C.SYS_JAM_CREATE as jam_create,
 		C.SYS_USER_NONAKTIF as user_nonaktif,
 		C.SYS_TGL_NONAKTIF as tgl_nonaktif,
-		C.SYS_JAM_NONAKTIF as jam_nonaktif
+		C.SYS_JAM_NONAKTIF as jam_nonaktif,
+		PM.SYS_MENU_ID as pm_menu_id,
+		PM.PARENT as pm_parent,
+		PM.NAMA as pm_nama,
+		PM.LINK as pm_link,
+		PM.LEVEL as pm_level,
+		PM.URUT as pm_urut,
+		PM.SYS_PATH as pm_path,
+		PM.F_AKTIF as pm_f_aktif
 	</sql>
 
 	<!-- query select, dengan kolom yang default di atas, apabila mau ditambahkan join juga bisa disini
@@ -46,6 +66,7 @@
 	<sql id="selectQuery">
 		select * from (
 			select <include refid="defaultColoumn" /> from menu C
+			left outer join menu PM on C.parent = PM.sys_menu_id
 		)T
 	</sql>
 
@@ -138,7 +159,8 @@
 
 	<!-- get ALL row -->
 	<select id="getAll" resultMap="MenuMap">
-		<include refid="selectQuery" />
+		<include refid="selectQuery" /> where T.f_aktif=1
+		order by T.path, T.urut
 	</select>
 
 	<!-- select berdasarkan paging parameter -->
@@ -151,9 +173,7 @@
 				<if test="search != null">
 					<include refid="search" />
 				</if>
-				<if test="sort != null">
-					order by ${sort}
-				</if>
+				 order by y.path, y.urut
 				 LIMIT #{page} , #{rowcount}
 			)x
 	</select>

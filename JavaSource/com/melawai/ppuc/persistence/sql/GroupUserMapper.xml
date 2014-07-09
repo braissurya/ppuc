@@ -13,6 +13,30 @@
 		<result property="user_create" column="user_create" />
 		<result property="tgl_create" column="tgl_create" />
 		<result property="jam_create" column="jam_create" />
+		<association property="role" javaType="Role"  >
+				<id property="id_role" column="r_id_role"  />  
+				<result property="role_name" column="r_role_name" />
+			</association>
+			<collection property="menus" ofType="Menu" >
+				<id property="menu_id" column="cm_menu_id"  />  
+				<result property="parent" column="cm_parent" />
+				<result property="nama" column="cm_nama" />
+				<result property="link" column="cm_link" />
+				<result property="level" column="cm_level" />
+				<result property="urut" column="cm_urut" />
+				<result property="path" column="cm_path" />
+				<result property="f_aktif" column="cm_f_aktif" />
+				<association property="menu_parent" javaType="Menu">
+					<id property="menu_id" column="pm_menu_id"  />  
+					<result property="parent" column="pm_parent" />
+					<result property="nama" column="pm_nama" />
+					<result property="link" column="pm_link" />
+					<result property="level" column="pm_level" />
+					<result property="urut" column="pm_urut" />
+					<result property="path" column="pm_path" />
+					<result property="f_aktif" column="pm_f_aktif" />
+				</association>
+			</collection>
 	</resultMap>
 
 	<!-- nama kolom yang ingin ditampilkan -->
@@ -22,7 +46,24 @@
 		C.ID_ROLE as id_role,
 		C.SYS_USER_CREATE as user_create,
 		C.SYS_TGL_CREATE as tgl_create,
-		C.SYS_JAM_CREATE as jam_create
+		C.SYS_JAM_CREATE as jam_create,
+		R.ID_ROLE as r_id_role,
+		R.ROLE_NAME as r_role_name,
+		CM.SYS_MENU_ID as cm_menu_id,
+		CM.PARENT as cm_parent,
+		CM.NAMA as cm_nama,
+		CM.LINK as cm_link,
+		CM.LEVEL as cm_level,
+		CM.URUT as cm_urut,
+		CM.SYS_PATH as cm_path,
+		CM.F_AKTIF as cm_f_aktif,
+		PM.SYS_MENU_ID as pm_menu_id,
+		PM.PARENT as pm_parent,
+		PM.NAMA as pm_nama,
+		PM.LINK as pm_link,
+		PM.LEVEL as pm_level,
+		PM.URUT as pm_urut,
+		PM.SYS_PATH as pm_path
 	</sql>
 
 	<!-- query select, dengan kolom yang default di atas, apabila mau ditambahkan join juga bisa disini
@@ -30,6 +71,11 @@
 	<sql id="selectQuery">
 		select * from (
 			select <include refid="defaultColoumn" /> from group_user C
+			left outer join role r on C.id_role = r.id_role
+			left outer join sys_akses_menu am on C.group_kd = am.group_kd
+			left outer join menu cm on am.menu_id = cm.sys_menu_id and cm.f_aktif = 1
+			left outer join menu pm on cm.parent = pm.sys_menu_id and pm.f_aktif = 1
+			order by cm.sys_path, cm.urut
 		)T
 	</sql>
 
