@@ -1,0 +1,13 @@
+
+	SELECT `lokasi`.`lok_kd`,
+    `lokasi`.`divisi_kd`,
+    `lokasi`.`subdiv_kd`,
+    `lokasi`.`dept_kd`,
+    `lokasi`.`lok_nm`,
+    `lokasi`.`propinsi`,
+    `lokasi`.`kota`,
+    `lokasi`.`email`,
+    DATE_FORMAT(`lokasi`.`tgl_tutup` , '%d/%m/%Y (%H:%i:%S)')   
+FROM `ppuc`.`lokasi`;
+
+dd/MM/yyyy (HH:mm:ss)
