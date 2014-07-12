@@ -25,6 +25,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -56,12 +57,12 @@ public class LokasiController extends ParentController {
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		binder.setValidator(this.lokasiValidator);
+		binder.addValidators(this.lokasiValidator);
 
 	}
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
-	public String create(@Valid Lokasi lokasi, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String create(@ModelAttribute("lokasi")@Valid Lokasi lokasi, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		// tambahan validasi khusus
 		if (lokasiManager.exists(lokasi.lok_kd, lokasi.dept_kd, lokasi.subdiv_kd, lokasi.divisi_kd)) {
 			bindingResult.rejectValue("lok_kd", "duplicate", new String[] { "LOKASI KD : " + lokasi.lok_kd + " | DIVISI KD : " + lokasi.divisi_kd + " | SUBDIVISI KD : " + lokasi.subdiv_kd
@@ -88,8 +89,31 @@ public class LokasiController extends ParentController {
 	public String show(@PathVariable("lok_kd") String lok_kd, @PathVariable("dept_kd") String dept_kd, @PathVariable("subdiv_kd") String subdiv_kd, @PathVariable("divisi_kd") String divisi_kd,
 			Model uiModel) {
 		addDateTimeFormatPatterns(uiModel);
-		uiModel.addAttribute("lokasi", lokasiManager.get(lok_kd, dept_kd, subdiv_kd, divisi_kd));
+		Lokasi lokasi=lokasiManager.get(lok_kd, dept_kd, subdiv_kd, divisi_kd);
+		uiModel.addAttribute("lokasi",lokasi );
 		uiModel.addAttribute("itemId", lok_kd + "/" + dept_kd + "/" + subdiv_kd + "/" + divisi_kd);
+		
+		uiModel.addAttribute("divisiList", baseService.selectDropDown("divisi_nm", "divisi_kd", "divisi", null, "divisi_nm"));
+		
+		uiModel.addAttribute("propinsiList", baseService.selectDropDown("propinsi", "propinsi", "propinsi", null, "propinsi"));
+		
+		if (!Utils.isEmpty(lokasi.propinsi))
+			uiModel.addAttribute("kotaList", baseService.selectDropDown("kota", "kota", "kota", "propinsi = '"+lokasi.propinsi+"'", "kota"));
+		else
+			uiModel.addAttribute("kotaList", baseService.selectDropDown("kota", "kota", "kota", null, "kota"));
+
+		if (!Utils.isEmpty(lokasi.divisi_kd))
+			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "subdiv_kd", "subdivisi", "divisi_kd = '" + lokasi.divisi_kd + "'", "subdiv_nm"));
+		else
+			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "subdiv_kd", "subdivisi", null, "subdiv_nm"));
+
+
+		if (lokasiManager.selectCountTable("departmen", " divisi_kd = '" + lokasi.divisi_kd + "' and subdiv_kd = '" + lokasi.subdiv_kd + "'")>0)
+			uiModel.addAttribute("deptList", baseService.selectDropDown("dept_nm","dept_kd", "departmen", " divisi_kd = '" + lokasi.divisi_kd + "' and subdiv_kd = '" + lokasi.subdiv_kd + "'", "dept_nm"));
+		else
+			uiModel.addAttribute("deptList", baseService.selectDropDown("dept_nm","dept_kd",  "departmen", null, "dept_nm"));
+
+		
 		return "lokasi/show";
 	}
 
@@ -111,7 +135,7 @@ public class LokasiController extends ParentController {
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-	public String update(@Valid Lokasi lokasi, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String update(@ModelAttribute("lokasi")@Valid Lokasi lokasi, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, lokasi);
 			return "lokasi/update";
@@ -133,7 +157,6 @@ public class LokasiController extends ParentController {
 	public String delete(@PathVariable("lok_kd") String lok_kd, @PathVariable("dept_kd") String dept_kd, @PathVariable("subdiv_kd") String subdiv_kd, @PathVariable("divisi_kd") String divisi_kd,
 			@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
 		lokasiManager.remove(lok_kd, dept_kd, subdiv_kd, divisi_kd);
-		;
 		uiModel.asMap().clear();
 		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
 		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -163,9 +186,8 @@ public class LokasiController extends ParentController {
 		else
 			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "concat(divisi_kd, '.', subdiv_kd)", "subdivisi", null, "subdiv_nm"));
 
-		uiModel.addAttribute("divisiList", baseService.selectDropDown("divisi_nm", "divisi_kd", "divisi", null, "divisi_nm"));
 
-		if (!Utils.isEmpty(lokasi.divisi_kd)&&!Utils.isEmpty(lokasi.subdiv_kd))
+		if (lokasiManager.selectCountTable("departmen", " divisi_kd = '" + lokasi.divisi_kd + "' and subdiv_kd = '" + lokasi.subdiv_kd + "'")>0)
 			uiModel.addAttribute("deptList", baseService.selectDropDown("dept_nm","concat(divisi_kd, '.', subdiv_kd, '.', dept_kd)", "departmen", " divisi_kd = '" + lokasi.divisi_kd + "' and subdiv_kd = '" + lokasi.subdiv_kd + "'", "dept_nm"));
 		else
 			uiModel.addAttribute("deptList", baseService.selectDropDown("dept_nm","concat(divisi_kd, '.', subdiv_kd, '.', dept_kd)",  "departmen", null, "dept_nm"));
@@ -251,13 +273,12 @@ public class LokasiController extends ParentController {
 								// validasi
 
 								DataBinder binder2 = new DataBinder(tempLokasi);
-								binder2.setValidator(this.lokasiValidator);
+								binder2.addValidators(validator,this.lokasiValidator);
+								// bind to the target object
 								binder2.validate();
 
 								if (binder2.getBindingResult().hasErrors()) {
-									errorMessage.add(" (filename= " + lokasi.upload.getOriginalFilename() + ")\n pada baris ke-" + baris + "<br/>");
-									errorMessage.addAll(Utils.errorBinderToList(binder2.getBindingResult(), messageSource));
-									errors.rejectValue("upload.uploadFile", null, Utils.errorBinderToList(binder2.getBindingResult(), messageSource).get(0));
+									errorMessage.addAll(Utils.errorBinderToList(binder2.getBindingResult(), messageSource," (filename= " + lokasi.upload.uploadFile.getOriginalFilename() + ") pada baris ke-" + baris));
 									break;
 								} else {// kalau tidak ada error add ke list
 									lsLokasi.add(tempLokasi);
@@ -293,8 +314,8 @@ public class LokasiController extends ParentController {
 
 		if (errors.hasErrors() || !errorMessage.isEmpty()) {
 			errorMessage.addAll(Utils.errorBinderToList(errors, messageSource));
-			uiModel.addAttribute("errorList", errorMessage);
-			errors.rejectValue("upload.uploadFile", null, Utils.errorListToString(errorMessage));
+			errors.rejectValue("upload.uploadFile", null, Utils.errorListToString(errorMessage).replace("<br/>", ";"));
+			uiModel.addAttribute("errorMessages", Utils.errorListToString(errorMessage));
 			populateEditForm(uiModel, lokasi);
 			lokasiManager.audittrail(Audittrail.Activity.EXIM, Audittrail.EximType.FAILED, lokasi.getClass().getSimpleName(), lokasi.upload.getOriginalFilename(),
 					CommonUtil.getIpAddr(httpServletRequest), errorMessage.toString(), CommonUtil.getCurrentUser(), null);
@@ -305,7 +326,7 @@ public class LokasiController extends ParentController {
 		lokasiManager.audittrail(Audittrail.Activity.EXIM, Audittrail.EximType.SUCCESS, lokasi.getClass().getSimpleName(), lokasi.upload.getOriginalFilename(),
 				CommonUtil.getIpAddr(httpServletRequest), "IMPORT DATA SUCCESS", CommonUtil.getCurrentUser(), null);
 		lokasiManager.save(lsLokasi);
-		String pesan = "File [" + lokasi.upload.getOriginalFilename() + "] berhasil diupload, jumlah data yang diproses = " + (baris - 1);
+		String pesan = "File [" + lokasi.upload.getOriginalFilename() + "] berhasil diupload, jumlah data yang diproses = " + (baris - 2);
 		ra.addFlashAttribute("pesan", pesan);
 
 		return "redirect:/master/lokasi/";

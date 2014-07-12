@@ -24,6 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,6 +35,7 @@ import au.com.bytecode.opencsv.CSVReader;
 
 import com.melawai.ppuc.model.Audittrail;
 import com.melawai.ppuc.model.Departmen;
+import com.melawai.ppuc.model.Subdivisi;
 import com.melawai.ppuc.model.Upload;
 import com.melawai.ppuc.services.DepartmenManager;
 import com.melawai.ppuc.utils.CommonUtil;
@@ -54,17 +56,18 @@ public class DepartmenController extends ParentController {
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		binder.setValidator(this.departmenValidator);
+		binder.addValidators(this.departmenValidator);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
-	public String create(@Valid Departmen departmen, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String create(@ModelAttribute("departmen")@Valid Departmen departmen, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+		
 		// tambahan validasi khusus
 		if (departmenManager.exists(departmen.dept_kd, departmen.subdiv_kd, departmen.divisi_kd)) {
 			bindingResult.rejectValue("dept_kd", "duplicate", new String[] { "DIVISI KD : " + departmen.divisi_kd + " | SUBDIVISI KD : " + departmen.subdiv_kd + " | DEPARTMEN KD : "
 					+ departmen.dept_kd + ", " }, null);
 		}
-
+		
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, departmen);
 			return "departmen/create";
@@ -84,7 +87,15 @@ public class DepartmenController extends ParentController {
 	@RequestMapping(value = "/{dept_kd}/{subdiv_kd}/{divisi_kd}", produces = "text/html")
 	public String show(@PathVariable("dept_kd") String dept_kd, @PathVariable("subdiv_kd") String subdiv_kd, @PathVariable("divisi_kd") String divisi_kd, Model uiModel) {
 		addDateTimeFormatPatterns(uiModel);
+		uiModel.addAttribute("divisiList", baseService.selectDropDown("divisi_nm", "divisi_kd", "divisi", null, "divisi_nm"));
+
+		if (departmenManager.selectCountTable("subdivisi", "divisi_kd = '" + divisi_kd + "'")>0)
+			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "subdiv_kd", "subdivisi", "divisi_kd = '" + divisi_kd + "'", "subdiv_nm"));
+		else
+			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "subdiv_kd", "subdivisi", null, "subdiv_nm"));
+
 		uiModel.addAttribute("departmen", departmenManager.get(dept_kd, subdiv_kd, divisi_kd));
+		
 		uiModel.addAttribute("itemId", dept_kd + "/" + subdiv_kd + "/" + divisi_kd);
 		return "departmen/show";
 	}
@@ -107,7 +118,7 @@ public class DepartmenController extends ParentController {
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-	public String update(@Valid Departmen departmen, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String update(@ModelAttribute("departmen")@Valid Departmen departmen, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, departmen);
 			return "departmen/update";
@@ -127,11 +138,22 @@ public class DepartmenController extends ParentController {
 	@RequestMapping(value = "/{dept_kd}/{subdiv_kd}/{divisi_kd}", method = RequestMethod.DELETE, produces = "text/html")
 	public String delete(@PathVariable("dept_kd") String dept_kd, @PathVariable("subdiv_kd") String subdiv_kd, @PathVariable("divisi_kd") String divisi_kd,
 			@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-		departmenManager.remove(dept_kd, subdiv_kd, divisi_kd);
-		;
+		
+		String pesan=messageSource.getMessage("entity_success", new String[]{"Delete Departmen : "+subdiv_kd+","}, LocaleContextHolder.getLocale());
+		if(!departmenManager.exists(dept_kd, subdiv_kd, divisi_kd)){
+			pesan="Departmen "+dept_kd+" tidak ditemukan";
+			messageSource.getMessage("entity_not_found", new String[]{"Departmen : "+dept_kd+","}, LocaleContextHolder.getLocale());
+		}else if(departmenManager.selectCountTable("lokasi", "dept_kd='"+dept_kd+"' and subdiv_kd='"+subdiv_kd+"' and divisi_kd='"+divisi_kd+"'")>0){
+			pesan=messageSource.getMessage("entity_used_by", new String[]{"Departmen : "+dept_kd+",","Master Lokasi"}, LocaleContextHolder.getLocale());
+		}else if(departmenManager.selectCountTable("user_divisi", "dept_kd='"+dept_kd+"' and subdiv_kd='"+subdiv_kd+"' and divisi_kd='"+divisi_kd+"'")>0){
+			pesan=messageSource.getMessage("entity_used_by", new String[]{"Departmen : "+dept_kd+",","Master User Divisi"}, LocaleContextHolder.getLocale());
+		}else{
+			departmenManager.remove(dept_kd, subdiv_kd, divisi_kd);
+		}
 		uiModel.asMap().clear();
 		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
 		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
+		uiModel.addAttribute("pesan", pesan);
 		return "redirect:/master/departmen";
 	}
 
@@ -144,7 +166,7 @@ public class DepartmenController extends ParentController {
 		uiModel.addAttribute("departmen", departmen);
 		uiModel.addAttribute("divisiList", baseService.selectDropDown("divisi_nm", "divisi_kd", "divisi", null, "divisi_nm"));
 
-		if (!Utils.isEmpty(departmen.divisi_kd))
+		if (departmenManager.selectCountTable("subdivisi", "divisi_kd = '" + departmen.divisi_kd + "'")>0)
 			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "concat(divisi_kd, '.', subdiv_kd)", "subdivisi", "divisi_kd = '" + departmen.divisi_kd + "'", "subdiv_nm"));
 		else
 			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "concat(divisi_kd, '.', subdiv_kd)", "subdivisi", null, "subdiv_nm"));
@@ -229,13 +251,12 @@ public class DepartmenController extends ParentController {
 								// validasi
 
 								DataBinder binder2 = new DataBinder(tempDepartmen);
-								binder2.setValidator(this.departmenValidator);
+								binder2.addValidators(validator,this.departmenValidator);
+								// bind to the target object
 								binder2.validate();
 
 								if (binder2.getBindingResult().hasErrors()) {
-									errorMessage.add(" (filename= " + departmen.upload.getOriginalFilename() + ")\n pada baris ke-" + baris + "<br/>");
-									errorMessage.addAll(Utils.errorBinderToList(binder2.getBindingResult(), messageSource));
-									errors.rejectValue("upload.uploadFile", null, Utils.errorBinderToList(binder2.getBindingResult(), messageSource).get(0));
+									errorMessage.addAll(Utils.errorBinderToList(binder2.getBindingResult(), messageSource," (filename= " + departmen.upload.uploadFile.getOriginalFilename() + ") pada baris ke-" + baris));
 									break;
 								} else {// kalau tidak ada error add ke list
 									lsdepartmen.add(tempDepartmen);
@@ -271,8 +292,8 @@ public class DepartmenController extends ParentController {
 
 		if (errors.hasErrors() || !errorMessage.isEmpty()) {
 			errorMessage.addAll(Utils.errorBinderToList(errors, messageSource));
-			uiModel.addAttribute("errorList", errorMessage);
-			errors.rejectValue("upload.uploadFile", null, Utils.errorListToString(errorMessage));
+			errors.rejectValue("upload.uploadFile", null, Utils.errorListToString(errorMessage).replace("<br/>", ";"));
+			uiModel.addAttribute("errorMessages", Utils.errorListToString(errorMessage));
 			populateEditForm(uiModel, departmen);
 			departmenManager.audittrail(Audittrail.Activity.EXIM, Audittrail.EximType.FAILED, departmen.getClass().getSimpleName(), departmen.upload.getOriginalFilename(),
 					CommonUtil.getIpAddr(httpServletRequest), errorMessage.toString(), CommonUtil.getCurrentUser(), null);
@@ -283,7 +304,7 @@ public class DepartmenController extends ParentController {
 		departmenManager.audittrail(Audittrail.Activity.EXIM, Audittrail.EximType.SUCCESS, departmen.getClass().getSimpleName(), departmen.upload.getOriginalFilename(),
 				CommonUtil.getIpAddr(httpServletRequest), "IMPORT DATA SUCCESS", CommonUtil.getCurrentUser(), null);
 		departmenManager.save(lsdepartmen);
-		String pesan = "File [" + departmen.upload.getOriginalFilename() + "] berhasil diupload, jumlah data yang diproses = " + (baris - 1);
+		String pesan = "File [" + departmen.upload.getOriginalFilename() + "] berhasil diupload, jumlah data yang diproses = " + (baris - 2);
 		ra.addFlashAttribute("pesan", pesan);
 
 		return "redirect:/master/departmen/";

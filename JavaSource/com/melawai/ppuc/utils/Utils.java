@@ -242,12 +242,29 @@ public class Utils {
 		}
 		return errorMessage;
 	}
+	
+	public static List<String> errorBinderToList(BindingResult bindingResult, MessageSource messageSource,String addText) {
+		List<String> errorMessage = new ArrayList<String>();
+		if (bindingResult.hasErrors()) {
+			for (Object object : bindingResult.getAllErrors()) {
+				if (object instanceof FieldError) {
+					FieldError fieldError = (FieldError) object;
+					/**
+					 * Use null as second parameter if you do not use i18n
+					 * (internationalization)
+					 */
+					errorMessage.add(addText+" : "+messageSource.getMessage(fieldError, null));
+				}
+			}
+		}
+		return errorMessage;
+	}
 
 	public static String errorListToString(List<String> errorList){
 		String message="";
 		for(String err:errorList){
-			if(!(err.trim().contains("diisi")||err.trim().contains("may not be null")||err.trim().contains("tidak ditemukan")))
-			message+="\n"+err;
+//			if(!(err.trim().contains("diisi")||err.trim().contains("may not be null")||err.trim().contains("tidak ditemukan")||err.trim().contains("required")))
+			message+=err+"<br/>";
 		}
 		return message;
 	}
@@ -424,9 +441,10 @@ public class Utils {
 	}
 
 	public static String nvl(String value) {
-		if (value != null)
-			return value.trim();
-		else
+		if (value != null){
+			if(value.trim().equals(""))return null;
+			else return value.trim();
+		}else
 			return null;
 	}
 	

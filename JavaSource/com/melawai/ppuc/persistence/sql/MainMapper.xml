@@ -9,7 +9,7 @@
 		select sysdate()
 	</select>
 
-	<select id="selectDropDown"  resultType="DropDown">
+	<select id="selectDropDown"  resultType="DropDown" useCache="false">
 		SELECT ${keycol} "key", ${valcol} "value" FROM ${tablename}
 		<if test="where != null">
 			WHERE ${where}
@@ -17,7 +17,7 @@
 		ORDER BY ${ordercol}
 	</select>
 
-	<select id="selectCountTable"  resultType="Integer">
+	<select id="selectCountTable"  resultType="Integer" useCache="false">
 		SELECT count(*) FROM ${tablename}
 		<if test="where != null">
 			WHERE ${where}

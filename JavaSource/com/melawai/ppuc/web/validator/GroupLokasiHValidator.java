@@ -1,8 +1,10 @@
 package com.melawai.ppuc.web.validator;
 
+import org.apache.log4j.Logger;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.melawai.ppuc.model.GroupLokasiH;
 
@@ -12,7 +14,9 @@ import com.melawai.ppuc.model.GroupLokasiH;
  * @Description	: Validator for table GroupLokasiH
  * @Revision	:
  */
-public class GroupLokasiHValidator implements Validator {
+public class GroupLokasiHValidator extends LocalValidatorFactoryBean implements Validator {
+	
+	private static Logger logger = Logger.getLogger(GroupLokasiHValidator.class);
 
 	@Override
 	public boolean supports(Class cls) {

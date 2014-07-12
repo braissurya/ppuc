@@ -1,8 +1,10 @@
 package com.melawai.ppuc.web.validator;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.melawai.ppuc.model.Upload;
 import com.melawai.ppuc.utils.Utils;
@@ -15,7 +17,9 @@ import com.melawai.ppuc.utils.Utils;
  * 
  */
 @Component
-public class UploadValidator implements Validator {
+public class UploadValidator extends LocalValidatorFactoryBean implements Validator {
+	
+	private static Logger logger = Logger.getLogger(UploadValidator.class);
 
 	public boolean supports(Class clazz) {
 		return Upload.class.equals(clazz);

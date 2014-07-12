@@ -3,15 +3,15 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_com_melawai_ppuc_model_departmen" object="${departmen}" path="/master/departmen">
-       <field:display field="dept_kd" label="Dept Kd" id="c_com_melawai_ppuc_model_departmen_dept_kd"  object="${departmen}" />
-       <field:display field="divisi_kd" label="Divisi Kd" id="c_com_melawai_ppuc_model_departmen_divisi_kd"  object="${departmen}" />
-       <field:display field="subdiv_kd" label="Subdiv Kd" id="c_com_melawai_ppuc_model_departmen_subdiv_kd"  object="${departmen}" />
-       <field:display field="dept_nm" label="Dept Nm" id="c_com_melawai_ppuc_model_departmen_dept_nm"  object="${departmen}" />
+    	
+       	<field:select field="divisi_kd" show="true" label="Divisi Kd" id="c_com_melawai_ppuc_model_departmen_divisi_kd" items="${divisiList}" itemLabel="key" itemValue="value" object="${departmen}" />
+		<field:select field="subdiv_kd" show="true" label="Subdiv Kd" id="c_com_melawai_ppuc_model_departmen_subdiv_kd" items="${subdivList}" itemLabel="key" itemValue="value" object="${departmen}"  />
+		<field:display field="dept_kd" label="Dept Kd" id="c_com_melawai_ppuc_model_departmen_dept_kd"  object="${departmen}" />
+		<field:display field="dept_nm" label="Dept Nm" id="c_com_melawai_ppuc_model_departmen_dept_nm"  object="${departmen}" />
        <field:display field="user_update" label="User Update" id="c_com_melawai_ppuc_model_departmen_user_update"  object="${departmen}" />
-       <field:display field="tgl_update" label="Tgl Update" id="c_com_melawai_ppuc_model_departmen_tgl_update"  object="${departmen}"  date="true" dateTimePattern="${departmen_tgl_update_date_format}"/>
-       <field:display field="jam_update" label="Jam Update" id="c_com_melawai_ppuc_model_departmen_jam_update"  object="${departmen}" />
+       <field:display field="tgl_update" label="Tgl Update" id="c_com_melawai_ppuc_model_departmen_tgl_update"  object="${departmen}"  date="true" dateTimePattern="${departmen_sys_tgl_update_date_format}"/>
        <field:display field="user_create" label="User Create" id="c_com_melawai_ppuc_model_departmen_user_create"  object="${departmen}" />
-       <field:display field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_departmen_tgl_create"  object="${departmen}"  date="true" dateTimePattern="${departmen_tgl_create_date_format}"/>
+       <field:display field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_departmen_tgl_create"  object="${departmen}"  date="true" dateTimePattern="${departmen_sys_tgl_create_date_format}"/>
     </page:show>
 </div>
 

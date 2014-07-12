@@ -71,7 +71,7 @@ public class DivisiManager extends BaseService  {
 	/** Save Model **/
 	@Transactional
 	public Divisi save(Divisi divisi) {
-		if (divisi.getTgl_create() == null) {
+		if (!exists(divisi.divisi_kd)) {
 			divisi.setTgl_create(selectSysdate());
 			divisi.setUser_create(CommonUtil.getCurrentUserId());
 			

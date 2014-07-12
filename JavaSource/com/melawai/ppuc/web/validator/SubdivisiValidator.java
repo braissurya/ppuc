@@ -1,10 +1,12 @@
 package com.melawai.ppuc.web.validator;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.melawai.ppuc.model.Subdivisi;
 import com.melawai.ppuc.services.DivisiManager;
@@ -18,6 +20,8 @@ import com.melawai.ppuc.services.SubdivisiManager;
  */
 @Component
 public class SubdivisiValidator implements Validator {
+	
+	private static Logger logger = Logger.getLogger(SubdivisiValidator.class);
 	
 	@Autowired
 	private SubdivisiManager subdivisiManager;
@@ -43,13 +47,13 @@ public class SubdivisiValidator implements Validator {
 	@Override
 	public void validate(Object obj, Errors e) {
 		Subdivisi subdivisi=(Subdivisi) obj;
-		ValidationUtils.rejectIfEmptyOrWhitespace(e, "divisi_kd",  "NotEmpty", new String[]{"Divisi KD"},null);
-		ValidationUtils.rejectIfEmptyOrWhitespace(e, "subdiv_kd",  "NotEmpty", new String[]{"Subdivisi KD"},null);
-		ValidationUtils.rejectIfEmptyOrWhitespace(e, "subdiv_nm",  "NotEmpty", new String[]{"Subdivisi NM"},null);
+//		ValidationUtils.rejectIfEmptyOrWhitespace(e, "divisi_kd",  "NotEmpty", new String[]{"Divisi KD"},null);
+//		ValidationUtils.rejectIfEmptyOrWhitespace(e, "subdiv_kd",  "NotEmpty", new String[]{"Subdivisi KD"},null);
+//		ValidationUtils.rejectIfEmptyOrWhitespace(e, "subdiv_nm",  "NotEmpty", new String[]{"Subdivisi NM"},null);
 		
 		if(!e.hasErrors()){
 			if(!divisiManager.exists(subdivisi.getDivisi_kd())){
-				e.rejectValue("divisi_kd", "entity_not_found_single", new String[]{"DIVISI KD ["+subdivisi.divisi_kd+"]"}, null);
+				e.rejectValue("divisi_kd", "entity_not_exist", new String[]{"DIVISI KD"}, null);
 			}
 		}
 	}

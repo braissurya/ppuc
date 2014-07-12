@@ -10,6 +10,7 @@
        <table:column id="c_com_melawai_ppuc_model_userdivisi_dept_kd" property="dept_kd" label="Dept Kd" />
        <table:column id="c_com_melawai_ppuc_model_userdivisi_lok_kd" property="lok_kd" label="Lok Kd" />
        <table:column id="c_com_melawai_ppuc_model_userdivisi_user_create" property="user_create" label="User Create" />
+       <table:column id="c_com_melawai_ppuc_model_userdivisi_tgl_create" property="tgl_create" date="true" dateTimePattern="${userdivisi_tgl_create_date_format}" label="Tgl Create" />
        <table:column id="c_com_melawai_ppuc_model_userdivisi_jam_create" property="jam_create" label="Jam Create" />
         </table:table>
     </page:list>

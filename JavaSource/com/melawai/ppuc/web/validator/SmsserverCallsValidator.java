@@ -1,7 +1,9 @@
 package com.melawai.ppuc.web.validator;
 
+import org.apache.log4j.Logger;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.melawai.ppuc.model.SmsserverCalls;
 
@@ -11,7 +13,9 @@ import com.melawai.ppuc.model.SmsserverCalls;
  * @Description	: Validator for table SmsserverCalls
  * @Revision	:
  */
-public class SmsserverCallsValidator implements Validator {
+public class SmsserverCallsValidator extends LocalValidatorFactoryBean implements Validator {
+	
+	private static Logger logger = Logger.getLogger(SmsserverCallsValidator.class);
 
 	@Override
 	public boolean supports(Class cls) {

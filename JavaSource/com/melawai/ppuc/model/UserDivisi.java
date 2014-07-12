@@ -10,6 +10,8 @@ import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.melawai.ppuc.utils.Utils;
+
 /**
  * GENERATE BY BraisSpringMVCHelp
  * @since		: Thu Jun 19 23:42:39 ICT 2014
@@ -24,22 +26,17 @@ public class UserDivisi extends BaseObject implements Serializable  {
 	public Long id_user_divisi;
 
 	@NotNull
-	@Size(max=50)
 	public String user_id;
 
 	@NotNull
-	@Size(max=3)
 	public String divisi_kd;
 
 	@NotNull
-	@Size(max=3)
 	public String subdiv_kd;
 
 	@NotNull
-	@Size(max=3)
 	public String dept_kd;
 
-	@Size(max=5)
 	public String lok_kd;
 
 	@Size(max=50)
@@ -85,7 +82,7 @@ public class UserDivisi extends BaseObject implements Serializable  {
 	public String getDept_kd(){ return dept_kd; }
 	public void setDept_kd(String dept_kd){ this.dept_kd = dept_kd; }
 
-	public String getLok_kd(){ return lok_kd; }
+	public String getLok_kd(){ return Utils.nvl(lok_kd); }
 	public void setLok_kd(String lok_kd){ this.lok_kd = lok_kd; }
 
 	public String getUser_create(){ return user_create; }
@@ -98,7 +95,7 @@ public class UserDivisi extends BaseObject implements Serializable  {
 	public void setJam_create(String jam_create){ this.jam_create = jam_create; }
 
 
-	public String getItemId() {return ""+id_user_divisi+"/"+user_id+"/"+divisi_kd+"/"+subdiv_kd+"/"+dept_kd;	}
+	public String getItemId() {return ""+id_user_divisi;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}
 
 	//****************** GETTER SETTER END HERE ******************/

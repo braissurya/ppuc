@@ -18,8 +18,11 @@
     <div id="_${fn:escapeXml(id)}_id">
       <label for="_${fn:escapeXml(field)}_id">
         <c:out value="${fn:escapeXml(label)}" />
-        :
+        <c:if test="${required}">
+			<span class="required"> * </span>
+		</c:if>
       </label>
+      <span class="doubleDot">:</span>
       <spring:url value="${path}" var="create_url">
         <spring:param name="form" />
       </spring:url>

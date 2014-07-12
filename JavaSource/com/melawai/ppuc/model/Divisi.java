@@ -8,6 +8,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.melawai.ppuc.utils.Utils;
@@ -25,10 +26,11 @@ public class Divisi extends BaseObject implements Serializable  {
 	
 
 	//****************** COLOMN FROM TABLE START HERE ******************/
-	@NotNull
+	@NotEmpty
 	@Size(max=3)
 	public String divisi_kd;
 
+	@NotEmpty
 	@Size(max=50)
 	public String divisi_nm;
 

@@ -1,8 +1,10 @@
 package com.melawai.ppuc.web.validator;
 
+import org.apache.log4j.Logger;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.melawai.ppuc.model.Propinsi;
 
@@ -12,7 +14,9 @@ import com.melawai.ppuc.model.Propinsi;
  * @Description	: Validator for table Propinsi
  * @Revision	:
  */
-public class PropinsiValidator implements Validator {
+public class PropinsiValidator extends LocalValidatorFactoryBean implements Validator {
+	
+	private static Logger logger = Logger.getLogger(PropinsiValidator.class);
 
 	@Override
 	public boolean supports(Class cls) {

@@ -1,7 +1,9 @@
 package com.melawai.ppuc.web.validator;
 
+import org.apache.log4j.Logger;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.melawai.ppuc.model.HakApprove;
 
@@ -11,8 +13,10 @@ import com.melawai.ppuc.model.HakApprove;
  * @Description	: Validator for table HakApprove
  * @Revision	:
  */
-public class HakApproveValidator implements Validator {
-
+public class HakApproveValidator extends LocalValidatorFactoryBean implements Validator {
+	
+	private static Logger logger = Logger.getLogger(HakApproveValidator.class);
+	
 	@Override
 	public boolean supports(Class cls) {
 		return HakApprove.class.equals(cls);

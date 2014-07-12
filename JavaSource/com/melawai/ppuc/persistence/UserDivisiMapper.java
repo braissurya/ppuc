@@ -19,10 +19,12 @@ public interface UserDivisiMapper {
 
 	public void update(UserDivisi userdivisi) throws DataAccessException;
 
-	public void remove(@Param("id_user_divisi") Long id_user_divisi, @Param("user_id") String user_id, @Param("divisi_kd") String divisi_kd, @Param("subdiv_kd") String subdiv_kd, @Param("dept_kd") String dept_kd) throws DataAccessException;
+	public void remove(Long id_user_divisi) throws DataAccessException;
 
-	public UserDivisi get(@Param("id_user_divisi") Long id_user_divisi, @Param("user_id") String user_id, @Param("divisi_kd") String divisi_kd, @Param("subdiv_kd") String subdiv_kd, @Param("dept_kd") String dept_kd) throws DataAccessException;
+	public UserDivisi get(Long id_user_divisi) throws DataAccessException;
 
+	public List<UserDivisi> exists(@Param("id_user_divisi")Long id_user_divisi,@Param("user_id") String user_id, @Param("divisi_kd") String divisi_kd, @Param("subdiv_kd") String subdiv_kd, @Param("dept_kd") String dept_kd, @Param("lok_kd") String lok_kd) throws DataAccessException;
+	
 	public List<UserDivisi> getAll() throws DataAccessException;
 
 	public List<UserDivisi> selectPagingList(UserDivisi userdivisi) throws DataAccessException;

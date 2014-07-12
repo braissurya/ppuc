@@ -1,7 +1,9 @@
 package com.melawai.ppuc.web.validator;
 
+import org.apache.log4j.Logger;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.melawai.ppuc.model.GroupUser;
 
@@ -11,7 +13,9 @@ import com.melawai.ppuc.model.GroupUser;
  * @Description	: Validator for table GroupUser
  * @Revision	:
  */
-public class GroupUserValidator implements Validator {
+public class GroupUserValidator extends LocalValidatorFactoryBean implements Validator {
+	
+	private static Logger logger = Logger.getLogger(GroupUserValidator.class);
 
 	@Override
 	public boolean supports(Class cls) {

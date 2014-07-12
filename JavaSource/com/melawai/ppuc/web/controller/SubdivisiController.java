@@ -24,6 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,6 +39,7 @@ import com.melawai.ppuc.model.Upload;
 import com.melawai.ppuc.services.SubdivisiManager;
 import com.melawai.ppuc.utils.CommonUtil;
 import com.melawai.ppuc.utils.Utils;
+import com.melawai.ppuc.web.validator.DivisiValidator;
 import com.melawai.ppuc.web.validator.SubdivisiValidator;
 
 @RequestMapping("/master/subdivisi")
@@ -54,11 +56,11 @@ public class SubdivisiController extends ParentController {
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		binder.setValidator(this.subdivisiValidator);
+		binder.addValidators(subdivisiValidator);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
-	public String create(@Valid Subdivisi subdivisi, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String create(@ModelAttribute("subdivisi")@Valid Subdivisi subdivisi, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		// tambahan validasi khusus
 		if (subdivisiManager.exists(subdivisi.subdiv_kd, subdivisi.divisi_kd)) {
 			bindingResult.rejectValue("subdiv_kd", "duplicate", new String[] { "DIVISI KD : " + subdivisi.divisi_kd + " | SUBDIVISI KD : " + subdivisi.subdiv_kd + ", " }, null);
@@ -82,8 +84,7 @@ public class SubdivisiController extends ParentController {
 
 	@RequestMapping(value = "/{subdiv_kd}/{divisi_kd}", produces = "text/html")
 	public String show(@PathVariable("subdiv_kd") String subdiv_kd, @PathVariable("divisi_kd") String divisi_kd, Model uiModel) {
-		addDateTimeFormatPatterns(uiModel);
-		uiModel.addAttribute("subdivisi", subdivisiManager.get(subdiv_kd, divisi_kd));
+		populateEditForm(uiModel, subdivisiManager.get(subdiv_kd, divisi_kd));
 		uiModel.addAttribute("itemId", subdiv_kd + "/" + divisi_kd);
 		return "subdivisi/show";
 	}
@@ -106,7 +107,7 @@ public class SubdivisiController extends ParentController {
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-	public String update(@Valid Subdivisi subdivisi, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String update(@ModelAttribute("subdivisi")@Valid Subdivisi subdivisi, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, subdivisi);
 			return "subdivisi/update";
@@ -126,10 +127,20 @@ public class SubdivisiController extends ParentController {
 	@RequestMapping(value = "/{subdiv_kd}/{divisi_kd}", method = RequestMethod.DELETE, produces = "text/html")
 	public String delete(@PathVariable("subdiv_kd") String subdiv_kd, @PathVariable("divisi_kd") String divisi_kd, @RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-		subdivisiManager.remove(subdiv_kd, divisi_kd);
+		
+		String pesan=messageSource.getMessage("entity_success", new String[]{"Delete Subdivisi : "+subdiv_kd+","}, LocaleContextHolder.getLocale());
+		if(!subdivisiManager.exists(subdiv_kd, divisi_kd)){
+			pesan="Subdivisi "+subdiv_kd+" tidak ditemukan";
+			messageSource.getMessage("entity_not_found", new String[]{"Subdivisi : "+subdiv_kd+","}, LocaleContextHolder.getLocale());
+		}else if(subdivisiManager.selectCountTable("departmen", "subdiv_kd='"+subdiv_kd+"' and divisi_kd='"+divisi_kd+"'")>0){
+			pesan=messageSource.getMessage("entity_used_by", new String[]{"Subdivisi : "+subdiv_kd+",","Master Departmen"}, LocaleContextHolder.getLocale());
+		}else{
+			subdivisiManager.remove(subdiv_kd, divisi_kd);
+		}
 		uiModel.asMap().clear();
 		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
 		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
+		uiModel.addAttribute("pesan", pesan);
 		return "redirect:/master/subdivisi";
 	}
 
@@ -221,13 +232,12 @@ public class SubdivisiController extends ParentController {
 								// validasi
 
 								DataBinder binder2 = new DataBinder(tempSubdivisi);
-								binder2.setValidator(this.subdivisiValidator);
+								binder2.addValidators(validator,this.subdivisiValidator);
+								// bind to the target object
 								binder2.validate();
 
 								if (binder2.getBindingResult().hasErrors()) {
-									errorMessage.add(" (filename= " + subdivisi.upload.getOriginalFilename() + ")\n pada baris ke-" + baris + "<br/>");
-									errorMessage.addAll(Utils.errorBinderToList(binder.getBindingResult(), messageSource));
-									errors.rejectValue("upload.uploadFile", null, Utils.errorBinderToList(binder2.getBindingResult(), messageSource).get(0));
+									errorMessage.addAll(Utils.errorBinderToList(binder2.getBindingResult(), messageSource," (filename= " + subdivisi.upload.uploadFile.getOriginalFilename() + ") pada baris ke-" + baris));
 									break;
 								} else {// kalau tidak ada error add ke list
 									lssubdivisi.add(tempSubdivisi);
@@ -263,8 +273,8 @@ public class SubdivisiController extends ParentController {
 
 		if (errors.hasErrors() || !errorMessage.isEmpty()) {
 			errorMessage.addAll(Utils.errorBinderToList(errors, messageSource));
-			errors.rejectValue("upload.uploadFile", null, Utils.errorListToString(errorMessage));
-			uiModel.addAttribute("errorList", errorMessage);
+			errors.rejectValue("upload.uploadFile", null, Utils.errorListToString(errorMessage).replace("<br/>", ";"));
+			uiModel.addAttribute("errorMessages", Utils.errorListToString(errorMessage));
 			populateEditForm(uiModel, subdivisi);
 			subdivisiManager.audittrail(Audittrail.Activity.EXIM, Audittrail.EximType.FAILED, subdivisi.getClass().getSimpleName(), subdivisi.upload.getOriginalFilename(),
 					CommonUtil.getIpAddr(httpServletRequest), errorMessage.toString(), CommonUtil.getCurrentUser(), null);
@@ -275,7 +285,7 @@ public class SubdivisiController extends ParentController {
 		subdivisiManager.audittrail(Audittrail.Activity.EXIM, Audittrail.EximType.SUCCESS, subdivisi.getClass().getSimpleName(), subdivisi.upload.getOriginalFilename(),
 				CommonUtil.getIpAddr(httpServletRequest), "IMPORT DATA SUCCESS", CommonUtil.getCurrentUser(), null);
 		subdivisiManager.save(lssubdivisi);
-		String pesan = "File [" + subdivisi.upload.getOriginalFilename() + "] berhasil diupload, jumlah data yang diproses = " + (baris - 1);
+		String pesan = "File [" + subdivisi.upload.getOriginalFilename() + "] berhasil diupload, jumlah data yang diproses = " + (baris - 2);
 		ra.addFlashAttribute("pesan", pesan);
 
 		return "redirect:/master/subdivisi/";

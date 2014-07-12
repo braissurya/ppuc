@@ -8,15 +8,10 @@
 	<!-- result map-->
 	<resultMap type="UserDivisi" id="UserDivisiMap">
 		<id property="id_user_divisi" column="id_user_divisi"  />  
-		<id property="user_id" column="user_id"  />  
-		<id property="divisi_kd" column="divisi_kd"  />  
-		<id property="subdiv_kd" column="subdiv_kd"  />  
-		<id property="dept_kd" column="dept_kd"  />  
-		<result property="id_user_divisi" column="id_user_divisi" />
-		<result property="user_id" column="user_id" />
-		<result property="divisi_kd" column="divisi_kd" />
-		<result property="subdiv_kd" column="subdiv_kd" />
-		<result property="dept_kd" column="dept_kd" />
+		<result property="user_id" column="user_id"  />  
+		<result property="divisi_kd" column="divisi_kd"  />  
+		<result property="subdiv_kd" column="subdiv_kd"  />  
+		<result property="dept_kd" column="dept_kd"  />  
 		<result property="lok_kd" column="lok_kd" />
 		<result property="user_create" column="user_create" />
 		<result property="tgl_create" column="tgl_create" />
@@ -25,7 +20,7 @@
 
 	<!-- nama kolom yang ingin ditampilkan -->
 	<sql id="defaultColoumn">
-		C.ID_USER_DIVISI as id_user_divisi,
+		C.SYS_ID_USER_DIVISI as id_user_divisi,
 		C.USER_ID as user_id,
 		C.DIVISI_KD as divisi_kd,
 		C.SUBDIV_KD as subdiv_kd,
@@ -64,9 +59,9 @@
 	</sql>
 
 	<!-- insert query untuk table ini -->
-	<insert id="insert" parameterType="UserDivisi" useGeneratedKeys="true" keyColumn="ID_USER_DIVISI" keyProperty="id_user_divisi">
+	<insert id="insert" parameterType="UserDivisi" useGeneratedKeys="true" keyColumn="SYS_ID_USER_DIVISI" keyProperty="id_user_divisi" >
 		INSERT INTO user_divisi (
-			ID_USER_DIVISI,
+			SYS_ID_USER_DIVISI,
 			USER_ID,
 			DIVISI_KD,
 			SUBDIV_KD,
@@ -88,11 +83,10 @@
 		)
 	</insert>
 
-	<!-- update query untuk table ini -->
+	<!-- update query untuk table ini tidak perlu-->
 	<update id="update" parameterType="UserDivisi">
 		UPDATE user_divisi
 		<set>
-			<if test="id_user_divisi != null">ID_USER_DIVISI = #{id_user_divisi}, </if>
 			<if test="user_id != null">USER_ID = #{user_id}, </if>
 			<if test="divisi_kd != null">DIVISI_KD = #{divisi_kd}, </if>
 			<if test="subdiv_kd != null">SUBDIV_KD = #{subdiv_kd}, </if>
@@ -103,30 +97,30 @@
 			<if test="jam_create != null">SYS_JAM_CREATE = #{jam_create} </if>
 		</set>
 		WHERE  
-			ID_USER_DIVISI= #{id_user_divisi} 
-			AND USER_ID= #{user_id}
-			AND DIVISI_KD= #{divisi_kd}
-			AND SUBDIV_KD= #{subdiv_kd}
-			AND DEPT_KD= #{dept_kd}
+			SYS_ID_USER_DIVISI= #{id_user_divisi} 
 	</update>
 
 	<!-- remove query untuk table ini -->
-	<delete id="remove" parameterType="HashMap">
+	<delete id="remove" parameterType="Long">
 		delete from user_divisi
-		 <where> 
-			<if test="id_user_divisi != null">ID_USER_DIVISI= #{id_user_divisi} </if>
-			<if test="user_id != null"> AND USER_ID= #{user_id} </if>
-			<if test="divisi_kd != null"> AND DIVISI_KD= #{divisi_kd} </if>
-			<if test="subdiv_kd != null"> AND SUBDIV_KD= #{subdiv_kd} </if>
-			<if test="dept_kd != null"> AND DEPT_KD= #{dept_kd} </if>
-		 </where> 
+		 where 
+			SYS_ID_USER_DIVISI= #{value}
 	</delete>
 
 	<!-- get berdasarkan primary key -->
-	<select id="get" parameterType="HashMap" resultMap="UserDivisiMap">
+	<select id="get" parameterType="Long" resultMap="UserDivisiMap">
+		<include refid="selectQuery" />
+		 where 
+			 T.id_user_divisi= #{value}
+	</select>
+	
+		<!-- get berdasarkan primary key -->
+	<select id="exists"  resultMap="UserDivisiMap">
 		<include refid="selectQuery" />
 		 <where> 
-			<if test="id_user_divisi != null"> T.id_user_divisi= #{id_user_divisi} </if>
+		 	<if test="id_user_divisi != null">T.id_user_divisi <![CDATA[<>]]> #{id_user_divisi}</if>
+		 	<if test="lok_kd == null">AND T.lok_kd is null </if>
+			<if test="lok_kd != null">AND T.lok_kd= #{lok_kd} </if>
 			<if test="user_id != null"> AND T.user_id= #{user_id} </if>
 			<if test="divisi_kd != null"> AND T.divisi_kd= #{divisi_kd} </if>
 			<if test="subdiv_kd != null"> AND T.subdiv_kd= #{subdiv_kd} </if>

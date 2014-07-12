@@ -1,7 +1,9 @@
 package com.melawai.ppuc.web.validator;
 
+import org.apache.log4j.Logger;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.melawai.ppuc.model.Menu;
 
@@ -11,7 +13,9 @@ import com.melawai.ppuc.model.Menu;
  * @Description	: Validator for table Menu
  * @Revision	:
  */
-public class MenuValidator implements Validator {
+public class MenuValidator extends LocalValidatorFactoryBean implements Validator {
+	
+	private static Logger logger = Logger.getLogger(MenuValidator.class);
 
 	@Override
 	public boolean supports(Class cls) {

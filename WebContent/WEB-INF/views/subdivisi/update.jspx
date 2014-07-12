@@ -3,8 +3,8 @@
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
 	<form:update id="fu_com_melawai_ppuc_model_subdivisi" modelAttribute="subdivisi" path="/master/subdivisi" idField="itemId" versionField="none">
-		<field:select field="divisi_kd" label="Divisi Kd" id="c_com_melawai_ppuc_model_subdivisi_divisi_kd" items="${divisiList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/divisi" />
-		<field:input field="subdiv_kd" label="Subdiv Kd" id="c_com_melawai_ppuc_model_subdivisi_subdiv_kd" required="true" />
+		<field:select field="divisi_kd" readonly="true" label="Divisi Kd" id="c_com_melawai_ppuc_model_subdivisi_divisi_kd" items="${divisiList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/divisi" />
+		<field:input field="subdiv_kd" readonly="true" label="Subdiv Kd" id="c_com_melawai_ppuc_model_subdivisi_subdiv_kd" required="true" />
 		<field:input field="subdiv_nm" label="Subdiv Nm" id="c_com_melawai_ppuc_model_subdivisi_subdiv_nm" />
 	</form:update>
 </div>

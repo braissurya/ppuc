@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.validation.Validator;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
@@ -29,12 +30,16 @@ public abstract class ParentController {
 	protected Properties props;
 	
 	@Autowired
+	protected Validator validator;
+	
+	@Autowired
 	protected MessageSource messageSource;
 	
 	@Autowired
 	protected UploadValidator uploadValidator;
 
 	String encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {
+		if(pathSegment==null)return "";
 		String enc = httpServletRequest.getCharacterEncoding();
 		if (enc == null) {
 			enc = WebUtils.DEFAULT_CHARACTER_ENCODING;

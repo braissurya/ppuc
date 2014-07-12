@@ -4,6 +4,7 @@
   <jsp:directive.attribute name="id" type="java.lang.String" required="true" rtexprvalue="true" description="The identifier for this tag (do not change!)" />
   <jsp:directive.attribute name="modelAttribute" type="java.lang.String" required="true" rtexprvalue="true" description="The name of the model attribute for form binding" />
   <jsp:directive.attribute name="path" type="java.lang.String" required="true" rtexprvalue="true" description="Specify the relative URL path (with leading /)" />
+  <jsp:directive.attribute name="back" type="java.lang.String" required="false" rtexprvalue="true" description="Specify the relative URL Back path (wit leading /)" />
   <jsp:directive.attribute name="multipart" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate if this is a multipart form (default: false)" />
   <jsp:directive.attribute name="label" type="java.lang.String" required="false" rtexprvalue="true" description="The label used for this object, will default to a message bundle if not supplied" />
   <jsp:directive.attribute name="idField" type="java.lang.String" required="false" rtexprvalue="true" description="Specify the field name of the id field (default 'id')" />
@@ -36,9 +37,17 @@
           <spring:message code="button_save" var="save_button" htmlEscape="false" />
           <script type="text/javascript">Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'proceed', event:'onclick'}));</script>
           <input id="proceed" type="submit" value="${fn:escapeXml(save_button)}" />
-          
           <spring:message code="button_cancel" var="cancel_button" htmlEscape="false" />
-          <input id="cancel" type="button" value="${fn:escapeXml(cancel_button)}" onclick="window.location='${form_url}'"/>
+          <c:choose>
+	          <c:when test="${not empty back}">
+	          		<spring:url value="${back}" var="back_url" />
+	          		<c:set value="window.location='${back_url }'" var="back"/>
+	          </c:when>
+	          <c:otherwise>
+	          		<c:set value="window.location='${form_url }'" var="back"/>
+	          </c:otherwise>
+          </c:choose>
+          <input id="cancel" type="button" value="${fn:escapeXml(cancel_button)}" onclick="${back}"/>
         </div>
         <form:hidden id="_${fn:escapeXml(idField)}_id" path="${fn:escapeXml(idField)}" />
         <c:if test="${versionField ne 'none'}">

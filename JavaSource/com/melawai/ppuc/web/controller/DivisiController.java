@@ -22,8 +22,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,6 +35,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import au.com.bytecode.opencsv.CSVReader;
 
 import com.melawai.ppuc.model.Audittrail;
+import com.melawai.ppuc.model.Departmen;
 import com.melawai.ppuc.model.Divisi;
 import com.melawai.ppuc.model.Upload;
 import com.melawai.ppuc.services.DivisiManager;
@@ -54,11 +57,11 @@ public class DivisiController extends ParentController {
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		binder.setValidator(this.divisiValidator);
+		binder.addValidators(this.divisiValidator);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
-	public String create(@Valid Divisi divisi, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String create(@ModelAttribute("divisi")@Valid Divisi divisi, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 
 		// tambahan validasi khusus
 		if (divisiManager.exists(divisi.divisi_kd)) {
@@ -82,7 +85,7 @@ public class DivisiController extends ParentController {
 
 	@RequestMapping(value = "/{divisi_kd}", produces = "text/html")
 	public String show(@PathVariable("divisi_kd") String divisi_kd, Model uiModel) {
-		addDateTimeFormatPatterns(uiModel);
+		populateEditForm(uiModel, new Divisi());
 		uiModel.addAttribute("divisi", divisiManager.get(divisi_kd));
 		uiModel.addAttribute("itemId", divisi_kd);
 		return "divisi/show";
@@ -106,7 +109,7 @@ public class DivisiController extends ParentController {
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-	public String update(@Valid Divisi divisi, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String update(@ModelAttribute("divisi")@Valid Divisi divisi, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, divisi);
 			return "divisi/update";
@@ -125,11 +128,19 @@ public class DivisiController extends ParentController {
 	@RequestMapping(value = "/{divisi_kd}", method = RequestMethod.DELETE, produces = "text/html")
 	public String delete(@PathVariable("divisi_kd") String divisi_kd, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size,
 			Model uiModel) {
-
-		divisiManager.remove(divisi_kd);
+		String pesan=messageSource.getMessage("entity_success", new String[]{"Delete Divisi : "+divisi_kd+","}, LocaleContextHolder.getLocale());
+		if(!divisiManager.exists(divisi_kd)){
+			pesan="Divisi "+divisi_kd+" tidak ditemukan";
+			messageSource.getMessage("entity_not_found", new String[]{"Divisi : "+divisi_kd+","}, LocaleContextHolder.getLocale());
+		}else if(divisiManager.selectCountTable("subdivisi", "divisi_kd='"+divisi_kd+"'")>0){
+			pesan=messageSource.getMessage("entity_used_by", new String[]{"Divisi : "+divisi_kd+",","Master Subdivisi"}, LocaleContextHolder.getLocale());
+		}else{
+			divisiManager.remove(divisi_kd);
+		}
 		uiModel.asMap().clear();
 		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
 		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
+		uiModel.addAttribute("pesan", pesan);
 		return "redirect:/master/divisi";
 	}
 
@@ -217,16 +228,16 @@ public class DivisiController extends ParentController {
 								}
 
 								// validasi
-
+								
 								DataBinder binder2 = new DataBinder(tempDivisi);
-								binder2.setValidator(this.divisiValidator);
+								binder2.addValidators(validator,this.divisiValidator);
+								// bind to the target object
 								binder2.validate();
 
 								if (binder2.getBindingResult().hasErrors()) {
-									errorMessage.add(" (filename= " + divisi.upload.uploadFile.getOriginalFilename() + ")\n pada baris ke-" + baris + "<br/>");
-									errorMessage.addAll(Utils.errorBinderToList(binder.getBindingResult(), messageSource));
-									errors.rejectValue("upload.uploadFile", null, Utils.errorBinderToList(binder2.getBindingResult(), messageSource).get(0));
-									break;
+									errorMessage.addAll(Utils.errorBinderToList(binder2.getBindingResult(), messageSource," (filename= " + divisi.upload.uploadFile.getOriginalFilename() + ") pada baris ke-" + baris));
+//									errors.rejectValue("upload.uploadFile", null, Utils.errorBinderToList(binder2.getBindingResult(), messageSource).get(0));
+//									break;
 								} else {// kalau tidak ada error add ke list
 									lsDivisi.add(tempDivisi);
 								}
@@ -260,9 +271,10 @@ public class DivisiController extends ParentController {
 		}
 
 		if (errors.hasErrors() || !errorMessage.isEmpty()) {
+			
 			errorMessage.addAll(Utils.errorBinderToList(errors, messageSource));
-			errors.rejectValue("upload.uploadFile", null, Utils.errorListToString(errorMessage));
-			uiModel.addAttribute("errorList", errorMessage);
+			errors.rejectValue("upload.uploadFile", null, Utils.errorListToString(errorMessage).replace("<br/>", ";"));
+			uiModel.addAttribute("errorMessages", Utils.errorListToString(errorMessage));
 			populateEditForm(uiModel, divisi);
 			divisiManager.audittrail(Audittrail.Activity.EXIM, Audittrail.EximType.FAILED, divisi.getClass().getSimpleName(), divisi.upload.uploadFile.getOriginalFilename(),
 					CommonUtil.getIpAddr(httpServletRequest), errorMessage.toString(), CommonUtil.getCurrentUser(), null);
@@ -273,7 +285,7 @@ public class DivisiController extends ParentController {
 		divisiManager.audittrail(Audittrail.Activity.EXIM, Audittrail.EximType.SUCCESS, divisi.getClass().getSimpleName(), divisi.upload.uploadFile.getOriginalFilename(),
 				CommonUtil.getIpAddr(httpServletRequest), "IMPORT DATA SUCCESS", CommonUtil.getCurrentUser(), null);
 		divisiManager.save(lsDivisi);
-		String pesan = "File [" + divisi.upload.uploadFile.getOriginalFilename() + "] berhasil diupload, jumlah data yang diproses = " + (baris - 1);
+		String pesan = "File [" + divisi.upload.uploadFile.getOriginalFilename() + "] berhasil diupload, jumlah data yang diproses = " + (baris - 2);
 		ra.addFlashAttribute("pesan", pesan);
 
 		return "redirect:/master/divisi/";

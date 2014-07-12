@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.melawai.ppuc.model.UserDivisi;
 import com.melawai.ppuc.services.UserDivisiManager;
+import com.melawai.ppuc.utils.Utils;
 import com.melawai.ppuc.web.validator.UserDivisiValidator;
 
 @RequestMapping("/master/userdivisi")
@@ -29,20 +31,24 @@ public class UserDivisiController extends ParentController{
 
 	@Autowired
 	private UserDivisiManager userdivisiManager;
+	
+	@Autowired
+	private UserDivisiValidator userDivisiValidator;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		binder.setValidator(new UserDivisiValidator());
+		binder.setValidator(this.userDivisiValidator);
 	}
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
-	public String create(@Valid UserDivisi userdivisi, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String create(@ModelAttribute("userdivisi") @Valid UserDivisi userdivisi, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+		
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, userdivisi);
 			return "userdivisi/create";
 		}
 		uiModel.asMap().clear();
 		userdivisiManager.save(userdivisi);
-		return "redirect:/master/userdivisi/" + encodeUrlPathSegment(userdivisi.getId_user_divisi().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(userdivisi.getUser_id().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(userdivisi.getDivisi_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(userdivisi.getSubdiv_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(userdivisi.getDept_kd().toString(), httpServletRequest);
+		return "redirect:/master/userdivisi/" +  encodeUrlPathSegment(userdivisi.getId_user_divisi().toString(), httpServletRequest);
 	}
 
 	@RequestMapping(params = "form", produces = "text/html")
@@ -51,13 +57,14 @@ public class UserDivisiController extends ParentController{
 		return "userdivisi/create";
 	}
 
-	@RequestMapping(value = "/{id_user_divisi}/{user_id}/{divisi_kd}/{subdiv_kd}/{dept_kd}", produces = "text/html")
-	public String show(@PathVariable("id_user_divisi") Long id_user_divisi, @PathVariable("user_id") String user_id, @PathVariable("divisi_kd") String divisi_kd, @PathVariable("subdiv_kd") String subdiv_kd, @PathVariable("dept_kd") String dept_kd, Model uiModel) {
+	@RequestMapping(value = "/{id_user_divisi}", produces = "text/html")
+	public String show(@PathVariable("id_user_divisi") Long id_user_divisi,Model uiModel) {
 		addDateTimeFormatPatterns(uiModel);
-		uiModel.addAttribute("userdivisi", userdivisiManager.get(id_user_divisi, user_id, divisi_kd, subdiv_kd, dept_kd));
-		uiModel.addAttribute("itemId", id_user_divisi+"/"+user_id+"/"+divisi_kd+"/"+subdiv_kd+"/"+dept_kd);
+		uiModel.addAttribute("userdivisi", userdivisiManager.get(id_user_divisi));
+		uiModel.addAttribute("itemId", id_user_divisi);
 		return "userdivisi/show";
 	}
+	
 
 	@RequestMapping(produces = "text/html")
 	public String list(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size,@RequestParam(value = "search", required = false) String search, @RequestParam(value = "sortFieldName", required = false) String sortFieldName, @RequestParam(value = "sortOrder", required = false) String sortOrder, Model uiModel) {
@@ -75,36 +82,57 @@ public class UserDivisiController extends ParentController{
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-	public String update(@Valid UserDivisi userdivisi, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String update(@ModelAttribute("userdivisi")@Valid UserDivisi userdivisi, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, userdivisi);
 			return "userdivisi/update";
 		}
 		uiModel.asMap().clear();
 		userdivisiManager.save(userdivisi);
-		return "redirect:/master/userdivisi/" + encodeUrlPathSegment(userdivisi.getId_user_divisi().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(userdivisi.getUser_id().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(userdivisi.getDivisi_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(userdivisi.getSubdiv_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(userdivisi.getDept_kd().toString(), httpServletRequest);
+		return "redirect:/master/userdivisi/"  + encodeUrlPathSegment(userdivisi.getId_user_divisi().toString(), httpServletRequest);
 	}
 
-	@RequestMapping(value = "/{id_user_divisi}/{user_id}/{divisi_kd}/{subdiv_kd}/{dept_kd}", params = "form", produces = "text/html")
-	public String updateForm(@PathVariable("id_user_divisi") Long id_user_divisi, @PathVariable("user_id") String user_id, @PathVariable("divisi_kd") String divisi_kd, @PathVariable("subdiv_kd") String subdiv_kd, @PathVariable("dept_kd") String dept_kd, Model uiModel) {
-		populateEditForm(uiModel, userdivisiManager.get(id_user_divisi, user_id, divisi_kd, subdiv_kd, dept_kd));
+	@RequestMapping(value = "/{id_user_divisi}", params = "form", produces = "text/html")
+	public String updateForm( @PathVariable("id_user_divisi") Long id_user_divisi, Model uiModel) {
+		populateEditForm(uiModel, userdivisiManager.get(id_user_divisi));
 		return "userdivisi/update";
 	}
-
-	@RequestMapping(value = "/{id_user_divisi}/{user_id}/{divisi_kd}/{subdiv_kd}/{dept_kd}", method = RequestMethod.DELETE, produces = "text/html")
-	public String delete(@PathVariable("id_user_divisi") Long id_user_divisi, @PathVariable("user_id") String user_id, @PathVariable("divisi_kd") String divisi_kd, @PathVariable("subdiv_kd") String subdiv_kd, @PathVariable("dept_kd") String dept_kd, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-		UserDivisi userdivisi = userdivisiManager.get(id_user_divisi, user_id, divisi_kd, subdiv_kd, dept_kd);
-		userdivisiManager.remove(id_user_divisi, user_id, divisi_kd, subdiv_kd, dept_kd);
+	
+	@RequestMapping(value = "/{id_user_divisi}", method = RequestMethod.DELETE, produces = "text/html")
+	public String delete(@PathVariable("id_user_divisi") Long id_user_divisi, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+		UserDivisi userdivisi = userdivisiManager.get(id_user_divisi);
+		userdivisiManager.remove(id_user_divisi);
 		uiModel.asMap().clear();
 		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
 		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
 		return "redirect:/master/userdivisi";
 	}
+	
 	void addDateTimeFormatPatterns(Model uiModel) {
 		uiModel.addAttribute("userdivisi_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 	void populateEditForm(Model uiModel, UserDivisi userdivisi) {
 		uiModel.addAttribute("userdivisi", userdivisi);
 		addDateTimeFormatPatterns(uiModel);
+		
+		uiModel.addAttribute("useridList", baseService.selectDropDown("concat(user_id,' [ ',user_name,' ]')", "user_id", "user", null, "user_id"));
+		
+		uiModel.addAttribute("divisiList", baseService.selectDropDown("divisi_nm", "divisi_kd", "divisi", null, "divisi_nm"));
+		
+		if (userdivisiManager.selectCountTable("subdivisi", "divisi_kd = '" + userdivisi.divisi_kd + "'")>0)
+			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "concat(divisi_kd, '.', subdiv_kd)", "subdivisi", "divisi_kd = '" + userdivisi.divisi_kd + "'", "subdiv_nm"));
+		else
+			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "concat(divisi_kd, '.', subdiv_kd)", "subdivisi", null, "subdiv_nm"));
+
+		if (userdivisiManager.selectCountTable("departmen", " divisi_kd = '" + userdivisi.divisi_kd + "' and subdiv_kd = '" + userdivisi.subdiv_kd + "'")>0)
+			uiModel.addAttribute("deptList", baseService.selectDropDown("dept_nm","concat(divisi_kd, '.', subdiv_kd, '.', dept_kd)", "departmen", " divisi_kd = '" + userdivisi.divisi_kd + "' and subdiv_kd = '" + userdivisi.subdiv_kd + "'", "dept_nm"));
+		else
+			uiModel.addAttribute("deptList", baseService.selectDropDown("dept_nm","concat(divisi_kd, '.', subdiv_kd, '.', dept_kd)",  "departmen", null, "dept_nm"));
+
+		if (userdivisiManager.selectCountTable("lokasi", " divisi_kd = '" + userdivisi.divisi_kd + "' and subdiv_kd = '" + userdivisi.subdiv_kd + "' and dept_kd = '" + userdivisi.dept_kd + "'")>0)
+			uiModel.addAttribute("lokList", baseService.selectDropDown("lok_nm","concat(divisi_kd, '.', subdiv_kd, '.', dept_kd, '.', lok_kd)", "lokasi", " divisi_kd = '" + userdivisi.divisi_kd + "' and subdiv_kd = '" + userdivisi.subdiv_kd + "' and dept_kd = '" + userdivisi.dept_kd + "'", "lok_nm"));
+		else
+			uiModel.addAttribute("lokList", baseService.selectDropDown("lok_nm","concat(divisi_kd, '.', subdiv_kd, '.', dept_kd, '.', lok_kd)",  "lokasi", null, "lok_nm"));
+
 	}
 }

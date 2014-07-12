@@ -4,8 +4,8 @@
 	<jsp:output omit-xml-declaration="yes" />
 	<form:create id="fc_com_melawai_ppuc_model_subdivisi" modelAttribute="subdivisi" path="/master/subdivisi" render="${ empty dependencies }">
 		<field:select field="divisi_kd" label="Divisi Kd" id="c_com_melawai_ppuc_model_subdivisi_divisi_kd" items="${divisiList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/divisi" />
-		<field:input field="subdiv_kd" label="Subdiv Kd" id="c_com_melawai_ppuc_model_subdivisi_subdiv_kd" required="true" max="3" />
-		<field:input field="subdiv_nm" label="Subdiv Nm" id="c_com_melawai_ppuc_model_subdivisi_subdiv_nm" max="50" />
+		<field:input field="subdiv_kd" label="Subdiv Kd" id="c_com_melawai_ppuc_model_subdivisi_subdiv_kd" required="true" max="3"/>
+		<field:input field="subdiv_nm" label="Subdiv Nm" id="c_com_melawai_ppuc_model_subdivisi_subdiv_nm" required="true" max="50" />
 	</form:create>
 	<form:dependency dependencies="${dependencies}" id="d_com_melawai_ppuc_model_subdivisi" render="${ not empty dependencies }" />
 </div>

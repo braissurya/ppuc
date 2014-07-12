@@ -4,6 +4,7 @@
   <jsp:directive.attribute name="id" type="java.lang.String" required="true" rtexprvalue="true" description="The identifier for this tag (do not change!)"/>
   <jsp:directive.attribute name="modelAttribute" type="java.lang.String" required="true" rtexprvalue="true" description="The name of the model attribute for form binding"/>
   <jsp:directive.attribute name="path" type="java.lang.String" required="true" rtexprvalue="true" description="Specify the relative URL path (wit leading /)" />
+  <jsp:directive.attribute name="back" type="java.lang.String" required="false" rtexprvalue="true" description="Specify the relative URL Back path (wit leading /)" />
   <jsp:directive.attribute name="compositePkField" type="java.lang.String" required="false" rtexprvalue="true" description="The field name of the composite primary key (only used if a composite PK is present in the form backing object)" />
   <jsp:directive.attribute name="multipart" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate if this is a multipart form (default: false)" />
   <jsp:directive.attribute name="label" type="java.lang.String" required="false" rtexprvalue="true" description="The label used for this object, will default to a message bundle if not supplied"/>
@@ -27,7 +28,15 @@
       	<c:set var="jsCall" value="encodePk()" />
       </c:if>
       <form:form action="${form_url}" method="POST" modelAttribute="${modelAttribute}" enctype="${enctype}" onsubmit="${jsCall}">
+       <spring:hasBindErrors name="command">
+				<div id="error">
+					<strong>Harap lengkapi informasi berikut:</strong><br/>
+					<form:errors path="*" delimiter="&lt;p/&gt;" />
+				</div>
+			</spring:hasBindErrors>
+       
         <form:errors cssClass="errors" delimiter="&lt;p/&gt;"/>
+        
         <c:if test="${not empty compositePkField}">
           <form:hidden id="_${fn:escapeXml(compositePkField)}_id" path="${fn:escapeXml(compositePkField)}" />
           <script type="text/javascript">
@@ -56,7 +65,16 @@
           <input id="proceed" type="submit" value="${fn:escapeXml(save_button)}"/>
           
           <spring:message code="button_cancel" var="cancel_button" htmlEscape="false" />
-          <input id="cancel" type="button" value="${fn:escapeXml(cancel_button)}" onclick="window.location='${form_url}'"/>
+            <c:choose>
+	          <c:when test="${not empty back}">
+	          		<spring:url value="${back}" var="back_url" />
+	          		<c:set value="window.location='${back_url }'" var="back"/>
+	          </c:when>
+	          <c:otherwise>
+	          		<c:set value="window.location='${form_url }'" var="back"/>
+	          </c:otherwise>
+          </c:choose>
+          <input id="cancel" type="button" value="${fn:escapeXml(cancel_button)}" onclick="${back}"/>
         </div>
       </form:form>
     </util:panel>

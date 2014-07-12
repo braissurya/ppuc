@@ -9,6 +9,8 @@
   <jsp:directive.attribute name="calendar" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate that this field is of type java.util.Calendar" />
   <jsp:directive.attribute name="dateTimePattern" type="java.lang.String" required="false" rtexprvalue="true" description="The date / time pattern to use if the field is a date or calendar type" />
   <jsp:directive.attribute name="render" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'true')" />
+  <jsp:directive.attribute name="checkbox" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate if the contents of checkbox (default 'true')" />
+  <jsp:directive.attribute name="valueDefault" type="java.lang.String" required="false" rtexprvalue="true" description="if checkbox please define our default value" />
   <jsp:directive.attribute name="z" type="java.lang.String" required="false" description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
 
   <c:if test="${empty render or render}">
@@ -31,18 +33,34 @@
         <c:choose>
           <c:when test="${date}">
             <spring:escapeBody>
-              <fmt:formatDate value="${object[field]}" pattern="${fn:escapeXml(dateTimePattern)}" />
+              <fmt:formatDate value="${object[field]}" pattern="${fn:escapeXml(dateTimePattern)}" var="valueDisplay"/>
             </spring:escapeBody>
           </c:when>
           <c:when test="${calendar}">
             <spring:escapeBody>
-              <fmt:formatDate value="${object[field].time}" pattern="${fn:escapeXml(dateTimePattern)}" />
+              <fmt:formatDate value="${object[field].time}" pattern="${fn:escapeXml(dateTimePattern)}" var="valueDisplay"/>
             </spring:escapeBody>
           </c:when>
           <c:otherwise>
-            <spring:eval expression="object[field]" />
+            <spring:eval expression="object[field]" var="valueDisplay" />
           </c:otherwise>
         </c:choose>
+        <c:choose>
+        	<c:when test="${checkbox }">
+        		<c:if test="${empty valueDefault }">
+        			<c:set value="1" var="valueDefault"/>
+        		</c:if>
+        		<c:if test="${valueDisplay eq valueDefault}">
+        			<c:set value="checked='checked'" var="cek"/>
+        		</c:if>
+        		<![CDATA[<input type="checkbox" value="1" ${cek } disabled="disabled"/>]]>
+        	</c:when>
+        	<c:otherwise>
+        		<input type="text" id="_${fn:escapeXml(id)}_id" disabled="disabled" value="${valueDisplay}" />
+        	</c:otherwise>
+        </c:choose>
+        
+       
       </div>
     </div>
     <br />

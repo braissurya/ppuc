@@ -1,7 +1,9 @@
 package com.melawai.ppuc.web.validator;
 
+import org.apache.log4j.Logger;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.melawai.ppuc.model.Audittrail;
 
@@ -11,8 +13,10 @@ import com.melawai.ppuc.model.Audittrail;
  * @Description	: Validator for table Audittrail
  * @Revision	:
  */
-public class AudittrailValidator implements Validator {
-
+public class AudittrailValidator extends LocalValidatorFactoryBean implements Validator {
+	
+	private static Logger logger = Logger.getLogger(AudittrailValidator.class);
+	
 	@Override
 	public boolean supports(Class cls) {
 		return Audittrail.class.equals(cls);

@@ -17,7 +17,7 @@ function formatCurrency(num) {
 
 function dialogAlert(txtTitle, txtContent)
 {
-    var thisdialog = new dijit.Dialog({ title: txtTitle, content: txtContent, style: "width: 300px; " });
+    var thisdialog = new dijit.Dialog({ title: txtTitle, content: txtContent, style: "width: 600px;height:400px; " });
     dojo.body().appendChild(thisdialog.domNode);
     thisdialog.startup();
 	thisdialog.show();
@@ -65,10 +65,15 @@ function setSelect(jsonData, idSelect, selectedId, optionALLText) {
 					data : jsonData
 				});
 				
-				if (selectedId.replace(/\./g, 'x') == "x")
-					dijit.byId(idSelect).set('value', "");
-				else
+				dijit.byId(idSelect).set('value', " ");
+				var cekselectedId=selectedId.replace(/\./g,'');
+				cekselectedId=cekselectedId.replace(/\ /g,'');
+				
+				if (cekselectedId != ""){
+					
 					dijit.byId(idSelect).set('value', selectedId);
+				}
+				
 			});
 }
 
@@ -92,7 +97,7 @@ function autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
 					if (optionALL == true)
 						datas.push({
 							"name" : optionALLText,
-							"id" : ""
+							"id" : " "
 						});
 
 					arrayUtil.forEach(data, function(item, i) {

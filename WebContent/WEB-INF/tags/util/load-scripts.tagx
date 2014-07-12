@@ -50,20 +50,25 @@
 	  dojo.require("dojo.parser");
 	  dojo.require("dijit.Dialog");
    </script>
-  
+  <![CDATA[
   <script>
 	  require([ "dojo/query","dojo/on", "dojo/domReady!" ],
 				function(query, on) {	
 		  
-		  var pesan = '${param.pesan}';
+		  var pesan = '${param.pesan}${pesan}';
+		 
 			if(pesan!=''){
-				dialogAlert("Info",pesan);
-				
-				
+				dialogAlert("Message",pesan);
+			}
+			
+		  var err = '${param.errorMessages}${errorMessages}';
+		 
+			if(err!=''){
+				dialogAlert("Warning !! Please Fix this Error.","<span class='error'>"+err+"</span>");
 			}
 			
 	});
   </script>
-  
+  ]]>
 
 </jsp:root>

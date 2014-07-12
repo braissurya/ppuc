@@ -12,10 +12,11 @@
        <table:column id="c_com_melawai_ppuc_model_lokasi_propinsi" property="propinsi" label="Propinsi" />
        <table:column id="c_com_melawai_ppuc_model_lokasi_kota" property="kota" label="Kota" />
        <table:column id="c_com_melawai_ppuc_model_lokasi_email" property="email" label="Email" />
-       <table:column id="c_com_melawai_ppuc_model_lokasi_f_tutup" property="f_tutup" label="F Tutup" />
+       <table:column id="c_com_melawai_ppuc_model_lokasi_tgl_tutup" property="tgl_tutup" label="Tgl Tutup" />
        <table:column id="c_com_melawai_ppuc_model_lokasi_user_update" property="user_update" label="User Update" />
-       <table:column id="c_com_melawai_ppuc_model_lokasi_jam_update" property="jam_update" label="Jam Update" />
+       <table:column id="c_com_melawai_ppuc_model_lokasi_tgl_update" property="tgl_update" label="Tgl Update" />
        <table:column id="c_com_melawai_ppuc_model_lokasi_user_create" property="user_create" label="User Create" />
+       <table:column id="c_com_melawai_ppuc_model_lokasi_tgl_create" property="tgl_create" label="Tgl Create" />
         </table:table>
     </page:list>
 </div>

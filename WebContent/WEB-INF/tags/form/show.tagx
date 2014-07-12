@@ -4,6 +4,7 @@
   <jsp:directive.attribute name="id" type="java.lang.String" required="true" rtexprvalue="true" description="The identifier for this tag (do not change!)" />
   <jsp:directive.attribute name="object" type="java.lang.Object" required="true" rtexprvalue="true" description="The form backing object" />
   <jsp:directive.attribute name="path" type="java.lang.String" required="true" rtexprvalue="true" description="Specify the URL path" />
+  <jsp:directive.attribute name="back" type="java.lang.String" required="false" rtexprvalue="true" description="Specify the relative URL Back path (wit leading /)" />
   <jsp:directive.attribute name="list" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'list' link into table (default true)" />
   <jsp:directive.attribute name="create" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'create' link into table (default true)" />
   <jsp:directive.attribute name="update" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'update' link into table (default true)" />
@@ -49,8 +50,17 @@
           <jsp:doBody />
            <div class="submit" id="${fn:escapeXml(id)}_submit">
 	           <spring:url value="${path}" var="form_url" />
-	          <spring:message code="button_cancel" var="cancel_button" htmlEscape="false" />
-	          <input id="cancel" type="button" value="${fn:escapeXml(cancel_button)}" onclick="window.location='${form_url}'"/>
+	           <spring:message code="button_cancel" var="cancel_button" htmlEscape="false" />
+	           <c:choose>
+		          <c:when test="${not empty back}">
+		          		<spring:url value="${back}" var="back_url" />
+		          		<c:set value="window.location='${back_url }'" var="back"/>
+		          </c:when>
+		          <c:otherwise>
+		          		<c:set value="window.location='${form_url }'" var="back"/>
+		          </c:otherwise>
+	          </c:choose>
+	          <input id="cancel" type="button" value="${fn:escapeXml(cancel_button)}" onclick="${back}"/>
           </div>
           <div class="quicklinks">
             <span>

@@ -8,6 +8,8 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.melawai.ppuc.utils.Utils;
@@ -25,35 +27,34 @@ public class Lokasi extends BaseObject implements Serializable {
 	private static final long serialVersionUID = 7503294106098421175L;
 
 	// ****************** COLOMN FROM TABLE START HERE ******************/
-	@NotNull
+	@NotEmpty
 	@Size(max = 5)
 	public String lok_kd;
 
-	@NotNull
-	@Size(max = 3)
+	@NotEmpty
 	public String divisi_kd;
 
-	@NotNull
-	@Size(max = 3)
+	@NotEmpty
 	public String subdiv_kd;
 
-	@NotNull
-	@Size(max = 3)
+	@NotEmpty
 	public String dept_kd;
 
+	@NotEmpty
 	@Size(max = 50)
 	public String lok_nm;
 
-	@NotNull
-	@Size(max = 100)
+	@NotEmpty
 	public String propinsi;
 
-	@NotNull
-	@Size(max = 100)
+	@NotEmpty
 	public String kota;
-
+	
+	@NotEmpty
+	@Email
 	@Size(max = 100)
 	public String email;
+	
 	public Integer f_tutup;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -117,6 +118,7 @@ public class Lokasi extends BaseObject implements Serializable {
 		this.dept_kd = dept_kd;
 		this.lok_nm = lok_nm;
 		this.tgl_tutup = tgl_tutup;
+		if(tgl_tutup!=null)f_tutup=1;
 		this.email = email;
 		this.kota = kota;
 		this.propinsi = propinsi;
@@ -188,10 +190,12 @@ public class Lokasi extends BaseObject implements Serializable {
 	}
 
 	public Integer getF_tutup() {
+		if(f_tutup==null)f_tutup=0;
 		return f_tutup;
 	}
 
 	public void setF_tutup(Integer f_tutup) {
+		if(f_tutup==null)f_tutup=0;
 		this.f_tutup = f_tutup;
 	}
 

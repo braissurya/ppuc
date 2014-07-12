@@ -1,10 +1,12 @@
 package com.melawai.ppuc.web.validator;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.melawai.ppuc.model.Departmen;
 import com.melawai.ppuc.services.DepartmenManager;
@@ -19,6 +21,8 @@ import com.melawai.ppuc.services.SubdivisiManager;
  */
 @Component
 public class DepartmenValidator implements Validator {
+	
+	private static Logger logger = Logger.getLogger(DepartmenValidator.class);
 	
 	@Autowired
 	private SubdivisiManager subdivisiManager;
@@ -52,22 +56,24 @@ public class DepartmenValidator implements Validator {
 	public void validate(Object obj, Errors e) {
 		Departmen departmen= (Departmen) obj;
 		
-		ValidationUtils.rejectIfEmptyOrWhitespace(e, "divisi_kd",  "NotEmpty", new String[]{"Divisi KD"},null);
-		ValidationUtils.rejectIfEmptyOrWhitespace(e, "subdiv_kd",  "NotEmpty", new String[]{"Subdivisi KD"},null);
-		ValidationUtils.rejectIfEmptyOrWhitespace(e, "dept_kd",  "NotEmpty", new String[]{"Departmen KD"},null);
-		ValidationUtils.rejectIfEmptyOrWhitespace(e, "dept_nm",  "NotEmpty", new String[]{"Departmen NM"},null);
+//		ValidationUtils.rejectIfEmptyOrWhitespace(e, "divisi_kd",  "NotEmpty", new String[]{"Divisi KD"},null);
+//		ValidationUtils.rejectIfEmptyOrWhitespace(e, "subdiv_kd",  "NotEmpty", new String[]{"Subdivisi KD"},null);
+//		ValidationUtils.rejectIfEmptyOrWhitespace(e, "dept_kd",  "NotEmpty", new String[]{"Departmen KD"},null);
+//		ValidationUtils.rejectIfEmptyOrWhitespace(e, "dept_nm",  "NotEmpty", new String[]{"Departmen NM"},null);
 		
 		if(!e.hasErrors()){
 			
 			departmen.subdiv_kd=departmen.subdiv_kd.substring(departmen.subdiv_kd.lastIndexOf(".") + 1);
 			
 			if(!divisiManager.exists(departmen.getDivisi_kd())){
-				e.rejectValue("divisi_kd", "entity_not_found_single", new String[]{"DIVISI KD ["+departmen.divisi_kd+"]"}, null);
+				e.rejectValue("divisi_kd", "entity_not_exist", new String[]{"DIVISI KD"}, null);
 			}
 			
 			if(!subdivisiManager.exists(departmen.subdiv_kd, departmen.divisi_kd)){
-				e.rejectValue("subdiv_kd", "entity_not_found_single", new String[]{"DIVISI KD ["+departmen.divisi_kd+"]"+" | SUBDIVISI KD ["+departmen.subdiv_kd+"]"}, null);
+				e.rejectValue("subdiv_kd", "entity_not_exist", new String[]{"SUBDIVISI KD"}, null);
 			}
+			
+
 		}
 	}
 

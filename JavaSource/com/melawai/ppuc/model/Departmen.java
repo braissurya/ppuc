@@ -5,9 +5,9 @@ import java.util.Date;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.melawai.ppuc.utils.Utils;
@@ -27,18 +27,17 @@ public class Departmen extends BaseObject implements Serializable  {
 	private static final long serialVersionUID = 4539182142457484816L;
 
 	//****************** COLOMN FROM TABLE START HERE ******************/
-	@NotNull
+	@NotEmpty
 	@Size(max=3)
 	public String dept_kd;
 
-	@NotNull
-	@Size(max=3)
+	@NotEmpty
 	public String divisi_kd;
 
-	@NotNull
-	@Size(max=3)
+	@NotEmpty
 	public String subdiv_kd;
 
+	@NotEmpty
 	@Size(max=50)
 	public String dept_nm;
 

@@ -1,8 +1,10 @@
 package com.melawai.ppuc.web.validator;
 
+import org.apache.log4j.Logger;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.melawai.ppuc.model.Kota;
 
@@ -12,7 +14,9 @@ import com.melawai.ppuc.model.Kota;
  * @Description	: Validator for table Kota
  * @Revision	:
  */
-public class KotaValidator implements Validator {
+public class KotaValidator extends LocalValidatorFactoryBean implements Validator {
+	
+	private static Logger logger = Logger.getLogger(KotaValidator.class);
 
 	@Override
 	public boolean supports(Class cls) {

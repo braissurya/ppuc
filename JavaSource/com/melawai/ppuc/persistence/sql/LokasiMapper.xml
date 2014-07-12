@@ -144,13 +144,13 @@
 	<!-- update query untuk table ini -->
 	<update id="update" parameterType="Lokasi">
 		UPDATE lokasi
-		<set>
+		set TGL_TUTUP = #{tgl_tutup}, 
+		<trim suffixOverrides=",">
 			<if test="lok_nm != null">LOK_NM = #{lok_nm}, </if>
 			<if test="propinsi != null">PROPINSI = #{propinsi}, </if>
 			<if test="kota != null">KOTA = #{kota}, </if>
 			<if test="email != null">EMAIL = #{email}, </if>
 			<if test="f_tutup != null">F_TUTUP = #{f_tutup}, </if>
-			<if test="tgl_tutup != null">TGL_TUTUP = #{tgl_tutup}, </if>
 			<if test="ctr_ppuc != null">CTR_PPUC = #{ctr_ppuc}, </if>
 			<if test="max_ctr_ppuc != null">MAX_CTR_PPUC = #{max_ctr_ppuc}, </if>
 			<if test="ctr_batch != null">CTR_BATCH = #{ctr_batch}, </if>
@@ -163,7 +163,7 @@
 			<if test="jam_update != null">SYS_JAM_UPDATE = #{jam_update}, </if>
 			<if test="user_create != null">SYS_USER_CREATE = #{user_create}, </if>
 			<if test="tgl_create != null">SYS_TGL_CREATE = #{tgl_create} </if>
-		</set>
+		</trim>
 		WHERE LOK_KD= #{lok_kd} 
 		AND	DEPT_KD= #{dept_kd}
 		AND SUBDIV_KD=#{subdiv_kd} 

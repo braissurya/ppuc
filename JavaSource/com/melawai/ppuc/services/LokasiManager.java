@@ -80,9 +80,9 @@ public class LokasiManager extends BaseService {
 		if (!exists(lokasi.lok_kd, lokasi.dept_kd, lokasi.subdiv_kd, lokasi.divisi_kd)) {
 			lokasi.setTgl_create(selectSysdate());
 			lokasi.setUser_create(CommonUtil.getCurrentUserId());
-
+			
 			Set<AudittrailDetail> changes = CommonUtil.changes(lokasi, get(lokasi.lok_kd, lokasi.dept_kd, lokasi.subdiv_kd, lokasi.divisi_kd));
-
+			
 			lokasiMapper.insert(lokasi);
 			audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.ADD, lokasi.getClass().getSimpleName(), lokasi.getItemId(), CommonUtil.getIpAddr(httpServletRequest), "ADD Lokasi",
 					CommonUtil.getCurrentUser(), changes);
