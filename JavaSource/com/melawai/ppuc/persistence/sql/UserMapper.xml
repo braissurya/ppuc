@@ -124,8 +124,9 @@
 
 	<!-- kolom apa aja yang mau disearching -->
 	<sql id="searchTambahan">
-		Where 1=1
+		Where 1=1 
 			<if test="group_kd != null">AND T.group_kd = #{group_kd} </if>
+			<if test="filter_faktif != null">AND T.f_aktif = #{filter_faktif} </if>
 	</sql>
 
 	<!-- kolom apa aja yang mau disearching -->
@@ -191,8 +192,10 @@
 	<!-- update query untuk table ini -->
 	<update id="update" parameterType="User">
 		UPDATE user
-		<set>
-			<if test="user_id != null">USER_ID = #{user_id}, </if>
+		set SYS_TGL_NONAKTIF = #{tgl_nonaktif}, 
+		SYS_JAM_NONAKTIF = #{jam_nonaktif},
+		SYS_USER_NONAKTIF = #{user_nonaktif},
+		<trim suffixOverrides=",">			
 			<if test="password != null">PASSWORD = #{password}, </if>
 			<if test="user_name != null">USER_NAME = #{user_name}, </if>
 			<if test="no_hp != null">NO_HP = #{no_hp}, </if>
@@ -205,11 +208,8 @@
 			<if test="jam_create != null">SYS_JAM_CREATE = #{jam_create}, </if>
 			<if test="user_update != null">SYS_USER_UPDATE = #{user_update}, </if>
 			<if test="tgl_update != null">SYS_TGL_UPDATE = #{tgl_update}, </if>
-			<if test="jam_update != null">SYS_JAM_UPDATE = #{jam_update}, </if>
-			<if test="user_nonaktif != null">SYS_USER_NONAKTIF = #{user_nonaktif}, </if>
-			<if test="tgl_nonaktif != null">SYS_TGL_NONAKTIF = #{tgl_nonaktif}, </if>
-			<if test="jam_nonaktif != null">SYS_JAM_NONAKTIF = #{jam_nonaktif} </if>
-		</set>
+			<if test="jam_update != null">SYS_JAM_UPDATE = #{jam_update} </if>
+		</trim>
 		WHERE  
 			USER_ID= #{user_id} 
 	</update>

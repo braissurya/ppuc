@@ -11,9 +11,13 @@ import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.melawai.ppuc.model.Audittrail;
+import com.melawai.ppuc.model.AudittrailDetail;
+import com.melawai.ppuc.model.Lokasi;
 import com.melawai.ppuc.model.Menu;
 import com.melawai.ppuc.model.User;
 import com.melawai.ppuc.persistence.UserMapper;
+import com.melawai.ppuc.utils.CommonUtil;
 import com.melawai.ppuc.utils.Utils;
 
 /**
@@ -54,19 +58,25 @@ public class UserManager extends BaseService {
 	/** Delete data berdasarkan user_id **/
 	@Transactional
 	public void remove(String user_id) {
+		
+		User tmp = get(user_id);
+		Set<AudittrailDetail> changes = CommonUtil.changes(tmp, null);
 		userMapper.remove(user_id);
+		audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.DELETE, tmp.getClass().getSimpleName(), tmp.getItemId(), CommonUtil.getIpAddr(httpServletRequest), "DELETE USER",
+				CommonUtil.getCurrentUser(), changes);
 	}
 
 	/** Ambil jumlah seluruh data **/
-	public int selectPagingCount(String search,String group_kd) {
+	public int selectPagingCount(String search,String group_kd,Integer f_aktif) {
 		User user = new User();
 		user.setGroup_kd(group_kd);
 		user.setSearch(search);
+		user.setFilter_faktif(f_aktif);
 		return userMapper.selectPagingCount(user);
 	}
 
 	/** Ambil data paging **/
-	public List<User> selectPagingList(String search, String sort, String sortOrder, int page, int rowcount, String group_kd) {
+	public List<User> selectPagingList(String search, String sort, String sortOrder, int page, int rowcount, String group_kd, Integer f_aktif) {
 		User user = new User();
 		user.setSearch(search);
 		if (sort != null)
@@ -74,6 +84,7 @@ public class UserManager extends BaseService {
 		user.setPage(page);
 		user.setRowcount(rowcount);
 		user.setGroup_kd(group_kd);
+		user.setFilter_faktif(f_aktif);
 		List<User> lsUser=userMapper.selectPagingList(user);
 		List<User> result=new ArrayList<User>();
 		for(User u:lsUser){
@@ -88,9 +99,23 @@ public class UserManager extends BaseService {
 	@Transactional
 	public User save(User user) {
 		if (!exists(user.user_id) ) {
+			user.setTgl_create(selectSysdate());
+			user.setUser_create(CommonUtil.getCurrentUserId());
+			Set<AudittrailDetail> changes = CommonUtil.changes(user, get(user.user_id));
+			
 			userMapper.insert(user);
+			audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.ADD, user.getClass().getSimpleName(), user.getItemId(), CommonUtil.getIpAddr(httpServletRequest), "ADD User",
+					CommonUtil.getCurrentUser(), changes);
+			
 		} else {
+			user.setTgl_update(selectSysdate());
+			user.setUser_update(CommonUtil.getCurrentUserId());
+			Set<AudittrailDetail> changes = CommonUtil.changes(user, get(user.getUser_id()));
+
 			userMapper.update(user);
+
+			audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.UPDATE, user.getClass().getSimpleName(), user.getItemId(), CommonUtil.getIpAddr(httpServletRequest), "UPDATE USER",
+					CommonUtil.getCurrentUser(), changes);
 		}
 		return user;
 	}
@@ -101,14 +126,16 @@ public class UserManager extends BaseService {
 		return userMapper.loadUserByUsername(user_id);
 	}
 
+	@Transactional
 	public User saveUserLogin(User user) {
-		if (!exists(user.user_id) ) {
+		if (!exists(user.user_id) ) {// klo user baru baru boleh insert password
 			user.setPassword(passwordEncoder.encodePassword(user.getPassword(), saltSource.getSalt(user)));
-		} else if (user.getNewPassword() != null) {
+		} else if (user.getNewPassword() != null) {// klo ganti pasword boleh ubah password
 			user.setPassword(passwordEncoder.encodePassword(user.getNewPassword(), saltSource.getSalt(user)));
-		} else {
+		} else { //klo hanya update password tidak boleh di ganti
 			user.setPassword(null);
 		}
+		
 		return save(user);
 	}
 	

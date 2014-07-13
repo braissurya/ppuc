@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields"  xmlns:spring="http://www.springframework.org/tags"  version="2.0">
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form"  xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields"  xmlns:spring="http://www.springframework.org/tags"  version="2.0">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
+	
+	<page:filter finderName="filter" path="/master/user" id="filterUser" label="filter">
+			<c:choose>
+				<c:when test="${aktif eq 1 }">
+					<c:set value="selected='selected'" var="selectAktif"/>
+				</c:when>
+				<c:when test="${aktif eq 0 }">
+					<c:set value="selected='selected'" var="selectNonAktif"/>
+				</c:when>
+				<c:otherwise></c:otherwise>
+			</c:choose>
+			<![CDATA[
+			<select name="aktif" onchange="form.submit();" >
+				<option value="">All</option>
+				<option value="1" ${selectAktif }>Active Only</option>
+				<option value="0" ${selectNonAktif }>Non Active Only</option>
+			</select>
+			]]>
+			<input type="hidden" name="group" value="${param.group}"/>
+			<input type="hidden" name="search" value="${param.search}"/>
+		</page:filter>
 	<page:list id="pl_com_melawai_ppuc_model_user" items="${userList}" path="/master/user">
+		
 		<table:table data="${userList}" id="l_com_melawai_ppuc_model_User" typeIdFieldName="itemId" path="/master/user">
 			<table:column id="c_com_melawai_ppuc_model_user_user_id" property="user_id" label="User Id" />
 	       <table:column id="c_com_melawai_ppuc_model_user_password" property="passwordDefault" label="Password" />
@@ -12,11 +34,12 @@
 			<table:column id="c_com_melawai_ppuc_model_user_kd_fungsi" property="kd_fungsi" label="Kd Fungsi" />
 			<table:column id="c_com_melawai_ppuc_model_user_group_kd" property="group_kd" label="Group Kd" />
 			<table:column id="c_com_melawai_ppuc_model_user_user_create" property="user_create" label="User Create" />
-			<table:column id="c_com_melawai_ppuc_model_user_jam_create" property="jam_create" label="Jam Create" />
+			<table:column id="c_com_melawai_ppuc_model_user_tgl_create" property="tgl_create" date="true" dateTimePattern="${user_sys_tgl_create_date_format}" label="Tgl Create" />
 			<table:column id="c_com_melawai_ppuc_model_user_user_update" property="user_update" label="User Update" />
-			<table:column id="c_com_melawai_ppuc_model_user_jam_update" property="jam_update" label="Jam Update" />
+			<table:column id="c_com_melawai_ppuc_model_user_tgl_update" property="tgl_update" date="true" dateTimePattern="${user_sys_tgl_update_date_format }" label="Tgl Update" />
+			<table:column id="c_com_melawai_ppuc_model_user_f_aktif" property="isActive" label="F-Aktif" />
 			<table:column id="c_com_melawai_ppuc_model_user_user_nonaktif" property="user_nonaktif" label="User Nonaktif" />
-			<table:column id="c_com_melawai_ppuc_model_user_jam_nonaktif" property="jam_nonaktif" label="Jam Nonaktif" />
+			<table:column id="c_com_melawai_ppuc_model_user_tgl_nonaktif" property="tgl_nonaktif" date="true" label="Tgl Nonaktif" dateTimePattern="${user_sys_tgl_nonaktif_date_format }" />
 			<table:column id="c_com_melawai_ppuc_model_user_reset" label=" " custom="true" property="password">
 				<spring:url value="/master/user/reset/#itemID" var="update_form_url">
 				</spring:url>
@@ -25,6 +48,21 @@
 				<a href="${update_form_url}" alt="Reset Password" title="Reset Password"> <img alt="Reset Password" class="image" src="${update_image_url}" title="Reset Password" />
 				</a>
 			</table:column>
+			<table:column id="c_com_melawai_ppuc_model_user_aktifnonaktif" label=" " custom="true" property="revActive">
+				<spring:url value="/master/user/aktifnonaktif/#itemID" var="aktif_form_url"/>
+				<spring:url value="/resources/images/icons/#prop.png" var="aktif_image_url" />
+				<c:set value="Click To #propd User" var="label_aktif"/>
+				<a href="${aktif_form_url}" alt="${label_aktif}" title="${label_aktif}"> 
+					<img alt="${label_aktif}" class="image" src="${aktif_image_url}" title="${label_aktif}" />
+				</a>
+			</table:column>
 		</table:table>
+		
+	 <page:find finderName="search" label="Search" id="sc_${id}" path="${path }">
+		<input name="search" type="text" value="${param.search}" />
+		<input type="hidden" name="group" value="${param.group }"/>
+		<input type="hidden" name="aktif" value="${param.aktif}"/>
+	</page:find>
 	</page:list>
+	
 </div>

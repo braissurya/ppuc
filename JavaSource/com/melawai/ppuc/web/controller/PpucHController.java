@@ -23,7 +23,7 @@ import com.melawai.ppuc.model.PpucH;
 import com.melawai.ppuc.services.PpucHManager;
 import com.melawai.ppuc.web.validator.PpucHValidator;
 
-@RequestMapping("/master/ppuch")
+@RequestMapping("/trans/ppuch")
 @Controller
 public class PpucHController extends ParentController{
 

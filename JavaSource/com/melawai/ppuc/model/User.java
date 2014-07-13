@@ -35,33 +35,36 @@ public class User extends BaseObject implements Serializable , UserDetails {
 	private static final long serialVersionUID = 761598147495279228L;
 
 	//****************** COLOMN FROM TABLE START HERE ******************/
-	@NotNull
+	@NotEmpty
 	@Size(max=50)
 	public String user_id;
 
+	@NotEmpty
 	@Size(max=100)
 	public String password;
 
+	@NotEmpty
 	@Size(max=100)
 	public String user_name;
 
-	@NotNull
+	@NotEmpty
 	@Size(max=25)
 	public String no_hp;
 	
+	@NotEmpty
 	@Email
 	@Size(max=100)
 	public String email;
 
-	@NotNull
+	@NotEmpty
 	@Size(max=5)
 	public String kd_fungsi;
 
-	@NotNull
+	@NotEmpty
 	@Size(max=5)
 	public String group_kd;
 
-	public Long f_aktif;
+	public Integer f_aktif;
 
 	@Size(max=50)
 	public String user_create;
@@ -108,6 +111,9 @@ public class User extends BaseObject implements Serializable , UserDetails {
 	public GroupUser groupUser;
 	public MFungsi mFungsi;
 	public String menu;
+	public Integer filter_faktif;
+	public String isActive;
+	public String revActive;
 
 	//****************** OTHERS END HERE ******************/
 
@@ -142,8 +148,21 @@ public class User extends BaseObject implements Serializable , UserDetails {
 	public String getGroup_kd(){ return group_kd; }
 	public void setGroup_kd(String group_kd){ this.group_kd = group_kd; }
 
-	public Long getF_aktif(){ return f_aktif; }
-	public void setF_aktif(Long f_aktif){ this.f_aktif = f_aktif; }
+	public Integer getF_aktif(){ 
+		if(f_aktif==null)f_aktif=0;
+		return f_aktif; 
+	}
+	public void setF_aktif(Integer f_aktif){ 
+		if(f_aktif==null)f_aktif=0;
+		this.f_aktif = f_aktif; 
+		if(f_aktif==0){
+			revActive="Active";
+			isActive="Non-Active";
+		}else{
+			revActive="Non-Active";
+			isActive="Active";
+		}
+	}
 
 	public String getUser_create(){ return user_create; }
 	public void setUser_create(String user_create){ this.user_create = user_create; }
@@ -177,7 +196,12 @@ public class User extends BaseObject implements Serializable , UserDetails {
 	public void setUser_nonaktif(String user_nonaktif){ this.user_nonaktif = user_nonaktif; }
 
 	public Date getTgl_nonaktif(){ return tgl_nonaktif; }
-	public void setTgl_nonaktif(Date tgl_nonaktif){ this.tgl_nonaktif = tgl_nonaktif; }
+	public void setTgl_nonaktif(Date tgl_nonaktif){ 
+		this.tgl_nonaktif = tgl_nonaktif; 
+		if (tgl_nonaktif != null) {
+			this.jam_nonaktif = Utils.convertDateToString(tgl_nonaktif, jam_format);
+		}
+	}
 
 	public String getJam_nonaktif(){ return jam_nonaktif; }
 	public void setJam_nonaktif(String jam_nonaktif){ this.jam_nonaktif = jam_nonaktif; }
@@ -254,6 +278,31 @@ public class User extends BaseObject implements Serializable , UserDetails {
 	public void setPasswordDefault(String passwordDefault) {
 		this.passwordDefault = passwordDefault;
 	}
+
+	public Integer getFilter_faktif() {
+		return filter_faktif;
+	}
+
+	public void setFilter_faktif(Integer filter_faktif) {
+		this.filter_faktif = filter_faktif;
+	}
+
+	public String getIsActive() {		
+		return isActive;
+	}
+
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
+	}
+
+	public String getRevActive() {
+		return revActive;
+	}
+
+	public void setRevActive(String revActive) {
+		this.revActive = revActive;
+	}
+	
 	
 	
 }

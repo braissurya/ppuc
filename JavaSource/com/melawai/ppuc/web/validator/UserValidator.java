@@ -20,7 +20,7 @@ import com.melawai.ppuc.utils.Utils;
  * @Revision :
  */
 @Component
-public class UserValidator extends LocalValidatorFactoryBean implements Validator {
+public class UserValidator implements Validator {
 	
 	private static Logger logger = Logger.getLogger(UserValidator.class);
 
@@ -36,15 +36,15 @@ public class UserValidator extends LocalValidatorFactoryBean implements Validato
 	public void validate(Object obj, Errors e) {
 		User user = (User) obj;
 		
-		ValidationUtils.rejectIfEmptyOrWhitespace(e, "user_id", "NotEmpty", new String[] { "User ID" }, null);
-		ValidationUtils.rejectIfEmptyOrWhitespace(e, "group_kd", "NotEmpty", new String[] { "Group Kode" }, null);
-		ValidationUtils.rejectIfEmptyOrWhitespace(e, "kd_fungsi", "NotEmpty", new String[] { "Kode Fungsi" }, null);
-		ValidationUtils.rejectIfEmptyOrWhitespace(e, "no_hp", "NotEmpty", new String[] { "No HP" }, null);
-		ValidationUtils.rejectIfEmptyOrWhitespace(e, "email", "NotEmpty", new String[] { "Email" }, null);
+//		ValidationUtils.rejectIfEmptyOrWhitespace(e, "user_id", "NotEmpty", new String[] { "User ID" }, null);
+//		ValidationUtils.rejectIfEmptyOrWhitespace(e, "group_kd", "NotEmpty", new String[] { "Group Kode" }, null);
+//		ValidationUtils.rejectIfEmptyOrWhitespace(e, "kd_fungsi", "NotEmpty", new String[] { "Kode Fungsi" }, null);
+//		ValidationUtils.rejectIfEmptyOrWhitespace(e, "no_hp", "NotEmpty", new String[] { "No HP" }, null);
+//		ValidationUtils.rejectIfEmptyOrWhitespace(e, "email", "NotEmpty", new String[] { "Email" }, null);
 
 		if (!e.hasErrors()) {
 			
-			
+			//cek apakah  no hp duplicate
 			if (!Utils.isEmpty(user.getNo_hp())) {
 				if (userManager.selectCountTable("user", "no_hp = '" + user.getNo_hp() + "' and user_id <> '"+user.getUser_id()+"'") > 0)
 					e.rejectValue("no_hp", "duplicate", new String[] { "No HP" }, null);
@@ -53,6 +53,7 @@ public class UserValidator extends LocalValidatorFactoryBean implements Validato
 				
 			}
 			
+			//cek apakah email duplicate
 			if (!Utils.isEmpty(user.getEmail())) {
 				if (userManager.selectCountTable("user", "email = '" + user.getEmail() + "' and user_id <> '"+user.getUser_id()+"'") > 0)
 					e.rejectValue("email", "duplicate", new String[] { "Email" }, null);

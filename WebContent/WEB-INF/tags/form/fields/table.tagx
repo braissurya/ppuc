@@ -240,9 +240,8 @@
 						</c:if>
 					</c:if> <c:if test="${not empty maxPages}">
 						<util:pagination maxPages="${maxPages}" page="${param.page}" size="${param.size}" />
-					</c:if> <page:find finderName="search" label="Search" id="sc_${id}" path="${path }">
-						<input name="search" type="text" />
-					</page:find></td>
+					</c:if> 
+					</td>
 			</tr>
 		</table>
 	</c:if>

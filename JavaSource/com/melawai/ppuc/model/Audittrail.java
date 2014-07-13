@@ -44,6 +44,9 @@ public class Audittrail extends BaseObject implements Serializable  {
 		public static final String ADD = "ADD";
 		public static final String UPDATE = "UPDATE";
 		public static final String DELETE = "DELETE";
+		public static final String RESET = "RESET";
+		public static final String NONAKTIF = "NONAKTIF";
+		public static final String AKTIF = "AKTIF";
 	}
 	
 	static public class EximType {

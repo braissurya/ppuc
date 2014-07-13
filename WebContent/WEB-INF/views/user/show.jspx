@@ -9,7 +9,7 @@
 		<field:display field="email" label="Email" id="c_com_melawai_ppuc_model_user_email" object="${user}" />
 		<field:display field="kd_fungsi" label="Kd Fungsi" id="c_com_melawai_ppuc_model_user_kd_fungsi" object="${user}" />
 		<field:display field="group_kd" label="Group Kd" id="c_com_melawai_ppuc_model_user_group_kd" object="${user}" />
-		<field:display field="f_aktif" label="F Aktif" id="c_com_melawai_ppuc_model_user_f_aktif" object="${user}" />
+		<field:display checkbox="true" field="f_aktif" label="F Aktif" id="c_com_melawai_ppuc_model_user_f_aktif" object="${user}" />
 		<field:display field="user_create" label="User Create" id="c_com_melawai_ppuc_model_user_user_create" object="${user}" />
 		<field:display field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_user_tgl_create" object="${user}" date="true" dateTimePattern="${user_tgl_create_date_format}" />
 		<field:display field="jam_create" label="Jam Create" id="c_com_melawai_ppuc_model_user_jam_create" object="${user}" />

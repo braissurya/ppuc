@@ -3,19 +3,14 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_com_melawai_ppuc_model_user" modelAttribute="user" path="/master/user" idField="itemId" versionField="none" >
-       <field:input field="user_id" label="User Id"  id="c_com_melawai_ppuc_model_user_user_id" required="true" max="50" isusername="true"/>
+       <field:input field="user_id" label="User Id" readonly="true"  id="c_com_melawai_ppuc_model_user_user_id" required="true" max="50" isusername="true"/>
+       <field:input field="password" id="c_com_melawai_ppuc_model_user_password" type="hidden"/>
        <field:input field="user_name" label="User Name" required="true"  id="c_com_melawai_ppuc_model_user_user_name"  max="100"/>
        <field:input field="no_hp" label="No Hp" id="c_com_melawai_ppuc_model_user_no_hp"  max="25" required="true" mobile="true"/>
        <field:input field="email" label="Email" id="c_com_melawai_ppuc_model_user_email"  max="100" required="true" email="true"/>
        <field:select field="kd_fungsi" label="Kd Fungsi"  id="c_com_melawai_ppuc_model_user_kd_fungsi" items="${mfungsiList}" itemLabel="key" itemValue="value" required="true" blank="true"  path="/master/mfungsi"/>
        <field:select field="group_kd" label="Group Kd"  id="c_com_melawai_ppuc_model_user_group_kd" items="${groupKodeList}" itemLabel="key" itemValue="value" required="true" blank="true"  path="/master/mfungsi"/>
- 	   <field:checkbox field="f_aktif" id="c_com_melawai_ppuc_model_user_f_aktif" value="1" label="F Aktif" />
-       <field:input field="user_create" label="User Create" id="c_com_melawai_ppuc_model_user_user_create" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_user_tgl_create" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="jam_create" label="Jam Create" id="c_com_melawai_ppuc_model_user_jam_create" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="user_update" label="User Update" id="c_com_melawai_ppuc_model_user_user_update" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="tgl_update" label="Tgl Update" id="c_com_melawai_ppuc_model_user_tgl_update" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="jam_update" label="Jam Update" id="c_com_melawai_ppuc_model_user_jam_update" readonly="true" validationMessageCode="field_invalid_number" />
+ 	   <field:input field="isActive" readonly="true" id="c_com_melawai_ppuc_model_user_f_aktif" label="F Aktif" />
        <field:input field="user_nonaktif" label="User Nonaktif" id="c_com_melawai_ppuc_model_user_user_nonaktif" readonly="true" validationMessageCode="field_invalid_number" />
        <field:input field="tgl_nonaktif" label="Tgl Nonaktif" id="c_com_melawai_ppuc_model_user_tgl_nonaktif" readonly="true" validationMessageCode="field_invalid_number" />
        <field:input field="jam_nonaktif" label="Jam Nonaktif" id="c_com_melawai_ppuc_model_user_jam_nonaktif" readonly="true" validationMessageCode="field_invalid_number" />

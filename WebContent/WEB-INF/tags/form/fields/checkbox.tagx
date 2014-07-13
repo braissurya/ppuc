@@ -6,6 +6,7 @@
   <jsp:directive.attribute name="label" type="java.lang.String" required="false" rtexprvalue="true" description="The label used for this field, will default to a message bundle if not supplied" />
   <jsp:directive.attribute name="value" type="java.lang.String" required="false" rtexprvalue="true" description="Value if checked" />
   <jsp:directive.attribute name="disableFormBinding" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Set to true to disable Spring form binding" />
+  <jsp:directive.attribute name="disable" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Set to true to readonly" />
   <jsp:directive.attribute name="render" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'true')" />
   <jsp:directive.attribute name="z" type="java.lang.String" required="false" description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
 
@@ -17,6 +18,9 @@
       <spring:escapeBody javaScriptEscape="true">${field}</spring:escapeBody>
     </c:set>
    
+   <c:if test="${disable }">
+   		<c:set value="disabled" var="disable"/>
+   </c:if>
     <script type="text/javascript">dojo.require("dijit.form.CheckBox");</script>
     <div id="_${sec_id}_id">
       <form:label path="${sec_field}" cssClass="label" cssErrorClass="label labelError">
@@ -25,10 +29,10 @@
       <span class="doubleDot">:</span>
       <c:choose>
         <c:when test="${disableFormBinding}">
-          <input id="_${sec_field}_id" name="${sec_field}" value="${value}" type="checkbox"/>
+          <input id="_${sec_field}_id" name="${sec_field}" value="${value}"  disabled="${disable}"  type="checkbox"/>
         </c:when>
         <c:otherwise>
-          <form:checkbox id="_${sec_field}_id" value="${value}" path="${sec_field}"/>
+          <form:checkbox id="_${sec_field}_id" value="${value}" path="${sec_field}" disabled="${disable}"/>
         </c:otherwise>
       </c:choose>
       <script type="text/javascript">
