@@ -24,4 +24,11 @@
 		</if>
 	</select>
 	
+	<select id="selectMaxValue"  resultType="Integer" useCache="false">
+		SELECT max(${coloumnName}) FROM ${tablename}
+		<if test="where != null">
+			WHERE ${where}
+		</if>
+	</select>
+	
 </mapper>

@@ -8,7 +8,10 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.melawai.ppuc.utils.Utils;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -19,11 +22,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class GroupBiaya extends BaseObject implements Serializable  {
 
+	private static final long serialVersionUID = -8152483192097389053L;
+
 	//****************** COLOMN FROM TABLE START HERE ******************/
-	@NotNull
+	@NotEmpty
 	@Size(max=5)
 	public String kd_group;
 
+	@NotEmpty
 	@Size(max=100)
 	public String nm_group;
 
@@ -65,7 +71,12 @@ public class GroupBiaya extends BaseObject implements Serializable  {
 	public void setUser_create(String user_create){ this.user_create = user_create; }
 
 	public Date getTgl_create(){ return tgl_create; }
-	public void setTgl_create(Date tgl_create){ this.tgl_create = tgl_create; }
+	public void setTgl_create(Date tgl_create){ 
+		this.tgl_create = tgl_create; 
+		if (tgl_create != null) {
+			this.jam_create = Utils.convertDateToString(tgl_create, jam_format);
+		}
+	}
 
 	public String getJam_create(){ return jam_create; }
 	public void setJam_create(String jam_create){ this.jam_create = jam_create; }

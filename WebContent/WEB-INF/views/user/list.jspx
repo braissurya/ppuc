@@ -25,7 +25,7 @@
 		</page:filter>
 	<page:list id="pl_com_melawai_ppuc_model_user" items="${userList}" path="/master/user">
 		
-		<table:table data="${userList}" id="l_com_melawai_ppuc_model_User" typeIdFieldName="itemId" path="/master/user">
+		<table:table data="${userList}" id="l_com_melawai_ppuc_model_User" searching="false" typeIdFieldName="itemId" path="/master/user">
 			<table:column id="c_com_melawai_ppuc_model_user_user_id" property="user_id" label="User Id" />
 	       <table:column id="c_com_melawai_ppuc_model_user_password" property="passwordDefault" label="Password" />
 			<table:column id="c_com_melawai_ppuc_model_user_user_name" property="user_name" label="User Name" />
@@ -34,12 +34,12 @@
 			<table:column id="c_com_melawai_ppuc_model_user_kd_fungsi" property="kd_fungsi" label="Kd Fungsi" />
 			<table:column id="c_com_melawai_ppuc_model_user_group_kd" property="group_kd" label="Group Kd" />
 			<table:column id="c_com_melawai_ppuc_model_user_user_create" property="user_create" label="User Create" />
-			<table:column id="c_com_melawai_ppuc_model_user_tgl_create" property="tgl_create" date="true" dateTimePattern="${user_sys_tgl_create_date_format}" label="Tgl Create" />
+			<table:column id="c_com_melawai_ppuc_model_user_tgl_create" property="tgl_create" date="true" dateTimePattern="${user_tgl_create_date_format}" label="Tgl Create" />
 			<table:column id="c_com_melawai_ppuc_model_user_user_update" property="user_update" label="User Update" />
-			<table:column id="c_com_melawai_ppuc_model_user_tgl_update" property="tgl_update" date="true" dateTimePattern="${user_sys_tgl_update_date_format }" label="Tgl Update" />
+			<table:column id="c_com_melawai_ppuc_model_user_tgl_update" property="tgl_update" date="true" dateTimePattern="${user_tgl_update_date_format }" label="Tgl Update" />
 			<table:column id="c_com_melawai_ppuc_model_user_f_aktif" property="isActive" label="F-Aktif" />
 			<table:column id="c_com_melawai_ppuc_model_user_user_nonaktif" property="user_nonaktif" label="User Nonaktif" />
-			<table:column id="c_com_melawai_ppuc_model_user_tgl_nonaktif" property="tgl_nonaktif" date="true" label="Tgl Nonaktif" dateTimePattern="${user_sys_tgl_nonaktif_date_format }" />
+			<table:column id="c_com_melawai_ppuc_model_user_tgl_nonaktif" property="tgl_nonaktif" date="true" label="Tgl Nonaktif" dateTimePattern="${user_tgl_create_date_format }" />
 			<table:column id="c_com_melawai_ppuc_model_user_reset" label=" " custom="true" property="password">
 				<spring:url value="/master/user/reset/#itemID" var="update_form_url">
 				</spring:url>

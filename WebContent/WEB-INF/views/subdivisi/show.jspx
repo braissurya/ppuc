@@ -7,9 +7,9 @@
        <field:display field="subdiv_kd" label="Subdiv Kd" id="c_com_melawai_ppuc_model_subdivisi_subdiv_kd"  object="${subdivisi}" />
        <field:display field="subdiv_nm" label="Subdiv Nm" id="c_com_melawai_ppuc_model_subdivisi_subdiv_nm"  object="${subdivisi}" />
        <field:display field="user_update" label="User Update" id="c_com_melawai_ppuc_model_subdivisi_user_update"  object="${subdivisi}" />
-       <field:display field="tgl_update" label="Tgl Update" id="c_com_melawai_ppuc_model_subdivisi_tgl_update"  object="${subdivisi}"  date="true" dateTimePattern="${subdivisi_sys_tgl_update_date_format}"/>
+       <field:display field="tgl_update" label="Tgl Update" id="c_com_melawai_ppuc_model_subdivisi_tgl_update"  object="${subdivisi}"  date="true" dateTimePattern="${subdivisi_tgl_update_date_format}"/>
        <field:display field="user_create" label="User Create" id="c_com_melawai_ppuc_model_subdivisi_user_create"  object="${subdivisi}" />
-       <field:display field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_subdivisi_tgl_create"  object="${subdivisi}"  date="true" dateTimePattern="${subdivisi_sys_tgl_create_date_format}"/>
+       <field:display field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_subdivisi_tgl_create"  object="${subdivisi}"  date="true" dateTimePattern="${subdivisi_tgl_create_date_format}"/>
     </page:show>
 </div>
 

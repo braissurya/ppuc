@@ -101,7 +101,7 @@ public class AksesMenuController extends ParentController{
 		return "redirect:/master/aksesmenu";
 	}
 	void addDateTimeFormatPatterns(Model uiModel) {
-		uiModel.addAttribute("aksesmenu_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("aksesmenu_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 	void populateEditForm(Model uiModel, AksesMenu aksesmenu) {
 		uiModel.addAttribute("aksesmenu", aksesmenu);

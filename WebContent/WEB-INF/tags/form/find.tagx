@@ -22,7 +22,7 @@
 		</c:choose>
 		<spring:message arguments="${fn:escapeXml(label)}" code="entity_find" var="title_msg" htmlEscape="false" />
 		<spring:url value="${path}" var="form_url" />
-		<div style="width:100%;text-align:right; margin: 5px">
+		<span style="float:right; margin: 5px">
 			<form:form action="${form_url}" method="GET">
 				<input type="hidden" name="find" value="${fn:escapeXml(finderName)}" />
 				<input type="hidden" name="page" value="1" />
@@ -39,6 +39,6 @@
 					<input id="proceed" type="submit" value="${fn:escapeXml(find_button)}" />
 				</span>
 			</form:form>
-		</div>
+		</span>
 	</c:if>
 </jsp:root>

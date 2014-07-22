@@ -101,7 +101,7 @@ public class AudittrailController extends ParentController{
 		return "redirect:/master/audittrail";
 	}
 	void addDateTimeFormatPatterns(Model uiModel) {
-		uiModel.addAttribute("audittrail_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("audittrail_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 	void populateEditForm(Model uiModel, Audittrail audittrail) {
 		uiModel.addAttribute("audittrail", audittrail);

@@ -103,8 +103,8 @@ public class HakApproveController extends ParentController{
 	void addDateTimeFormatPatterns(Model uiModel) {
 		uiModel.addAttribute("hakapprove_drtgl_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
 		uiModel.addAttribute("hakapprove_sptgl_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("hakapprove_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("hakapprove_sys_tgl_nonaktif_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("hakapprove_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("hakapprove_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 	void populateEditForm(Model uiModel, HakApprove hakapprove) {
 		uiModel.addAttribute("hakapprove", hakapprove);

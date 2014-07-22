@@ -423,3 +423,7 @@ table th {
 .info{
 	color: blue;
 }
+
+table.noborder, table.noborder td, table.noborder tbody,table.noborder tr{
+	border: none !important;
+}

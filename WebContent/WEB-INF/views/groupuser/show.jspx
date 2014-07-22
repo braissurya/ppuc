@@ -9,7 +9,6 @@
        <field:display field="role_name" label="Id Role" id="c_com_melawai_ppuc_model_groupuser_id_role"  object="${groupuser}" />
        <field:display field="user_create" label="User Create" id="c_com_melawai_ppuc_model_groupuser_user_create"  object="${groupuser}" />
        <field:display field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_groupuser_tgl_create"  object="${groupuser}"  date="true" dateTimePattern="${groupuser_tgl_create_date_format}"/>
-       <field:display field="jam_create" label="Jam Create" id="c_com_melawai_ppuc_model_groupuser_jam_create"  object="${groupuser}" />
     	
     	<table >
 				<thead>

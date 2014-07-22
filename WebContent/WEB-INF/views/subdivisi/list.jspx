@@ -8,10 +8,10 @@
 			<table:column id="c_com_melawai_ppuc_model_subdivisi_divisi_kd" property="divisi_kd" label="Divisi Kd" />
 			<table:column id="c_com_melawai_ppuc_model_subdivisi_subdiv_nm" property="subdiv_nm" label="Subdiv Nm" />
 			<table:column id="c_com_melawai_ppuc_model_subdivisi_user_update" property="user_update" label="User Update" />
-			<table:column id="c_com_melawai_ppuc_model_subdivisi_tgl_update" property="tgl_update" label="Tgl Update" date="true" dateTimePattern="${subdivisi_sys_tgl_update_date_format }" />
+			<table:column id="c_com_melawai_ppuc_model_subdivisi_tgl_update" property="tgl_update" label="Tgl Update" date="true" dateTimePattern="${subdivisi_tgl_update_date_format }" />
 			
 			<table:column id="c_com_melawai_ppuc_model_subdivisi_user_create" property="user_create" label="User Create" />
-			<table:column id="c_com_melawai_ppuc_model_subdivisi_tgl_create" property="tgl_create" label="Tgl Create" date="true" dateTimePattern="${subdivisi_sys_tgl_create_date_format }" />
+			<table:column id="c_com_melawai_ppuc_model_subdivisi_tgl_create" property="tgl_create" label="Tgl Create" date="true" dateTimePattern="${subdivisi_tgl_create_date_format }" />
 		</table:table>
 	</page:list>
 </div>

@@ -4,7 +4,7 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <formtag:update id="fu_com_melawai_ppuc_model_groupuser" modelAttribute="groupuser" path="/master/groupuser" idField="itemId" versionField="none" >
-       <field:input field="group_kd" label="Group Kd" id="c_com_melawai_ppuc_model_groupuser_group_kd" required="true" />
+       <field:input field="group_kd" readonly="true" label="Group Kd" id="c_com_melawai_ppuc_model_groupuser_group_kd" required="true" />
        <field:input field="group_nm" label="Group Nm" id="c_com_melawai_ppuc_model_groupuser_group_nm"  />
        <field:select field="id_role" label="Id Role" id="c_com_melawai_ppuc_model_groupuser_id_role" items="${roleList}" itemLabel="key" itemValue="value" required="true" />
        <field:input field="user_create" label="User Create" id="c_com_melawai_ppuc_model_groupuser_user_create" readonly="true" validationMessageCode="field_invalid_number" />

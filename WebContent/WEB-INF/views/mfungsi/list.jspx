@@ -6,8 +6,9 @@
         <table:table data="${mfungsiList}" id="l_com_melawai_ppuc_model_MFungsi" typeIdFieldName="itemId" path="/master/mfungsi" >
        <table:column id="c_com_melawai_ppuc_model_mfungsi_kd_fungsi" property="kd_fungsi" label="Kd Fungsi" />
        <table:column id="c_com_melawai_ppuc_model_mfungsi_nm_fungsi" property="nm_fungsi" label="Nm Fungsi" />
+        <table:column id="c_com_melawai_ppuc_model_mfungsi_mail_seq" property="mail_seq" label="Mail Seq" />
        <table:column id="c_com_melawai_ppuc_model_mfungsi_user_create" property="user_create" label="User Create" />
-       <table:column id="c_com_melawai_ppuc_model_mfungsi_jam_create" property="jam_create" label="Jam Create" />
+       <table:column id="c_com_melawai_ppuc_model_mfungsi_tgl_create" property="tgl_create" label="Tgl Create" date="true" dateTimePattern="${mfungsi_tgl_create_date_format }" />
         </table:table>
     </page:list>
 </div>

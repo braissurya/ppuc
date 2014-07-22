@@ -9,7 +9,7 @@
        <table:column id="c_com_melawai_ppuc_model_detailbiaya_biaya_description" property="biaya_description" label="Biaya Description" />
        <table:column id="c_com_melawai_ppuc_model_detailbiaya_acc_no" property="acc_no" label="Acc No" />
        <table:column id="c_com_melawai_ppuc_model_detailbiaya_user_create" property="user_create" label="User Create" />
-       <table:column id="c_com_melawai_ppuc_model_detailbiaya_jam_create" property="jam_create" label="Jam Create" />
+       <table:column id="c_com_melawai_ppuc_model_detailbiaya_tgl_create" property="tgl_create" label="Tgl Create"  date="true" dateTimePattern="${detailbiaya_tgl_create_date_format}" />
         </table:table>
     </page:list>
 </div>

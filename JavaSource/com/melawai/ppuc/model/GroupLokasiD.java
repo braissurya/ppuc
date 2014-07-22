@@ -56,13 +56,31 @@ public class GroupLokasiD extends BaseObject implements Serializable  {
 	//****************** OTHERS START HERE ******************/
 
 	public String itemId;
+	
+	public Lokasi lokasi=new Lokasi();
+	
+	public Integer noUrut;
 	//****************** OTHERS END HERE ******************/
 
 
 	//****************** CONSTRUCTOR START HERE ******************/
 	public GroupLokasiD(){
-		//TODO: standard constructor free to change
 	}
+	
+	
+
+	public GroupLokasiD(Integer noUrut,String lok_kd,  String lok_nm, String propinsi,String kota, String email) {
+		super();
+		this.noUrut = noUrut;
+		this.lok_kd = lok_kd;
+		this.lokasi.lok_nm=lok_nm;
+		this.lokasi.propinsi=propinsi;
+		this.lokasi.kota=kota;
+		this.lokasi.email=email;
+		
+	}
+
+
 
 	//****************** CONSTRUCTOR END HERE ******************/
 

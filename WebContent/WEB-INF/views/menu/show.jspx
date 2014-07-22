@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+<div xmlns:c="http://java.sun.com/jsp/jstl/core"  xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_com_melawai_ppuc_model_menu" object="${menu}" path="/master/menu">
        <field:display field="menu_id" label="Menu Id" id="c_com_melawai_ppuc_model_menu_menu_id"  object="${menu}" />
-       <field:display field="parent" label="Parent" id="c_com_melawai_ppuc_model_menu_parent"  object="${menu}" />
+      <label>Parent</label>
+      <span class="doubleDot">:</span>
+      <select id="_parent_id" name="parent" disabled="disabled">
+			<c:forEach items="${parentlist}" var="item">
+				<c:if test="${item.value eq menu.parent}">
+						<option value="${item.value}" >
+							${item.key}
+						</option>
+				</c:if>
+			</c:forEach>
+		</select>
        <field:display field="nama" label="Nama" id="c_com_melawai_ppuc_model_menu_nama"  object="${menu}" />
        <field:display field="link" label="Link" id="c_com_melawai_ppuc_model_menu_link"  object="${menu}" />
        <field:display field="level" label="Level" id="c_com_melawai_ppuc_model_menu_level"  object="${menu}" />
        <field:display field="urut" label="Urut" id="c_com_melawai_ppuc_model_menu_urut"  object="${menu}" />
        <field:display field="path" label="Path" id="c_com_melawai_ppuc_model_menu_path"  object="${menu}" />
-       <field:display field="f_aktif" label="F Aktif" id="c_com_melawai_ppuc_model_menu_f_aktif"  object="${menu}" />
+       <field:display field="f_aktif" checkbox="true" label="F Aktif" id="c_com_melawai_ppuc_model_menu_f_aktif"  object="${menu}" />
        <field:display field="user_create" label="User Create" id="c_com_melawai_ppuc_model_menu_user_create"  object="${menu}" />
        <field:display field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_menu_tgl_create"  object="${menu}"  date="true" dateTimePattern="${menu_tgl_create_date_format}"/>
-       <field:display field="jam_create" label="Jam Create" id="c_com_melawai_ppuc_model_menu_jam_create"  object="${menu}" />
        <field:display field="user_nonaktif" label="User Nonaktif" id="c_com_melawai_ppuc_model_menu_user_nonaktif"  object="${menu}" />
-       <field:display field="tgl_nonaktif" label="Tgl Nonaktif" id="c_com_melawai_ppuc_model_menu_tgl_nonaktif"  object="${menu}"  date="true" dateTimePattern="${menu_tgl_nonaktif_date_format}"/>
-       <field:display field="jam_nonaktif" label="Jam Nonaktif" id="c_com_melawai_ppuc_model_menu_jam_nonaktif"  object="${menu}" />
+       <field:display field="tgl_nonaktif" label="Tgl Nonaktif" id="c_com_melawai_ppuc_model_menu_tgl_nonaktif"  object="${menu}"  date="true" dateTimePattern="${menu_tgl_create_date_format}"/>
     </page:show>
 </div>
 

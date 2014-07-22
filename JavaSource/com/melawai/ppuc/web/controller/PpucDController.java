@@ -104,7 +104,7 @@ public class PpucDController extends ParentController{
 	}
 	void addDateTimeFormatPatterns(Model uiModel) {
 		uiModel.addAttribute("ppucd_tgl_ppuc_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("ppucd_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("ppucd_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 	void populateEditForm(Model uiModel, PpucD ppucd) {
 		uiModel.addAttribute("ppucd", ppucd);

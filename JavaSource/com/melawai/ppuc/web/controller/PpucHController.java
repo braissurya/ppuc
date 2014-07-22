@@ -104,7 +104,7 @@ public class PpucHController extends ParentController{
 	}
 	void addDateTimeFormatPatterns(Model uiModel) {
 		uiModel.addAttribute("ppuch_tgl_ppuc_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("ppuch_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("ppuch_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 		uiModel.addAttribute("ppuch_sys_tgl_confirm_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 		uiModel.addAttribute("ppuch_sys_tgl_approve_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 		uiModel.addAttribute("ppuch_sys_tgl_realisasi_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));

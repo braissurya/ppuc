@@ -127,7 +127,11 @@
 	<!-- update query untuk table ini -->
 	<update id="update" parameterType="Menu">
 		UPDATE menu
-		<set>
+		set
+		SYS_USER_NONAKTIF = #{user_nonaktif},
+		 SYS_TGL_NONAKTIF = #{tgl_nonaktif},
+		SYS_JAM_NONAKTIF = #{jam_nonaktif},
+		<trim suffixOverrides=",">	
 			<if test="menu_id != null">SYS_MENU_ID = #{menu_id}, </if>
 			<if test="parent != null">PARENT = #{parent}, </if>
 			<if test="nama != null">NAMA = #{nama}, </if>
@@ -138,11 +142,8 @@
 			<if test="f_aktif != null">F_AKTIF = #{f_aktif}, </if>
 			<if test="user_create != null">SYS_USER_CREATE = #{user_create}, </if>
 			<if test="tgl_create != null">SYS_TGL_CREATE = #{tgl_create}, </if>
-			<if test="jam_create != null">SYS_JAM_CREATE = #{jam_create}, </if>
-			<if test="user_nonaktif != null">SYS_USER_NONAKTIF = #{user_nonaktif}, </if>
-			<if test="tgl_nonaktif != null">SYS_TGL_NONAKTIF = #{tgl_nonaktif}, </if>
-			<if test="jam_nonaktif != null">SYS_JAM_NONAKTIF = #{jam_nonaktif} </if>
-		</set>
+			<if test="jam_create != null">SYS_JAM_CREATE = #{jam_create}</if>			
+		</trim>
 		WHERE  
 			SYS_MENU_ID= #{menu_id} 
 	</update>

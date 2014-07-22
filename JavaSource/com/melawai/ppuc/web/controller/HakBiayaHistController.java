@@ -109,8 +109,8 @@ public class HakBiayaHistController extends ParentController{
 	void addDateTimeFormatPatterns(Model uiModel) {
 		uiModel.addAttribute("hakbiayahist_drtgl_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
 		uiModel.addAttribute("hakbiayahist_sptgl_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("hakbiayahist_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("hakbiayahist_sys_tgl_nonaktif_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("hakbiayahist_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("hakbiayahist_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 	void populateEditForm(Model uiModel, HakBiayaHist hakbiayahist) {
 		uiModel.addAttribute("hakbiayahist", hakbiayahist);

@@ -106,7 +106,7 @@ public class PropinsiController extends ParentController{
 		return "redirect:/master/propinsi";
 	}
 	void addDateTimeFormatPatterns(Model uiModel) {
-		uiModel.addAttribute("propinsi_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("propinsi_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 	void populateEditForm(Model uiModel, Propinsi propinsi) {
 		uiModel.addAttribute("propinsi", propinsi);

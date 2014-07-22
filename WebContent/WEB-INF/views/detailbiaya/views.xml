@@ -10,6 +10,9 @@
 	<definition extends="default" name="detailbiaya/create">
         <put-attribute name="body" value="/WEB-INF/views/detailbiaya/create.jspx"/>
     </definition>
+    <definition extends="default" name="detailbiaya/creategroup">
+        <put-attribute name="body" value="/WEB-INF/views/detailbiaya/creategroup.jspx"/>
+    </definition>
 	<definition extends="default" name="detailbiaya/update">
         <put-attribute name="body" value="/WEB-INF/views/detailbiaya/update.jspx"/>
     </definition>

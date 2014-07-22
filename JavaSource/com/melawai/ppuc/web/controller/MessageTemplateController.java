@@ -101,7 +101,7 @@ public class MessageTemplateController extends ParentController{
 		return "redirect:/master/messagetemplate";
 	}
 	void addDateTimeFormatPatterns(Model uiModel) {
-		uiModel.addAttribute("messagetemplate_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("messagetemplate_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 	void populateEditForm(Model uiModel, MessageTemplate messagetemplate) {
 		uiModel.addAttribute("messagetemplate", messagetemplate);

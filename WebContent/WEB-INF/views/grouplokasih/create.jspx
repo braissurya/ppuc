@@ -1,16 +1,55 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
-    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
-    <jsp:output omit-xml-declaration="yes"/>
-    <form:create id="fc_com_melawai_ppuc_model_grouplokasih" modelAttribute="grouplokasih" path="/master/grouplokasih" render="${ empty dependencies }">
-       <field:input field="divisi_kd" label="Divisi Kd" id="c_com_melawai_ppuc_model_grouplokasih_divisi_kd" required="true" max="3"/>
-       <field:input field="subdiv_kd" label="Subdiv Kd" id="c_com_melawai_ppuc_model_grouplokasih_subdiv_kd" required="true" max="3"/>
-       <field:input field="group_lok" label="Group Lok" id="c_com_melawai_ppuc_model_grouplokasih_group_lok" required="true" max="5"/>
-       <field:input field="group_desc" label="Group Desc" id="c_com_melawai_ppuc_model_grouplokasih_group_desc"  max="50"/>
-       <field:input field="user_create" label="User Create" id="c_com_melawai_ppuc_model_grouplokasih_user_create" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_grouplokasih_tgl_create" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="jam_create" label="Jam Create" id="c_com_melawai_ppuc_model_grouplokasih_jam_create" readonly="true" validationMessageCode="field_invalid_number" />
-    </form:create>
-    <form:dependency dependencies="${dependencies}" id="d_com_melawai_ppuc_model_grouplokasih" render="${ not empty dependencies }"/>
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	<form:create id="fc_com_melawai_ppuc_model_grouplokasih" modelAttribute="grouplokasih" path="/master/grouplokasih" render="${ empty dependencies }">
+		<field:input field="divisi_kd" label="Divisi Kd" id="c_com_melawai_ppuc_model_grouplokasih_divisi_kd"  required="true" max="3" />
+		<field:input field="subdiv_kd" label="Subdiv Kd" id="c_com_melawai_ppuc_model_grouplokasih_subdiv_kd" required="true" max="3" />
+		<field:input field="group_lok" label="Group Lok" id="c_com_melawai_ppuc_model_grouplokasih_group_lok" required="true" max="5" />
+		<field:input field="group_desc" label="Group Desc" id="c_com_melawai_ppuc_model_grouplokasih_group_desc" max="50" />
+		
+		<div id="table_wrapper">
+			<table class="gridTables" id="listRate" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<th style="width: 205px;">KD Lokasi</th>
+					<th style="width: 150px;">Nama Lokasi</th>
+					<th style="width: 150px;">Propinsi</th>
+					<th style="width: 150px;">Kota</th>
+					<th style="width: 150px;">Email</th>
+					<th style="width: 20px;"></th>
+				</tr>
+				<tr>
+					<td style="width: 205px;"></td>
+					<td style="width: 150px;"><![CDATA[&nbsp;]]></td>
+					<td style="width: 150px;"><![CDATA[&nbsp;]]></td>
+					<td style="width: 150px;"><![CDATA[&nbsp;]]></td>
+					<td style="width: 150px;"><![CDATA[&nbsp;]]></td>
+					<td style="width: 20px;"></td>
+				</tr>
+			</table>
+		</div>
+		<table class="gridTables" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<th style="width: 205px;"><input type="text" name="lok_kd" id="lok_kd" size="20" /></th>
+				<th style="width: 150px;"></th>
+				<th style="width: 150px;"></th>
+				<th style="width: 150px;"></th>
+				<th style="width: 150px;"></th>
+				<th style="width: 20px;"><a href="#" class="add" id="add"> <img src="/PPUC/resources/images/add.png" alt="Add" />
+				</a></th>
+			</tr>
+		</table>
+		<br />
+	</form:create>
+	<form:dependency dependencies="${dependencies}" id="d_com_melawai_ppuc_model_grouplokasih" render="${ not empty dependencies }" />
+
+
+
+	<![CDATA[
+	<script src="/PPUC/resources/static/grouplokasihelper.js" type="text/javascript">	</script>
+	]]>
+
+
+
 </div>
 

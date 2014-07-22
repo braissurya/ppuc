@@ -9,9 +9,6 @@
        <field:input field="link" label="Link" id="c_com_melawai_ppuc_model_menu_link"  />
        <field:input field="urut" label="Urut" id="c_com_melawai_ppuc_model_menu_urut"  validationMessageCode="field_invalid_integer" />
        <field:checkbox field="f_aktif" id="c_com_melawai_ppuc_model_menu_f_aktif" value="1" label="F Aktif" />
-       <field:input field="user_create" label="User Create" id="c_com_melawai_ppuc_model_menu_user_create" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_menu_tgl_create" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="jam_create" label="Jam Create" id="c_com_melawai_ppuc_model_menu_jam_create" readonly="true" validationMessageCode="field_invalid_number" />
 	</form:update>
 </div>
 

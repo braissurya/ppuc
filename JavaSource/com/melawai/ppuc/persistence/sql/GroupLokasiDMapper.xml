@@ -18,6 +18,16 @@
 		<result property="user_create" column="user_create" />
 		<result property="tgl_create" column="tgl_create" />
 		<result property="jam_create" column="jam_create" />
+		<association property="lokasi" javaType="Lokasi">
+			<id property="lok_kd" column="l_lok_kd"  />  
+			<result property="divisi_kd" column="l_divisi_kd" />
+			<result property="subdiv_kd" column="l_subdiv_kd" />
+			<result property="dept_kd" column="l_dept_kd" />
+			<result property="lok_nm" column="l_lok_nm" />
+			<result property="propinsi" column="l_propinsi" />
+			<result property="kota" column="l_kota" />
+			<result property="email" column="l_email" />
+		</association>
 	</resultMap>
 
 	<!-- nama kolom yang ingin ditampilkan -->
@@ -28,7 +38,15 @@
 		C.LOK_KD as lok_kd,
 		C.SYS_USER_CREATE as user_create,
 		C.SYS_TGL_CREATE as tgl_create,
-		C.SYS_JAM_CREATE as jam_create
+		C.SYS_JAM_CREATE as jam_create,		
+		L.LOK_KD as l_lok_kd,
+		L.DIVISI_KD as l_divisi_kd,
+		L.SUBDIV_KD as l_subdiv_kd,
+		L.DEPT_KD as l_dept_kd,
+		L.LOK_NM as l_lok_nm,
+		L.PROPINSI as l_propinsi,
+		L.KOTA as l_kota,
+		L.EMAIL as l_email
 	</sql>
 
 	<!-- query select, dengan kolom yang default di atas, apabila mau ditambahkan join juga bisa disini
@@ -36,6 +54,7 @@
 	<sql id="selectQuery">
 		select * from (
 			select <include refid="defaultColoumn" /> from group_lokasi_d C
+			left outer join lokasi l on c.lok_kd = l.lok_kd
 		)T
 	</sql>
 

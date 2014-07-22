@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,12 +31,19 @@ public class GroupBiayaController extends ParentController{
 	@Autowired
 	private GroupBiayaManager groupbiayaManager;
 
+	@Autowired
+	private GroupBiayaValidator groupBiayaValidator;
+	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		binder.setValidator(new GroupBiayaValidator());
+		binder.addValidators(this.groupBiayaValidator);
 	}
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
-	public String create(@Valid GroupBiaya groupbiaya, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String create(@ModelAttribute("groupbiaya")@Valid GroupBiaya groupbiaya, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+		// tambahan validasi khusus
+		if (groupbiayaManager.exists(groupbiaya.kd_group)) {
+			bindingResult.rejectValue("kd_group", "duplicate", new String[] { "Kd Group : " + groupbiaya.kd_group + ", " }, null);
+		}
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, groupbiaya);
 			return "groupbiaya/create";
@@ -75,7 +83,7 @@ public class GroupBiayaController extends ParentController{
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-	public String update(@Valid GroupBiaya groupbiaya, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String update(@ModelAttribute("groupbiaya")@Valid GroupBiaya groupbiaya, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, groupbiaya);
 			return "groupbiaya/update";
@@ -93,15 +101,24 @@ public class GroupBiayaController extends ParentController{
 
 	@RequestMapping(value = "/{kd_group}", method = RequestMethod.DELETE, produces = "text/html")
 	public String delete(@PathVariable("kd_group") String kd_group, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-		GroupBiaya groupbiaya = groupbiayaManager.get(kd_group);
-		groupbiayaManager.remove(kd_group);
+		
+		String pesan=messageSource.getMessage("entity_success", new String[]{"Delete Group Biaya : "+kd_group+","}, LocaleContextHolder.getLocale());
+		if(!groupbiayaManager.exists(kd_group)){
+			pesan="Group Biaya "+kd_group+" tidak ditemukan";
+			messageSource.getMessage("entity_not_found", new String[]{"Group Biaya : "+kd_group+","}, LocaleContextHolder.getLocale());
+		}else if(groupbiayaManager.selectCountTable("detail_biaya", "kd_group='"+kd_group+"'")>0){
+			pesan=messageSource.getMessage("entity_used_by", new String[]{"Group Biaya : "+kd_group+",","Master Detail Biaya"}, LocaleContextHolder.getLocale());
+		}else{
+			groupbiayaManager.remove(kd_group);
+		}
 		uiModel.asMap().clear();
 		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
 		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
+		uiModel.addAttribute("pesan", pesan);
 		return "redirect:/master/groupbiaya";
 	}
 	void addDateTimeFormatPatterns(Model uiModel) {
-		uiModel.addAttribute("groupbiaya_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("groupbiaya_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 	void populateEditForm(Model uiModel, GroupBiaya groupbiaya) {
 		uiModel.addAttribute("groupbiaya", groupbiaya);

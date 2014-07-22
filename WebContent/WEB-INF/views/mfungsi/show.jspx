@@ -8,7 +8,6 @@
        <field:display field="mail_seq" label="Mail Seq" id="c_com_melawai_ppuc_model_mfungsi_mail_seq"  object="${mfungsi}" />
        <field:display field="user_create" label="User Create" id="c_com_melawai_ppuc_model_mfungsi_user_create"  object="${mfungsi}" />
        <field:display field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_mfungsi_tgl_create"  object="${mfungsi}"  date="true" dateTimePattern="${mfungsi_tgl_create_date_format}"/>
-       <field:display field="jam_create" label="Jam Create" id="c_com_melawai_ppuc_model_mfungsi_jam_create"  object="${mfungsi}" />
     </page:show>
 </div>
 

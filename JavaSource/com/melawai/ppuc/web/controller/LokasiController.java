@@ -165,8 +165,8 @@ public class LokasiController extends ParentController {
 
 	void addDateTimeFormatPatterns(Model uiModel) {
 		uiModel.addAttribute("lokasi_tgl_tutup_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("lokasi_sys_tgl_update_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("lokasi_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("lokasi_tgl_update_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("lokasi_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 
 	void populateEditForm(Model uiModel, Lokasi lokasi) {

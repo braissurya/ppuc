@@ -58,6 +58,8 @@ public class UserValidator implements Validator {
 				if (userManager.selectCountTable("user", "email = '" + user.getEmail() + "' and user_id <> '"+user.getUser_id()+"'") > 0)
 					e.rejectValue("email", "duplicate", new String[] { "Email" }, null);
 			}
+			
+			
 		}
 	}
 }

@@ -37,11 +37,15 @@ public class UserDivisiController extends ParentController{
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		binder.setValidator(this.userDivisiValidator);
+		binder.addValidators(this.userDivisiValidator);
 	}
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	public String create(@ModelAttribute("userdivisi") @Valid UserDivisi userdivisi, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-		
+		// tambahan validasi khusus
+		if (userdivisiManager.exists(userdivisi.id_user_divisi,userdivisi.user_id, userdivisi.divisi_kd, userdivisi.subdiv_kd, userdivisi.dept_kd,userdivisi.getLok_kd())) {
+			bindingResult.rejectValue("lok_kd", "duplicate", new String[] { "LOKASI KD : " + userdivisi.lok_kd + " | DIVISI KD : " + userdivisi.divisi_kd + " | SUBDIVISI KD : " + userdivisi.subdiv_kd
+					+ " | DEPARTMEN KD : " + userdivisi.dept_kd+ " | User ID : " + userdivisi.user_id  + ", " }, null);
+		}
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, userdivisi);
 			return "userdivisi/create";
@@ -60,8 +64,31 @@ public class UserDivisiController extends ParentController{
 	@RequestMapping(value = "/{id_user_divisi}", produces = "text/html")
 	public String show(@PathVariable("id_user_divisi") Long id_user_divisi,Model uiModel) {
 		addDateTimeFormatPatterns(uiModel);
-		uiModel.addAttribute("userdivisi", userdivisiManager.get(id_user_divisi));
+		UserDivisi userdivisi=userdivisiManager.get(id_user_divisi);
+		uiModel.addAttribute("userdivisi",userdivisi );
 		uiModel.addAttribute("itemId", id_user_divisi);
+		
+		//FIXME : belum bisa keluarin data show yang dropdown !!
+		
+		uiModel.addAttribute("useridList", baseService.selectDropDown("concat(user_id,' [ ',user_name,' ]')", "user_id", "user", null, "user_id"));
+		
+		uiModel.addAttribute("divisiList", baseService.selectDropDown("divisi_nm", "divisi_kd", "divisi", null, "divisi_nm"));
+		
+		if (!Utils.isEmpty(userdivisi.divisi_kd))
+			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "concat(divisi_kd, '.', subdiv_kd)", "subdivisi", "divisi_kd = '" + userdivisi.divisi_kd + "'", "subdiv_nm"));
+		else
+			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "concat(divisi_kd, '.', subdiv_kd)", "subdivisi", null, "subdiv_nm"));
+
+		if (userdivisiManager.selectCountTable("departmen", " divisi_kd = '" + userdivisi.divisi_kd + "' and subdiv_kd = '" + userdivisi.subdiv_kd + "'")>0)
+			uiModel.addAttribute("deptList", baseService.selectDropDown("dept_nm","concat(divisi_kd, '.', subdiv_kd, '.', dept_kd)", "departmen", " divisi_kd = '" + userdivisi.divisi_kd + "' and subdiv_kd = '" + userdivisi.subdiv_kd + "'", "dept_nm"));
+		else
+			uiModel.addAttribute("deptList", baseService.selectDropDown("dept_nm","concat(divisi_kd, '.', subdiv_kd, '.', dept_kd)",  "departmen", null, "dept_nm"));
+
+		if (userdivisiManager.selectCountTable("lokasi", " divisi_kd = '" + userdivisi.divisi_kd + "' and subdiv_kd = '" + userdivisi.subdiv_kd + "' and dept_kd = '" + userdivisi.dept_kd + "'")>0)
+			uiModel.addAttribute("lokList", baseService.selectDropDown("lok_nm","concat(divisi_kd, '.', subdiv_kd, '.', dept_kd, '.', lok_kd)", "lokasi", " divisi_kd = '" + userdivisi.divisi_kd + "' and subdiv_kd = '" + userdivisi.subdiv_kd + "' and dept_kd = '" + userdivisi.dept_kd + "'", "lok_nm"));
+		else
+			uiModel.addAttribute("lokList", baseService.selectDropDown("lok_nm","concat(divisi_kd, '.', subdiv_kd, '.', dept_kd, '.', lok_kd)",  "lokasi", null, "lok_nm"));
+
 		return "userdivisi/show";
 	}
 	
@@ -109,7 +136,7 @@ public class UserDivisiController extends ParentController{
 	}
 	
 	void addDateTimeFormatPatterns(Model uiModel) {
-		uiModel.addAttribute("userdivisi_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("userdivisi_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 	void populateEditForm(Model uiModel, UserDivisi userdivisi) {
 		uiModel.addAttribute("userdivisi", userdivisi);

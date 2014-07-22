@@ -106,7 +106,7 @@ public class KotaController extends ParentController{
 		return "redirect:/master/kota";
 	}
 	void addDateTimeFormatPatterns(Model uiModel) {
-		uiModel.addAttribute("kota_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("kota_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 	void populateEditForm(Model uiModel, Kota kota) {
 		uiModel.addAttribute("kota", kota);

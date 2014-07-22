@@ -1,14 +1,19 @@
 package com.melawai.ppuc.services;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.melawai.ppuc.model.Audittrail;
+import com.melawai.ppuc.model.AudittrailDetail;
 import com.melawai.ppuc.model.MFungsi;
+import com.melawai.ppuc.model.Menu;
 import com.melawai.ppuc.persistence.MFungsiMapper;
+import com.melawai.ppuc.utils.CommonUtil;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -18,7 +23,7 @@ import com.melawai.ppuc.persistence.MFungsiMapper;
  */
 
 @Service("mfungsiManager")
-public class MFungsiManager {
+public class MFungsiManager extends BaseService{
 
 	private static Logger logger = Logger.getLogger(MFungsiManager.class);
 
@@ -42,7 +47,12 @@ public class MFungsiManager {
 	/** Delete data berdasarkan kd_fungsi **/
 	@Transactional
 	public void remove(String kd_fungsi) {
+		
+		MFungsi tmp = get(kd_fungsi);
+		Set<AudittrailDetail> changes = CommonUtil.changes(tmp, null);
 		mfungsiMapper.remove(kd_fungsi);
+		audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.DELETE, tmp.getClass().getSimpleName(), tmp.getItemId(), CommonUtil.getIpAddr(httpServletRequest), "DELETE mfungsi",
+				CommonUtil.getCurrentUser(), changes);
 	}
 
 	/** Ambil jumlah seluruh data **/
@@ -65,10 +75,20 @@ public class MFungsiManager {
 	/** Save Model **/
 	@Transactional
 	public MFungsi save(MFungsi mfungsi) {
-		if (mfungsi.getTgl_create()==null) {
+		if (!exists(mfungsi.kd_fungsi)) {
+			
+			mfungsi.user_create = CommonUtil.getCurrentUserId();
+			mfungsi.tgl_create = selectSysdate();
+			Set<AudittrailDetail> changes = CommonUtil.changes(mfungsi, get(mfungsi.kd_fungsi));
 			mfungsiMapper.insert(mfungsi);
+			audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.ADD, mfungsi.getClass().getSimpleName(), mfungsi.getItemId(), CommonUtil.getIpAddr(httpServletRequest), "ADD mfungsi",
+					CommonUtil.getCurrentUser(), changes);
 		} else {
+			
+			Set<AudittrailDetail> changes = CommonUtil.changes(mfungsi, get(mfungsi.kd_fungsi));
 			mfungsiMapper.update(mfungsi);
+			audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.UPDATE, mfungsi.getClass().getSimpleName(), mfungsi.getItemId(), CommonUtil.getIpAddr(httpServletRequest), "UPDATE mfungsi",
+					CommonUtil.getCurrentUser(), changes);
 		} 
 		return mfungsi;
 	}

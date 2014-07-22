@@ -7,7 +7,7 @@
        <table:column id="c_com_melawai_ppuc_model_groupbiaya_kd_group" property="kd_group" label="Kd Group" />
        <table:column id="c_com_melawai_ppuc_model_groupbiaya_nm_group" property="nm_group" label="Nm Group" />
        <table:column id="c_com_melawai_ppuc_model_groupbiaya_user_create" property="user_create" label="User Create" />
-       <table:column id="c_com_melawai_ppuc_model_groupbiaya_jam_create" property="jam_create" label="Jam Create" />
+       <table:column id="c_com_melawai_ppuc_model_groupbiaya_tgl_create" property="tgl_create" label="Tgl Create" date="true" dateTimePattern="${groupbiaya_tgl_create_date_format}" />
         </table:table>
     </page:list>
 </div>

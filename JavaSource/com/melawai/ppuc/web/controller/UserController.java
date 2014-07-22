@@ -129,9 +129,8 @@ public class UserController extends ParentController {
 	}
 
 	void addDateTimeFormatPatterns(Model uiModel) {
-		uiModel.addAttribute("user_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("user_sys_tgl_update_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("user_sys_tgl_nonaktif_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("user_tgl_update_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("user_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 
 	void populateEditForm(Model uiModel, User user) {

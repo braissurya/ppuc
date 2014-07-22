@@ -9,6 +9,7 @@
 	<jsp:directive.attribute name="update" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'update' link into table (default true)" />
 	<jsp:directive.attribute name="delete" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'delete' link into table (default true)" />
 	<jsp:directive.attribute name="upload" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'upload' link into table (default false)" />
+	<jsp:directive.attribute name="searching" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'searching' link into table (default true)" />
 	<jsp:directive.attribute name="multiselect" type="java.lang.String" required="false" rtexprvalue="false" description="The name for multiselection checkboxes." />
 	<jsp:directive.attribute name="show" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'show' link into table (default true)" />
 	<jsp:directive.attribute name="render" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'true')" />
@@ -32,6 +33,9 @@
 		</c:if>
 		<c:if test="${empty delete}">
 			<c:set var="delete" value="true" />
+		</c:if>
+		<c:if test="${empty searching }">
+			<c:set var="searching" value="true" />
 		</c:if>
 		<spring:message var="typeName" code="menu_item_${fn:toLowerCase(fn:split(id,'_')[fn:length(fn:split(id,'_')) - 1])}_new_label" htmlEscape="false" />
 		<c:set var="lengths" value="${fn:split(columnMaxLengths, '&#9999;')}" scope="request" />
@@ -224,25 +228,13 @@
 				</tr>
 			</c:forEach>
 			<tr class="footer">
-				<td colspan="${colCounter}"><c:if test="${empty create or create}">
-						<span class="new"> <spring:url value="${path}" var="create_url">
-								<spring:param name="form" />
-							</spring:url> <a href="${create_url}"> <spring:url value="/resources/images/add.png" var="create_img_url" /> <spring:message arguments="${typeName}" code="global_menu_new" var="add_message" htmlEscape="false" /> <img alt="${fn:escapeXml(add_message)}" src="${create_img_url}" title="${fn:escapeXml(add_message)}" />
-						</a>
-						</span>
-						<c:out value=" " />
-						<c:if test="${upload }">
-							<span class="upload"> <c:set var="upl" value="/upload" /> <spring:url value="${path}${upl}" var="upload_url">
-									<spring:param name="form" />
-								</spring:url> <a href="${upload_url}"> <spring:url value="/resources/images/upload.jpg" var="upload_img_url" /> <spring:message arguments="${typeName}" code="global_menu_upload" var="upload_message" htmlEscape="false" /> <img alt="${fn:escapeXml(upload_message)}" src="${upload_img_url}" title="${fn:escapeXml(upload_message)}" />
-							</a>
-							</span>
-						</c:if>
-					</c:if> <c:if test="${not empty maxPages}">
+				<td colspan="${colCounter}"> <c:if test="${not empty maxPages}">
 						<util:pagination maxPages="${maxPages}" page="${param.page}" size="${param.size}" />
 					</c:if> 
 					</td>
 			</tr>
 		</table>
 	</c:if>
+	
+
 </jsp:root>

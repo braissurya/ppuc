@@ -103,7 +103,7 @@ public class LogEmailController extends ParentController{
 	void addDateTimeFormatPatterns(Model uiModel) {
 		uiModel.addAttribute("logemail_sys_tgl_ppuc_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
 		uiModel.addAttribute("logemail_sys_send_date_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("logemail_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("logemail_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 	void populateEditForm(Model uiModel, LogEmail logemail) {
 		uiModel.addAttribute("logemail", logemail);

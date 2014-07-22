@@ -14,8 +14,8 @@
 		<field:display field="f_tutup" checkbox="true" label="F Tutup" id="c_com_melawai_ppuc_model_lokasi_f_tutup" object="${lokasi}" />
 		<field:display field="tgl_tutup" label="Tgl Tutup" id="c_com_melawai_ppuc_model_lokasi_tgl_tutup" object="${lokasi}" date="true" dateTimePattern="${lokasi_tgl_tutup_date_format}" />
 		<field:display field="user_update" label="User Update" id="c_com_melawai_ppuc_model_lokasi_user_update" object="${lokasi}" />
-		<field:display field="tgl_update" label="Tgl Update" id="c_com_melawai_ppuc_model_lokasi_tgl_update" object="${lokasi}" date="true" dateTimePattern="${lokasi_sys_tgl_update_date_format}" />
+		<field:display field="tgl_update" label="Tgl Update" id="c_com_melawai_ppuc_model_lokasi_tgl_update" object="${lokasi}" date="true" dateTimePattern="${lokasi_tgl_update_date_format}" />
 		<field:display field="user_create" label="User Create" id="c_com_melawai_ppuc_model_lokasi_user_create" object="${lokasi}" />
-		<field:display field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_lokasi_tgl_create" object="${lokasi}" date="true" dateTimePattern="${lokasi_sys_tgl_create_date_format}" />
+		<field:display field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_lokasi_tgl_create" object="${lokasi}" date="true" dateTimePattern="${lokasi_tgl_create_date_format}" />
 	</page:show>
 </div>

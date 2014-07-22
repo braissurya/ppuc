@@ -10,6 +10,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.melawai.ppuc.utils.Utils;
@@ -29,13 +30,15 @@ public class GroupUser extends BaseObject implements Serializable  {
 	private static final long serialVersionUID = -8946818516215179670L;
 
 	//****************** COLOMN FROM TABLE START HERE ******************/
-	@NotNull
+	@NotEmpty
 	@Size(max=5)
 	public String group_kd;
 
+	@NotEmpty
 	@Size(max=50)
 	public String group_nm;
 
+	@NotNull
 	public Long id_role;
 
 	@Size(max=50)

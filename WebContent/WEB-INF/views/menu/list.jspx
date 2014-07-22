@@ -28,12 +28,12 @@
 						<td>${item.parent_nama }</td>
 						<td>${item.link }</td>
 						<td>${item.user_create }</td>
-						<td>${item.tgl_create }</td>
-						<td class="utilbox"><spring:url value="${path}?form&amp;parent_id=${item.parent}" var="parent_form_url" /> <spring:url value="/resources/images/icons/branch.png" var="parent_image_url" /> <spring:message arguments="Branch" code="entity_create" var="show_label" htmlEscape="false" /> <a href="${parent_form_url}" alt="${fn:escapeXml(show_label)}" title="${fn:escapeXml(show_label)}"> <img alt="${fn:escapeXml(show_label)}" class="image" src="${parent_image_url}"
+						<td><fmt:formatDate value="${item.tgl_create }" pattern="${menu_tgl_create_date_format}" />
+						</td>
+						<td class="utilbox"><spring:url value="${path}?form&amp;parent_id=${item.menu_id}" var="parent_form_url" /> <spring:url value="/resources/images/icons/branch.png" var="parent_image_url" /> <spring:message arguments="Branch" code="entity_create" var="show_label" htmlEscape="false" /> <a href="${parent_form_url}" alt="${fn:escapeXml(show_label)}" title="${fn:escapeXml(show_label)}"> <img alt="${fn:escapeXml(show_label)}" class="image" src="${parent_image_url}"
 								title="${fn:escapeXml(show_label)}" />
 						</a></td>
-						<td class="utilbox"><spring:url value="${path}/${item.itemId}" var="show_form_url" /> <spring:url value="/resources/images/show.png" var="show_image_url" /> <spring:message arguments="${typeName}" code="entity_show" var="show_label" htmlEscape="false" /> <a href="${show_form_url}" alt="${fn:escapeXml(show_label)}" title="${fn:escapeXml(show_label)}"> <img alt="${fn:escapeXml(show_label)}" class="image" src="${show_image_url}" title="${fn:escapeXml(show_label)}" />
-						</a></td>
+						
 						<td class="utilbox"><spring:url value="${path}/${item.itemId}" var="update_form_url">
 								<spring:param name="form" />
 							</spring:url> <spring:url value="/resources/images/update.png" var="update_image_url" /> <spring:message arguments="${typeName}" code="entity_update" var="update_label" htmlEscape="false" /> <a href="${update_form_url}" alt="${fn:escapeXml(update_label)}" title="${fn:escapeXml(update_label)}"> <img alt="${fn:escapeXml(update_label)}" class="image" src="${update_image_url}" title="${fn:escapeXml(update_label)}" />
@@ -73,10 +73,14 @@
 						</c:if>
 					</c:if> <c:if test="${not empty maxPages}">
 						<util:pagination maxPages="${maxPages}" page="${param.page}" size="${param.size}" />
-					</c:if> <page:find finderName="search" label="Search" id="sc_${id}" path="${path }">
-						<input name="search" type="text" />
-					</page:find></td>
+					</c:if> 
+					</td>
 			</tr>
 		</table>
+		 <page:find finderName="search" label="Search" id="sc_${id}" path="${path }">
+			<input name="search" type="text" value="${param.search}" />
+			<input type="hidden" name="group" value="${param.group }"/>
+			<input type="hidden" name="aktif" value="${param.aktif}"/>
+		</page:find>
 	</page:list>
 </div>

@@ -145,8 +145,8 @@ public class SubdivisiController extends ParentController {
 	}
 
 	void addDateTimeFormatPatterns(Model uiModel) {
-		uiModel.addAttribute("subdivisi_sys_tgl_update_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("subdivisi_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("subdivisi_tgl_update_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("subdivisi_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 
 	void populateEditForm(Model uiModel, Subdivisi subdivisi) {

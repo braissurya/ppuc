@@ -5,7 +5,7 @@
 	<jsp:output omit-xml-declaration="yes" />
 	<formtag:create id="fc_com_melawai_ppuc_model_groupuser" modelAttribute="groupuser" path="/master/groupuser" render="${ empty dependencies }">
 		<field:input field="group_kd" label="Group Kd" id="c_com_melawai_ppuc_model_groupuser_group_kd" required="true" max="5" />
-		<field:input field="group_nm" label="Group Nm" id="c_com_melawai_ppuc_model_groupuser_group_nm" max="50" />
+		<field:input field="group_nm" required="true" label="Group Nm" id="c_com_melawai_ppuc_model_groupuser_group_nm" max="50" />
 		<field:select field="id_role" label="Id Role" id="c_com_melawai_ppuc_model_groupuser_id_role" items="${roleList}" itemLabel="key" itemValue="value" required="true" />
 		<field:input field="user_create" label="User Create" id="c_com_melawai_ppuc_model_groupuser_user_create" readonly="true" validationMessageCode="field_invalid_number" />
 		<field:input field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_groupuser_tgl_create" readonly="true" validationMessageCode="field_invalid_number" />

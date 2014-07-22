@@ -42,11 +42,15 @@ public class GroupUserController extends ParentController{
 	
 	@Autowired
 	private AksesMenuManager aksesMenuManager;
+	
+	@Autowired
+	private GroupUserValidator groupUserValidator;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		binder.setValidator(new GroupUserValidator());
+		binder.addValidators(this.groupUserValidator);
 	}
+	
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	public String create(@ModelAttribute("groupuser")@Valid GroupUser groupuser, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
@@ -145,7 +149,7 @@ public class GroupUserController extends ParentController{
 		return "redirect:/master/groupuser";
 	}
 	void addDateTimeFormatPatterns(Model uiModel) {
-		uiModel.addAttribute("groupuser_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("groupuser_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 	void populateEditForm(Model uiModel, GroupUser groupuser) {
 		uiModel.addAttribute("groupuser", groupuser);

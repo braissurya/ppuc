@@ -8,7 +8,10 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.melawai.ppuc.utils.Utils;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -20,32 +23,27 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class HakBiaya extends BaseObject implements Serializable  {
 
 	//****************** COLOMN FROM TABLE START HERE ******************/
-	@NotNull
-	@Size(max=3)
+	@NotEmpty
 	public String divisi_kd;
 
-	@NotNull
-	@Size(max=3)
+	@NotEmpty
 	public String subdiv_kd;
 
-	@NotNull
-	@Size(max=3)
+	@NotEmpty
 	public String dept_kd;
 
-	@NotNull
-	@Size(max=5)
+	@NotEmpty
 	public String lok_kd;
 
-	@NotNull
-	@Size(max=5)
+	@NotEmpty
 	public String kd_group;
 
-	@NotNull
-	@Size(max=30)
+	@NotEmpty
 	public String kd_biaya;
 
-	public Long f_aktif;
+	public Integer f_aktif;
 
+	@NotNull
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(style="M-")
 	public Date drtgl;
@@ -80,6 +78,7 @@ public class HakBiaya extends BaseObject implements Serializable  {
 	//****************** OTHERS START HERE ******************/
 
 	public String itemId;
+	public Integer typeInput;
 	//****************** OTHERS END HERE ******************/
 
 
@@ -110,8 +109,15 @@ public class HakBiaya extends BaseObject implements Serializable  {
 	public String getKd_biaya(){ return kd_biaya; }
 	public void setKd_biaya(String kd_biaya){ this.kd_biaya = kd_biaya; }
 
-	public Long getF_aktif(){ return f_aktif; }
-	public void setF_aktif(Long f_aktif){ this.f_aktif = f_aktif; }
+	public Integer getF_aktif() {
+		if (f_aktif == null) f_aktif = 0;
+		return f_aktif;
+	}
+
+	public void setF_aktif(Integer f_aktif) {
+		if(f_aktif==null)f_aktif=0;
+		this.f_aktif = f_aktif;
+	}
 
 	public Date getDrtgl(){ return drtgl; }
 	public void setDrtgl(Date drtgl){ this.drtgl = drtgl; }
@@ -123,7 +129,12 @@ public class HakBiaya extends BaseObject implements Serializable  {
 	public void setUser_create(String user_create){ this.user_create = user_create; }
 
 	public Date getTgl_create(){ return tgl_create; }
-	public void setTgl_create(Date tgl_create){ this.tgl_create = tgl_create; }
+	public void setTgl_create(Date tgl_create){ 
+		this.tgl_create = tgl_create;
+		if (tgl_create != null) {
+			this.jam_create = Utils.convertDateToString(tgl_create, jam_format);
+		}
+	}
 
 	public String getJam_create(){ return jam_create; }
 	public void setJam_create(String jam_create){ this.jam_create = jam_create; }
@@ -132,7 +143,12 @@ public class HakBiaya extends BaseObject implements Serializable  {
 	public void setUser_nonaktif(String user_nonaktif){ this.user_nonaktif = user_nonaktif; }
 
 	public Date getTgl_nonaktif(){ return tgl_nonaktif; }
-	public void setTgl_nonaktif(Date tgl_nonaktif){ this.tgl_nonaktif = tgl_nonaktif; }
+	public void setTgl_nonaktif(Date tgl_nonaktif){ 
+		this.tgl_nonaktif = tgl_nonaktif;
+		if (tgl_nonaktif != null) {
+			this.jam_nonaktif = Utils.convertDateToString(tgl_nonaktif, jam_format);
+		}
+	}
 
 	public String getJam_nonaktif(){ return jam_nonaktif; }
 	public void setJam_nonaktif(String jam_nonaktif){ this.jam_nonaktif = jam_nonaktif; }
@@ -140,6 +156,16 @@ public class HakBiaya extends BaseObject implements Serializable  {
 
 	public String getItemId() {return ""+divisi_kd+"/"+subdiv_kd+"/"+dept_kd+"/"+lok_kd+"/"+kd_group+"/"+kd_biaya;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}
+
+	public Integer getTypeInput() {
+		return typeInput;
+	}
+
+	public void setTypeInput(Integer typeInput) {
+		this.typeInput = typeInput;
+	}
+	
+	
 
 	//****************** GETTER SETTER END HERE ******************/
 

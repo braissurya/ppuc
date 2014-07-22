@@ -11,7 +11,7 @@
 			<table:column id="c_com_melawai_ppuc_model_divisi_tgl_update" property="tgl_update"  date="true" dateTimePattern="${divisi_tgl_update_date_format}" label="Tgl Update" />
 			<table:column id="c_com_melawai_ppuc_model_divisi_jam_update" property="jam_update" label="Jam Update" />
 			<table:column id="c_com_melawai_ppuc_model_divisi_user_create" property="user_create" label="User Create" />
-			<table:column id="c_com_melawai_ppuc_model_divisi_tgl_create" property="tgl_create"  date="true" dateTimePattern="${divisi_sys_tgl_create_date_format}" label="Tgl Create" />
+			<table:column id="c_com_melawai_ppuc_model_divisi_tgl_create" property="tgl_create"  date="true" dateTimePattern="${divisi_tgl_create_date_format}" label="Tgl Create" />
 		</table:table>
 		
 	</page:list>

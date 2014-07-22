@@ -1,3 +1,6 @@
+$(document).ready(function(){
+	setting();
+});
 
 function formatCurrency(num) {
 	num = num.toString().replace(/\,/g, '');
@@ -306,45 +309,5 @@ function setting() {
 		});
 	});
 
-	function test() {
-
-		require([ "dojo/store/Memory", "dojo/on", "dijit/form/Select",
-				"dojo/request", "dojo/json", "dojo/_base/array",
-				"dojo/domReady!" ], function(Memory, Select, on, request, JSON,
-				arrayUtil) {
-
-			// reset
-			reset("_subdiv_kd_id");
-
-			// get json data
-			request("http://localhost/PPUC/json/subdivisi?param=OPT", {
-				handleAs : "json" // < Parse data from JSON to a JavaScript
-									// object
-			}).then(function(data) {
-
-				var optionALL = true;
-				var selectedId = "EYE";
-				var datas = [];
-				if (optionALL == true)
-					datas.push({
-						"name" : "",
-						"id" : ""
-					});
-
-				arrayUtil.forEach(data, function(item, i) {
-					datas.push({
-						"name" : item.value,
-						"id" : item.key
-					});
-				});
-
-				setSelect(datas, "_subdiv_kd_id", selectedId);
-
-			}, function(error) {
-				console.log("An error occurred: " + error);
-			});
-		});
-
-	}
 
 }

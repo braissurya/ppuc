@@ -91,7 +91,17 @@ public class MenuManager extends BaseService {
 					CommonUtil.getCurrentUser(), changes);
 		} else {
 			menu.level = get(menu.parent).level + 1;
-			Set<AudittrailDetail> changes = CommonUtil.changes(menu, get(menu.menu_id));
+			Menu tmp=get(menu.menu_id);
+			Set<AudittrailDetail> changes = CommonUtil.changes(menu, tmp);
+			if(menu.f_aktif!=tmp.f_aktif){
+				if(menu.f_aktif==0){
+					menu.tgl_nonaktif=selectSysdate();
+					menu.user_nonaktif=CommonUtil.getCurrentUserId();
+				}else{
+					menu.tgl_nonaktif=null;
+					menu.user_nonaktif=null;
+				}
+			}
 			menuMapper.update(menu);
 			audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.UPDATE, menu.getClass().getSimpleName(), menu.getItemId(), CommonUtil.getIpAddr(httpServletRequest), "UPDATE Menu",
 					CommonUtil.getCurrentUser(), changes);

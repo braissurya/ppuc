@@ -30,6 +30,10 @@ public class GroupLokasiDManager {
 	public GroupLokasiD get(String divisi_kd, String subdiv_kd, String group_lok, String lok_kd) {
 		return grouplokasidMapper.get(divisi_kd, subdiv_kd, group_lok, lok_kd);
 	}
+	
+	public List<GroupLokasiD> get(String divisi_kd, String subdiv_kd, String group_lok) {
+		return grouplokasidMapper.get(divisi_kd, subdiv_kd, group_lok);
+	}
 
 	/** Apakah data dengan divisi_kd, subdiv_kd, group_lok, lok_kd ini ada? **/
 	public boolean exists(String divisi_kd, String subdiv_kd, String group_lok, String lok_kd) {	

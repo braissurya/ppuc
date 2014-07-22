@@ -22,6 +22,8 @@ public interface GroupLokasiDMapper {
 	public void remove(@Param("divisi_kd") String divisi_kd, @Param("subdiv_kd") String subdiv_kd, @Param("group_lok") String group_lok, @Param("lok_kd") String lok_kd) throws DataAccessException;
 
 	public GroupLokasiD get(@Param("divisi_kd") String divisi_kd, @Param("subdiv_kd") String subdiv_kd, @Param("group_lok") String group_lok, @Param("lok_kd") String lok_kd) throws DataAccessException;
+	
+	public List<GroupLokasiD> get(@Param("divisi_kd") String divisi_kd, @Param("subdiv_kd") String subdiv_kd, @Param("group_lok") String group_lok) throws DataAccessException;
 
 	public List<GroupLokasiD> getAll() throws DataAccessException;
 

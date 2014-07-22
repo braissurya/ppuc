@@ -8,7 +8,10 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.melawai.ppuc.utils.Utils;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -20,20 +23,20 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class DetailBiaya extends BaseObject implements Serializable  {
 
 	//****************** COLOMN FROM TABLE START HERE ******************/
-	@NotNull
+	@NotEmpty
 	@Size(max=30)
 	public String kd_biaya;
 
-	@NotNull
+	@NotEmpty
 	@Size(max=5)
 	public String kd_group;
 
 	@Size(max=45)
 	public String biaya_description;
 
-	public Long f_putus;
+	public Integer f_putus;
 
-	public Long f_used;
+	public Integer f_used;
 
 	@Size(max=50)
 	public String acc_no;
@@ -75,11 +78,25 @@ public class DetailBiaya extends BaseObject implements Serializable  {
 	public String getBiaya_description(){ return biaya_description; }
 	public void setBiaya_description(String biaya_description){ this.biaya_description = biaya_description; }
 
-	public Long getF_putus(){ return f_putus; }
-	public void setF_putus(Long f_putus){ this.f_putus = f_putus; }
+	public Integer getF_putus() {
+		if(f_putus==null)f_putus=0;
+		return f_putus;
+	}
 
-	public Long getF_used(){ return f_used; }
-	public void setF_used(Long f_used){ this.f_used = f_used; }
+	public void setF_putus(Integer f_putus) {
+		if(f_putus==null)f_putus=0;
+		this.f_putus = f_putus;
+	}
+
+	public Integer getF_used() {
+		if(f_used==null)f_used=0;
+		return f_used;
+	}
+
+	public void setF_used(Integer f_used) {
+		if(f_used==null)f_used=0;
+		this.f_used = f_used;
+	}
 
 	public String getAcc_no(){ return acc_no; }
 	public void setAcc_no(String acc_no){ this.acc_no = acc_no; }
@@ -88,7 +105,12 @@ public class DetailBiaya extends BaseObject implements Serializable  {
 	public void setUser_create(String user_create){ this.user_create = user_create; }
 
 	public Date getTgl_create(){ return tgl_create; }
-	public void setTgl_create(Date tgl_create){ this.tgl_create = tgl_create; }
+	public void setTgl_create(Date tgl_create){
+		this.tgl_create = tgl_create; 
+		if (tgl_create != null) {
+			this.jam_create = Utils.convertDateToString(tgl_create, jam_format);
+		}
+	}
 
 	public String getJam_create(){ return jam_create; }
 	public void setJam_create(String jam_create){ this.jam_create = jam_create; }

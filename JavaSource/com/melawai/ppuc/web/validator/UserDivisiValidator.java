@@ -24,7 +24,7 @@ import com.melawai.ppuc.utils.Utils;
  * @Revision :
  */
 @Component
-public class UserDivisiValidator extends LocalValidatorFactoryBean implements Validator {
+public class UserDivisiValidator implements Validator {
 	
 	private static Logger logger = Logger.getLogger(UserDivisiValidator.class);
 
@@ -73,10 +73,10 @@ public class UserDivisiValidator extends LocalValidatorFactoryBean implements Va
 	public void validate(Object obj, Errors e) {
 		UserDivisi userDivisi = (UserDivisi) obj;
 		
-		ValidationUtils.rejectIfEmptyOrWhitespace(e, "user_id", "NotEmpty", new String[] { "User Id	" }, null);
-		ValidationUtils.rejectIfEmptyOrWhitespace(e, "divisi_kd", "NotEmpty", new String[] { "Divisi KD" }, null);
-		ValidationUtils.rejectIfEmptyOrWhitespace(e, "subdiv_kd", "NotEmpty", new String[] { "Subdivisi KD" }, null);
-		ValidationUtils.rejectIfEmptyOrWhitespace(e, "dept_kd", "NotEmpty", new String[] { "Departmen KD" }, null);
+//		ValidationUtils.rejectIfEmptyOrWhitespace(e, "user_id", "NotEmpty", new String[] { "User Id	" }, null);
+//		ValidationUtils.rejectIfEmptyOrWhitespace(e, "divisi_kd", "NotEmpty", new String[] { "Divisi KD" }, null);
+//		ValidationUtils.rejectIfEmptyOrWhitespace(e, "subdiv_kd", "NotEmpty", new String[] { "Subdivisi KD" }, null);
+//		ValidationUtils.rejectIfEmptyOrWhitespace(e, "dept_kd", "NotEmpty", new String[] { "Departmen KD" }, null);
 
 		if (!e.hasErrors()) {
 			userDivisi.subdiv_kd = userDivisi.subdiv_kd.substring(userDivisi.subdiv_kd.lastIndexOf(".") + 1);
@@ -101,11 +101,7 @@ public class UserDivisiValidator extends LocalValidatorFactoryBean implements Va
 			}
 			
 			
-			// tambahan validasi khusus
-			if (userDivisiManager.exists(userDivisi.id_user_divisi,userDivisi.user_id, userDivisi.divisi_kd, userDivisi.subdiv_kd, userDivisi.dept_kd,userDivisi.getLok_kd())) {
-				e.rejectValue("lok_kd", "duplicate", new String[] { "LOKASI KD : " + userDivisi.lok_kd + " | DIVISI KD : " + userDivisi.divisi_kd + " | SUBDIVISI KD : " + userDivisi.subdiv_kd
-						+ " | DEPARTMEN KD : " + userDivisi.dept_kd+ " | User ID : " + userDivisi.user_id  + ", " }, null);
-			}
+			
 		}
 	}
 

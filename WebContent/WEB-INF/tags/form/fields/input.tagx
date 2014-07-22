@@ -8,6 +8,8 @@
 	<jsp:directive.attribute name="required" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicates if this field is required (default false)" />
 	<jsp:directive.attribute name="email" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicates if this field is email address" />
 	<jsp:directive.attribute name="mobile" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicates if this field is mobile number" />
+	<jsp:directive.attribute name="autoFormatCurrency" type="java.lang.Boolean" required="false" rtexprvalue="true" description="To activate auto format Currency" />
+	<jsp:directive.attribute name="autoFormatNumber" type="java.lang.Boolean" required="false" rtexprvalue="true" description="To activate auto format Number" />
 	<jsp:directive.attribute name="isusername" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicates if this field is user name" />
 	<jsp:directive.attribute name="disabled" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Specify if this field should be enabled" />
 	<jsp:directive.attribute name="readonly" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Specify if this field should be readonly" />
@@ -101,7 +103,7 @@
 									<form:input id="_${sec_field}_id" path="${sec_field}" disabled="${disabled}" readonly="${readonly}"  maxlength="${max}" cssClass="input" cssErrorClass="input inputError" />
 								</c:otherwise>
 							</c:choose>
-							<br />
+							
 							<form:errors cssClass="errors" id="_${sec_field}_error_id" path="${sec_field}" />
 						</c:otherwise>
 					</c:choose>

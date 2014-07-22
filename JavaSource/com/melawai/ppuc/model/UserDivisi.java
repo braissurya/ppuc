@@ -21,8 +21,11 @@ import com.melawai.ppuc.utils.Utils;
 
 public class UserDivisi extends BaseObject implements Serializable  {
 
+	
+	private static final long serialVersionUID = 5168851440655783784L;
+
 	//****************** COLOMN FROM TABLE START HERE ******************/
-	@NotNull
+	
 	public Long id_user_divisi;
 
 	@NotNull

@@ -4,14 +4,11 @@
 	<jsp:output omit-xml-declaration="yes" />
 	<form:create id="fc_com_melawai_ppuc_model_userdivisi" modelAttribute="userdivisi" path="/master/userdivisi" render="${ empty dependencies }">
 		<field:input field="id_user_divisi" label="Id User Divisi" id="c_com_melawai_ppuc_model_userdivisi_id_user_divisi" readonly="true" validationMessageCode="field_invalid_number" />
-		<field:select field="user_id" label="User Id"  id="c_com_melawai_ppuc_model_userdivisi_user_id" items="${useridList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/user" />
+		<field:select field="user_id" label="User Id"  id="c_com_melawai_ppuc_model_userdivisi_user_id" items="${useridList}" itemLabel="key" itemValue="value" required="true" blank="true" blankLable=" " path="/master/user" />
 		<field:select field="divisi_kd" label="Divisi Kd" id="c_com_melawai_ppuc_model_userdivisi_divisi_kd" items="${divisiList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/divisi" />
 		<field:select field="subdiv_kd" label="Subdiv Kd" id="c_com_melawai_ppuc_model_userdivisi_subdiv_kd" items="${subdivList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/subdivisi" />
 		<field:select field="dept_kd" label="Dept Kd" id="c_com_melawai_ppuc_model_userdivisi_dept_kd" items="${deptList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/departmen" />
 		<field:select field="lok_kd" label="Lok Kd" required="false" id="c_com_melawai_ppuc_model_userdivisi_lok_kd" items="${lokList}" itemLabel="key" itemValue="value"  blank="true" path="/master/lokasi" />
-		<field:input field="user_create" label="User Create" id="c_com_melawai_ppuc_model_userdivisi_user_create" readonly="true" validationMessageCode="field_invalid_number" />
-		<field:input field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_userdivisi_tgl_create" readonly="true" validationMessageCode="field_invalid_number" />
-		<field:input field="jam_create" label="Jam Create" id="c_com_melawai_ppuc_model_userdivisi_jam_create" readonly="true" validationMessageCode="field_invalid_number" />
 	</form:create>
 	<form:dependency dependencies="${dependencies}" id="d_com_melawai_ppuc_model_userdivisi" render="${ not empty dependencies }" />
 	<spring:message arguments="Subdivisi KD" code="field_choice" var="choice_subdivkd" htmlEscape="false" />

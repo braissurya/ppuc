@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,12 +31,19 @@ public class DetailBiayaController extends ParentController{
 	@Autowired
 	private DetailBiayaManager detailbiayaManager;
 
+	@Autowired
+	private DetailBiayaValidator detailBiayaValidator;
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		binder.setValidator(new DetailBiayaValidator());
+		binder.addValidators(this.detailBiayaValidator);
 	}
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
-	public String create(@Valid DetailBiaya detailbiaya, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String create(@ModelAttribute("detailbiaya") @Valid DetailBiaya detailbiaya, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+		
+		// tambahan validasi khusus
+		if (detailbiayaManager.exist(detailbiaya.kd_group, detailbiaya.kd_biaya)) {
+			bindingResult.rejectValue("kd_biaya", "duplicate", new String[] { "KD Group: " + detailbiaya.kd_group + " | KD Biaya : " + detailbiaya.kd_biaya+ ", " }, null);
+		}
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, detailbiaya);
 			return "detailbiaya/create";
@@ -47,14 +55,15 @@ public class DetailBiayaController extends ParentController{
 
 	@RequestMapping(params = "form", produces = "text/html")
 	public String createForm(Model uiModel) {
-		populateEditForm(uiModel, new DetailBiaya());
+		DetailBiaya detailBiaya=new DetailBiaya();
+		detailBiaya.f_putus=1;
+		populateEditForm(uiModel,detailBiaya );
 		return "detailbiaya/create";
 	}
 
 	@RequestMapping(value = "/{kd_biaya}", produces = "text/html")
 	public String show(@PathVariable("kd_biaya") String kd_biaya, Model uiModel) {
-		addDateTimeFormatPatterns(uiModel);
-		uiModel.addAttribute("detailbiaya", detailbiayaManager.get(kd_biaya));
+		populateEditForm(uiModel,  detailbiayaManager.get(kd_biaya));
 		uiModel.addAttribute("itemId", kd_biaya);
 		return "detailbiaya/show";
 	}
@@ -75,7 +84,7 @@ public class DetailBiayaController extends ParentController{
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-	public String update(@Valid DetailBiaya detailbiaya, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String update(@ModelAttribute("detailbiaya") @Valid DetailBiaya detailbiaya, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, detailbiaya);
 			return "detailbiaya/update";
@@ -93,18 +102,26 @@ public class DetailBiayaController extends ParentController{
 
 	@RequestMapping(value = "/{kd_biaya}", method = RequestMethod.DELETE, produces = "text/html")
 	public String delete(@PathVariable("kd_biaya") String kd_biaya, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-		DetailBiaya detailbiaya = detailbiayaManager.get(kd_biaya);
-		detailbiayaManager.remove(kd_biaya);
+		String pesan=messageSource.getMessage("entity_success", new String[]{"Delete Detail Biaya : "+kd_biaya+","}, LocaleContextHolder.getLocale());
+		if(!detailbiayaManager.exists(kd_biaya)){
+			pesan="Detail Biaya "+kd_biaya+" tidak ditemukan";
+			messageSource.getMessage("entity_not_found", new String[]{"Detail Biaya : "+kd_biaya+","}, LocaleContextHolder.getLocale());
+		}else{
+			detailbiayaManager.remove(kd_biaya);
+		}
+		
 		uiModel.asMap().clear();
 		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
 		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
+		uiModel.addAttribute("pesan", pesan);
 		return "redirect:/master/detailbiaya";
 	}
 	void addDateTimeFormatPatterns(Model uiModel) {
-		uiModel.addAttribute("detailbiaya_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("detailbiaya_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 	void populateEditForm(Model uiModel, DetailBiaya detailbiaya) {
 		uiModel.addAttribute("detailbiaya", detailbiaya);
+		uiModel.addAttribute("groupBiayaList", baseService.selectDropDown("nm_group", "kd_group", "group_biaya", null, "nm_group"));
 		addDateTimeFormatPatterns(uiModel);
 	}
 }

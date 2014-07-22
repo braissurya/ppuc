@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,12 +31,14 @@ public class MFungsiController extends ParentController{
 	@Autowired
 	private MFungsiManager mfungsiManager;
 
+	@Autowired
+	private MFungsiValidator mFungsiValidator;
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		binder.setValidator(new MFungsiValidator());
+		binder.addValidators(this.mFungsiValidator);
 	}
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
-	public String create(@Valid MFungsi mfungsi, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String create(@ModelAttribute("mfungsi")@Valid MFungsi mfungsi, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, mfungsi);
 			return "mfungsi/create";
@@ -75,7 +78,7 @@ public class MFungsiController extends ParentController{
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-	public String update(@Valid MFungsi mfungsi, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String update(@ModelAttribute("mfungsi")@Valid MFungsi mfungsi, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, mfungsi);
 			return "mfungsi/update";
@@ -101,7 +104,7 @@ public class MFungsiController extends ParentController{
 		return "redirect:/master/mfungsi";
 	}
 	void addDateTimeFormatPatterns(Model uiModel) {
-		uiModel.addAttribute("mfungsi_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("mfungsi_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 	void populateEditForm(Model uiModel, MFungsi mfungsi) {
 		uiModel.addAttribute("mfungsi", mfungsi);

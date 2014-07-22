@@ -8,6 +8,7 @@
 			<table:column id="c_com_melawai_ppuc_model_groupuser_group_nm" property="group_nm" label="Group Nm" />
 			<table:column id="c_com_melawai_ppuc_model_groupuser_id_role" property="role_name" label="Role ID" />
 			<table:column id="c_com_melawai_ppuc_model_groupuser_user_create" property="user_create" label="User Create" />
+			<table:column id="c_com_melawai_ppuc_model_groupuser_tgl_create" property="tgl_create" label="Tgl Create" date="true" dateTimePattern="${groupuser_tgl_create_date_format }" />
 			<table:column id="c_com_melawai_ppuc_model_groupuser_group_kd" label=" " custom="true" property="group_kd">
 				
 				<spring:url value="/master/user?group=#prop" var="update_form_url"/>

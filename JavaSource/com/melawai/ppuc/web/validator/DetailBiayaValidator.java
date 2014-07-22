@@ -1,11 +1,14 @@
 package com.melawai.ppuc.web.validator;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.melawai.ppuc.model.DetailBiaya;
+import com.melawai.ppuc.services.DetailBiayaManager;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -13,9 +16,17 @@ import com.melawai.ppuc.model.DetailBiaya;
  * @Description	: Validator for table DetailBiaya
  * @Revision	:
  */
-public class DetailBiayaValidator extends LocalValidatorFactoryBean implements Validator {
+@Component
+public class DetailBiayaValidator  implements Validator {
 	
 	private static Logger logger = Logger.getLogger(DetailBiayaValidator.class);
+	
+	@Autowired
+	private DetailBiayaManager detailbiayaManager;
+	
+	public void setDetailbiayaManager(DetailBiayaManager detailbiayaManager) {
+		this.detailbiayaManager = detailbiayaManager;
+	}
 
 	@Override
 	public boolean supports(Class cls) {
@@ -24,7 +35,13 @@ public class DetailBiayaValidator extends LocalValidatorFactoryBean implements V
 
 	@Override
 	public void validate(Object obj, Errors e) {
-		// TODO Auto-generated method stub
+		DetailBiaya detailBiaya=(DetailBiaya) obj;
+		
+		if(!e.hasErrors()){
+			if(detailbiayaManager.selectCountTable("group_biaya", "kd_group = '"+detailBiaya.kd_group+"'")<1){
+				e.rejectValue("kd_group", "entity_not_exist", new String[]{"KD GROUP"}, null);
+			}
+		}
 	}
 
 }

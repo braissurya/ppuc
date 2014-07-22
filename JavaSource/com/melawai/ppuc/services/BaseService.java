@@ -89,5 +89,9 @@ public class BaseService {
 	public Integer selectCountTable(String table, String where) {
 		return mainMapper.selectCountTable(table, where);
 	}
+	
+	public Integer selectMaxValue(String coloumnName,String table, String where) {
+		return mainMapper.selectMaxValue(coloumnName, table, where);
+	}
 
 }

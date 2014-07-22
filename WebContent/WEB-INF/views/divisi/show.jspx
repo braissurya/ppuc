@@ -9,7 +9,7 @@
        <field:display field="tgl_update" label="Tgl Update" id="c_com_melawai_ppuc_model_divisi_tgl_update"  object="${divisi}"  date="true" dateTimePattern="${divisi_tgl_update_date_format}"/>
        <field:display field="jam_update" label="Jam Update" id="c_com_melawai_ppuc_model_divisi_jam_update"  object="${divisi}" />
        <field:display field="user_create" label="User Create" id="c_com_melawai_ppuc_model_divisi_user_create"  object="${divisi}" />
-       <field:display field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_divisi_tgl_create"  object="${divisi}"  date="true" dateTimePattern="${divisi_sys_tgl_create_date_format}"/>
+       <field:display field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_divisi_tgl_create"  object="${divisi}"  date="true" dateTimePattern="${divisi_tgl_create_date_format}"/>
     </page:show>
 </div>
 

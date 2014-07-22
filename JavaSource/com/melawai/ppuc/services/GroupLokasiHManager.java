@@ -25,10 +25,15 @@ public class GroupLokasiHManager {
 
 	@Autowired
 	private GroupLokasiHMapper grouplokasihMapper;
+	
+	@Autowired
+	private GroupLokasiDManager grouplokasidManager;
 
 	/** Ambil DATA berdasarkan divisi_kd, subdiv_kd, group_lok **/
 	public GroupLokasiH get(String divisi_kd, String subdiv_kd, String group_lok) {
-		return grouplokasihMapper.get(divisi_kd, subdiv_kd, group_lok);
+		GroupLokasiH groupLokasiH=grouplokasihMapper.get(divisi_kd, subdiv_kd, group_lok);
+		groupLokasiH.groupLokasiDList=grouplokasidManager.get(divisi_kd, subdiv_kd, group_lok);
+		return groupLokasiH ;
 	}
 
 	/** Apakah data dengan divisi_kd, subdiv_kd, group_lok ini ada? **/

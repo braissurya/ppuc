@@ -12,7 +12,6 @@
 		<field:select field="lok_kd" label="Lok Kd" id="c_com_melawai_ppuc_model_userdivisi_lok_kd" items="${lokList}" itemLabel="key" itemValue="value"  blank="true" path="/master/lokasi" />
 		<field:input field="user_create" label="User Create" id="c_com_melawai_ppuc_model_userdivisi_user_create" readonly="true" validationMessageCode="field_invalid_number" />
 		<field:input field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_userdivisi_tgl_create" readonly="true" validationMessageCode="field_invalid_number" />
-		<field:input field="jam_create" label="Jam Create" id="c_com_melawai_ppuc_model_userdivisi_jam_create" readonly="true" validationMessageCode="field_invalid_number" />
 	</form:update>
 	<spring:message arguments="Subdivisi KD" code="field_choice" var="choice_subdivkd" htmlEscape="false" />
 	<spring:message arguments="Departmen KD" code="field_choice" var="choice_deptkd" htmlEscape="false" />

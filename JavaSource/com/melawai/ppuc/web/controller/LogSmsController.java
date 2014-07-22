@@ -103,7 +103,7 @@ public class LogSmsController extends ParentController{
 	void addDateTimeFormatPatterns(Model uiModel) {
 		uiModel.addAttribute("logsms_sys_tgl_ppuc_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
 		uiModel.addAttribute("logsms_sys_send_date_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("logsms_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("logsms_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 	void populateEditForm(Model uiModel, LogSms logsms) {
 		uiModel.addAttribute("logsms", logsms);

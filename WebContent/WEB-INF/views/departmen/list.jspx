@@ -9,9 +9,9 @@
 			<table:column id="c_com_melawai_ppuc_model_departmen_subdiv_kd" property="subdiv_kd" label="Subdiv Kd" />
 			<table:column id="c_com_melawai_ppuc_model_departmen_dept_nm" property="dept_nm" label="Dept Nm" />
 			<table:column id="c_com_melawai_ppuc_model_departmen_user_update" property="user_update" label="User Update" />
-			<table:column id="c_com_melawai_ppuc_model_departmen_tgl_update" property="tgl_update" date="true" dateTimePattern="${departmen_sys_tgl_update_date_format }" label="Tgl Update" />
+			<table:column id="c_com_melawai_ppuc_model_departmen_tgl_update" property="tgl_update" date="true" dateTimePattern="${departmen_tgl_update_date_format }" label="Tgl Update" />
 			<table:column id="c_com_melawai_ppuc_model_departmen_user_create" property="user_create" label="User Create" />
-			<table:column id="c_com_melawai_ppuc_model_departmen_tgl_create" property="tgl_create" dateTimePattern="${departmen_sys_tgl_create_date_format }"  label="Tgl Create" />
+			<table:column id="c_com_melawai_ppuc_model_departmen_tgl_create" property="tgl_create" dateTimePattern="${departmen_tgl_create_date_format }"  label="Tgl Create" />
 		</table:table>
 	</page:list>
 </div>

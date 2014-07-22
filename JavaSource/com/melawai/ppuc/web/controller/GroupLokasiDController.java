@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,13 +36,16 @@ public class GroupLokasiDController extends ParentController{
 
 	@Autowired
 	private GroupLokasiDManager grouplokasidManager;
+	
+	@Autowired
+	private GroupLokasiDValidator grouplokasidValidator;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		binder.setValidator(new GroupLokasiDValidator());
+		binder.addValidators(this.grouplokasidValidator);
 	}
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
-	public String create(@Valid GroupLokasiD grouplokasid, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String create(@ModelAttribute("grouplokasid") @Valid GroupLokasiD grouplokasid, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, grouplokasid);
 			return "grouplokasid/create";
@@ -81,7 +85,7 @@ public class GroupLokasiDController extends ParentController{
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-	public String update(@Valid GroupLokasiD grouplokasid, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String update(@ModelAttribute("grouplokasid")@Valid GroupLokasiD grouplokasid, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, grouplokasid);
 			return "grouplokasid/update";
@@ -107,7 +111,7 @@ public class GroupLokasiDController extends ParentController{
 		return "redirect:/master/grouplokasid";
 	}
 	void addDateTimeFormatPatterns(Model uiModel) {
-		uiModel.addAttribute("grouplokasid_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("grouplokasid_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 	void populateEditForm(Model uiModel, GroupLokasiD grouplokasid) {
 		uiModel.addAttribute("grouplokasid", grouplokasid);

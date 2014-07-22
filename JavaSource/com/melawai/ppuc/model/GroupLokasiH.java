@@ -1,7 +1,9 @@
 package com.melawai.ppuc.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -55,6 +57,7 @@ public class GroupLokasiH extends BaseObject implements Serializable  {
 	//****************** OTHERS START HERE ******************/
 
 	public String itemId;
+	public List<GroupLokasiD> groupLokasiDList=new ArrayList<GroupLokasiD>();
 	//****************** OTHERS END HERE ******************/
 
 
@@ -91,6 +94,16 @@ public class GroupLokasiH extends BaseObject implements Serializable  {
 
 	public String getItemId() {return ""+divisi_kd+"/"+subdiv_kd+"/"+group_lok;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}
+
+	public List<GroupLokasiD> getGroupLokasiDList() {
+		return groupLokasiDList;
+	}
+
+	public void setGroupLokasiDList(List<GroupLokasiD> groupLokasiDList) {
+		this.groupLokasiDList = groupLokasiDList;
+	}
+	
+	
 
 	//****************** GETTER SETTER END HERE ******************/
 

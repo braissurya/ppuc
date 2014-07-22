@@ -11,7 +11,6 @@
        <field:display field="lok_kd" label="Lok Kd" id="c_com_melawai_ppuc_model_userdivisi_lok_kd"  object="${userdivisi}" />
        <field:display field="user_create" label="User Create" id="c_com_melawai_ppuc_model_userdivisi_user_create"  object="${userdivisi}" />
        <field:display field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_userdivisi_tgl_create"  object="${userdivisi}"  date="true" dateTimePattern="${userdivisi_tgl_create_date_format}"/>
-       <field:display field="jam_create" label="Jam Create" id="c_com_melawai_ppuc_model_userdivisi_jam_create"  object="${userdivisi}" />
     </page:show>
 </div>
 

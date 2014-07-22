@@ -3,22 +3,73 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_com_melawai_ppuc_model_hakbiaya" modelAttribute="hakbiaya" path="/master/hakbiaya" render="${ empty dependencies }">
-       <field:input field="divisi_kd" label="Divisi Kd" id="c_com_melawai_ppuc_model_hakbiaya_divisi_kd" required="true" max="3"/>
-       <field:input field="subdiv_kd" label="Subdiv Kd" id="c_com_melawai_ppuc_model_hakbiaya_subdiv_kd" required="true" max="3"/>
-       <field:input field="dept_kd" label="Dept Kd" id="c_com_melawai_ppuc_model_hakbiaya_dept_kd" required="true" max="3"/>
-       <field:input field="lok_kd" label="Lok Kd" id="c_com_melawai_ppuc_model_hakbiaya_lok_kd" required="true" max="5"/>
-       <field:input field="kd_group" label="Kd Group" id="c_com_melawai_ppuc_model_hakbiaya_kd_group" required="true" max="5"/>
-       <field:input field="kd_biaya" label="Kd Biaya" id="c_com_melawai_ppuc_model_hakbiaya_kd_biaya" required="true" max="30"/>
-       <field:input field="f_aktif" label="F Aktif" id="c_com_melawai_ppuc_model_hakbiaya_f_aktif"  validationMessageCode="field_invalid_integer" />
-       <field:datetime field="drtgl" label="Drtgl" id="c_com_melawai_ppuc_model_hakbiaya_drtgl"  dateTimePattern="${hakbiaya_drtgl_date_format}" />
+        <field:select field="divisi_kd" label="Divisi Kd" id="c_com_melawai_ppuc_model_hakbiaya_divisi_kd" items="${divisiList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/divisi" />
+		<field:select field="subdiv_kd" label="Subdiv Kd" id="c_com_melawai_ppuc_model_hakbiaya_subdiv_kd" items="${subdivList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/subdivisi" />
+		<field:select field="dept_kd" label="Dept Kd" id="c_com_melawai_ppuc_model_hakbiaya_dept_kd" items="${deptList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/departmen" />
+		<field:select field="lok_kd" label="Lok Kd" required="true" id="c_com_melawai_ppuc_model_hakbiaya_lok_kd" items="${lokList}" itemLabel="key" itemValue="value"  blank="true" path="/master/lokasi" />
+		<field:select field="kd_group"   label="Kd Group" required="true" id="c_com_melawai_ppuc_model_hakbiaya_kd_group" items="${groupbiayaList}" itemLabel="key" itemValue="value"  blank="true" path="/master/groupbiaya" />
+		<field:select field="kd_biaya" label="Kd Biaya" required="true" id="c_com_melawai_ppuc_model_hakbiaya_kd_biaya" items="${detailbiayaList}" itemLabel="key" itemValue="value"  blank="true" path="/master/detailbiaya" />
+		
+       <field:checkbox field="f_aktif" id="c_com_melawai_ppuc_model_hakbiaya_f_aktif" label="F Aktif" value="1"/>
+       <field:datetime field="drtgl" label="Drtgl" required="true" id="c_com_melawai_ppuc_model_hakbiaya_drtgl"  dateTimePattern="${hakbiaya_drtgl_date_format}" />
        <field:datetime field="sptgl" label="Sptgl" id="c_com_melawai_ppuc_model_hakbiaya_sptgl"  dateTimePattern="${hakbiaya_sptgl_date_format}" />
-       <field:input field="user_create" label="User Create" id="c_com_melawai_ppuc_model_hakbiaya_user_create" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_hakbiaya_tgl_create" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="jam_create" label="Jam Create" id="c_com_melawai_ppuc_model_hakbiaya_jam_create" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="user_nonaktif" label="User Nonaktif" id="c_com_melawai_ppuc_model_hakbiaya_user_nonaktif" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="tgl_nonaktif" label="Tgl Nonaktif" id="c_com_melawai_ppuc_model_hakbiaya_tgl_nonaktif" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="jam_nonaktif" label="Jam Nonaktif" id="c_com_melawai_ppuc_model_hakbiaya_jam_nonaktif" readonly="true" validationMessageCode="field_invalid_number" />
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_com_melawai_ppuc_model_hakbiaya" render="${ not empty dependencies }"/>
+	<spring:message arguments="Subdivisi KD" code="field_choice" var="choice_subdivkd" htmlEscape="false" />
+	<spring:message arguments="Departmen KD" code="field_choice" var="choice_deptkd" htmlEscape="false" />
+	<spring:message arguments="lokasi KD" code="field_choice" var="choice_lokkd" htmlEscape="false" />
+	<spring:message arguments="KD Biaya" code="field_choice" var="choice_kdbiaya" htmlEscape="false" />
+	<spring:url value="/" var="path" />
+	<c:if test="${not empty hakbiaya.subdiv_kd}">
+		<c:set var="value_subdivkd" value="${hakbiaya.divisi_kd}.${hakbiaya.subdiv_kd}"/>
+	</c:if>
+	<c:if test="${not empty hakbiaya.dept_kd}">
+		<c:set var="value_deptkd" value="${hakbiaya.divisi_kd}.${hakbiaya.subdiv_kd}.${hakbiaya.dept_kd}"/>
+	</c:if>
+	<c:if test="${not empty hakbiaya.lok_kd}">
+		<c:set var="value_lokkd" value="${hakbiaya.divisi_kd}.${hakbiaya.subdiv_kd}.${hakbiaya.dept_kd}.${hakbiaya.lok_kd}"/>
+	</c:if>
+	<c:if test="${not empty hakbiaya.kd_biaya}">
+		<c:set var="value_kdbiaya" value="${hakbiaya.kd_group }.${hakbiaya.kd_biaya }"/>
+	</c:if>
+	
+	
+	<script type="text/javascript">
+		dojo
+				.ready(function() {
+
+				   autoPopulateSelect3("${path}", "subdivisi2",
+							"_divisi_kd_id", true, "${choice_subdivkd}",
+							"${value_subdivkd}",
+							"_subdiv_kd_id", "_dept_kd_id","_lok_kd_id");
+					 autoPopulateSelect2(
+							"${path}",
+							"departmen",
+							"_subdiv_kd_id",
+							true,
+							"${choice_deptkd}",
+							"${value_deptkd}",
+							"_dept_kd_id","_lok_kd_id");
+					 autoPopulateSelect(
+							"${path}",
+							"lokasi",
+							"_dept_kd_id",
+							true,
+							"${choice_lokkd}",
+							"${value_lokkd}",
+							"_lok_kd_id");  
+					 autoPopulateSelect(
+								"${path}",
+								"detailbiaya",
+								"_kd_group_id",
+								true,
+								"${choice_kdbiaya}",
+								"${value_kdbiaya}",
+								"_kd_biaya_id"); 
+					 
+					 
+					 
+				});
+	</script>
 </div>
 

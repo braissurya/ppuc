@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.joda.time.format.DateTimeFormat;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,12 +32,15 @@ public class MenuController extends ParentController{
 	@Autowired
 	private MenuManager menuManager;
 
+	@Autowired
+	private MenuValidator menuValidator;
+	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		binder.setValidator(new MenuValidator());
+		binder.addValidators(this.menuValidator);
 	}
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
-	public String create(@Valid Menu menu, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String create(@ModelAttribute("menu")@Valid Menu menu, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, menu);
 			return "menu/create";
@@ -49,15 +54,20 @@ public class MenuController extends ParentController{
 	public String createForm(@RequestParam(value = "parent_id", required = false)Long parent_id,Model uiModel) {
 		Menu menu=new Menu();
 		menu.parent=parent_id;
+		if(parent_id!=null)
+		menu.urut=menuManager.selectMaxValue("urut", "menu", "parent = "+parent_id).longValue()+1l;
 		populateEditForm(uiModel,menu );
 		return "menu/create";
 	}
 
-	@RequestMapping(value = "/{menu_id}", produces = "text/html")
-	public String show(@PathVariable("menu_id") Long menu_id, Model uiModel) {
+	@RequestMapping(value = "/{menu_id}", produces = "text/html",method=RequestMethod.GET)
+	public String show(@ModelAttribute("menu") Menu menu,@PathVariable("menu_id") Long menu_id, Model uiModel) {
 		addDateTimeFormatPatterns(uiModel);
-		uiModel.addAttribute("menu", menuManager.get(menu_id));
+		Menu tmp=menuManager.get(menu_id);
+		BeanUtils.copyProperties(tmp, menu);
+//		uiModel.addAttribute("menu",menu );
 		uiModel.addAttribute("itemId", menu_id);
+		uiModel.addAttribute("parentlist", menuManager.selectDropDown("concat(REPEAT('___', level),nama)", "sys_menu_id", "menu", "f_aktif =1","sys_path"));
 		return "menu/show";
 	}
 
@@ -77,7 +87,7 @@ public class MenuController extends ParentController{
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-	public String update(@Valid Menu menu, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String update(@ModelAttribute("menu")@Valid Menu menu, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, menu);
 			return "menu/update";
@@ -103,8 +113,8 @@ public class MenuController extends ParentController{
 		return "redirect:/master/menu";
 	}
 	void addDateTimeFormatPatterns(Model uiModel) {
-		uiModel.addAttribute("menu_sys_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("menu_sys_tgl_nonaktif_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("menu_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("menu_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 	void populateEditForm(Model uiModel, Menu menu) {
 		uiModel.addAttribute("menu", menu);
