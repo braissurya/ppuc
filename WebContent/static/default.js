@@ -45,6 +45,7 @@ function popWin(href, height, width, scrollbar, stat) {
 }
 
 function reset(idSelect) {
+
 	require(
 			[ "dojo/store/Memory", "dojo/on", "dijit/form/Select",
 					"dojo/request", "dojo/json", "dojo/_base/array",
@@ -58,6 +59,7 @@ function reset(idSelect) {
 					} ]
 				});
 				dijit.byId(idSelect).set('value', '');
+				
 			});
 }
 
@@ -88,6 +90,7 @@ function autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
 					"dojo/request", "dojo/json", "dojo/_base/array",
 					"dojo/domReady!" ], function(Memory, Select, on, request,
 					JSON, arrayUtil) {
+				
 				// get json data
 				request(
 						path + 'json/' + ajaxType + '?param='
@@ -95,7 +98,7 @@ function autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
 							handleAs : "json" // < Parse data from JSON to a
 												// JavaScript object
 						}).then(function(data) {
-
+					
 					var datas = [];
 					if (optionALL == true)
 						datas.push({
@@ -119,6 +122,37 @@ function autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
 			}); // end of on
 }
 
+function autoPopMulti(path, ajaxType, parentSelectId, childSelectId, optionALL,
+		selectedId, optionALLText) {
+
+	require(
+			[ "dojo/store/Memory", "dojo/on", "dijit/form/MultiSelect", "dojo/dom", "dojo/_base/window", 
+					"dojo/request", "dojo/json", "dojo/_base/array",
+					"dojo/domReady!" ], function(Memory, MultiSelect, on,dom,win, request,
+					JSON, arrayUtil) {
+				
+				// get json data
+				request(
+						path + 'json/' + ajaxType + '?param='
+								+ dijit.byId(parentSelectId).get("value"), {
+							handleAs : "json" // < Parse data from JSON to a
+												// JavaScript object
+						}).then(function(data) {
+							 arrayUtil.forEach(data, function(item, i) {
+							        $('#'+childSelectId).multiSelect('addOption', { value: item.key, text: item.value });
+								});
+							   
+							 for (var i in selectedId) {
+								 $('#'+childSelectId).multiSelect('select', [selectedId[i]]); 
+								}
+
+				}, function(error) {
+					console.log("An error occurred: " + error);
+				});
+				
+			}); // end of on
+}
+
 function autoPopulateSelect(path, ajaxType, parentSelectId,
 		optionALL, optionALLText, selectedId, childSelectId) {
 	
@@ -127,7 +161,7 @@ function autoPopulateSelect(path, ajaxType, parentSelectId,
 			"dojo/domReady!" ], function(query, ready, domAttr, Select,
 			SimpleTextarea, on, parser) {
 		ready(function() {
-
+			
 			var s = dijit.byId(parentSelectId);
 			on(s, "change", function(e) {
 				
@@ -153,10 +187,10 @@ function autoPopulateSelect2(path, ajaxType, parentSelectId, optionALL,
 			"dojo/domReady!" ], function(query, ready, domAttr, Select,
 			SimpleTextarea, on, parser) {
 		ready(function() {
-			
 			var s = dijit.byId(parentSelectId);
-
+			
 			on(s, "change", function(e) {
+				
 				if(childSelectId!=null)reset(childSelectId);
 				if(childSelectId2!=null)reset(childSelectId2);
 				
@@ -166,6 +200,71 @@ function autoPopulateSelect2(path, ajaxType, parentSelectId, optionALL,
 			
 			reset(childSelectId);
 			reset(childSelectId2);
+			autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
+					selectedId, optionALLText);
+		});
+		/*
+		*/
+	}); // end of on
+
+}
+
+
+function autoPopulateMultiSelect(path, ajaxType, parentSelectId,
+		optionALL, optionALLText, selectedId, childSelectId) {
+	
+	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
+			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
+			"dojo/domReady!" ], function(query, ready, domAttr, Select,
+			SimpleTextarea, on, parser) {
+		ready(function() {
+			
+			var s = dijit.byId(parentSelectId);
+			on(s, "change", function(e) {
+				$("#ms-"+childSelectId+" .ms-selectable .ms-list").children().remove(); 
+				$('#'+childSelectId).children().remove();
+				$('#'+childSelectId).multiSelect('refresh');
+				autoPopMulti(path, ajaxType, parentSelectId, childSelectId,
+						optionALL, selectedId, optionALLText);
+				
+			}) // end of event handler
+			/*$("#"+childSelectId).children().remove(); 
+			autoPopMulti(path, ajaxType, parentSelectId, childSelectId, optionALL,
+					selectedId, optionALLText);*/
+		});
+	}); // end of on
+	 
+	/**/
+}
+
+
+function autoPopulateMultiSelect2(path, ajaxType, parentSelectId, optionALL,
+		optionALLText, selectedId, childSelectId, childSelectId2) {
+	
+	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
+			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
+			"dojo/domReady!" ], function(query, ready, domAttr, Select,
+			SimpleTextarea, on, parser) {
+		ready(function() {
+			var s = dijit.byId(parentSelectId);
+			
+			on(s, "change", function(e) {
+				
+				if(childSelectId!=null)reset(childSelectId);
+				if(childSelectId2!=null){
+					$("#ms-"+childSelectId2+" .ms-selectable .ms-list").children().remove(); 
+					$('#'+childSelectId2).children().remove();
+					$('#'+childSelectId2).multiSelect('refresh');
+				}
+				
+				autoPop(path, ajaxType, parentSelectId, childSelectId,
+						optionALL, selectedId, optionALLText);
+			}) // end of event handler
+			
+			reset(childSelectId);
+			$("#ms-"+childSelectId2+" .ms-selectable .ms-list").children().remove(); 
+			$('#'+childSelectId2).children().remove();
+			$('#'+childSelectId2).multiSelect('refresh');
 			autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
 					selectedId, optionALLText);
 		});
@@ -185,8 +284,9 @@ function autoPopulateSelect3(path, ajaxType, parentSelectId, optionALL,
 		ready(function() {
 			
 			var s = dijit.byId(parentSelectId);
-
+			
 			on(s, "change", function(e) {
+				
 				if(childSelectId!=null)reset(childSelectId);
 				if(childSelectId2!=null)reset(childSelectId2);
 				if(childSelectId3!=null)reset(childSelectId3);
@@ -206,6 +306,8 @@ function autoPopulateSelect3(path, ajaxType, parentSelectId, optionALL,
 	}); // end of on
 
 }
+
+
 
 function autoCompleteSelect(path, ajaxType, inputId, selectId, minChar) {
 	// ajax autopopulate select box
@@ -231,6 +333,68 @@ function autoCompleteSelect(path, ajaxType, inputId, selectId, minChar) {
 				}
 			});
 }
+
+//6 - Tambahan Yusuf -----------------------------------------------------------------------
+function autoPopulateSelectJQuery(path, ajaxType, parentSelectId,optionALL, optionALLText, selectedId, childSelectId){
+	//ajax autopopulate select box 
+	$("#"+childSelectId).children().remove(); 
+	$("#"+parentSelectId).on('change',function(){
+		
+		$("#"+childSelectId).children().remove(); //remove all isinya
+
+		//populate ulang
+		$.getJSON(path + 'json/' + ajaxType, { param:$("#"+parentSelectId).val()}, function(data) {
+			var html = '';
+			if(optionALLText==null)optionALLText="ALL";
+			if(optionALL == true) html = '<option value="">'+optionALLText+'</option>';
+		    var len = data.length;
+		    for (var i = 0; i< len; i++) {
+		    	if(selectedId!=null){
+		    		var select="";
+		    		if(selectedId==data[i].key){
+		    			select="selected=\"selected\"";		    			
+		    		}
+		    		html += '<option value="' + data[i].key + '" '+select+' >' + data[i].value + '</option>';
+		    	}else{
+		        	html += '<option value="' + data[i].key + '">' + data[i].value + '</option>';
+		        }
+		    }
+		    $("#"+childSelectId).append(html);
+		});
+
+	});
+}
+
+function autoPopulateSelectJQuery2(path, ajaxType, parentSelectId,optionALL, optionALLText, selectedId, childSelectId, childSelectId2, childSelectId3){
+	//ajax autopopulate select box 
+	$(parentSelectId).change(function(){
+		$(childSelectId).children().remove(); //remove all isinya
+		$(childSelectId2).children().remove(); //remove all isinya
+		$(childSelectId3).children().remove(); //remove all isinya
+		
+		//populate ulang
+		$.getJSON(path + 'json/' + ajaxType, { param:$(parentSelectId).val()},  function(data) {
+			var html = '';
+			if(optionALLText==null)optionALLText="ALL";
+			if(optionALL == true) html = '<option value="">'+optionALLText+'</option>';
+		    var len = data.length;
+		    for (var i = 0; i< len; i++) {
+		    	if(selectedId!=null){
+		    		var select="";
+		    		if(selectedId==data[i].key){
+		    			select="selected=\"selected\"";		    			
+		    		}
+		    		html += '<option value="' + data[i].key + '" '+select+' >' + data[i].value + '</option>';
+		    	}else{
+		        	html += '<option value="' + data[i].key + '">' + data[i].value + '</option>';
+		        }
+		    }
+		    $(childSelectId).append(html);
+		});
+	});
+}
+
+
 
 function setting() {
 	$(".nominal").formatCurrency({

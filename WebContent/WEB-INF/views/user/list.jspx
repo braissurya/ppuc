@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form"  xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields"  xmlns:spring="http://www.springframework.org/tags"  version="2.0">
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:spring="http://www.springframework.org/tags" version="2.0">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
-	
 	<page:filter finderName="filter" path="/master/user" id="filterUser" label="filter">
-			<c:choose>
-				<c:when test="${aktif eq 1 }">
-					<c:set value="selected='selected'" var="selectAktif"/>
-				</c:when>
-				<c:when test="${aktif eq 0 }">
-					<c:set value="selected='selected'" var="selectNonAktif"/>
-				</c:when>
-				<c:otherwise></c:otherwise>
-			</c:choose>
-			<![CDATA[
-			<select name="aktif" onchange="form.submit();" >
-				<option value="">All</option>
-				<option value="1" ${selectAktif }>Active Only</option>
-				<option value="0" ${selectNonAktif }>Non Active Only</option>
-			</select>
-			]]>
-			<input type="hidden" name="group" value="${param.group}"/>
-			<input type="hidden" name="search" value="${param.search}"/>
-		</page:filter>
-	<page:list id="pl_com_melawai_ppuc_model_user" items="${userList}" path="/master/user">
+		<c:choose>
+			<c:when test="${aktif eq 1 }">
+				<c:set value="checked='checked'" var="selectAktif"/>
+			</c:when>
+			<c:when test="${aktif eq 0 }">
+				<c:set value="checked='checked'" var="selectNonAktif"/>
+			</c:when>
+			<c:otherwise></c:otherwise>
+		</c:choose>
+		<label class="filter">F-Aktif</label>
+		<span class="doubleDot">:</span>
+		<![CDATA[
+		<label class="filter" for="_aktif_id"><input type="radio" class="radio" value="" name="aktif" checked="checked" id="_aktif_id" onclick="form.submit();"/> All</label>
+		<label class="filter" for="_aktif_id1"><input type="radio" class="radio"  value="1" name="aktif" ${selectAktif }  id="_aktif_id1" onclick="form.submit();"/> Active</label>
+		<label class="filter" for="_aktif_id0"><input type="radio" class="radio"  value="0" name="aktif" ${selectNonAktif }  id="_aktif_id0" onclick="form.submit();"/> Non Active</label>
+		]]>
+		<input type="hidden" name="group" value="${param.group}"/>
+		<input type="hidden" name="search" value="${param.search}"/>
+	</page:filter>
+	<br/>
+	<page:list id="pl_com_melawai_ppuc_model_user" items="${userList}" path="/master/user" create="false" searching="false">
 		
 		<table:table data="${userList}" id="l_com_melawai_ppuc_model_User" searching="false" typeIdFieldName="itemId" path="/master/user">
 			<table:column id="c_com_melawai_ppuc_model_user_user_id" property="user_id" label="User Id" />
-	       <table:column id="c_com_melawai_ppuc_model_user_password" property="passwordDefault" label="Password" />
+			<table:column id="c_com_melawai_ppuc_model_user_password" property="passwordDefault" label="Password" />
 			<table:column id="c_com_melawai_ppuc_model_user_user_name" property="user_name" label="User Name" />
 			<table:column id="c_com_melawai_ppuc_model_user_no_hp" property="no_hp" label="No Hp" />
 			<table:column id="c_com_melawai_ppuc_model_user_email" property="email" label="Email" />
@@ -44,25 +44,42 @@
 				<spring:url value="/master/user/reset/#itemID" var="update_form_url">
 				</spring:url>
 				<spring:url value="/resources/images/icons/back_undo.png" var="update_image_url" />
-				
+
 				<a href="${update_form_url}" alt="Reset Password" title="Reset Password"> <img alt="Reset Password" class="image" src="${update_image_url}" title="Reset Password" />
 				</a>
 			</table:column>
 			<table:column id="c_com_melawai_ppuc_model_user_aktifnonaktif" label=" " custom="true" property="revActive">
-				<spring:url value="/master/user/aktifnonaktif/#itemID" var="aktif_form_url"/>
+				<spring:url value="/master/user/aktifnonaktif/#itemID" var="aktif_form_url" />
 				<spring:url value="/resources/images/icons/#prop.png" var="aktif_image_url" />
-				<c:set value="Click To #propd User" var="label_aktif"/>
-				<a href="${aktif_form_url}" alt="${label_aktif}" title="${label_aktif}"> 
-					<img alt="${label_aktif}" class="image" src="${aktif_image_url}" title="${label_aktif}" />
+				<c:set value="Click To #propd User" var="label_aktif" />
+				<a href="${aktif_form_url}" alt="${label_aktif}" title="${label_aktif}"> <img alt="${label_aktif}" class="image" src="${aktif_image_url}" title="${label_aktif}" />
 				</a>
 			</table:column>
 		</table:table>
-		
-	 <page:find finderName="search" label="Search" id="sc_${id}" path="${path }">
-		<input name="search" type="text" value="${param.search}" />
-		<input type="hidden" name="group" value="${param.group }"/>
-		<input type="hidden" name="aktif" value="${param.aktif}"/>
-	</page:find>
+
+		<table class="noborder">
+			<tr>
+				<td><span class="new"> 
+						<spring:url value="/master/user" var="create_url">
+							<spring:param name="form" />
+						</spring:url> 
+						<a href="${create_url}"> 
+							<spring:url value="/resources/images/icons/notes_add.png" var="create_img_url" />
+							 <spring:message arguments="Hak Biaya" code="global_menu_new" var="add_message" htmlEscape="false" /> 
+							 <img alt="${fn:escapeXml(add_message)}" src="${create_img_url}" title="${fn:escapeXml(add_message)}" />
+						</a>
+					</span> 
+				</td>
+				<td width="90%" style="text-align:"><page:find finderName="search" label="Search" id="sc_${id}" path="${path }">
+						<input name="search" type="text" value="${param.search}" />
+						<input type="hidden" name="group" value="${param.group }" />
+						<input type="hidden" name="aktif" value="${param.aktif}" />
+					</page:find>
+				</td>
+			</tr>
+		</table>
+
+
 	</page:list>
-	
+
 </div>

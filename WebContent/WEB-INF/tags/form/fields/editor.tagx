@@ -54,6 +54,26 @@
       </div>
       <br />
       <form:errors cssClass="errors" id="_${sec_field}_error_id" path="${sec_field}" />
+      <spring:url value="/resources/images/icons/cross.png" var="errorIcon" />
+		<![CDATA[
+			<script type="text/javascript">
+				 require(["dijit/Tooltip","dojo/query", "dojo/NodeList-manipulate", "dojo/domReady!"], function(Tooltip, query){
+					 try{
+						var node = query("#_${sec_field}_error_id");
+						var pesan=node.innerHTML();
+						new Tooltip({
+					        connectId: ["_${sec_field}_error_id"],
+					        label: "<span class='errors'>"+pesan+"</span>",
+					    });
+						    node.innerHTML("<img alt=\""+pesan+"\" src=\"${errorIcon}\" class=\"errors\"/> ");
+					 }catch(err){
+						 
+					 }
+				    
+				}); 
+				
+			</script>
+		]]>
     </div>
     <br />
   </c:if>

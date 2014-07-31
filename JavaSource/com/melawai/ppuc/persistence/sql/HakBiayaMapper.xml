@@ -7,6 +7,7 @@
 
 	<!-- result map-->
 	<resultMap type="HakBiaya" id="HakBiayaMap">
+		<id property="id" column="id"  /> 
 		<id property="divisi_kd" column="divisi_kd"  />  
 		<id property="subdiv_kd" column="subdiv_kd"  />  
 		<id property="dept_kd" column="dept_kd"  />  
@@ -26,10 +27,21 @@
 		<result property="user_nonaktif" column="user_nonaktif" />
 		<result property="tgl_nonaktif" column="tgl_nonaktif" />
 		<result property="jam_nonaktif" column="jam_nonaktif" />
+		<association property="lokasi" javaType="Lokasi">
+			<id property="lok_kd" column="l_lok_kd"  />  
+			<result property="divisi_kd" column="l_divisi_kd" />
+			<result property="subdiv_kd" column="l_subdiv_kd" />
+			<result property="dept_kd" column="l_dept_kd" />
+			<result property="lok_nm" column="l_lok_nm" />
+			<result property="propinsi" column="l_propinsi" />
+			<result property="kota" column="l_kota" />
+			<result property="email" column="l_email" />
+		</association>
 	</resultMap>
 
 	<!-- nama kolom yang ingin ditampilkan -->
 	<sql id="defaultColoumn">
+		C.ID as id,
 		C.DIVISI_KD as divisi_kd,
 		C.SUBDIV_KD as subdiv_kd,
 		C.DEPT_KD as dept_kd,
@@ -44,7 +56,15 @@
 		C.SYS_JAM_CREATE as jam_create,
 		C.SYS_USER_NONAKTIF as user_nonaktif,
 		C.SYS_TGL_NONAKTIF as tgl_nonaktif,
-		C.SYS_JAM_NONAKTIF as jam_nonaktif
+		C.SYS_JAM_NONAKTIF as jam_nonaktif,		
+		L.LOK_KD as l_lok_kd,
+		L.DIVISI_KD as l_divisi_kd,
+		L.SUBDIV_KD as l_subdiv_kd,
+		L.DEPT_KD as l_dept_kd,
+		L.LOK_NM as l_lok_nm,
+		L.PROPINSI as l_propinsi,
+		L.KOTA as l_kota,
+		L.EMAIL as l_email
 	</sql>
 
 	<!-- query select, dengan kolom yang default di atas, apabila mau ditambahkan join juga bisa disini
@@ -52,13 +72,48 @@
 	<sql id="selectQuery">
 		select * from (
 			select <include refid="defaultColoumn" /> from hak_biaya C
+			left outer join lokasi l on c.lok_kd = l.lok_kd
 		)T
 	</sql>
 
 	<!-- kolom apa aja yang mau disearching -->
 	<sql id="searchTambahan">
-		Where 1=1
-			<!--!!TAMBAHAN parameter untuk search-->
+		where 1=1
+			<if test="gl != null">
+				AND lok_kd in (select DISTINCT l.lok_kd 
+							from group_lokasi_d a, lokasi l 
+							where a.lok_kd = l.lok_kd 
+							AND a.group_lok = #{gl} 
+							<if test="pr != null">AND l.propinsi =#{pr}</if>
+							<if test="kt != null">AND l.kota =#{kt}</if>
+							<if test="lk != null">AND l.lok_kd =#{lk}</if>
+							group by l.lok_kd)
+			 </if>
+			<if test="pr != null and gl == null">
+				AND lok_kd in (select DISTINCT lok_kd 
+								from lokasi
+								where propinsi =#{pr}
+								<if test="kt != null">AND kota =#{kt}</if>
+								<if test="lk != null">AND lok_kd =#{lk}</if>
+								group by lok_kd)
+			</if>
+			<if test="kt != null and gl == null and pr == null">
+				AND lok_kd in (select DISTINCT lok_kd 
+								from lokasi 
+								where kota =#{kt}
+								<if test="lk != null">AND lok_kd =#{lk}</if>
+							group by lok_kd)
+			</if>
+			<if test="lk != null and gl == null and pr == null and kt == null">AND lok_kd in (select DISTINCT lok_kd from lokasi where lok_kd =#{lk} group by lok_kd) </if>
+			<if test="gb != null">
+				AND kd_group = #{gb}
+			</if>
+			<if test="kb != null">
+				AND kd_biaya = #{kb}
+			</if>
+			<if test="aktif != null">
+				AND f_aktif = #{aktif}
+			</if>
 	</sql>
 
 	<!-- kolom apa aja yang mau disearching -->
@@ -78,8 +133,9 @@
 	</sql>
 
 	<!-- insert query untuk table ini -->
-	<insert id="insert" parameterType="HakBiaya">
+	<insert id="insert" parameterType="HakBiaya" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
 		INSERT INTO hak_biaya (
+			ID,
 			DIVISI_KD,
 			SUBDIV_KD,
 			DEPT_KD,
@@ -96,6 +152,7 @@
 			SYS_TGL_NONAKTIF,
 			SYS_JAM_NONAKTIF
 		) values (
+			#{id},
 			#{divisi_kd},
 			#{subdiv_kd},
 			#{dept_kd},
@@ -117,7 +174,11 @@
 	<!-- update query untuk table ini -->
 	<update id="update" parameterType="HakBiaya">
 		UPDATE hak_biaya
-		<set>
+		set SYS_TGL_NONAKTIF = #{tgl_nonaktif},
+			SYS_JAM_NONAKTIF = #{jam_nonaktif},
+			SYS_USER_NONAKTIF = #{user_nonaktif},
+			SPTGL = #{sptgl},
+		<trim suffixOverrides=",">	
 			<if test="divisi_kd != null">DIVISI_KD = #{divisi_kd}, </if>
 			<if test="subdiv_kd != null">SUBDIV_KD = #{subdiv_kd}, </if>
 			<if test="dept_kd != null">DEPT_KD = #{dept_kd}, </if>
@@ -126,33 +187,31 @@
 			<if test="kd_biaya != null">KD_BIAYA = #{kd_biaya}, </if>
 			<if test="f_aktif != null">F_AKTIF = #{f_aktif}, </if>
 			<if test="drtgl != null">DRTGL = #{drtgl}, </if>
-			<if test="sptgl != null">SPTGL = #{sptgl}, </if>
 			<if test="user_create != null">SYS_USER_CREATE = #{user_create}, </if>
 			<if test="tgl_create != null">SYS_TGL_CREATE = #{tgl_create}, </if>
 			<if test="jam_create != null">SYS_JAM_CREATE = #{jam_create}, </if>
-			<if test="user_nonaktif != null">SYS_USER_NONAKTIF = #{user_nonaktif}, </if>
-			<if test="tgl_nonaktif != null">SYS_TGL_NONAKTIF = #{tgl_nonaktif}, </if>
-			<if test="jam_nonaktif != null">SYS_JAM_NONAKTIF = #{jam_nonaktif} </if>
-		</set>
+		</trim>
 		WHERE  
-			DIVISI_KD= #{divisi_kd} 
+			ID = #{id}
+			<!-- DIVISI_KD= #{divisi_kd} 
 			AND SUBDIV_KD= #{subdiv_kd}
 			AND DEPT_KD= #{dept_kd}
 			AND LOK_KD= #{lok_kd}
 			AND KD_GROUP= #{kd_group}
-			AND KD_BIAYA= #{kd_biaya}
+			AND KD_BIAYA= #{kd_biaya} -->
 	</update>
 
 	<!-- remove query untuk table ini -->
 	<delete id="remove" parameterType="HashMap">
 		delete from hak_biaya
 		 <where> 
-			<if test="divisi_kd != null">DIVISI_KD= #{divisi_kd} </if>
+		 	<if test="id != null">ID= #{id} </if>
+			<!-- <if test="divisi_kd != null">AND DIVISI_KD= #{divisi_kd} </if>
 			<if test="subdiv_kd != null"> AND SUBDIV_KD= #{subdiv_kd} </if>
 			<if test="dept_kd != null"> AND DEPT_KD= #{dept_kd} </if>
 			<if test="lok_kd != null"> AND LOK_KD= #{lok_kd} </if>
 			<if test="kd_group != null"> AND KD_GROUP= #{kd_group} </if>
-			<if test="kd_biaya != null"> AND KD_BIAYA= #{kd_biaya} </if>
+			<if test="kd_biaya != null"> AND KD_BIAYA= #{kd_biaya} </if> -->
 		 </where> 
 	</delete>
 
@@ -160,7 +219,8 @@
 	<select id="get" parameterType="HashMap" resultMap="HakBiayaMap">
 		<include refid="selectQuery" />
 		 <where> 
-			<if test="divisi_kd != null"> T.divisi_kd= #{divisi_kd} </if>
+		 	<if test="id != null">ID= #{id} </if>
+			<if test="divisi_kd != null">AND T.divisi_kd= #{divisi_kd} </if>
 			<if test="subdiv_kd != null"> AND T.subdiv_kd= #{subdiv_kd} </if>
 			<if test="dept_kd != null"> AND T.dept_kd= #{dept_kd} </if>
 			<if test="lok_kd != null"> AND T.lok_kd= #{lok_kd} </if>

@@ -30,7 +30,7 @@
 		<c:set var="value_lokkd" value="${hakbiaya.divisi_kd}.${hakbiaya.subdiv_kd}.${hakbiaya.dept_kd}.${hakbiaya.lok_kd}"/>
 	</c:if>
 	<c:if test="${not empty hakbiaya.kd_biaya}">
-		<c:set var="value_kdbiaya" value="${hakbiaya.kd_group }.${hakbiaya.kd_biaya }"/>
+		<c:set var="value_kdbiaya" value="${hakbiaya.kd_biaya }"/>
 	</c:if>
 	
 	

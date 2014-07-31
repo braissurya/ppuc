@@ -91,7 +91,9 @@ public class BaseService {
 	}
 	
 	public Integer selectMaxValue(String coloumnName,String table, String where) {
-		return mainMapper.selectMaxValue(coloumnName, table, where);
+		Integer max=mainMapper.selectMaxValue(coloumnName, table, where);
+		max=max==null?0:max;
+		return max;
 	}
 
 }

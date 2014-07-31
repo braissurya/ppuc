@@ -19,6 +19,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class SmsserverIn extends BaseObject implements Serializable  {
 
+	private static final long serialVersionUID = 7895830457479078705L;
+
 	//****************** COLOMN FROM TABLE START HERE ******************/
 	@NotNull
 	public Long id;

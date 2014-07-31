@@ -5,14 +5,11 @@ import java.util.Date;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import com.melawai.ppuc.utils.Utils;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -77,22 +74,7 @@ public class Lokasi extends BaseObject implements Serializable {
 	@DateTimeFormat(style = "M-")
 	public Date curr_ctr_date;
 
-	@Size(max = 50)
-	public String user_update;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style = "MM")
-	public Date tgl_update;
-
-	@Size(max = 8)
-	public String jam_update;
-
-	@Size(max = 50)
-	public String user_create;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style = "MM")
-	public Date tgl_create;
+	
 
 	// ****************** COLOMN FROM TABLE END HERE ******************/
 
@@ -263,48 +245,7 @@ public class Lokasi extends BaseObject implements Serializable {
 		this.curr_ctr_date = curr_ctr_date;
 	}
 
-	public String getUser_update() {
-		return user_update;
-	}
-
-	public void setUser_update(String user_update) {
-		this.user_update = user_update;
-	}
-
-	public Date getTgl_update() {
-		return tgl_update;
-	}
-
-	public void setTgl_update(Date tgl_update) {
-		this.tgl_update = tgl_update;
-		if (tgl_update != null) {
-			this.jam_update = Utils.convertDateToString(tgl_update, jam_format);
-		}
-	}
-
-	public String getJam_update() {
-		return jam_update;
-	}
-
-	public void setJam_update(String jam_update) {
-		this.jam_update = jam_update;
-	}
-
-	public String getUser_create() {
-		return user_create;
-	}
-
-	public void setUser_create(String user_create) {
-		this.user_create = user_create;
-	}
-
-	public Date getTgl_create() {
-		return tgl_create;
-	}
-
-	public void setTgl_create(Date tgl_create) {
-		this.tgl_create = tgl_create;
-	}
+	
 
 	public String getItemId() {
 		return "" + lok_kd + "/" + dept_kd + "/" + subdiv_kd + "/" + divisi_kd;

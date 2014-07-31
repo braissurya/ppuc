@@ -19,6 +19,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class LogEmail extends BaseObject implements Serializable  {
 
+	private static final long serialVersionUID = -3002898980967029577L;
+
 	//****************** COLOMN FROM TABLE START HERE ******************/
 	@NotNull
 	public Long id_log_email;
@@ -60,13 +62,6 @@ public class LogEmail extends BaseObject implements Serializable  {
 
 	@Size(max=100)
 	public String mail_approval;
-
-	@Size(max=50)
-	public String user_create;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style="MM")
-	public Date tgl_create;
 
 	//****************** COLOMN FROM TABLE END HERE ******************/
 
@@ -124,13 +119,6 @@ public class LogEmail extends BaseObject implements Serializable  {
 
 	public String getMail_approval(){ return mail_approval; }
 	public void setMail_approval(String mail_approval){ this.mail_approval = mail_approval; }
-
-	public String getUser_create(){ return user_create; }
-	public void setUser_create(String user_create){ this.user_create = user_create; }
-
-	public Date getTgl_create(){ return tgl_create; }
-	public void setTgl_create(Date tgl_create){ this.tgl_create = tgl_create; }
-
 
 	public String getItemId() {return ""+id_log_email;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}

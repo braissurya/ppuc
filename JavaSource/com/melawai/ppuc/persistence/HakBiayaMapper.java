@@ -20,9 +20,9 @@ public interface HakBiayaMapper {
 
 	public void update(HakBiaya hakbiaya) throws DataAccessException;
 
-	public void remove(@Param("divisi_kd") String divisi_kd, @Param("subdiv_kd") String subdiv_kd,@Param("dept_kd") String dept_kd,@Param("lok_kd") String lok_kd, @Param("kd_group") String kd_group, @Param("kd_biaya") String kd_biaya) throws DataAccessException;
+	public void remove(@Param("id") Long id/*,@Param("divisi_kd") String divisi_kd, @Param("subdiv_kd") String subdiv_kd,@Param("dept_kd") String dept_kd,@Param("lok_kd") String lok_kd, @Param("kd_group") String kd_group, @Param("kd_biaya") String kd_biaya*/) throws DataAccessException;
 
-	public HakBiaya get(@Param("divisi_kd") String divisi_kd, @Param("subdiv_kd") String subdiv_kd,@Param("dept_kd") String dept_kd,@Param("lok_kd") String lok_kd, @Param("kd_group") String kd_group, @Param("kd_biaya") String kd_biaya) throws DataAccessException;
+	public HakBiaya get(@Param("id") Long id,@Param("divisi_kd") String divisi_kd, @Param("subdiv_kd") String subdiv_kd,@Param("dept_kd") String dept_kd,@Param("lok_kd") String lok_kd, @Param("kd_group") String kd_group, @Param("kd_biaya") String kd_biaya) throws DataAccessException;
 
 	public List<HakBiaya> getAll() throws DataAccessException;
 

@@ -19,6 +19,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class HakApprove extends BaseObject implements Serializable  {
 
+	private static final long serialVersionUID = 3917846671656716785L;
+
 	//****************** COLOMN FROM TABLE START HERE ******************/
 	@NotNull
 	@Size(max=50)
@@ -53,16 +55,6 @@ public class HakApprove extends BaseObject implements Serializable  {
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(style="M-")
 	public Date sptgl;
-
-	@Size(max=50)
-	public String user_create;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style="MM")
-	public Date tgl_create;
-
-	@Size(max=8)
-	public String jam_create;
 
 	@Size(max=50)
 	public String user_nonaktif;
@@ -118,15 +110,6 @@ public class HakApprove extends BaseObject implements Serializable  {
 
 	public Date getSptgl(){ return sptgl; }
 	public void setSptgl(Date sptgl){ this.sptgl = sptgl; }
-
-	public String getUser_create(){ return user_create; }
-	public void setUser_create(String user_create){ this.user_create = user_create; }
-
-	public Date getTgl_create(){ return tgl_create; }
-	public void setTgl_create(Date tgl_create){ this.tgl_create = tgl_create; }
-
-	public String getJam_create(){ return jam_create; }
-	public void setJam_create(String jam_create){ this.jam_create = jam_create; }
 
 	public String getUser_nonaktif(){ return user_nonaktif; }
 	public void setUser_nonaktif(String user_nonaktif){ this.user_nonaktif = user_nonaktif; }

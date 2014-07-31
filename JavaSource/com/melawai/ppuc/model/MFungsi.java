@@ -1,17 +1,10 @@
 package com.melawai.ppuc.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.melawai.ppuc.utils.Utils;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -22,9 +15,6 @@ import com.melawai.ppuc.utils.Utils;
 
 public class MFungsi extends BaseObject implements Serializable  {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3664358261409039786L;
 
 	//****************** COLOMN FROM TABLE START HERE ******************/
@@ -38,15 +28,6 @@ public class MFungsi extends BaseObject implements Serializable  {
 
 	public Long mail_seq;
 
-	@Size(max=50)
-	public String user_create;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style="MM")
-	public Date tgl_create;
-
-	@Size(max=8)
-	public String jam_create;
 
 	//****************** COLOMN FROM TABLE END HERE ******************/
 
@@ -74,21 +55,6 @@ public class MFungsi extends BaseObject implements Serializable  {
 
 	public Long getMail_seq(){ return mail_seq; }
 	public void setMail_seq(Long mail_seq){ this.mail_seq = mail_seq; }
-
-	public String getUser_create(){ return user_create; }
-	public void setUser_create(String user_create){ this.user_create = user_create; }
-
-	public Date getTgl_create(){ return tgl_create; }
-	public void setTgl_create(Date tgl_create){ 
-		this.tgl_create = tgl_create; 
-		if (tgl_create != null) {
-			this.jam_create = Utils.convertDateToString(tgl_create, jam_format);
-		}
-	}
-
-	public String getJam_create(){ return jam_create; }
-	public void setJam_create(String jam_create){ this.jam_create = jam_create; }
-
 
 	public String getItemId() {return ""+kd_fungsi;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}

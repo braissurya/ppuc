@@ -1,18 +1,10 @@
 package com.melawai.ppuc.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.NumberFormat;
-import org.springframework.format.annotation.NumberFormat.Style;
-
-import com.melawai.ppuc.model.BaseObject;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -23,33 +15,26 @@ import com.melawai.ppuc.model.BaseObject;
 
 public class GroupLokasiD extends BaseObject implements Serializable  {
 
+	private static final long serialVersionUID = -1061238427154930837L;
+
 	//****************** COLOMN FROM TABLE START HERE ******************/
-	@NotNull
+	@NotEmpty
 	@Size(max=3)
 	public String divisi_kd;
 
-	@NotNull
+	@NotEmpty
 	@Size(max=3)
 	public String subdiv_kd;
 
-	@NotNull
+	@NotEmpty
 	@Size(max=5)
 	public String group_lok;
 
-	@NotNull
+	@NotEmpty
 	@Size(max=5)
 	public String lok_kd;
 
-	@Size(max=50)
-	public String user_create;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style="MM")
-	public Date tgl_create;
-
-	@Size(max=8)
-	public String jam_create;
-
+	
 	//****************** COLOMN FROM TABLE END HERE ******************/
 
 
@@ -80,6 +65,17 @@ public class GroupLokasiD extends BaseObject implements Serializable  {
 		
 	}
 
+	
+
+
+	public GroupLokasiD(String divisi_kd, String subdiv_kd, String group_lok, String lok_kd) {
+		super();
+		this.divisi_kd = divisi_kd;
+		this.subdiv_kd = subdiv_kd;
+		this.group_lok = group_lok;
+		this.lok_kd = lok_kd;
+	}
+
 
 
 	//****************** CONSTRUCTOR END HERE ******************/
@@ -98,14 +94,29 @@ public class GroupLokasiD extends BaseObject implements Serializable  {
 	public String getLok_kd(){ return lok_kd; }
 	public void setLok_kd(String lok_kd){ this.lok_kd = lok_kd; }
 
-	public String getUser_create(){ return user_create; }
-	public void setUser_create(String user_create){ this.user_create = user_create; }
 
-	public Date getTgl_create(){ return tgl_create; }
-	public void setTgl_create(Date tgl_create){ this.tgl_create = tgl_create; }
+	public Lokasi getLokasi() {
+		return lokasi;
+	}
 
-	public String getJam_create(){ return jam_create; }
-	public void setJam_create(String jam_create){ this.jam_create = jam_create; }
+
+
+	public void setLokasi(Lokasi lokasi) {
+		this.lokasi = lokasi;
+	}
+
+
+
+	public Integer getNoUrut() {
+		return noUrut;
+	}
+
+
+
+	public void setNoUrut(Integer noUrut) {
+		this.noUrut = noUrut;
+	}
+
 
 
 	public String getItemId() {return ""+divisi_kd+"/"+subdiv_kd+"/"+group_lok+"/"+lok_kd;	}

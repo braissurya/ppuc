@@ -1,20 +1,349 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core"  xmlns:spring="http://www.springframework.org/tags"  xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:fn="http://java.sun.com/jsp/jstl/functions"  xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+<div  xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:c="http://java.sun.com/jsp/jstl/core"  xmlns:formtag="urn:jsptagdir:/WEB-INF/tags/form"   xmlns:spring="http://www.springframework.org/tags"  xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:fn="http://java.sun.com/jsp/jstl/functions"  xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
-	<page:list id="pl_com_melawai_ppuc_model_hakbiaya" items="${hakbiayaList}" searching="false" create="false">
-		<table:table data="${hakbiayaList}" id="l_com_melawai_ppuc_model_HakBiaya"  typeIdFieldName="itemId"  path="/master/hakbiaya">
-			<table:column id="c_com_melawai_ppuc_model_hakbiaya_divisi_kd" property="divisi_kd" label="Divisi Kd" />
-			<table:column id="c_com_melawai_ppuc_model_hakbiaya_subdiv_kd" property="subdiv_kd" label="Subdiv Kd" />
-			<table:column id="c_com_melawai_ppuc_model_hakbiaya_dept_kd" property="dept_kd" label="Dept Kd" />
-			<table:column id="c_com_melawai_ppuc_model_hakbiaya_lok_kd" property="lok_kd" label="Lok Kd" />
-			<table:column id="c_com_melawai_ppuc_model_hakbiaya_kd_group" property="kd_group" label="Kd Group" />
-			<table:column id="c_com_melawai_ppuc_model_hakbiaya_kd_biaya" property="kd_biaya" label="Kd Biaya" />
-			<table:column id="c_com_melawai_ppuc_model_hakbiaya_user_create" property="user_create" label="User Create" />
-			<table:column id="c_com_melawai_ppuc_model_hakbiaya_jam_create" property="jam_create" label="Jam Create" />
-			<table:column id="c_com_melawai_ppuc_model_hakbiaya_user_nonaktif" property="user_nonaktif" label="User Nonaktif" />
-			<table:column id="c_com_melawai_ppuc_model_hakbiaya_jam_nonaktif" property="jam_nonaktif" label="Jam Nonaktif" />
-		</table:table>
+	<spring:url value="/" var="path" />
+	<page:filter finderName="filter" path="/master/hakbiaya" id="filterHakBiaya" label="filter">
+		<table class="noborder">
+			<tr>
+				<td>
+					<label class="filter">Group Lokasi</label>
+				</td>
+				<td>
+					<span class="doubleDot">:</span>
+				</td>
+				<td>
+					<select name="gl" id="_gl_id"  data-dojo-type="dijit/form/FilteringSelect" >
+						<option value=" ">All</option>
+						<c:forEach items="${f_gl}" var="v">
+							<c:choose>
+								<c:when test="${v.value eq gl }"><c:set value="selected='selected'" var="selectAktifgl"/></c:when>
+								<c:otherwise><c:set value=" " var="selectAktifgl"/></c:otherwise>
+							</c:choose>
+							<![CDATA[<option value="${v.key }" ${selectAktifgl }>${v.value }</option>]]>
+						</c:forEach>
+					</select>
+					
+				</td>
+				<td>
+					<label class="filter">Propinsi</label>
+				</td>
+				<td>
+					<span class="doubleDot">:</span>
+				</td>
+				<td>
+					<select name="pr" id="_pr_id"  data-dojo-type="dijit/form/FilteringSelect" >
+						<option value=" ">All</option>
+						<c:forEach items="${f_pr}" var="v">
+							<c:choose>
+								<c:when test="${v.value eq pr }"><c:set value="selected='selected'" var="selectAktifpr"/></c:when>
+								<c:otherwise><c:set value=" " var="selectAktifpr"/></c:otherwise>
+							</c:choose>
+							<![CDATA[<option value="${v.key }" ${selectAktifpr }>${v.value }</option>]]>
+						</c:forEach>
+					</select>
+				</td>
+				<td>
+					<label class="filter">Kota</label>
+				</td>
+				<td>
+					<span class="doubleDot">:</span>
+				</td>
+				<td>
+					<select name="kt" id="_kt_id"  data-dojo-type="dijit/form/FilteringSelect" >
+						<option value=" ">All</option>
+						<c:forEach items="${f_kt}" var="v">
+							<c:choose>
+								<c:when test="${v.value eq kt }"><c:set value="selected='selected'" var="selectAktifkt"/></c:when>
+								<c:otherwise><c:set value=" " var="selectAktifkt"/></c:otherwise>
+							</c:choose>
+							<![CDATA[<option value="${v.key }" ${selectAktifkt }>${v.value }</option>]]>
+						</c:forEach>
+					</select>
+				</td>
+				<td>
+					<label class="filter">Lokasi</label>
+				</td>
+				<td>
+					<span class="doubleDot">:</span>
+				</td>
+				<td>
+					<select name="lk" id="_lk_id"   data-dojo-type="dijit/form/FilteringSelect">
+						<option value=" ">All</option>
+						<c:forEach items="${f_lk}" var="v">
+							<c:choose>
+								<c:when test="${v.value eq lk }"><c:set value="selected='selected'" var="selectAktiflk"/></c:when>
+								<c:otherwise><c:set value=" " var="selectAktiflk"/></c:otherwise>
+							</c:choose>
+							<![CDATA[<option value="${v.value }" ${selectAktiflk }>${v.value }</option>]]>
+						</c:forEach>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label class="filter">Group Biaya</label>
+				</td>
+				<td>
+					<span class="doubleDot">:</span>
+				</td>
+				<td>
+					<select name="gb" id="_gb_id" data-dojo-type="dijit/form/FilteringSelect"  >
+						<option value=" ">All</option>
+						<c:forEach items="${f_gb}" var="v">
+							<c:choose>
+								<c:when test="${v.value eq gb }"><c:set value="selected='selected'" var="selectAktifgb"/></c:when>
+								<c:otherwise><c:set value=" " var="selectAktifgb"/></c:otherwise>
+							</c:choose>
+							<![CDATA[<option value="${v.value }" ${selectAktifgb }>${v.key }</option>]]>
+						</c:forEach>
+					</select>
+				</td>
+				<td >
+					<label class="filter">KD Biaya</label>
+				</td>
+				<td>
+					<span class="doubleDot">:</span>
+				</td>
+				<td colspan="7">
+					<select name="kb" id="_kb_id"   data-dojo-type="dijit/form/FilteringSelect">
+						<option value=" ">All</option>
+						<c:forEach items="${f_kb}" var="v">
+							<c:choose>
+								<c:when test="${v.value eq kb }"><c:set value="selected='selected'" var="selectAktifkb"/></c:when>
+								<c:otherwise><c:set value=" " var="selectAktifkb"/></c:otherwise>
+							</c:choose>
+							<![CDATA[<option value="${v.key }" ${selectAktifkb }>${v.value }</option>]]>
+						</c:forEach>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td >
+					<c:choose>
+						<c:when test="${aktif eq 1 }">
+							<c:set value="checked='checked'" var="selectAktif"/>
+						</c:when>
+						<c:when test="${aktif eq 0 }">
+							<c:set value="checked='checked'" var="selectNonAktif"/>
+						</c:when>
+						<c:otherwise></c:otherwise>
+					</c:choose>
+					<label class="filter">F-Aktif</label>
+				</td>
+				<td>
+					<span class="doubleDot">:</span>
+				</td>
+				<td colspan="10">
+					<![CDATA[
+					<label class="filter" for="_aktif_id"><input type="radio" class="radio" value="" name="aktif" checked="checked" id="_aktif_id" onclick="form.submit();"/> All</label>
+					<label class="filter" for="_aktif_id1"><input type="radio" class="radio"  value="1" name="aktif" ${selectAktif }  id="_aktif_id1" onclick="form.submit();"/> Active</label>
+					<label class="filter" for="_aktif_id0"><input type="radio" class="radio"  value="0" name="aktif" ${selectNonAktif }  id="_aktif_id0" onclick="form.submit();"/> Non Active</label>
+					]]>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="12" align="center">
+					<input type="hidden" name="search" value="${param.search}"/>
+					<span class="submit" id="filterHakBiaya_filter_submit" style="margin-left: 15px;">
+						<spring:message code="button_filter" var="filter_button" htmlEscape="false" />
+						<input id="proceed" type="submit" value="${fn:escapeXml(filter_button)}" />
+					</span>
+					<span class="submit" id="filterHakBiaya_filter_submit" style="margin-left: 15px;">
+						<spring:message code="button_reset" var="button_reset" htmlEscape="false" />
+						
+						<input type="button" value="${fn:escapeXml(button_reset)}"  onclick="window.location='${path}master/hakbiaya'"/>
+					</span>
+				</td>
+			</tr>
+		</table>
+		
+		<c:if test="${not empty pr}">
+			<c:set var="value_pr" value="${pr}"/>
+		</c:if>
+		<c:if test="${not empty kt}">
+			<c:set var="value_kt" value="${kt}"/>
+		</c:if>
+		<c:if test="${not empty lk}">
+			<c:set var="value_lk" value="${lk}"/>
+		</c:if>
+		
+		
+		
+		
+	</page:filter>
+
+	<br/>
+		
+<util:panel id="pl_com_melawai_ppuc_model_hakbiaya" title="List Hak Biaya" openPane="true">
+		<script>
+			require(["dijit/Dialog", "dojo/query",  "dijit/form/TextBox","dojo/NodeList-manipulate", "dijit/form/CheckBox","dijit/form/Button","dijit/form/ValidationTextBox", "dijit/form/DateTextBox"]);
+		</script>
+		<script type="text/javascript">
+			function showDialog(f_akftif,id){
+				if(id==""){
+					var count=0;
+					dojo.query("table td.selectBox input[type=checkbox]:checked")
+					.forEach(
+						function(node) {
+							if(count==0)id=node.getAttribute('value');
+							else id+="#"+node.getAttribute('value');
+							count++;
+						});
+				}
+				if(id!=""){
+					myDialog.show();
+					
+					dojo.query("#_id").val(id);
+					
+					dojo.query("#_faktif_id").val(f_akftif);
+					if(f_akftif=="Non-Active")
+						dojo.query("#_tgl_lb_id").innerHTML("Tanggal Berakhir : ");
+					else
+						dojo.query("#_tgl_lb_id").innerHTML("Tanggal Berlaku Baru : ");	
+				}else{
+					alert("Please Checked min. 1 of the Hak Biaya below");
+				}
+			}
+		</script>
+		 
+		
+		<div data-dojo-type="dijit/Dialog" data-dojo-id="myDialog" title="Please fill this Field">
+			<form action="${path }master/hakbiaya/aktifnonaktif" name="formAktifNon" method="POST">
+		    <table class="dijitDialogPaneContentArea noborder">
+		        <tr>
+		            <td><span id="_tgl_lb_id">Tanggal:</span></td>
+		            <td><input  name="tgl" id="_tgl_id" required="true"/>
+		            	 <input type="hidden" name="id" id="_id" />
+		            	 <input type="hidden" name="faktif" id="_faktif_id" />
+		            	
+		            	 <script type="text/javascript">
+				       		 Spring.addDecoration(new Spring.ElementDecoration({elementId : '_tgl_id', widgetType : 'dijit.form.DateTextBox', widgetAttrs : {promptMessage: '${sec_field_validation}', invalidMessage: '${sec_field_invalid}', required:true, constraints: {datePattern : 'dd/MM/yyyy', required : true}, datePattern : 'dd/MM/yyyy'}})); 
+				        </script>
+		            </td>
+		        </tr>
+		        <tr>
+		        	<td>
+		        	</td>
+		        	<td>
+							<div class="dijitDialogPaneActionBar">
+					    	<script type="text/javascript">
+								Spring.addDecoration(new Spring.ValidateAllDecoration({
+									elementId : 'ok',
+									event : 'onclick'
+								}));
+								
+								function cancelDialog(){
+									dijit.byId("_tgl_id").value="";
+									myDialog.hide();
+								}
+								
+							</script>
+					        <button data-dojo-type="dijit/form/Button"  type="submit" id="ok">Submit</button>
+					        <button data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onClick:function(){cancelDialog();}"
+					                id="cancel">Cancel</button>
+					    </div>
+		        	</td>
+		        </tr>
+		    </table>
+			</form>
+		   
+		</div>
+			<script>
+				require([ "dojo/query", "dojo/on", "dojo/domReady!" ],
+				function(query, on) {
+					var masterSelect = null;
+	
+					query("input.masterSelectBox_id").forEach(function(node) {
+							masterSelect = node;
+							on(	node,"click",function(e) {
+								query("table td.selectBox input[type=checkbox]")
+									.forEach(
+										function(node) {
+											node.checked = masterSelect.checked;
+										});
+							})
+						})
+					
+					masterSelect.checked=false;
+					query("table td.selectBox input[type=checkbox]")
+					.forEach(
+						function(node) {
+							on(	node,"click",function(e) {
+								if(node.checked ==false	){
+									masterSelect.checked=false;
+								}
+							})
+						});
+				});
+			</script>
+			<table class="noborder">
+				<tr>
+					<td>
+						<c:choose>
+							<c:when test="${aktif eq 0}">
+								<span class="info">To Activated Group Kode Biaya, please "Checked" Kode Biaya from the list below and Click "Activated Kode Biaya Group" button.</span>
+								<br/>
+								
+								 <button data-dojo-type="dijit/form/Button" type="button" id="activate" data-dojo-props="onClick:function(){showDialog('Active','');}">Activated Group Kode Biaya
+							      </button>
+							</c:when>
+							<c:when test="${aktif eq 1}">
+								<span class="info">To Non-Activated Group Kode Biaya, please "Checked" Kode Biaya from the list below and Click "Non-Activated Kode Biaya Group" button.</span>
+								<br/>
+								
+								 <button data-dojo-type="dijit/form/Button" type="button" id="activate" data-dojo-props="onClick:function(){showDialog('Non-Active','');}">Non-Activated Group Kode Biaya
+							      </button>
+							</c:when>
+						</c:choose>
+					</td>
+				</tr>
+			</table>
+			<table >
+				<thead>
+					<tr>
+						<th><input class="masterSelectBox_id" type="checkbox" name="id" /></th>
+						<th>Propinsi</th>
+						<th>Kota</th>
+						<th>Lokasi</th>
+						<th>Group Biaya</th>
+						<th>KD Biaya</th>
+						<th>Dari Tanggal</th>
+						<th>Sampai Tanggal</th>
+						<th>F-Aktif</th>
+						<th>User Nonaktif</th>
+						<th>Tanggal Nonaktif</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${hakbiayaList}" var="item" varStatus="vs">
+						<tr>
+							<td class="selectBox utilbox">
+								<input type="checkbox" name="ids" id="_ids_id" value="${item.id }" />
+							</td>
+							<td>${item.lokasi.propinsi }</td>
+							<td>${item.lokasi.kota }</td>
+							<td>${item.lokasi.lok_nm }</td>
+							<td>${item.kd_group }</td>
+							<td>${item.kd_biaya }</td>
+							<td><fmt:formatDate value="${item.drtgl}" pattern="${hakbiaya_drtgl_date_format}" /> </td>
+							<td><fmt:formatDate value="${item.sptgl}" pattern="${hakbiaya_sptgl_date_format}" /></td>
+							<td>${item.isActive }</td>
+							<td>${item.user_nonaktif }</td>
+							<td><fmt:formatDate value="${item.tgl_nonaktif}" pattern="${hakbiaya_tgl_nonaktif_date_format}" /></td>
+							<td class="utilbox">
+								<spring:url value="/master/hakbiaya/aktifnonaktif/${item.id}" var="aktif_form_url" />
+								<spring:url value="/resources/images/icons/${item.revActive}.png" var="aktif_image_url" />
+								<c:set value="Click To #propd Hak Biaya" var="label_aktif" />
+									<a href="javascript:showDialog('${item.revActive}','${item.id}')" alt="${label_aktif}" title="${label_aktif}"> <img alt="${label_aktif}" class="image" src="${aktif_image_url}" title="${label_aktif}" />
+								</a>
+							</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		
 		<table class="noborder">
 			<tr>
 				<td><span class="new"> <spring:url value="/master/hakbiaya" var="create_url">
@@ -36,6 +365,42 @@
 			</tr>
 		</table>
 
-	</page:list>
+	</util:panel>
+	<script type="text/javascript">
+			dojo
+					.ready(function() {
+	
+					   autoPopulateSelect3("${path}", "propinsi2",
+								"_gl_id", true, "All",
+								"${value_pr}",
+								"_pr_id", "_kt_id","_lk_id");
+					    autoPopulateSelect2(
+								"${path}",
+								"kota2",
+								"_pr_id",
+								true,
+								"All",
+								"${value_kt}",
+								"_kt_id","_lk_id");
+						 autoPopulateSelect(
+								"${path}",
+								"lokasi3",
+								"_kt_id",
+								true,
+								"All",
+								"${value_lk}",
+								"_lk_id");  
+						 
+						 autoPopulateSelect(
+									"${path}",
+									"detailbiaya2",
+									"_gb_id",
+									true,
+									"All",
+									"${kb}",
+									"_kb_id");  
+						
+					});
+		</script>
 </div>
 

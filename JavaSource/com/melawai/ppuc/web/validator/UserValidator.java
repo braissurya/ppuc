@@ -59,6 +59,13 @@ public class UserValidator implements Validator {
 					e.rejectValue("email", "duplicate", new String[] { "Email" }, null);
 			}
 			
+			if(userManager.selectCountTable("group_user", "group_kd = '"+user.group_kd+"'")<1){
+				e.rejectValue("group_kd", "entity_not_exist", new String[] { "Group KD" }, null);
+			}
+			if(userManager.selectCountTable("m_fungsi", "kd_fungsi = '"+user.kd_fungsi+"'")<1){
+				e.rejectValue("kd_fungsi", "entity_not_exist", new String[] { "KD Fungsi" }, null);
+			}
+			
 			
 		}
 	}

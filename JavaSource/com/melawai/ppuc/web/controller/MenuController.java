@@ -55,7 +55,7 @@ public class MenuController extends ParentController{
 		Menu menu=new Menu();
 		menu.parent=parent_id;
 		if(parent_id!=null)
-		menu.urut=menuManager.selectMaxValue("urut", "menu", "parent = "+parent_id).longValue()+1l;
+		menu.urut=menuManager.selectMaxValue("urut", "menu", "parent = "+parent_id)+1l;
 		populateEditForm(uiModel,menu );
 		return "menu/create";
 	}

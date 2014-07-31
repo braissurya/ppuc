@@ -14,10 +14,8 @@
        <field:display field="sptgl" label="Sptgl" id="c_com_melawai_ppuc_model_hakbiaya_sptgl"  object="${hakbiaya}"  date="true" dateTimePattern="${hakbiaya_sptgl_date_format}"/>
        <field:display field="user_create" label="User Create" id="c_com_melawai_ppuc_model_hakbiaya_user_create"  object="${hakbiaya}" />
        <field:display field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_hakbiaya_tgl_create"  object="${hakbiaya}"  date="true" dateTimePattern="${hakbiaya_tgl_create_date_format}"/>
-       <field:display field="jam_create" label="Jam Create" id="c_com_melawai_ppuc_model_hakbiaya_jam_create"  object="${hakbiaya}" />
        <field:display field="user_nonaktif" label="User Nonaktif" id="c_com_melawai_ppuc_model_hakbiaya_user_nonaktif"  object="${hakbiaya}" />
        <field:display field="tgl_nonaktif" label="Tgl Nonaktif" id="c_com_melawai_ppuc_model_hakbiaya_tgl_nonaktif"  object="${hakbiaya}"  date="true" dateTimePattern="${hakbiaya_tgl_nonaktif_date_format}"/>
-       <field:display field="jam_nonaktif" label="Jam Nonaktif" id="c_com_melawai_ppuc_model_hakbiaya_jam_nonaktif"  object="${hakbiaya}" />
     </page:show>
 </div>
 

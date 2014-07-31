@@ -49,16 +49,6 @@ public class Menu extends BaseObject implements Serializable  {
 	public Integer f_aktif;
 
 	@Size(max=50)
-	public String user_create;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style="MM")
-	public Date tgl_create;
-
-	@Size(max=8)
-	public String jam_create;
-
-	@Size(max=50)
 	public String user_nonaktif;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -121,20 +111,6 @@ public class Menu extends BaseObject implements Serializable  {
 		if(f_aktif==null)f_aktif=0;
 		this.f_aktif = f_aktif; 
 	}
-
-	public String getUser_create(){ return user_create; }
-	public void setUser_create(String user_create){ this.user_create = user_create; }
-
-	public Date getTgl_create(){ return tgl_create; }
-	public void setTgl_create(Date tgl_create){ 
-		this.tgl_create = tgl_create; 
-		if (tgl_create != null) {
-			this.jam_create = Utils.convertDateToString(tgl_create, jam_format);
-		}
-	}
-
-	public String getJam_create(){ return jam_create; }
-	public void setJam_create(String jam_create){ this.jam_create = jam_create; }
 
 	public String getUser_nonaktif(){ return user_nonaktif; }
 	public void setUser_nonaktif(String user_nonaktif){ this.user_nonaktif = user_nonaktif; }

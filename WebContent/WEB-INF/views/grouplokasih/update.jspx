@@ -1,15 +1,70 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
-    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
-    <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_com_melawai_ppuc_model_grouplokasih" modelAttribute="grouplokasih" path="/master/grouplokasih" idField="itemId" versionField="none" >
-       <field:input field="divisi_kd" label="Divisi Kd" id="c_com_melawai_ppuc_model_grouplokasih_divisi_kd" required="true" />
-       <field:input field="subdiv_kd" label="Subdiv Kd" id="c_com_melawai_ppuc_model_grouplokasih_subdiv_kd" required="true" />
-       <field:input field="group_lok" label="Group Lok" id="c_com_melawai_ppuc_model_grouplokasih_group_lok" required="true" />
-       <field:input field="group_desc" label="Group Desc" id="c_com_melawai_ppuc_model_grouplokasih_group_desc"  />
-       <field:input field="user_create" label="User Create" id="c_com_melawai_ppuc_model_grouplokasih_user_create" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_grouplokasih_tgl_create" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="jam_create" label="Jam Create" id="c_com_melawai_ppuc_model_grouplokasih_jam_create" readonly="true" validationMessageCode="field_invalid_number" />
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:spring="http://www.springframework.org/tags" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	<form:update id="fu_com_melawai_ppuc_model_grouplokasih" modelAttribute="grouplokasih" path="/master/grouplokasih" idField="itemId" versionField="none">
+		<field:select field="divisi_kd" label="Divisi Kd" readonly="true" id="c_com_melawai_ppuc_model_grouplokasih_divisi_kd" items="${divisiList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/divisi" />
+		<field:select field="subdiv_kd" label="Subdiv Kd" readonly="true" id="c_com_melawai_ppuc_model_grouplokasih_divisi_kd" items="${subdivList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/subdivisi" />
+		<field:input field="group_lok" label="Group Lok" readonly="true" id="c_com_melawai_ppuc_model_grouplokasih_group_lok" required="true" />
+		<field:input field="group_desc" label="Group Desc" id="c_com_melawai_ppuc_model_grouplokasih_group_desc" />
+		<field:select field="lok_kd" label="Lok Kd" multiple="true" required="true" id="c_com_melawai_ppuc_model_grouplokasih_lok_kd" items="${lokList}" itemLabel="key" itemValue="value" blank="true" path="/master/lokasi" />
 	</form:update>
+
+	<spring:message arguments="Subdivisi KD" code="field_choice" var="choice_subdivkd" htmlEscape="false" />
+	<spring:message arguments="lokasi KD" code="field_choice" var="choice_lokkd" htmlEscape="false" />
+	<spring:url value="/" var="path" />
+	<c:if test="${not empty grouplokasih.subdiv_kd}">
+		<c:set var="value_subdivkd" value="${grouplokasih.divisi_kd}.${grouplokasih.subdiv_kd}" />
+	</c:if>
+
+	<c:if test="${not empty grouplokasih.lok_kd}">
+
+
+		<c:forEach items="${grouplokasih.lok_kd}" var="i" varStatus="s">
+			<c:choose>
+				<c:when test="${s.count eq 1 }">
+
+					<c:set var="value_lokkd" value="${i}" />
+				</c:when>
+				<c:otherwise>
+
+					<c:set var="value_lokkd" value="${value_lokkd}#${i}" />
+				</c:otherwise>
+			</c:choose>
+
+
+		</c:forEach>
+	</c:if>
+
+
+	<script type="text/javascript">
+		dojo.ready(function() {
+
+			autoPopulateMultiSelect2("${path}", "subdivisi2", "_divisi_kd_id",
+					true, "${choice_subdivkd}", "${value_subdivkd}",
+					"_subdiv_kd_id", "_lok_kd_id");
+
+			autoPopulateMultiSelect("${path}", "lokasi2", "_subdiv_kd_id",
+					true, "${choice_lokkd}", "${value_lokkd}".split("#"),
+					"_lok_kd_id");
+
+		});
+	</script>
+
+	<spring:url value="/resources/styles/multi-select.css" var="multi_select_css" />
+	<link rel="stylesheet" type="text/css" href="${multi_select_css }" media="screen" />
+
+	<spring:url value="/resources/static/jquery.multi-select.js" var="multi_select_js" />
+	<script src="${multi_select_js}" type="text/javascript">
+	<!-- required for FF3 and Opera -->
+		
+	</script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#_lok_kd_id').multiSelect();
+
+		});
+	</script>
 </div>
 

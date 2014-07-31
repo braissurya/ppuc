@@ -7,6 +7,7 @@
 
 	<!-- result map-->
 	<resultMap type="HakBiayaHist" id="HakBiayaHistMap">
+		<id property="id" column="id"  />  
 		<id property="divisi_kd" column="divisi_kd"  />  
 		<id property="subdiv_kd" column="subdiv_kd"  />  
 		<id property="dept_kd" column="dept_kd"  />  
@@ -32,6 +33,7 @@
 
 	<!-- nama kolom yang ingin ditampilkan -->
 	<sql id="defaultColoumn">
+		C.ID as id,
 		C.DIVISI_KD as divisi_kd,
 		C.SUBDIV_KD as subdiv_kd,
 		C.DEPT_KD as dept_kd,
@@ -80,15 +82,15 @@
 	</sql>
 
 	<!-- insert query untuk table ini -->
-	<insert id="insert" parameterType="HakBiayaHist">
+	<insert id="insert" parameterType="HakBiayaHist" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
 		INSERT INTO hak_biaya_hist (
+			ID,
 			DIVISI_KD,
 			SUBDIV_KD,
 			DEPT_KD,
 			LOK_KD,
 			KD_GROUP,
 			KD_BIAYA,
-			F_AKTIF,
 			DRTGL,
 			SPTGL,
 			SYS_USER_CREATE,
@@ -98,13 +100,13 @@
 			SYS_TGL_NONAKTIF,
 			SYS_JAM_NONAKTIF
 		) values (
+			#{id},
 			#{divisi_kd},
 			#{subdiv_kd},
 			#{dept_kd},
 			#{lok_kd},
 			#{kd_group},
 			#{kd_biaya},
-			#{f_aktif},
 			#{drtgl},
 			#{sptgl},
 			#{user_create},
@@ -137,24 +139,26 @@
 			<if test="jam_nonaktif != null">SYS_JAM_NONAKTIF = #{jam_nonaktif} </if>
 		</set>
 		WHERE  
-			DIVISI_KD= #{divisi_kd} 
+			ID = #{id}
+			<!-- DIVISI_KD= #{divisi_kd} 
 			AND SUBDIV_KD= #{subdiv_kd}
 			AND DEPT_KD= #{dept_kd}
 			AND LOK_KD= #{lok_kd}
 			AND KD_GROUP= #{kd_group}
-			AND KD_BIAYA= #{kd_biaya}
+			AND KD_BIAYA= #{kd_biaya} -->
 	</update>
 
 	<!-- remove query untuk table ini -->
 	<delete id="remove" parameterType="HashMap">
 		delete from hak_biaya_hist
 		 <where> 
-			<if test="divisi_kd != null">DIVISI_KD= #{divisi_kd} </if>
+		 	<if test="id != null">ID= #{id} </if>
+			<!-- <if test="divisi_kd != null">DIVISI_KD= #{divisi_kd} </if>
 			<if test="subdiv_kd != null"> AND SUBDIV_KD= #{subdiv_kd} </if>
 			<if test="dept_kd != null"> AND DEPT_KD= #{dept_kd} </if>
 			<if test="lok_kd != null"> AND LOK_KD= #{lok_kd} </if>
 			<if test="kd_group != null"> AND KD_GROUP= #{kd_group} </if>
-			<if test="kd_biaya != null"> AND KD_BIAYA= #{kd_biaya} </if>
+			<if test="kd_biaya != null"> AND KD_BIAYA= #{kd_biaya} </if> -->
 		 </where> 
 	</delete>
 
@@ -162,12 +166,27 @@
 	<select id="get" parameterType="HashMap" resultMap="HakBiayaHistMap">
 		<include refid="selectQuery" />
 		 <where> 
+		 	<if test="id != null">ID= #{id} </if>
+		<!-- 	<if test="divisi_kd != null"> T.divisi_kd= #{divisi_kd} </if>
+			<if test="subdiv_kd != null"> AND T.subdiv_kd= #{subdiv_kd} </if>
+			<if test="dept_kd != null"> AND T.dept_kd= #{dept_kd} </if>
+			<if test="lok_kd != null"> AND T.lok_kd= #{lok_kd} </if>
+			<if test="kd_group != null"> AND T.kd_group= #{kd_group} </if>
+			<if test="kd_biaya != null"> AND T.kd_biaya= #{kd_biaya} </if> -->
+		 </where> 
+	</select>
+	
+	
+	<!-- get berdasarkan primary key -->
+	<select id="getLastSpTgl" parameterType="HashMap" resultType="Date">
+		select max(sptgl) from hak_biaya_hist T
+		 <where> 
 			<if test="divisi_kd != null"> T.divisi_kd= #{divisi_kd} </if>
 			<if test="subdiv_kd != null"> AND T.subdiv_kd= #{subdiv_kd} </if>
 			<if test="dept_kd != null"> AND T.dept_kd= #{dept_kd} </if>
 			<if test="lok_kd != null"> AND T.lok_kd= #{lok_kd} </if>
 			<if test="kd_group != null"> AND T.kd_group= #{kd_group} </if>
-			<if test="kd_biaya != null"> AND T.kd_biaya= #{kd_biaya} </if>
+			<if test="kd_biaya != null"> AND T.kd_biaya= #{kd_biaya} </if> 
 		 </where> 
 	</select>
 

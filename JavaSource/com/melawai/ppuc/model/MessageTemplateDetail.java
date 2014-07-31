@@ -1,14 +1,9 @@
 package com.melawai.ppuc.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -18,6 +13,8 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 
 public class MessageTemplateDetail extends BaseObject implements Serializable  {
+
+	private static final long serialVersionUID = 496262995993782321L;
 
 	//****************** COLOMN FROM TABLE START HERE ******************/
 	@NotNull
@@ -43,19 +40,7 @@ public class MessageTemplateDetail extends BaseObject implements Serializable  {
 
 	public Long f_aktif;
 
-	@Size(max=50)
-	public String user_create;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style="MM")
-	public Date tgl_create;
-
-	@Size(max=50)
-	public String user_update;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style="MM")
-	public Date tgl_update;
+	
 
 	//****************** COLOMN FROM TABLE END HERE ******************/
 
@@ -99,18 +84,7 @@ public class MessageTemplateDetail extends BaseObject implements Serializable  {
 	public Long getF_aktif(){ return f_aktif; }
 	public void setF_aktif(Long f_aktif){ this.f_aktif = f_aktif; }
 
-	public String getUser_create(){ return user_create; }
-	public void setUser_create(String user_create){ this.user_create = user_create; }
-
-	public Date getTgl_create(){ return tgl_create; }
-	public void setTgl_create(Date tgl_create){ this.tgl_create = tgl_create; }
-
-	public String getUser_update(){ return user_update; }
-	public void setUser_update(String user_update){ this.user_update = user_update; }
-
-	public Date getTgl_update(){ return tgl_update; }
-	public void setTgl_update(Date tgl_update){ this.tgl_update = tgl_update; }
-
+	
 
 	public String getItemId() {return ""+id_template_detail;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}

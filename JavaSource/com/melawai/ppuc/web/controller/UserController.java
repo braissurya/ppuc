@@ -1,7 +1,5 @@
 package com.melawai.ppuc.web.controller;
 
-import java.util.Set;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -21,10 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.melawai.ppuc.model.Audittrail;
-import com.melawai.ppuc.model.AudittrailDetail;
 import com.melawai.ppuc.model.User;
-import com.melawai.ppuc.services.GroupUserManager;
-import com.melawai.ppuc.services.MFungsiManager;
 import com.melawai.ppuc.services.UserManager;
 import com.melawai.ppuc.utils.CommonUtil;
 import com.melawai.ppuc.utils.Utils;

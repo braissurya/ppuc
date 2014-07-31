@@ -1,17 +1,10 @@
 package com.melawai.ppuc.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.melawai.ppuc.utils.Utils;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -21,6 +14,8 @@ import com.melawai.ppuc.utils.Utils;
  */
 
 public class DetailBiaya extends BaseObject implements Serializable  {
+
+	private static final long serialVersionUID = 7921749915758104524L;
 
 	//****************** COLOMN FROM TABLE START HERE ******************/
 	@NotEmpty
@@ -41,15 +36,7 @@ public class DetailBiaya extends BaseObject implements Serializable  {
 	@Size(max=50)
 	public String acc_no;
 
-	@Size(max=50)
-	public String user_create;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style="MM")
-	public Date tgl_create;
-
-	@Size(max=8)
-	public String jam_create;
+	
 
 	//****************** COLOMN FROM TABLE END HERE ******************/
 
@@ -101,21 +88,7 @@ public class DetailBiaya extends BaseObject implements Serializable  {
 	public String getAcc_no(){ return acc_no; }
 	public void setAcc_no(String acc_no){ this.acc_no = acc_no; }
 
-	public String getUser_create(){ return user_create; }
-	public void setUser_create(String user_create){ this.user_create = user_create; }
-
-	public Date getTgl_create(){ return tgl_create; }
-	public void setTgl_create(Date tgl_create){
-		this.tgl_create = tgl_create; 
-		if (tgl_create != null) {
-			this.jam_create = Utils.convertDateToString(tgl_create, jam_format);
-		}
-	}
-
-	public String getJam_create(){ return jam_create; }
-	public void setJam_create(String jam_create){ this.jam_create = jam_create; }
-
-
+	
 	public String getItemId() {return ""+kd_biaya;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}
 

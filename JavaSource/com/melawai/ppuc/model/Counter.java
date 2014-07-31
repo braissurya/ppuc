@@ -19,6 +19,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class Counter extends BaseObject implements Serializable  {
 
+	private static final long serialVersionUID = 1887758745347131175L;
+
 	//****************** COLOMN FROM TABLE START HERE ******************/
 	@NotNull
 	public Long id;

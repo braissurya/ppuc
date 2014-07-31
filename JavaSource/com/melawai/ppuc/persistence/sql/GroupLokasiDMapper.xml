@@ -137,6 +137,16 @@
 			<if test="lok_kd != null"> AND T.lok_kd= #{lok_kd} </if>
 		 </where> 
 	</select>
+	
+	<!-- get berdasarkan primary key -->
+	<select id="getList" parameterType="HashMap" resultMap="GroupLokasiDMap">
+		<include refid="selectQuery" />
+		 <where> 
+			<if test="divisi_kd != null"> T.divisi_kd= #{divisi_kd} </if>
+			<if test="subdiv_kd != null"> AND T.subdiv_kd= #{subdiv_kd} </if>
+			<if test="group_lok != null"> AND T.group_lok= #{group_lok} </if>
+		 </where> 
+	</select>
 
 	<!-- get ALL row -->
 	<select id="getAll" resultMap="GroupLokasiDMap">

@@ -119,8 +119,18 @@ label {
 	margin-top: 0px;
 }
 
+label.filter {
+	margin-right: 5px;
+	float: none;
+	width: auto;
+}
+
 input {
 	height:20px;
+}
+
+input.radio{
+	height: 11px;
 }
 
 input, textarea, select {
@@ -181,8 +191,19 @@ h4 {
 .errors {
 	color: red;
 	font-weight: bold;
-	display: block;
-	margin-left: 105px;
+	display: inline;
+	margin-left: 3px;
+	text-align: left;
+	cursor: help;
+	vertical-align: middle;
+		/* border: 1px solid red;
+		padding: 3px; */
+}
+
+img.errors{
+	border:none;
+	padding: 0;
+	margin: 0;
 }
 
 a {

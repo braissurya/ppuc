@@ -5,9 +5,9 @@ import java.util.Date;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -19,45 +19,37 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class PpucH extends BaseObject implements Serializable  {
 
+	private static final long serialVersionUID = 5383311198787488870L;
+
 	//****************** COLOMN FROM TABLE START HERE ******************/
-	@NotNull
+	@NotEmpty
 	@Size(max=3)
 	public String divisi_kd;
 
-	@NotNull
+	@NotEmpty
 	@Size(max=3)
 	public String subdiv_kd;
 
-	@NotNull
+	@NotEmpty
 	@Size(max=3)
 	public String dept_kd;
 
-	@NotNull
+	@NotEmpty
 	@Size(max=5)
 	public String lok_kd;
 
-	@NotNull
+	@NotEmpty
 	@Size(max=9)
 	public String no_ppuc;
 
-	@NotNull
+	@NotEmpty
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(style="M-")
 	public Date tgl_ppuc;
 
-	@NotNull
+	@NotEmpty
 	@Size(max=10)
 	public String no_batch;
-
-	@Size(max=50)
-	public String user_create;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style="MM")
-	public Date tgl_create;
-
-	@Size(max=8)
-	public String jam_create;
 
 	@Size(max=50)
 	public String user_confirm;
@@ -224,15 +216,6 @@ public class PpucH extends BaseObject implements Serializable  {
 
 	public String getNo_batch(){ return no_batch; }
 	public void setNo_batch(String no_batch){ this.no_batch = no_batch; }
-
-	public String getUser_create(){ return user_create; }
-	public void setUser_create(String user_create){ this.user_create = user_create; }
-
-	public Date getTgl_create(){ return tgl_create; }
-	public void setTgl_create(Date tgl_create){ this.tgl_create = tgl_create; }
-
-	public String getJam_create(){ return jam_create; }
-	public void setJam_create(String jam_create){ this.jam_create = jam_create; }
 
 	public String getUser_confirm(){ return user_confirm; }
 	public void setUser_confirm(String user_confirm){ this.user_confirm = user_confirm; }

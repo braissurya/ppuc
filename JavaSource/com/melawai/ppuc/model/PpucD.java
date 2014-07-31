@@ -5,9 +5,9 @@ import java.util.Date;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -19,28 +19,26 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class PpucD extends BaseObject implements Serializable  {
 
+	private static final long serialVersionUID = 609284784977244779L;
+
 	//****************** COLOMN FROM TABLE START HERE ******************/
-	@NotNull
-	@Size(max=3)
+	@NotEmpty
 	public String divisi_kd;
 
-	@NotNull
-	@Size(max=3)
+	@NotEmpty
 	public String subdiv_kd;
 
-	@NotNull
-	@Size(max=3)
+	@NotEmpty
 	public String dept_kd;
 
-	@NotNull
-	@Size(max=5)
+	@NotEmpty
 	public String lok_kd;
 
-	@NotNull
+	@NotEmpty
 	@Size(max=9)
 	public String no_ppuc;
 
-	@NotNull
+	@NotEmpty
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(style="M-")
 	public Date tgl_ppuc;
@@ -48,7 +46,7 @@ public class PpucD extends BaseObject implements Serializable  {
 	@Size(max=5)
 	public String kd_group;
 
-	@NotNull
+	@NotEmpty
 	@Size(max=30)
 	public String kd_biaya;
 
@@ -73,7 +71,7 @@ public class PpucD extends BaseObject implements Serializable  {
 	@Size(max=65535)
 	public String ket_approve;
 
-	@NotNull
+	@NotEmpty
 	@Size(max=25)
 	public String no_realisasi;
 
@@ -90,13 +88,6 @@ public class PpucD extends BaseObject implements Serializable  {
 	public double total_real_oc;
 
 	public double nilai_charge;
-
-	@Size(max=50)
-	public String user_create;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style="MM")
-	public Date tgl_create;
 
 	//****************** COLOMN FROM TABLE END HERE ******************/
 
@@ -190,13 +181,6 @@ public class PpucD extends BaseObject implements Serializable  {
 
 	public double getNilai_charge(){ return nilai_charge; }
 	public void setNilai_charge(double nilai_charge){ this.nilai_charge = nilai_charge; }
-
-	public String getUser_create(){ return user_create; }
-	public void setUser_create(String user_create){ this.user_create = user_create; }
-
-	public Date getTgl_create(){ return tgl_create; }
-	public void setTgl_create(Date tgl_create){ this.tgl_create = tgl_create; }
-
 
 	public String getItemId() {return ""+divisi_kd+"/"+subdiv_kd+"/"+dept_kd+"/"+lok_kd+"/"+no_ppuc+"/"+tgl_ppuc+"/"+kd_biaya;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}

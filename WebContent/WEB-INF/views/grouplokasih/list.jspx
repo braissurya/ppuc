@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
-    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
-    <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_com_melawai_ppuc_model_grouplokasih"  items="${grouplokasihList}" >
-        <table:table data="${grouplokasihList}" id="l_com_melawai_ppuc_model_GroupLokasiH" typeIdFieldName="itemId" path="/master/grouplokasih" >
-       <table:column id="c_com_melawai_ppuc_model_grouplokasih_divisi_kd" property="divisi_kd" label="Divisi Kd" />
-       <table:column id="c_com_melawai_ppuc_model_grouplokasih_subdiv_kd" property="subdiv_kd" label="Subdiv Kd" />
-       <table:column id="c_com_melawai_ppuc_model_grouplokasih_group_lok" property="group_lok" label="Group Lok" />
-       <table:column id="c_com_melawai_ppuc_model_grouplokasih_group_desc" property="group_desc" label="Group Desc" />
-       <table:column id="c_com_melawai_ppuc_model_grouplokasih_user_create" property="user_create" label="User Create" />
-       <table:column id="c_com_melawai_ppuc_model_grouplokasih_jam_create" property="jam_create" label="Jam Create" />
-        </table:table>
-    </page:list>
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	<page:list id="pl_com_melawai_ppuc_model_grouplokasih" items="${grouplokasihList}">
+		<table:table data="${grouplokasihList}" id="l_com_melawai_ppuc_model_GroupLokasiH" typeIdFieldName="itemId" path="/master/grouplokasih">
+			<table:column id="c_com_melawai_ppuc_model_grouplokasih_divisi_kd" property="divisi_kd" label="Divisi Kd" />
+			<table:column id="c_com_melawai_ppuc_model_grouplokasih_subdiv_kd" property="subdiv_kd" label="Subdiv Kd" />
+			<table:column id="c_com_melawai_ppuc_model_grouplokasih_group_lok" property="group_lok" label="Group Lok" />
+			<table:column id="c_com_melawai_ppuc_model_grouplokasih_group_desc" property="group_desc" label="Group Desc" />
+			<table:column id="c_com_melawai_ppuc_model_grouplokasih_user_create" property="user_create" label="User Create" />
+			<table:column id="c_com_melawai_ppuc_model_grouplokasih_tgl_create" property="tgl_create" label="Tgl Create" date="true" dateTimePattern="${grouplokasih_tgl_create_date_format}" />
+		</table:table>
+	</page:list>
 </div>
 

@@ -1,14 +1,9 @@
 package com.melawai.ppuc.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -37,13 +32,6 @@ public class AudittrailDetail extends BaseObject implements Serializable  {
 
 	@Size(max=65535)
 	public String after;
-
-	@Size(max=50)
-	public String user_create;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style="MM")
-	public Date tgl_create;
 
 	//****************** COLOMN FROM TABLE END HERE ******************/
 
@@ -86,13 +74,6 @@ public class AudittrailDetail extends BaseObject implements Serializable  {
 
 	public String getAfter(){ return after; }
 	public void setAfter(String after){ this.after = after; }
-
-	public String getUser_create(){ return user_create; }
-	public void setUser_create(String user_create){ this.user_create = user_create; }
-
-	public Date getTgl_create(){ return tgl_create; }
-	public void setTgl_create(Date tgl_create){ this.tgl_create = tgl_create; }
-
 
 	public String getItemId() {return ""+id_audittrail_detail;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}

@@ -1,14 +1,11 @@
 package com.melawai.ppuc.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -19,20 +16,17 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class AksesMenu extends BaseObject implements Serializable  {
 
+	private static final long serialVersionUID = 2858890973001209186L;
+
 	//****************** COLOMN FROM TABLE START HERE ******************/
-	@NotNull
+	@NotEmpty
 	@Size(max=5)
 	public String group_kd;
 
 	@NotNull
 	public Long menu_id;
 
-	@Size(max=50)
-	public String user_create;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style="MM")
-	public Date tgl_create;
+	
 
 	//****************** COLOMN FROM TABLE END HERE ******************/
 
@@ -45,7 +39,6 @@ public class AksesMenu extends BaseObject implements Serializable  {
 
 	//****************** CONSTRUCTOR START HERE ******************/
 	public AksesMenu(){
-		//TODO: standard constructor free to change
 	}
 	
 	
@@ -67,13 +60,6 @@ public class AksesMenu extends BaseObject implements Serializable  {
 
 	public Long getMenu_id(){ return menu_id; }
 	public void setMenu_id(Long menu_id){ this.menu_id = menu_id; }
-
-	public String getUser_create(){ return user_create; }
-	public void setUser_create(String user_create){ this.user_create = user_create; }
-
-	public Date getTgl_create(){ return tgl_create; }
-	public void setTgl_create(Date tgl_create){ this.tgl_create = tgl_create; }
-
 
 	public String getItemId() {return ""+group_kd+"/"+menu_id;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}

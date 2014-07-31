@@ -25,6 +25,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -62,7 +63,12 @@ public class GroupLokasiHController extends ParentController{
 		binder.addValidators(this.grouplokasihValidator);
 	}
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
-	public String create(@Valid GroupLokasiH grouplokasih, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String create(@ModelAttribute("grouplokasih")@Valid GroupLokasiH grouplokasih, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+		if (grouplokasihManager.exists(grouplokasih.divisi_kd, grouplokasih.subdiv_kd, grouplokasih.group_lok)) {
+			bindingResult.rejectValue("group_lok", "duplicate", new String[] { "GROUP KD : " + grouplokasih.group_lok + " | DIVISI KD : " + grouplokasih.divisi_kd + " | SUBDIVISI KD : " + grouplokasih.subdiv_kd
+					+ ", " }, null);
+		}
+		
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, grouplokasih);
 			return "grouplokasih/create";
@@ -81,8 +87,21 @@ public class GroupLokasiHController extends ParentController{
 	@RequestMapping(value = "/{divisi_kd}/{subdiv_kd}/{group_lok}", produces = "text/html")
 	public String show(@PathVariable("divisi_kd") String divisi_kd, @PathVariable("subdiv_kd") String subdiv_kd, @PathVariable("group_lok") String group_lok, Model uiModel) {
 		addDateTimeFormatPatterns(uiModel);
-		uiModel.addAttribute("grouplokasih", grouplokasihManager.get(divisi_kd, subdiv_kd, group_lok));
+		GroupLokasiH grouplokasih=grouplokasihManager.get(divisi_kd, subdiv_kd, group_lok);
+		uiModel.addAttribute("grouplokasih", grouplokasih);
 		uiModel.addAttribute("itemId", divisi_kd+"/"+subdiv_kd+"/"+group_lok);
+		
+		uiModel.addAttribute("divisiList", baseService.selectDropDown("divisi_nm", "divisi_kd", "divisi", null, "divisi_nm"));
+		
+		if (grouplokasihManager.selectCountTable("subdivisi", "divisi_kd = '" + grouplokasih.divisi_kd + "'")>0)
+			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "concat(divisi_kd, '.', subdiv_kd)", "subdivisi", "divisi_kd = '" + grouplokasih.divisi_kd + "'", "subdiv_nm"));
+		else
+			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "concat(divisi_kd, '.', subdiv_kd)", "subdivisi", null, "subdiv_nm"));
+
+		if (grouplokasihManager.selectCountTable("lokasi", " divisi_kd = '" + grouplokasih.divisi_kd + "' and subdiv_kd = '" + grouplokasih.subdiv_kd + "'")>0)
+			uiModel.addAttribute("lokList", baseService.selectDropDown("lok_nm","concat(divisi_kd, '.', subdiv_kd, '.', lok_kd)", "lokasi", " divisi_kd = '" + grouplokasih.divisi_kd + "' and subdiv_kd = '" + grouplokasih.subdiv_kd + "'", "lok_nm"));
+		else
+			uiModel.addAttribute("lokList", baseService.selectDropDown("lok_nm","concat(divisi_kd, '.', subdiv_kd, '.', lok_kd)",  "lokasi", null, "lok_nm"));
 		return "grouplokasih/show";
 	}
 
@@ -102,7 +121,7 @@ public class GroupLokasiHController extends ParentController{
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-	public String update(@Valid GroupLokasiH grouplokasih, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String update(@ModelAttribute("grouplokasih")@Valid GroupLokasiH grouplokasih, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, grouplokasih);
 			return "grouplokasih/update";
@@ -133,6 +152,19 @@ public class GroupLokasiHController extends ParentController{
 	void populateEditForm(Model uiModel, GroupLokasiH grouplokasih) {
 		uiModel.addAttribute("grouplokasih", grouplokasih);
 		addDateTimeFormatPatterns(uiModel);
+		
+		uiModel.addAttribute("divisiList", baseService.selectDropDown("divisi_nm", "divisi_kd", "divisi", null, "divisi_nm"));
+		
+		if (grouplokasihManager.selectCountTable("subdivisi", "divisi_kd = '" + grouplokasih.divisi_kd + "'")>0)
+			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "concat(divisi_kd, '.', subdiv_kd)", "subdivisi", "divisi_kd = '" + grouplokasih.divisi_kd + "'", "subdiv_nm"));
+		else
+			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "concat(divisi_kd, '.', subdiv_kd)", "subdivisi", null, "subdiv_nm"));
+
+		if (grouplokasihManager.selectCountTable("lokasi", " divisi_kd = '" + grouplokasih.divisi_kd + "' and subdiv_kd = '" + grouplokasih.subdiv_kd + "'")>0)
+			uiModel.addAttribute("lokList", baseService.selectDropDown("lok_nm","concat(divisi_kd, '.', subdiv_kd, '.', lok_kd)", "lokasi", " divisi_kd = '" + grouplokasih.divisi_kd + "' and subdiv_kd = '" + grouplokasih.subdiv_kd + "'", "lok_nm"));
+		else
+			uiModel.addAttribute("lokList", baseService.selectDropDown("lok_nm","concat(divisi_kd, '.', subdiv_kd, '.', lok_kd)",  "lokasi", null, "lok_nm"));
+
 	}
 	
 	/**

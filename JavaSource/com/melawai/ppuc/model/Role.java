@@ -17,9 +17,6 @@ import org.springframework.security.core.GrantedAuthority;
 
 public class Role extends BaseObject implements Serializable, GrantedAuthority {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1623893049898281141L;
 	public static final String ROLE_NAME_ADMIN_SUPER = "ROLE_SUPER";
 	public static final String ROLE_NAME_ADMIN = "ROLE_ADMIN";

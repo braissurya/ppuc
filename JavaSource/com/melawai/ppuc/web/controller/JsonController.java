@@ -41,53 +41,85 @@ public class JsonController extends ParentController {
 	@RequestMapping("/json/{tipe}")
 	public String main(HttpServletRequest request, HttpServletResponse response, @PathVariable String tipe) throws IOException, ParseException {
 		response.setContentType("application/json");
-		User currentUser = CommonUtil.getCurrentUser();
 		List<DropDown> result = new ArrayList<DropDown>();
 
 		String param = ServletRequestUtils.getStringParameter(request, "param", "");
 
 		if (tipe.equals("kota")) {
 			if (param.equals("")) {
-				result = baseService.selectDropDown("kota", "kota", "kota", null, "kota");
+//				result = baseService.selectDropDown("kota", "kota", "kota", null, "kota");
 			} else {
 				result = baseService.selectDropDown("kota", "kota", "kota", "propinsi = '" + param + "'", "kota");
 			}
+		} else if (tipe.equals("kota2")) {
+			if (param.equals("")) {
+				result = baseService.selectDropDown("DISTINCT concat(a.kota )","kota",  "lokasi  a left join group_lokasi_d b ON a.lok_kd = b.lok_kd ", "1=1  group by kota", "kota");
+			} else {
+				result = baseService.selectDropDown("DISTINCT concat(a.kota )","kota",  "lokasi  a left join group_lokasi_d b ON a.lok_kd = b.lok_kd ", "propinsi = '" + param + "' group by kota", "kota");
+			}
 		} else if (tipe.equals("propinsi")) {
 			if (param.equals("")) {
-				result = baseService.selectDropDown("propinsi", "propinsi", "propinsi", null, "propinsi");
+//				result = baseService.selectDropDown("propinsi", "propinsi", "propinsi", null, "propinsi");
 			} else {
 				result = baseService.selectDropDown("propinsi", "propinsi", "kota", "kota = '" + param + "'", "propinsi");
 			}
+		} else if (tipe.equals("propinsi2")) {
+			if (param.equals("")) {
+				result = baseService.selectDropDown("DISTINCT concat( propinsi )","propinsi",  "lokasi  a left join group_lokasi_d b ON a.lok_kd = b.lok_kd ", "1 = 1 group by propinsi", "propinsi");
+			} else {
+				result = baseService.selectDropDown("DISTINCT concat( propinsi )","propinsi",  "lokasi  a left join group_lokasi_d b ON a.lok_kd = b.lok_kd ", "b.group_lok='"+ param +"' group by propinsi", "propinsi");
+			}
 		} else if (tipe.equals("subdivisi")) {
 			if (param.equals("")) {
-				result = baseService.selectDropDown("subdiv_kd", "subdiv_nm", "subdivisi", null, "subdiv_nm");
+//				result = baseService.selectDropDown("subdiv_kd", "subdiv_nm", "subdivisi", null, "subdiv_nm");
 			} else {
 				result = baseService.selectDropDown("subdiv_kd", "subdiv_nm", "subdivisi", "divisi_kd = '" + param + "'", "subdiv_nm");
 			}
 		} else if (tipe.equals("subdivisi2")) {
 			if (param.equals("")) {
-				result = baseService.selectDropDown("concat(divisi_kd, '.', subdiv_kd)", "subdiv_nm", "subdivisi", null, "subdiv_nm");
+//				result = baseService.selectDropDown("concat(divisi_kd, '.', subdiv_kd)", "subdiv_nm", "subdivisi", null, "subdiv_nm");
 			} else {
 				result = baseService.selectDropDown("concat(divisi_kd, '.', subdiv_kd)", "subdiv_nm", "subdivisi", "divisi_kd = '" + param + "'", "subdiv_nm");
 			}
 		} else if (tipe.equals("departmen")) {
 			if (param.equals("")) {
-				result = baseService.selectDropDown("concat(divisi_kd, '.', subdiv_kd, '.', dept_kd)", "dept_nm", "departmen", null, "dept_nm");
+//				result = baseService.selectDropDown("concat(divisi_kd, '.', subdiv_kd, '.', dept_kd)", "dept_nm", "departmen", null, "dept_nm");
 			} else {
 				result = baseService.selectDropDown("concat(divisi_kd, '.', subdiv_kd, '.', dept_kd)", "dept_nm", "departmen", "concat(divisi_kd, '.', subdiv_kd) = '" + param + "'", "dept_nm");
 			}
 		} else if (tipe.equals("lokasi")) {
 			if (param.equals("")) {
-				result = baseService.selectDropDown("concat(divisi_kd, '.', subdiv_kd, '.', dept_kd, '.', lok_kd)", "lok_nm", "lokasi", null, "lok_nm");
+//				result = baseService.selectDropDown("concat(divisi_kd, '.', subdiv_kd, '.', dept_kd, '.', lok_kd)", "lok_nm", "lokasi", null, "lok_nm");
 			} else {
 				result = baseService.selectDropDown("concat(divisi_kd, '.', subdiv_kd, '.', dept_kd, '.', lok_kd)", "lok_nm", "lokasi", "concat(divisi_kd, '.', subdiv_kd, '.', dept_kd) = '" + param + "'", "lok_nm");
 			}
 
+		} else if (tipe.equals("lokasi2")) {
+			if (param.equals("")) {
+//				result = baseService.selectDropDown("concat(divisi_kd, '.', subdiv_kd, '.', lok_kd)", "lok_nm", "lokasi", null, "lok_nm");
+			} else {
+				result = baseService.selectDropDown("concat(divisi_kd, '.', subdiv_kd, '.', lok_kd)", "lok_nm", "lokasi", "concat(divisi_kd, '.', subdiv_kd) = '" + param + "'", "lok_nm");
+			}
+
+		} else  if (tipe.equals("lokasi3")) {
+			if (param.equals("")) {
+				result = baseService.selectDropDown("DISTINCT concat(a.lok_kd)","lok_nm",  "lokasi a left join group_lokasi_d b ON a.lok_kd = b.lok_kd ", "1 = 1  group by a.lok_nm", "a.lok_nm");
+			} else {
+				result = baseService.selectDropDown("DISTINCT concat( a.lok_kd)","lok_nm",  "lokasi a left join group_lokasi_d b ON a.lok_kd = b.lok_kd ", "a.kota = '"+ param +"' group by a.lok_nm", "a.lok_nm");
+			}
+
 		} else if (tipe.equals("detailbiaya")) {
 			if (param.equals("")) {
-				result = baseService.selectDropDown("kd_biaya", "kd_biaya", "detail_biaya", null, "kd_biaya");
+//				result = baseService.selectDropDown("kd_biaya", "kd_biaya", "detail_biaya", null, "kd_biaya");
 			} else {
 				result = baseService.selectDropDown("kd_biaya", "kd_biaya", "detail_biaya", "kd_group = '" + param + "'", "kd_biaya");
+			}
+
+		} else if (tipe.equals("detailbiaya2")) {
+			if (param.equals("")) {
+				result = baseService.selectDropDown("DISTINCT kd_biaya","kd_biaya",  "detail_biaya", "1=1 group by kd_biaya", "kd_biaya");
+			} else {
+				result = baseService.selectDropDown("DISTINCT kd_biaya","kd_biaya",  "detail_biaya", "kd_group = '"+ param +"' group by kd_biaya", "kd_biaya");
 			}
 
 		}

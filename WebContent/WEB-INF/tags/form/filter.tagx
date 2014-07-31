@@ -10,35 +10,28 @@
 	<!-- DISID: #8617 added support to labelCode -->
 	<jsp:directive.attribute name="labelCode" type="java.lang.String" required="false" rtexprvalue="true" description="Key for label message bundle if label is not supplied" />
 	<c:if test="${empty render or render}">
-		<!-- DISID: #8617 added support to labelCode -->
-		<c:choose>
-			<c:when test="${empty label and empty labelCode}">
-				<c:set var="entityClass" value="${fn:substringAfter(id,'ff_')}" />
-				<spring:message code="label_${fn:toLowerCase(entityClass)}_plural" var="label" htmlEscape="false" />
-			</c:when>
-			<c:when test="${empty label and !empty labelCode}">
-				<spring:message code="${labelCode}" var="label" htmlEscape="false" />
-			</c:when>
-		</c:choose>
-		<spring:message arguments="${fn:escapeXml(label)}" code="entity_find" var="title_msg" htmlEscape="false" />
-		<spring:url value="${path}" var="form_url" />
-		<div style="width:100%;text-align:center; margin: 5px">
-			<form:form action="${form_url}" method="GET">
-				<input type="hidden" name="find" value="${fn:escapeXml(finderName)}" />
-				<input type="hidden" name="page" value="1" />
-				<input type="hidden" name="size" value="${empty param.size ? 10 : param.size}" />
-				<jsp:doBody />
-				<span class="submit" id="${fn:escapeXml(id)}_${fn:escapeXml(finderName)}_submit">
-					<spring:message code="button_filter" var="filter_button" htmlEscape="false" />
-					<script type="text/javascript">
-						Spring.addDecoration(new Spring.ValidateAllDecoration({
-							elementId : 'proceed',
-							event : 'onclick'
-						}));
-					</script>
-					<input id="proceed" type="submit" value="${fn:escapeXml(filter_button)}" />
-				</span>
-			</form:form>
-		</div>
+		<util:panel id="id" title="Filter" openPane="true">
+				<!-- DISID: #8617 added support to labelCode -->
+				<c:choose>
+					<c:when test="${empty label and empty labelCode}">
+						<c:set var="entityClass" value="${fn:substringAfter(id,'ff_')}" />
+						<spring:message code="label_${fn:toLowerCase(entityClass)}_plural" var="label" htmlEscape="false" />
+					</c:when>
+					<c:when test="${empty label and !empty labelCode}">
+						<spring:message code="${labelCode}" var="label" htmlEscape="false" />
+					</c:when>
+				</c:choose>
+				<spring:message arguments="${fn:escapeXml(label)}" code="entity_find" var="title_msg" htmlEscape="false" />
+				<spring:url value="${path}" var="form_url" />
+					<form:form action="${form_url}" method="GET">
+						<input type="hidden" name="find" value="${fn:escapeXml(finderName)}" />
+						<input type="hidden" name="page" value="1" />
+						<input type="hidden" name="size" value="${empty param.size ? 10 : param.size}" />
+						<jsp:doBody />
+						
+					</form:form>
+				
+		</util:panel>
 	</c:if>
+	
 </jsp:root>

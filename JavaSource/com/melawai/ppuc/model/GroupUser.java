@@ -1,19 +1,12 @@
 package com.melawai.ppuc.model;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.melawai.ppuc.utils.Utils;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -24,9 +17,6 @@ import com.melawai.ppuc.utils.Utils;
 
 public class GroupUser extends BaseObject implements Serializable  {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8946818516215179670L;
 
 	//****************** COLOMN FROM TABLE START HERE ******************/
@@ -40,16 +30,6 @@ public class GroupUser extends BaseObject implements Serializable  {
 
 	@NotNull
 	public Long id_role;
-
-	@Size(max=50)
-	public String user_create;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style="MM")
-	public Date tgl_create;
-
-	@Size(max=8)
-	public String jam_create;
 
 	//****************** COLOMN FROM TABLE END HERE ******************/
 
@@ -82,21 +62,6 @@ public class GroupUser extends BaseObject implements Serializable  {
 	public Long getId_role(){ return id_role; }
 	public void setId_role(Long id_role){ this.id_role = id_role; }
 
-	public String getUser_create(){ return user_create; }
-	public void setUser_create(String user_create){ this.user_create = user_create; }
-
-	public Date getTgl_create(){ return tgl_create; }
-	public void setTgl_create(Date tgl_create){ 
-		this.tgl_create = tgl_create; 
-		if (tgl_create != null) {
-			this.jam_create = Utils.convertDateToString(tgl_create, jam_format);
-		}
-	}
-
-	public String getJam_create(){ return jam_create; }
-	public void setJam_create(String jam_create){ this.jam_create = jam_create; }
-
-
 	public String getItemId() {return ""+group_kd;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}
 
@@ -119,11 +84,6 @@ public class GroupUser extends BaseObject implements Serializable  {
 		this.role_name = role_name;
 	}
 
-	
-	
-	
-	
-	
 
 	//****************** GETTER SETTER END HERE ******************/
 
