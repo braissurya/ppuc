@@ -44,6 +44,11 @@ public class GroupBiayaController extends ParentController{
 		if (groupbiayaManager.exists(groupbiaya.kd_group)) {
 			bindingResult.rejectValue("kd_group", "duplicate", new String[] { "Kd Group : " + groupbiaya.kd_group + ", " }, null);
 		}
+		
+		if(groupbiayaManager.selectCountTable("group_biaya", " kd_group = '"+groupbiaya.kd_group+"'")>0){
+			bindingResult.rejectValue("kd_group", "duplicate", new String[]{"Group KD"}, null);
+		}
+		
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, groupbiaya);
 			return "groupbiaya/create";

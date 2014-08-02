@@ -448,3 +448,17 @@ table th {
 table.noborder, table.noborder td, table.noborder tbody,table.noborder tr{
 	border: none !important;
 }
+
+.multi{
+	width: 100%;
+	text-align: center;
+	padding: 2px 0 2px 0;
+	background-color: #414141;
+	color: white;
+}
+
+.multi a,.multi a:visited{
+	text-decoration: none;
+	color: white !important;
+}
+

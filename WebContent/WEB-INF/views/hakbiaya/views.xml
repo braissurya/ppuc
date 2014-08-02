@@ -10,6 +10,9 @@
 	<definition extends="default" name="hakbiaya/create">
         <put-attribute name="body" value="/WEB-INF/views/hakbiaya/create.jspx"/>
     </definition>
+    <definition extends="default" name="hakbiaya/create_group">
+        <put-attribute name="body" value="/WEB-INF/views/hakbiaya/create_group.jspx"/>
+    </definition>
 	<definition extends="default" name="hakbiaya/update">
         <put-attribute name="body" value="/WEB-INF/views/hakbiaya/update.jspx"/>
     </definition>

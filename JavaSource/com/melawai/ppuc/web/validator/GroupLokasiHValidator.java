@@ -9,6 +9,7 @@ import org.springframework.validation.Validator;
 import com.melawai.ppuc.model.GroupLokasiH;
 import com.melawai.ppuc.services.DepartmenManager;
 import com.melawai.ppuc.services.DivisiManager;
+import com.melawai.ppuc.services.GroupLokasiHManager;
 import com.melawai.ppuc.services.LokasiManager;
 import com.melawai.ppuc.services.SubdivisiManager;
 import com.melawai.ppuc.utils.Utils;
@@ -36,6 +37,9 @@ public class GroupLokasiHValidator implements Validator {
 
 	@Autowired
 	private LokasiManager lokasiManager;
+	
+	@Autowired
+	private GroupLokasiHManager groupLokasiHManager;
 
 	public void setSubdivisiManager(SubdivisiManager subdivisiManager) {
 		this.subdivisiManager = subdivisiManager;
@@ -75,6 +79,8 @@ public class GroupLokasiHValidator implements Validator {
 			if (!subdivisiManager.exists(groupLokasih.subdiv_kd, groupLokasih.divisi_kd)) {
 				e.rejectValue("subdiv_kd", "entity_not_exist", new String[] { "SUBDIVISI KD" }, null);
 			}
+			
+			
 
 			for (String lok_kd : groupLokasih.lok_kd) {
 				lok_kd=lok_kd.substring(lok_kd.lastIndexOf(".") + 1);
@@ -84,6 +90,10 @@ public class GroupLokasiHValidator implements Validator {
 			}
 
 		}
+	}
+
+	public void setGroupLokasiHManager(GroupLokasiHManager groupLokasiHManager) {
+		this.groupLokasiHManager = groupLokasiHManager;
 	}
 
 }

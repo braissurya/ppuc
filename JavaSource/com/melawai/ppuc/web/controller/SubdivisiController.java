@@ -65,6 +65,10 @@ public class SubdivisiController extends ParentController {
 		if (subdivisiManager.exists(subdivisi.subdiv_kd, subdivisi.divisi_kd)) {
 			bindingResult.rejectValue("subdiv_kd", "duplicate", new String[] { "DIVISI KD : " + subdivisi.divisi_kd + " | SUBDIVISI KD : " + subdivisi.subdiv_kd + ", " }, null);
 		}
+		
+		if(subdivisiManager.selectCountTable("subdivisi", "subdiv_kd='"+subdivisi.subdiv_kd+"'")>0){
+			bindingResult.rejectValue("subdiv_kd",  "duplicate", new String[]{"Subdiv KD"}, null);
+		}
 
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, subdivisi);

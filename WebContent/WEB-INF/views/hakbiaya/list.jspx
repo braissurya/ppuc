@@ -13,7 +13,7 @@
 					<span class="doubleDot">:</span>
 				</td>
 				<td>
-					<select name="gl" id="_gl_id"  data-dojo-type="dijit/form/FilteringSelect" >
+					<select name="gl" id="_gl_id"   >
 						<option value=" ">All</option>
 						<c:forEach items="${f_gl}" var="v">
 							<c:choose>
@@ -23,7 +23,17 @@
 							<![CDATA[<option value="${v.key }" ${selectAktifgl }>${v.value }</option>]]>
 						</c:forEach>
 					</select>
-					
+					<script type="text/javascript">
+						Spring
+								.addDecoration(new Spring.ElementDecoration(
+										{
+											elementId : '_gl_id',
+											widgetType : 'dijit.form.FilteringSelect',
+											widgetAttrs : {
+												hasDownArrow : true
+											}
+										}));
+					</script>
 				</td>
 				<td>
 					<label class="filter">Propinsi</label>
@@ -32,7 +42,7 @@
 					<span class="doubleDot">:</span>
 				</td>
 				<td>
-					<select name="pr" id="_pr_id"  data-dojo-type="dijit/form/FilteringSelect" >
+					<select name="pr" id="_pr_id"   >
 						<option value=" ">All</option>
 						<c:forEach items="${f_pr}" var="v">
 							<c:choose>
@@ -42,6 +52,17 @@
 							<![CDATA[<option value="${v.key }" ${selectAktifpr }>${v.value }</option>]]>
 						</c:forEach>
 					</select>
+					<script type="text/javascript">
+						Spring
+								.addDecoration(new Spring.ElementDecoration(
+										{
+											elementId : '_pr_id',
+											widgetType : 'dijit.form.FilteringSelect',
+											widgetAttrs : {
+												hasDownArrow : true
+											}
+										}));
+					</script>
 				</td>
 				<td>
 					<label class="filter">Kota</label>
@@ -50,7 +71,7 @@
 					<span class="doubleDot">:</span>
 				</td>
 				<td>
-					<select name="kt" id="_kt_id"  data-dojo-type="dijit/form/FilteringSelect" >
+					<select name="kt" id="_kt_id"   >
 						<option value=" ">All</option>
 						<c:forEach items="${f_kt}" var="v">
 							<c:choose>
@@ -60,6 +81,17 @@
 							<![CDATA[<option value="${v.key }" ${selectAktifkt }>${v.value }</option>]]>
 						</c:forEach>
 					</select>
+					<script type="text/javascript">
+						Spring
+								.addDecoration(new Spring.ElementDecoration(
+										{
+											elementId : '_kt_id',
+											widgetType : 'dijit.form.FilteringSelect',
+											widgetAttrs : {
+												hasDownArrow : true
+											}
+										}));
+					</script>
 				</td>
 				<td>
 					<label class="filter">Lokasi</label>
@@ -68,7 +100,7 @@
 					<span class="doubleDot">:</span>
 				</td>
 				<td>
-					<select name="lk" id="_lk_id"   data-dojo-type="dijit/form/FilteringSelect">
+					<select name="lk" id="_lk_id"   >
 						<option value=" ">All</option>
 						<c:forEach items="${f_lk}" var="v">
 							<c:choose>
@@ -78,6 +110,17 @@
 							<![CDATA[<option value="${v.value }" ${selectAktiflk }>${v.value }</option>]]>
 						</c:forEach>
 					</select>
+					<script type="text/javascript">
+						Spring
+								.addDecoration(new Spring.ElementDecoration(
+										{
+											elementId : '_lk_id',
+											widgetType : 'dijit.form.FilteringSelect',
+											widgetAttrs : {
+												hasDownArrow : true
+											}
+										}));
+					</script>
 				</td>
 			</tr>
 			<tr>
@@ -88,7 +131,7 @@
 					<span class="doubleDot">:</span>
 				</td>
 				<td>
-					<select name="gb" id="_gb_id" data-dojo-type="dijit/form/FilteringSelect"  >
+					<select name="gb" id="_gb_id"   >
 						<option value=" ">All</option>
 						<c:forEach items="${f_gb}" var="v">
 							<c:choose>
@@ -98,6 +141,17 @@
 							<![CDATA[<option value="${v.value }" ${selectAktifgb }>${v.key }</option>]]>
 						</c:forEach>
 					</select>
+					<script type="text/javascript">
+						Spring
+								.addDecoration(new Spring.ElementDecoration(
+										{
+											elementId : '_gb_id',
+											widgetType : 'dijit.form.FilteringSelect',
+											widgetAttrs : {
+												hasDownArrow : true
+											}
+										}));
+					</script>
 				</td>
 				<td >
 					<label class="filter">KD Biaya</label>
@@ -106,7 +160,7 @@
 					<span class="doubleDot">:</span>
 				</td>
 				<td colspan="7">
-					<select name="kb" id="_kb_id"   data-dojo-type="dijit/form/FilteringSelect">
+					<select name="kb" id="_kb_id"   >
 						<option value=" ">All</option>
 						<c:forEach items="${f_kb}" var="v">
 							<c:choose>
@@ -116,6 +170,17 @@
 							<![CDATA[<option value="${v.key }" ${selectAktifkb }>${v.value }</option>]]>
 						</c:forEach>
 					</select>
+					<script type="text/javascript">
+						Spring
+								.addDecoration(new Spring.ElementDecoration(
+										{
+											elementId : '_kb_id',
+											widgetType : 'dijit.form.FilteringSelect',
+											widgetAttrs : {
+												hasDownArrow : true
+											}
+										}));
+					</script>
 				</td>
 			</tr>
 			<tr>
@@ -145,9 +210,10 @@
 			<tr>
 				<td colspan="12" align="center">
 					<input type="hidden" name="search" value="${param.search}"/>
+					
 					<span class="submit" id="filterHakBiaya_filter_submit" style="margin-left: 15px;">
 						<spring:message code="button_filter" var="filter_button" htmlEscape="false" />
-						<input id="proceed" type="submit" value="${fn:escapeXml(filter_button)}" />
+						<input type="submit" value="${fn:escapeXml(filter_button)}" />
 					</span>
 					<span class="submit" id="filterHakBiaya_filter_submit" style="margin-left: 15px;">
 						<spring:message code="button_reset" var="button_reset" htmlEscape="false" />
@@ -176,6 +242,7 @@
 	<br/>
 		
 <util:panel id="pl_com_melawai_ppuc_model_hakbiaya" title="List Hak Biaya" openPane="true">
+	
 		<script>
 			require(["dijit/Dialog", "dojo/query",  "dijit/form/TextBox","dojo/NodeList-manipulate", "dijit/form/CheckBox","dijit/form/Button","dijit/form/ValidationTextBox", "dijit/form/DateTextBox"]);
 		</script>
@@ -249,6 +316,7 @@
 			</form>
 		   
 		</div>
+<c:if test="${not empty aktif }">		
 			<script>
 				require([ "dojo/query", "dojo/on", "dojo/domReady!" ],
 				function(query, on) {
@@ -277,6 +345,7 @@
 						});
 				});
 			</script>
+			</c:if>
 			<table class="noborder">
 				<tr>
 					<td>
@@ -302,7 +371,7 @@
 			<table >
 				<thead>
 					<tr>
-						<th><input class="masterSelectBox_id" type="checkbox" name="id" /></th>
+						<c:if test="${not empty aktif }"><th><input class="masterSelectBox_id" type="checkbox" name="id" /></th></c:if>
 						<th>Propinsi</th>
 						<th>Kota</th>
 						<th>Lokasi</th>
@@ -319,9 +388,9 @@
 				<tbody>
 					<c:forEach items="${hakbiayaList}" var="item" varStatus="vs">
 						<tr>
-							<td class="selectBox utilbox">
+							<c:if test="${not empty aktif }"><td class="selectBox utilbox">
 								<input type="checkbox" name="ids" id="_ids_id" value="${item.id }" />
-							</td>
+							</td></c:if>
 							<td>${item.lokasi.propinsi }</td>
 							<td>${item.lokasi.kota }</td>
 							<td>${item.lokasi.lok_nm }</td>
@@ -370,7 +439,7 @@
 			dojo
 					.ready(function() {
 	
-					   autoPopulateSelect3("${path}", "propinsi2",
+					   /* autoPopulateSelect3("${path}", "propinsi2",
 								"_gl_id", true, "All",
 								"${value_pr}",
 								"_pr_id", "_kt_id","_lk_id");
@@ -389,7 +458,25 @@
 								true,
 								"All",
 								"${value_lk}",
-								"_lk_id");  
+								"_lk_id");   */
+						
+							 autoPopulateMultiParamSelect3(
+									"${path}", "propinsi2","kota3","lokasi5",
+									"_gl_id", true, "All",
+									"${value_pr}",
+									"_pr_id", "_kt_id","_lk_id");
+							 autoPopulateMultiParamSelect2(
+									"${path}","kota3","lokasi5",
+									"_pr_id","_gl_id",true,"All",
+									"${value_kt}",
+									"_kt_id","_lk_id");
+							autoPopulateMultiParamSelect(
+									"${path}","lokasi5",
+									"_kt_id","_pr_id","_gl_id",true,"All",
+									"${value_lk}",
+									"_lk_id");  
+								
+						 
 						 
 						 autoPopulateSelect(
 									"${path}",

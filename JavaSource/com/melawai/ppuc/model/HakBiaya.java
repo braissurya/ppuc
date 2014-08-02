@@ -1,7 +1,9 @@
 package com.melawai.ppuc.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,22 +29,16 @@ public class HakBiaya extends BaseObject implements Serializable  {
 	//****************** COLOMN FROM TABLE START HERE ******************/
 	public Long id;
 	
-	@NotEmpty
 	public String divisi_kd;
 
-	@NotEmpty
 	public String subdiv_kd;
 
-	@NotEmpty
 	public String dept_kd;
 
-	@NotEmpty
 	public String lok_kd;
 
-	@NotEmpty
 	public String kd_group;
 
-	@NotEmpty
 	public String kd_biaya;
 
 	public Integer f_aktif;
@@ -83,6 +79,8 @@ public class HakBiaya extends BaseObject implements Serializable  {
 	
 	public Lokasi lokasi;
 	
+	public List<HakBiaya>  hakBiayaList = new ArrayList<HakBiaya>();
+	
 	public Integer filter_faktif;
 	public String isActive;
 	public String revActive;
@@ -91,8 +89,27 @@ public class HakBiaya extends BaseObject implements Serializable  {
 	
 	//****************** CONSTRUCTOR START HERE ******************/
 	public HakBiaya(){
-		//TODO: standard constructor free to change
 	}
+	
+	
+
+	public HakBiaya(String divisi_kd, String subdiv_kd, String dept_kd, String lok_kd, String kd_group, String kd_biaya, Integer f_aktif, Date drtgl, Date sptgl, String user_nonaktif, Date tgl_nonaktif, String jam_nonaktif) {
+		super();
+		this.divisi_kd = divisi_kd;
+		this.subdiv_kd = subdiv_kd;
+		this.dept_kd = dept_kd;
+		this.lok_kd = lok_kd;
+		this.kd_group = kd_group;
+		this.kd_biaya = kd_biaya;
+		this.f_aktif = f_aktif;
+		this.drtgl = drtgl;
+		this.sptgl = sptgl;
+		this.user_nonaktif = user_nonaktif;
+		this.tgl_nonaktif = tgl_nonaktif;
+		this.jam_nonaktif = jam_nonaktif;
+	}
+
+
 
 	//****************** CONSTRUCTOR END HERE ******************/
 
@@ -102,7 +119,6 @@ public class HakBiaya extends BaseObject implements Serializable  {
 	public Long getId() {return id;}
 	public void setId(Long id) {this.id = id;}
 
-	
 	public String getDivisi_kd(){ return divisi_kd; }
 	public void setDivisi_kd(String divisi_kd){ this.divisi_kd = divisi_kd; }
 
@@ -256,6 +272,14 @@ public class HakBiaya extends BaseObject implements Serializable  {
 
 	public void setRevActive(String revActive) {
 		this.revActive = revActive;
+	}
+
+	public List<HakBiaya> getHakBiayaList() {
+		return hakBiayaList;
+	}
+
+	public void setHakBiayaList(List<HakBiaya> hakBiayaList) {
+		this.hakBiayaList = hakBiayaList;
 	}
 	
 	

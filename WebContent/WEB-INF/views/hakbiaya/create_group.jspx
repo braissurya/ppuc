@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:create id="fc_com_melawai_ppuc_model_hakbiaya" modelAttribute="hakbiaya" path="/master/hakbiaya/group" render="${ empty dependencies }" back="/master/hakbiaya">
+      	<table  class="noborder">
+      		<tr>
+      			<th>Lokasi</th>
+      			<th>Kode Biaya</th>	
+      		</tr>
+      		<tr>
+      			<td style="vertical-align: top;">
+      				<field:select field="gl" label="Group Lokasi" id="c_com_melawai_ppuc_model_hakbiaya_gl" items="${f_gl}" itemLabel="key" itemValue="value" required="true" blank="true" blankLable="All" path="/master/grouplokasih" />
+					<field:select field="pr" label="Propinsi" id="c_com_melawai_ppuc_model_hakbiaya_pr" items="${f_pr}" itemLabel="key" itemValue="value" required="true" blank="true" blankLable="All"  path="/master/propinsi" />
+					<field:select field="kt" label="Kota" id="c_com_melawai_ppuc_model_hakbiaya_kt" items="${f_kt}" itemLabel="key" itemValue="value" required="true" blank="true" blankLable="All"  path="/master/Kota" />
+					
+					<field:select field="lk" label="Lokasi" multiple="true" required="true" id="c_com_melawai_ppuc_model_hakbiaya_lok_kd" items="${f_lk}" itemLabel="key" itemValue="value" blankLable="All"  blank="true" path="/master/lokasi" />
+					
+      			</td>
+      			<td style="vertical-align: top;">
+      				 <field:select field="gb"   label="Group Biaya" required="true" id="c_com_melawai_ppuc_model_hakbiaya_gb" items="${f_gb}" itemLabel="key" itemValue="value"  blank="true" blankLable="All"  path="/master/groupbiaya" />
+					<field:select field="kb" label="Kode Biaya" multiple="true" required="true" id="c_com_melawai_ppuc_model_hakbiaya_kb" items="${f_kb}" itemLabel="key" itemValue="value"  blank="true" blankLable="All"  path="/master/detailbiaya" />
+		
+      			</td>
+      		</tr>
+      	</table>
+      	<field:input field="typeInput" id="c_com_melawai_ppuc_model_hakbiaya_typeInput"  type="hidden"/>
+       <field:checkbox field="f_aktif" id="c_com_melawai_ppuc_model_hakbiaya_f_aktif" label="F Aktif" value="1"/>
+       <field:datetime field="drtgl" label="Drtgl" required="true" id="c_com_melawai_ppuc_model_hakbiaya_drtgl"  dateTimePattern="${hakbiaya_drtgl_date_format}" />
+       <field:datetime field="sptgl" label="Sptgl" id="c_com_melawai_ppuc_model_hakbiaya_sptgl"  dateTimePattern="${hakbiaya_sptgl_date_format}" />
+    </form:create>
+    <form:dependency dependencies="${dependencies}" id="d_com_melawai_ppuc_model_hakbiaya" render="${ not empty dependencies }"/>
+
+	<spring:url value="/" var="path" />
+	
+	
+	<c:if test="${not empty pr}">
+			<c:set var="value_pr" value="${pr}"/>
+		</c:if>
+		<c:if test="${not empty kt}">
+			<c:set var="value_kt" value="${kt}"/>
+		</c:if>
+		<c:if test="${not empty lk}">
+			<c:set var="value_lk" value="${fn:replace(lk, 
+                                ',', '#')}"/>
+		</c:if>
+		
+		<c:if test="${not empty kb}">
+			<c:set var="value_kb" value="${fn:replace(kb, 
+                                ',', '#')}"/>
+		</c:if>
+	
+	<spring:url value="/resources/styles/multi-select.css" var="multi_select_css" />
+ 	 <link rel="stylesheet" type="text/css" href="${multi_select_css }"  media="screen" />
+
+	<spring:url value="/resources/static/jquery.multi-select.js" var="multi_select_js" />
+  	<script src="${multi_select_js}" type="text/javascript"><!-- required for FF3 and Opera --></script>
+	
+	
+	<script type="text/javascript">
+		$(document).ready(function() {
+			multiselect('_lk_id');
+			multiselect('_kb_id');
+		});
+		
+	</script>
+	
+	<script type="text/javascript">
+		dojo	
+		.ready(function() {
+			
+			autoPopulateMultiParamSelectMulti3(
+					"${path}", "propinsi2","kota3","lokasi5",
+					"_gl_id", true, "All",
+					"${value_pr}",
+					"_pr_id", "_kt_id","_lk_id");
+			autoPopulateMultiParamSelectMulti2(
+					"${path}","kota3","lokasi5",
+					"_pr_id","_gl_id",true,"All",
+					"${value_kt}",
+					"_kt_id","_lk_id");
+			autoPopulateMultiParamSelectMulti(
+					"${path}","lokasi5",
+					"_kt_id","_pr_id","_gl_id",true,"All",
+					"${value_lk}".split("#"),
+					"_lk_id"); 
+			
+			
+			 
+			autoPopulateMultiSelect(
+						"${path}",
+						"detailbiaya2",
+						"_gb_id",
+						true,
+						"All",
+						"${value_kb}".split("#"),
+						"_kb_id");  
+			 
+		});
+	</script>
+</div>
+

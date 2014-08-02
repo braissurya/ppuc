@@ -20,7 +20,6 @@
 		<result property="lok_kd" column="lok_kd" />
 		<result property="kd_group" column="kd_group" />
 		<result property="kd_biaya" column="kd_biaya" />
-		<result property="f_aktif" column="f_aktif" />
 		<result property="drtgl" column="drtgl" />
 		<result property="sptgl" column="sptgl" />
 		<result property="user_create" column="user_create" />
@@ -40,7 +39,6 @@
 		C.LOK_KD as lok_kd,
 		C.KD_GROUP as kd_group,
 		C.KD_BIAYA as kd_biaya,
-		C.F_AKTIF as f_aktif,
 		C.DRTGL as drtgl,
 		C.SPTGL as sptgl,
 		C.SYS_USER_CREATE as user_create,
@@ -128,7 +126,6 @@
 			<if test="lok_kd != null">LOK_KD = #{lok_kd}, </if>
 			<if test="kd_group != null">KD_GROUP = #{kd_group}, </if>
 			<if test="kd_biaya != null">KD_BIAYA = #{kd_biaya}, </if>
-			<if test="f_aktif != null">F_AKTIF = #{f_aktif}, </if>
 			<if test="drtgl != null">DRTGL = #{drtgl}, </if>
 			<if test="sptgl != null">SPTGL = #{sptgl}, </if>
 			<if test="user_create != null">SYS_USER_CREATE = #{user_create}, </if>

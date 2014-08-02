@@ -52,6 +52,10 @@ public class SubdivisiValidator implements Validator {
 //		ValidationUtils.rejectIfEmptyOrWhitespace(e, "subdiv_nm",  "NotEmpty", new String[]{"Subdivisi NM"},null);
 		
 		if(!e.hasErrors()){
+			if(subdivisiManager.selectCountTable("subdivisi", "subdiv_nm = '"+subdivisi.subdiv_nm+"' and subdiv_kd <>'"+subdivisi.subdiv_kd+"'")>0){
+				e.rejectValue("subdiv_nm",  "duplicate", new String[]{"Subdivisi Name"}, null);
+			}
+			
 			if(!divisiManager.exists(subdivisi.getDivisi_kd())){
 				e.rejectValue("divisi_kd", "entity_not_exist", new String[]{"DIVISI KD"}, null);
 			}

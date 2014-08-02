@@ -39,7 +39,9 @@ public class DetailBiayaController extends ParentController{
 	}
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	public String create(@ModelAttribute("detailbiaya") @Valid DetailBiaya detailbiaya, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-		
+		if(detailbiayaManager.selectCountTable("detail_biaya", "kd_biaya = '"+detailbiaya.kd_biaya+"'")>0){
+			bindingResult.rejectValue("kd_biaya", "duplicate", new String[]{"Kode Biaya"}, null);
+		}
 		// tambahan validasi khusus
 		if (detailbiayaManager.exist(detailbiaya.kd_group, detailbiaya.kd_biaya)) {
 			bindingResult.rejectValue("kd_biaya", "duplicate", new String[] { "KD Group: " + detailbiaya.kd_group + " | KD Biaya : " + detailbiaya.kd_biaya+ ", " }, null);

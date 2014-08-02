@@ -68,6 +68,10 @@ public class LokasiController extends ParentController {
 			bindingResult.rejectValue("lok_kd", "duplicate", new String[] { "LOKASI KD : " + lokasi.lok_kd + " | DIVISI KD : " + lokasi.divisi_kd + " | SUBDIVISI KD : " + lokasi.subdiv_kd
 					+ " | DEPARTMEN KD : " + lokasi.dept_kd + ", " }, null);
 		}
+		
+		if(lokasiManager.selectCountTable("lokasi", "lok_kd='"+lokasi.lok_kd+"'")>0){
+			bindingResult.rejectValue("lok_kd",  "duplicate", new String[]{"Lokasi KD"}, null);
+		}
 
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, lokasi);

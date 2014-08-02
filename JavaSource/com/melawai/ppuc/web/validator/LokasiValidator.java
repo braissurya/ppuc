@@ -95,6 +95,11 @@ public class LokasiValidator  implements Validator {
 				e.rejectValue("kota", "entity_not_exist", new String[]{"Kota"}, null);
 			}
 			
+			if(lokasiManager.selectCountTable("lokasi", "lok_nm = '"+lokasi.lok_nm+"' and lok_kd <>'"+lokasi.lok_kd+"'")>0){
+				e.rejectValue("lok_nm",  "duplicate", new String[]{"Lokasi Name"}, null);
+			}
+			
+			
 			if(lokasi.getF_tutup()==1)
 				ValidationUtils.rejectIfEmptyOrWhitespace(e, "tgl_tutup",  "NotEmpty", new String[]{"Tanggal Tutup"},null);
 		}

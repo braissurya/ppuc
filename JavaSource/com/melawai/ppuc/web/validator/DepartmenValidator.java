@@ -73,7 +73,10 @@ public class DepartmenValidator implements Validator {
 				e.rejectValue("subdiv_kd", "entity_not_exist", new String[]{"SUBDIVISI KD"}, null);
 			}
 			
-
+			if(divisiManager.selectCountTable("departmen", "dept_nm = '"+departmen.dept_nm+"' and dept_kd <> '"+departmen.dept_kd+"'")>0){
+				e.rejectValue("dept_nm", "duplicate", new String[]{"Dept Name"}, null);
+			}
+			
 		}
 	}
 

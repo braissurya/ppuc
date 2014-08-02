@@ -58,9 +58,16 @@ function reset(idSelect) {
 						id : ''
 					} ]
 				});
-				dijit.byId(idSelect).set('value', '');
+//				dijit.byId(idSelect).set('value', '');
 				
 			});
+}
+
+function resetMultiSelect(childSelectId){
+	$("#ms-"+childSelectId+" .ms-selectable .ms-list").children().remove(); 
+	$("#ms-"+childSelectId+" .ms-selection .ms-list").children().remove(); 
+	$('#'+childSelectId).children().remove();
+//	$('#'+childSelectId).multiSelect('refresh');
 }
 
 function setSelect(jsonData, idSelect, selectedId, optionALLText) {
@@ -70,6 +77,26 @@ function setSelect(jsonData, idSelect, selectedId, optionALLText) {
 					data : jsonData
 				});
 				
+				dijit.byId(idSelect).set('value', " ");
+				var cekselectedId=selectedId.replace(/\./g,'');
+				cekselectedId=cekselectedId.replace(/\ /g,'');
+				
+				if (cekselectedId != ""){
+					
+					dijit.byId(idSelect).set('value', selectedId);
+				}
+				
+			});
+}
+
+function setSelect2(jsonData, idSelect, selectedId, optionALLText) {
+	require([ "dojo/store/Memory", "dijit/form/Select", "dojo/domReady!" ],
+			function(Memory, Select) {
+				dijit.byId(idSelect).store = new dojo.store.Memory({
+					data : jsonData
+				});
+				
+				alert(idSelect);
 				dijit.byId(idSelect).set('value', " ");
 				var cekselectedId=selectedId.replace(/\./g,'');
 				cekselectedId=cekselectedId.replace(/\ /g,'');
@@ -122,6 +149,88 @@ function autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
 			}); // end of on
 }
 
+function autoPop2(path, ajaxType, parentSelectId, childSelectId, childSelectId2,optionALL,
+		selectedId, optionALLText) {
+	require(
+			[ "dojo/store/Memory", "dojo/on", "dijit/form/Select",
+					"dojo/request", "dojo/json", "dojo/_base/array",
+					"dojo/domReady!" ], function(Memory, Select, on, request,
+					JSON, arrayUtil) {
+				
+				// get json data
+				request(
+						path + 'json/' + ajaxType + '?param='
+								+ dijit.byId(parentSelectId).get("value")+ '&param2='
+								+ dijit.byId(childSelectId).get("value"), {
+							handleAs : "json" // < Parse data from JSON to a
+												// JavaScript object
+						}).then(function(data) {
+					
+					var datas = [];
+					if (optionALL == true)
+						datas.push({
+							"name" : optionALLText,
+							"id" : " "
+						});
+
+					arrayUtil.forEach(data, function(item, i) {
+						datas.push({
+							"name" : item.value,
+							"id" : item.key
+						});
+					});
+
+					setSelect(datas, childSelectId2, selectedId, optionALLText);
+
+				}, function(error) {
+					console.log("An error occurred: " + error);
+				});
+
+			}); // end of on
+}
+
+function autoPop3(path, ajaxType, parentSelectId, childSelectId, childSelectId2, childSelectId3,optionALL,
+		selectedId, optionALLText) {
+
+	require(
+			[ "dojo/store/Memory", "dojo/on", "dijit/form/Select",
+					"dojo/request", "dojo/json", "dojo/_base/array",
+					"dojo/domReady!" ], function(Memory, Select, on, request,
+					JSON, arrayUtil) {
+				
+				// get json data
+				request(
+						path + 'json/' + ajaxType + '?param='
+								+ dijit.byId(parentSelectId).get("value")+ '&param2='
+								+ dijit.byId(childSelectId).get("value")+ '&param3='
+								+ dijit.byId(childSelectId2).get("value"), {
+							handleAs : "json" // < Parse data from JSON to a
+												// JavaScript object
+						}).then(function(data) {
+					
+					var datas = [];
+					if (optionALL == true)
+						datas.push({
+							"name" : optionALLText,
+							"id" : " "
+						});
+
+					arrayUtil.forEach(data, function(item, i) {
+						datas.push({
+							"name" : item.value,
+							"id" : item.key
+						});
+					});
+
+					setSelect(datas, childSelectId3, selectedId, optionALLText);
+
+				}, function(error) {
+					console.log("An error occurred: " + error);
+				});
+
+			}); // end of on
+}
+
 function autoPopMulti(path, ajaxType, parentSelectId, childSelectId, optionALL,
 		selectedId, optionALLText) {
 
@@ -146,6 +255,184 @@ function autoPopMulti(path, ajaxType, parentSelectId, childSelectId, optionALL,
 								 $('#'+childSelectId).multiSelect('select', [selectedId[i]]); 
 								}
 
+				}, function(error) {
+					console.log("An error occurred: " + error);
+				});
+				
+			}); // end of on
+}
+
+function autoPopMulti2(path, ajaxType, parentSelectId, childSelectId,  childSelectId2, optionALL,
+		selectedId, optionALLText) {
+	require(
+			[ "dojo/store/Memory", "dojo/on", "dijit/form/MultiSelect", "dojo/dom", "dojo/_base/window", 
+					"dojo/request", "dojo/json", "dojo/_base/array",
+					"dojo/domReady!" ], function(Memory, MultiSelect, on,dom,win, request,
+					JSON, arrayUtil) {
+				// get json data
+				request(
+						path + 'json/' + ajaxType + '?param='
+								+ dijit.byId(parentSelectId).get("value") + '&param2='
+								+ dijit.byId(childSelectId).get("value"), {
+							handleAs : "json" // < Parse data from JSON to a
+												// JavaScript object
+						}).then(function(data) {
+							 arrayUtil.forEach(data, function(item, i) {
+							        $('#'+childSelectId2).multiSelect('addOption', { value: item.key, text: item.value });
+								});
+							   
+							 for (var i in selectedId) {
+								 $('#'+childSelectId2).multiSelect('select', [selectedId[i]]); 
+								}
+
+				}, function(error) {
+					console.log("An error occurred: " + error);
+				});
+				
+			}); // end of on
+}
+
+function autoPopMulti3(path, ajaxType, parentSelectId, childSelectId,  childSelectId2,  childSelectId3, optionALL,
+		selectedId, optionALLText) {
+
+	require(
+			[ "dojo/store/Memory", "dojo/on", "dijit/form/MultiSelect", "dojo/dom", "dojo/_base/window", 
+					"dojo/request", "dojo/json", "dojo/_base/array",
+					"dojo/domReady!" ], function(Memory, MultiSelect, on,dom,win, request,
+					JSON, arrayUtil) {
+				// get json data
+				request(
+						path + 'json/' + ajaxType + '?param='
+								+ dijit.byId(parentSelectId).get("value") + '&param2='
+								+ dijit.byId(childSelectId).get("value")+ '&param3='
+								+ dijit.byId(childSelectId2).get("value"), {
+							handleAs : "json" // < Parse data from JSON to a
+												// JavaScript object
+						}).then(function(data) {
+							 arrayUtil.forEach(data, function(item, i) {
+							        $('#'+childSelectId3).multiSelect('addOption', { value: item.key, text: item.value });
+								});
+							   
+							 for (var i in selectedId) {
+								 $('#'+childSelectId3).multiSelect('select', [selectedId[i]]); 
+								}
+
+				}, function(error) {
+					console.log("An error occurred: " + error);
+				});
+				
+			}); // end of on
+}
+
+function autoPopMultiParam(path, ajaxType, parentSelectId, childSelectId, optionALL,
+		selectedId, optionALLText) {
+
+	require(
+			[ "dojo/store/Memory", "dojo/on", "dijit/form/MultiSelect", "dojo/dom", "dojo/_base/window", 
+					"dojo/request", "dojo/json", "dojo/_base/array",
+					"dojo/domReady!" ], function(Memory, MultiSelect, on,dom,win, request,
+					JSON, arrayUtil) {
+				
+				// get json data
+				request(
+						path + 'json/' + ajaxType + '?param='
+								+ dijit.byId(parentSelectId).get("value"), {
+							handleAs : "json" // < Parse data from JSON to a
+												// JavaScript object
+						}).then(function(data) {
+							var datas = [];
+							if (optionALL == true)
+								datas.push({
+									"name" : optionALLText,
+									"id" : " "
+								});
+
+							arrayUtil.forEach(data, function(item, i) {
+								datas.push({
+									"name" : item.value,
+									"id" : item.key
+								});
+							});
+
+							setSelect(datas, childSelectId, selectedId, optionALLText);
+				}, function(error) {
+					console.log("An error occurred: " + error);
+				});
+				
+			}); // end of on
+}
+
+function autoPopMultiParam2(path, ajaxType, parentSelectId, childSelectId,  childSelectId2, optionALL,
+		selectedId, optionALLText) {
+	require(
+			[ "dojo/store/Memory", "dojo/on", "dijit/form/MultiSelect", "dojo/dom", "dojo/_base/window", 
+					"dojo/request", "dojo/json", "dojo/_base/array",
+					"dojo/domReady!" ], function(Memory, MultiSelect, on,dom,win, request,
+					JSON, arrayUtil) {
+				// get json data
+				request(
+						path + 'json/' + ajaxType + '?param='
+								+ dijit.byId(parentSelectId).get("value") + '&param2='
+								+ dijit.byId(childSelectId).get("value"), {
+							handleAs : "json" // < Parse data from JSON to a
+												// JavaScript object
+						}).then(function(data) {
+							var datas = [];
+							if (optionALL == true)
+								datas.push({
+									"name" : optionALLText,
+									"id" : " "
+								});
+
+							arrayUtil.forEach(data, function(item, i) {
+								datas.push({
+									"name" : item.value,
+									"id" : item.key
+								});
+							});
+
+							setSelect(datas, childSelectId2, selectedId, optionALLText);
+
+				}, function(error) {
+					console.log("An error occurred: " + error);
+				});
+				
+			}); // end of on
+}
+
+function autoPopMultiParam3(path, ajaxType, parentSelectId, childSelectId,  childSelectId2,  childSelectId3, optionALL,
+		selectedId, optionALLText) {
+
+	require(
+			[ "dojo/store/Memory", "dojo/on", "dijit/form/MultiSelect", "dojo/dom", "dojo/_base/window", 
+					"dojo/request", "dojo/json", "dojo/_base/array",
+					"dojo/domReady!" ], function(Memory, MultiSelect, on,dom,win, request,
+					JSON, arrayUtil) {
+				// get json data
+				request(
+						path + 'json/' + ajaxType + '?param='
+								+ dijit.byId(parentSelectId).get("value") + '&param2='
+								+ dijit.byId(childSelectId).get("value")+ '&param3='
+								+ dijit.byId(childSelectId2).get("value"), {
+							handleAs : "json" // < Parse data from JSON to a
+												// JavaScript object
+						}).then(function(data) {
+							
+							var datas = [];
+							if (optionALL == true)
+								datas.push({
+									"name" : optionALLText,
+									"id" : " "
+								});
+
+							arrayUtil.forEach(data, function(item, i) {
+								datas.push({
+									"name" : item.value,
+									"id" : item.key
+								});
+							});
+							setSelect(datas, childSelectId3, selectedId, optionALLText);
+							
 				}, function(error) {
 					console.log("An error occurred: " + error);
 				});
@@ -210,69 +497,7 @@ function autoPopulateSelect2(path, ajaxType, parentSelectId, optionALL,
 }
 
 
-function autoPopulateMultiSelect(path, ajaxType, parentSelectId,
-		optionALL, optionALLText, selectedId, childSelectId) {
-	
-	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
-			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
-			"dojo/domReady!" ], function(query, ready, domAttr, Select,
-			SimpleTextarea, on, parser) {
-		ready(function() {
-			
-			var s = dijit.byId(parentSelectId);
-			on(s, "change", function(e) {
-				$("#ms-"+childSelectId+" .ms-selectable .ms-list").children().remove(); 
-				$('#'+childSelectId).children().remove();
-				$('#'+childSelectId).multiSelect('refresh');
-				autoPopMulti(path, ajaxType, parentSelectId, childSelectId,
-						optionALL, selectedId, optionALLText);
-				
-			}) // end of event handler
-			/*$("#"+childSelectId).children().remove(); 
-			autoPopMulti(path, ajaxType, parentSelectId, childSelectId, optionALL,
-					selectedId, optionALLText);*/
-		});
-	}); // end of on
-	 
-	/**/
-}
 
-
-function autoPopulateMultiSelect2(path, ajaxType, parentSelectId, optionALL,
-		optionALLText, selectedId, childSelectId, childSelectId2) {
-	
-	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
-			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
-			"dojo/domReady!" ], function(query, ready, domAttr, Select,
-			SimpleTextarea, on, parser) {
-		ready(function() {
-			var s = dijit.byId(parentSelectId);
-			
-			on(s, "change", function(e) {
-				
-				if(childSelectId!=null)reset(childSelectId);
-				if(childSelectId2!=null){
-					$("#ms-"+childSelectId2+" .ms-selectable .ms-list").children().remove(); 
-					$('#'+childSelectId2).children().remove();
-					$('#'+childSelectId2).multiSelect('refresh');
-				}
-				
-				autoPop(path, ajaxType, parentSelectId, childSelectId,
-						optionALL, selectedId, optionALLText);
-			}) // end of event handler
-			
-			reset(childSelectId);
-			$("#ms-"+childSelectId2+" .ms-selectable .ms-list").children().remove(); 
-			$('#'+childSelectId2).children().remove();
-			$('#'+childSelectId2).multiSelect('refresh');
-			autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
-					selectedId, optionALLText);
-		});
-		/*
-		*/
-	}); // end of on
-
-}
 
 function autoPopulateSelect3(path, ajaxType, parentSelectId, optionALL,
 		optionALLText, selectedId, childSelectId, childSelectId2,childSelectId3) {
@@ -307,6 +532,287 @@ function autoPopulateSelect3(path, ajaxType, parentSelectId, optionALL,
 
 }
 
+function autoPopulateMultiSelect(path, ajaxType, parentSelectId,
+		optionALL, optionALLText, selectedId, childSelectId) {
+	
+	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
+			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
+			"dojo/domReady!" ], function(query, ready, domAttr, Select,
+			SimpleTextarea, on, parser) {
+		ready(function() {
+			
+			var s = dijit.byId(parentSelectId);
+			on(s, "change", function(e) {
+				resetMultiSelect(childSelectId);
+				autoPopMulti(path, ajaxType, parentSelectId, childSelectId,
+						optionALL, selectedId, optionALLText);
+				
+			}) // end of event handler
+			resetMultiSelect(childSelectId);
+			autoPopMulti(path, ajaxType, parentSelectId, childSelectId,
+					optionALL, selectedId, optionALLText);
+		});
+	}); // end of on
+	 
+	/**/
+}
+
+
+function autoPopulateMultiSelect2(path, ajaxType, parentSelectId, optionALL,
+		optionALLText, selectedId, childSelectId, childSelectId2) {
+	
+	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
+			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
+			"dojo/domReady!" ], function(query, ready, domAttr, Select,
+			SimpleTextarea, on, parser) {
+		ready(function() {
+			var s = dijit.byId(parentSelectId);
+			
+			on(s, "change", function(e) {
+				
+				if(childSelectId!=null)reset(childSelectId);
+				if(childSelectId2!=null){resetMultiSelect(childSelectId2);}
+				
+				autoPop(path, ajaxType, parentSelectId, childSelectId,
+						optionALL, selectedId, optionALLText);
+			}) // end of event handler
+			
+			reset(childSelectId);
+			resetMultiSelect(childSelectId2);
+			autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
+					selectedId, optionALLText);
+		});
+		/*
+		*/
+	}); // end of on
+
+}
+
+function autoPopulateMultiSelect3(path, ajaxType, parentSelectId, optionALL,
+		optionALLText, selectedId, childSelectId, childSelectId2, childSelectId3) {
+	
+	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
+			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
+			"dojo/domReady!" ], function(query, ready, domAttr, Select,
+			SimpleTextarea, on, parser) {
+		ready(function() {
+			var s = dijit.byId(parentSelectId);
+			
+			on(s, "change", function(e) {
+				
+				if(childSelectId!=null)reset(childSelectId);
+				if(childSelectId2!=null)reset(childSelectId2);
+				if(childSelectId3!=null){resetMultiSelect(childSelectId3);}
+				
+				autoPop(path, ajaxType, parentSelectId, childSelectId,
+						optionALL, selectedId, optionALLText);
+			}) // end of event handler
+			
+			reset(childSelectId);
+			reset(childSelectId2);
+			resetMultiSelect(childSelectId3);
+			autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
+					selectedId, optionALLText);
+		});
+		/*
+		*/
+	}); // end of on
+
+}
+
+function autoPopulateMultiParamSelectMulti(path, ajaxType, parentSelectId,parentSelectId2,parentSelectId3,
+		optionALL, optionALLText, selectedId, childSelectId) {
+	
+	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
+			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
+			"dojo/domReady!" ], function(query, ready, domAttr, Select,
+			SimpleTextarea, on, parser) {
+		ready(function() {
+			
+			var s = dijit.byId(parentSelectId);
+			on(s, "change", function(e) {
+				resetMultiSelect(childSelectId);
+
+				autoPopMulti3(path, ajaxType, parentSelectId3, parentSelectId2,parentSelectId,childSelectId,
+						optionALL, selectedId, optionALLText);
+				
+			}) // end of event handler
+			resetMultiSelect(childSelectId);
+			autoPopMulti3(path, ajaxType,  parentSelectId3, parentSelectId2,parentSelectId,childSelectId,
+					optionALL, selectedId, optionALLText);
+		});
+	}); // end of on
+	 
+	/**/
+}
+
+
+function autoPopulateMultiParamSelectMulti2(path, ajaxType,ajaxType2, parentSelectId, parentSelectId2, optionALL,
+		optionALLText, selectedId, childSelectId, childSelectId2) {
+	
+	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
+			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
+			"dojo/domReady!" ], function(query, ready, domAttr, Select,
+			SimpleTextarea, on, parser) {
+		ready(function() {
+			var s = dijit.byId(parentSelectId);
+			on(s, "change", function(e) {
+				
+				if(childSelectId!=null)reset(childSelectId);
+				if(childSelectId2!=null){resetMultiSelect(childSelectId2);}
+				
+				autoPop2(path, ajaxType, parentSelectId2,parentSelectId,childSelectId,
+						optionALL, selectedId, optionALLText);
+				autoPopMulti3(path, ajaxType2,  parentSelectId2, parentSelectId,childSelectId,childSelectId2,
+						optionALL, selectedId, optionALLText);
+			}) // end of event handler
+			
+			reset(childSelectId);
+			resetMultiSelect(childSelectId2);
+			
+			autoPop2(path, ajaxType, parentSelectId2,parentSelectId,childSelectId,
+					optionALL, selectedId, optionALLText);
+		});
+		/*
+		*/
+	}); // end of on
+
+}
+
+function autoPopulateMultiParamSelectMulti3(path, ajaxType,ajaxType2,ajaxType3, parentSelectId, optionALL,
+		optionALLText, selectedId, childSelectId, childSelectId2, childSelectId3) {
+	
+	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
+			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
+			"dojo/domReady!" ], function(query, ready, domAttr, Select,
+			SimpleTextarea, on, parser) {
+		ready(function() {
+			var s = dijit.byId(parentSelectId);
+			on(s, "change", function(e) {
+				
+				if(childSelectId!=null)reset(childSelectId);
+				if(childSelectId2!=null)reset(childSelectId2);
+				if(childSelectId3!=null){resetMultiSelect(childSelectId3);}
+				
+				
+				autoPop(path, ajaxType, parentSelectId, childSelectId,
+						optionALL, selectedId, optionALLText);
+				autoPop2(path, ajaxType2, parentSelectId,childSelectId,childSelectId2,
+						optionALL, selectedId, optionALLText);
+				autoPopMulti3(path, ajaxType3,  parentSelectId, childSelectId,childSelectId2,childSelectId3,
+						optionALL, selectedId, optionALLText);
+				
+			}) // end of event handler
+			
+			reset(childSelectId);
+			reset(childSelectId2);
+			resetMultiSelect(childSelectId3);
+			autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
+					selectedId, optionALLText);
+			
+		});
+		/*
+		*/
+	}); // end of on
+
+}
+
+function autoPopulateMultiParamSelect(path, ajaxType, parentSelectId,parentSelectId2,parentSelectId3,
+		optionALL, optionALLText, selectedId, childSelectId) {
+	
+	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
+			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
+			"dojo/domReady!" ], function(query, ready, domAttr, Select,
+			SimpleTextarea, on, parser) {
+		ready(function() {
+			
+			var s = dijit.byId(parentSelectId);
+			on(s, "change", function(e) {
+				reset(childSelectId);
+
+				autoPopMultiParam3(path, ajaxType, parentSelectId3, parentSelectId2,parentSelectId,childSelectId,
+						optionALL, selectedId, optionALLText);
+				
+			}) // end of event handler
+			reset(childSelectId);
+			autoPopMultiParam3(path, ajaxType,  parentSelectId3, parentSelectId2,parentSelectId,childSelectId,
+					optionALL, selectedId, optionALLText);
+		});
+	}); // end of on
+	 
+	/**/
+}
+
+
+function autoPopulateMultiParamSelect2(path, ajaxType,ajaxType2, parentSelectId, parentSelectId2, optionALL,
+		optionALLText, selectedId, childSelectId, childSelectId2) {
+	
+	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
+			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
+			"dojo/domReady!" ], function(query, ready, domAttr, Select,
+			SimpleTextarea, on, parser) {
+		ready(function() {
+			var s = dijit.byId(parentSelectId);
+			on(s, "change", function(e) {
+				
+				if(childSelectId!=null)reset(childSelectId);
+				if(childSelectId2!=null){reset(childSelectId2);}
+				
+				autoPop2(path, ajaxType, parentSelectId2,parentSelectId,childSelectId,
+						optionALL, selectedId, optionALLText);
+				autoPopMultiParam3(path, ajaxType2,  parentSelectId2, parentSelectId,childSelectId,childSelectId2,
+						optionALL, selectedId, optionALLText);
+			}) // end of event handler
+			
+			reset(childSelectId);
+			reset(childSelectId2);
+			
+			autoPop2(path, ajaxType, parentSelectId2,parentSelectId,childSelectId,
+					optionALL, selectedId, optionALLText);
+		});
+		/*
+		*/
+	}); // end of on
+
+}
+
+function autoPopulateMultiParamSelect3(path, ajaxType,ajaxType2,ajaxType3, parentSelectId, optionALL,
+		optionALLText, selectedId, childSelectId, childSelectId2, childSelectId3) {
+	
+	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
+			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
+			"dojo/domReady!" ], function(query, ready, domAttr, Select,
+			SimpleTextarea, on, parser) {
+		ready(function() {
+			var s = dijit.byId(parentSelectId);
+			on(s, "change", function(e) {
+				
+				if(childSelectId!=null)reset(childSelectId);
+				if(childSelectId2!=null)reset(childSelectId2);
+				if(childSelectId3!=null){reset(childSelectId3);}
+				
+				
+				autoPop(path, ajaxType, parentSelectId, childSelectId,
+						optionALL, selectedId, optionALLText);
+				autoPop2(path, ajaxType2, parentSelectId,childSelectId,childSelectId2,
+						optionALL, selectedId, optionALLText);
+				autoPopMultiParam3(path, ajaxType3,  parentSelectId, childSelectId,childSelectId2,childSelectId3,
+						optionALL, selectedId, optionALLText);
+				
+			}) // end of event handler
+			
+			reset(childSelectId);
+			reset(childSelectId2);
+			reset(childSelectId3);
+			autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
+					selectedId, optionALLText);
+			
+		});
+		/*
+		*/
+	}); // end of on
+
+}
 
 
 function autoCompleteSelect(path, ajaxType, inputId, selectId, minChar) {
@@ -472,6 +978,21 @@ function setting() {
 			roundToDecimalPlace : 3
 		});
 	});
+}
 
-
+function multiselect(multi_id){
+	$('#'+multi_id).multiSelect({
+		  selectableHeader: "<div class='multi'><a href='#' id='select-all-"+multi_id+"'>Select all >></a></div>",
+		  selectionHeader: "<div class='multi'><a href='#' id='deselect-all-"+multi_id+"'><< Deselect all</a></div>"
+	});
+	
+	$('#select-all-'+multi_id).click(function(){
+	 $('#'+multi_id).multiSelect('select_all');
+	  return false;
+	});
+	
+	$('#deselect-all-'+multi_id).click(function(){
+	  $('#'+multi_id).multiSelect('deselect_all');
+	  return false;
+	});
 }

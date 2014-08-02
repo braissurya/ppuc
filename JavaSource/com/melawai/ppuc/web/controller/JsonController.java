@@ -43,13 +43,18 @@ public class JsonController extends ParentController {
 		response.setContentType("application/json");
 		List<DropDown> result = new ArrayList<DropDown>();
 
-		String param = ServletRequestUtils.getStringParameter(request, "param", "");
+		String param = ServletRequestUtils.getStringParameter(request, "param", "").trim();
+		String param2 = ServletRequestUtils.getStringParameter(request, "param2", "").trim();
+		String param3 = ServletRequestUtils.getStringParameter(request, "param3", "").trim();
 
 		if (tipe.equals("kota")) {
 			if (param.equals("")) {
-//				result = baseService.selectDropDown("kota", "kota", "kota", null, "kota");
+				result = baseService.selectDropDown("kota", "kota", "kota", null, "kota");
 			} else {
 				result = baseService.selectDropDown("kota", "kota", "kota", "propinsi = '" + param + "'", "kota");
+				if(result.isEmpty()){
+					result = baseService.selectDropDown("propinsi", "propinsi", "propinsi", "propinsi = '" + param + "'", "propinsi");
+				}
 			}
 		} else if (tipe.equals("kota2")) {
 			if (param.equals("")) {
@@ -57,9 +62,16 @@ public class JsonController extends ParentController {
 			} else {
 				result = baseService.selectDropDown("DISTINCT concat(a.kota )","kota",  "lokasi  a left join group_lokasi_d b ON a.lok_kd = b.lok_kd ", "propinsi = '" + param + "' group by kota", "kota");
 			}
+		}else if (tipe.equals("kota3")) {
+			if(!param.equals("")) param = " and b.group_lok = '"+param+"' ";
+			
+			if(!param2.equals("")) param2 = " and a.propinsi = '"+param2+"' ";
+			
+			result = baseService.selectDropDown("DISTINCT concat( a.kota)","kota",  "lokasi a left join group_lokasi_d b ON a.lok_kd = b.lok_kd ", "1 = 1 "+param+" "+param2+" group by a.kota", "a.kota");
+			
 		} else if (tipe.equals("propinsi")) {
 			if (param.equals("")) {
-//				result = baseService.selectDropDown("propinsi", "propinsi", "propinsi", null, "propinsi");
+				result = baseService.selectDropDown("propinsi", "propinsi", "propinsi", null, "propinsi");
 			} else {
 				result = baseService.selectDropDown("propinsi", "propinsi", "kota", "kota = '" + param + "'", "propinsi");
 			}
@@ -107,6 +119,23 @@ public class JsonController extends ParentController {
 			} else {
 				result = baseService.selectDropDown("DISTINCT concat( a.lok_kd)","lok_nm",  "lokasi a left join group_lokasi_d b ON a.lok_kd = b.lok_kd ", "a.kota = '"+ param +"' group by a.lok_nm", "a.lok_nm");
 			}
+
+		}  else  if (tipe.equals("lokasi4")) {
+			if(!param.equals("")) param = " and a.propinsi = '"+param+"' ";
+			
+			if(!param2.equals("")) param2 = " and a.kota = '"+param2+"' ";
+			
+			result = baseService.selectDropDown("DISTINCT concat(a.lok_kd)","lok_nm",  "lokasi a left join group_lokasi_d b ON a.lok_kd = b.lok_kd ", "1 = 1 "+param+" "+param2+" group by a.lok_nm", "a.lok_nm");
+
+		} else  if (tipe.equals("lokasi5")) {
+			if(!param.equals("")) param = " and b.group_lok = '"+param+"' ";
+			
+			if(!param2.equals("")) param2 = " and a.propinsi = '"+param2+"' ";
+			
+			if(!param3.equals("")) param3 = " and a.kota = '"+param3+"' ";
+			
+			result = baseService.selectDropDown("DISTINCT concat( a.lok_kd)","lok_nm",  "lokasi a left join group_lokasi_d b ON a.lok_kd = b.lok_kd ", "1 = 1 "+param+" "+param2+" "+param3+" group by a.lok_nm", "a.lok_nm");
+			
 
 		} else if (tipe.equals("detailbiaya")) {
 			if (param.equals("")) {

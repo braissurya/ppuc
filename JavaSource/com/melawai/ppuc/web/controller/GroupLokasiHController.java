@@ -69,6 +69,10 @@ public class GroupLokasiHController extends ParentController{
 					+ ", " }, null);
 		}
 		
+		if(grouplokasihManager.selectCountTable("group_lokasi_h", "group_lok = '"+grouplokasih.group_lok+"'")>0){
+			bindingResult.rejectValue("group_lok", "duplicate", new String[]{"Group Lokasi"}, null);
+		}
+		
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, grouplokasih);
 			return "grouplokasih/create";

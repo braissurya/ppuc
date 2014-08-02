@@ -17,6 +17,7 @@
 	<form:dependency dependencies="${dependencies}" id="d_com_melawai_ppuc_model_lokasi" render="${ not empty dependencies }" />
 	<spring:message arguments="Subdivisi KD" code="field_choice" var="choice_subdivkd" htmlEscape="false" />
 	<spring:message arguments="Departmen KD" code="field_choice" var="choice_deptkd" htmlEscape="false" />
+	<spring:message arguments="Kota" code="field_choice" var="choice_kota" htmlEscape="false" />
 	<spring:url value="/" var="path" />
 	<c:if test="${not empty lokasi.subdiv_kd}">
 		<c:set var="value_subdivkd" value="${lokasi.divisi_kd}.${lokasi.subdiv_kd}"/>
@@ -44,10 +45,11 @@
 							"${path}",
 							"kota",
 							"_propinsi_id",
-							false,
-							"",
+							true,
+							"${choice_kota}",
 							"${lokasi.kota}",
 							"_kota_id");
 				});
 	</script>
+	
 </div>

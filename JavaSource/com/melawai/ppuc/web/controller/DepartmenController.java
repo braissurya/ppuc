@@ -68,6 +68,10 @@ public class DepartmenController extends ParentController {
 					+ departmen.dept_kd + ", " }, null);
 		}
 		
+		if(departmenManager.selectCountTable("departmen", "dept_kd = '"+departmen.dept_kd+"'")>0){
+			bindingResult.rejectValue("dept_kd", "duplicate", new String[]{"Dept KD"}, null);
+		}
+		
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, departmen);
 			return "departmen/create";
