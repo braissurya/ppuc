@@ -37,7 +37,7 @@ public class BaseService {
 	
 	@Autowired
 	protected Properties props;
-
+	 
 	@Transactional
 	public Audittrail audittrail(String type_audit, String subtype_audit, String modelName, String model_id, String ip, String info, User createdBy, Set<AudittrailDetail> changes) {
 
@@ -95,5 +95,69 @@ public class BaseService {
 		max=max==null?0:max;
 		return max;
 	}
+	
+	/**
+	 * Fungsi untuk mereplace semua occurence dalam sebuah message template menjadi field2 dari database
+	 * 
+	 * @author Yusuf
+	 * @since Mar 8, 2011
+	 */
+	/*public String getMessageTemplateFilled(int templateID, int replyID, String jenis, Map<String, Object> params) throws DataAccessException, IllegalArgumentException, SecurityException, IllegalAccessException, NoSuchFieldException{
+		
+		//tarik dulu template dari tabel sesuai ID nya
+		SMSReplyTemplate template = selectSMSReplyTemp(replyID);
+		if(template == null) throw new RuntimeException ("Tidak ada message dengan replyID = " + replyID);
+
+		//kemudian tentukan jenis template yg diambil apa
+		String txt = null;
+		if(jenis.equals("sms")) txt = template.template_sms;
+		else if(jenis.equals("web")) txt = template.template_web;
+		else if(jenis.equals("email")) txt = template.template_email;
+		else if(jenis.equals("subject")) txt = template.template_subject;
+		
+		//buat pattern regex untuk mari dalam string, semua text yang isinya dalam bracket $P{}
+		Pattern p = Pattern.compile("\\$P\\{\\w+\\.\\w+\\}");
+		
+		//matching antara regex pattern dengan templatenya
+		Matcher m = p.matcher(txt);
+		
+		//lakukan looping terhadap semua $P{} yang ditemukan
+		List<String> columns = new ArrayList<String>();
+		while(m.find()){
+			//occurence
+			String tmp = m.group();
+			//nama lengkap kolom
+			String column = tmp.substring(tmp.indexOf("$P{")+3, tmp.indexOf("}"));
+			//bila kolom belum ada di list, maka tambahkan ke list tersebut
+			if(!columns.contains(column)) columns.add(column);
+		}
+		
+		//tarik data ke tabel sesuai templateIDnya, dan params nya harus fixed sesuai template tersebut
+		if(!columns.isEmpty()){
+			params.put("replyId", replyID);
+			params.put("columns", StringUtils.join(columns, ","));
+			Map<String, Object> data = (HashMap<String, Object>) querySingle("selectMessageTemplate" + templateID, params);
+			
+			//dari hasil query, kemudian replace nilai2nya
+			if(data != null){
+				for(String column : columns){
+					String shortName = column.substring(column.indexOf(".")+1);
+					Object value = data.get(shortName);
+					if(value == null) value = "";
+					if(shortName.equalsIgnoreCase("password")) value = Utils.decrypt(value.toString());
+					if(shortName.contains("date")){
+						value = Utils.convertDateToString((Date)value, "dd-MMM-yyyy");
+					}
+					if(value == null) value = "";
+					txt = txt.replace("$P{" + column + "}", value.toString());
+				}
+			}else{
+				throw new RuntimeException("Data tidak ditemukan (selectMessageTemplate" + templateID + ", " + StringUtils.join(params.values(), ",") + ")");
+			}
+		}
+		
+		return txt.replace("$P{sysdate()}", Utils.convertDateToString(selectSysdate(0), "dd-MMM-yyyy"));
+	}*/
+	
 
 }

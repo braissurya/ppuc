@@ -1,9 +1,10 @@
 package com.melawai.ppuc.persistence;
 
-import java.util.Date;
 import java.util.List;
-import org.springframework.dao.DataAccessException;
+
 import org.apache.ibatis.annotations.Param;
+import org.springframework.dao.DataAccessException;
+
 import com.melawai.ppuc.model.UserDivisi;
 
 /**
@@ -21,7 +22,7 @@ public interface UserDivisiMapper {
 
 	public void remove(Long id_user_divisi) throws DataAccessException;
 
-	public UserDivisi get(Long id_user_divisi) throws DataAccessException;
+	public List<UserDivisi> get(@Param("id_user_divisi")Long id_user_divisi,@Param("user_id") String user_id, @Param("divisi_kd") String divisi_kd, @Param("subdiv_kd") String subdiv_kd, @Param("dept_kd") String dept_kd, @Param("lok_kd") String lok_kd) throws DataAccessException;
 
 	public List<UserDivisi> exists(@Param("id_user_divisi")Long id_user_divisi,@Param("user_id") String user_id, @Param("divisi_kd") String divisi_kd, @Param("subdiv_kd") String subdiv_kd, @Param("dept_kd") String dept_kd, @Param("lok_kd") String lok_kd) throws DataAccessException;
 	

@@ -122,6 +122,12 @@ public class CommonUtil {
 			return null;
 		return new Integer(input);
 	}
+	
+	public static Long convertToLong(String input) {
+		if (CommonUtil.isEmpty(input))
+			return null;
+		return new Long(input);
+	}
 
 	public static Object[] reverseArray(Object[] input) {
 		List<Object> tmpList = Arrays.asList(input);
@@ -306,7 +312,7 @@ public class CommonUtil {
 					// do nothing
 				} else if (o == null && o2 != null) {
 					audittrailDetails.add(new AudittrailDetail(field.getName(), null, field2.get(obj2).toString()));
-				} else if (o2 == null && o != null) {
+				} else if (o != null && o2 == null) {
 					audittrailDetails.add(new AudittrailDetail(field.getName(), field.get(obj1).toString(), null));
 				} else if (!o.equals(o2)) {
 					audittrailDetails.add(new AudittrailDetail(field.getName(), field.get(obj1).toString(), field2.get(obj2).toString()));

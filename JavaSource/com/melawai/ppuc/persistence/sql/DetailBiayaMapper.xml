@@ -8,7 +8,6 @@
 	<!-- result map-->
 	<resultMap type="DetailBiaya" id="DetailBiayaMap">
 		<id property="kd_biaya" column="kd_biaya"  />  
-		<result property="kd_biaya" column="kd_biaya" />
 		<result property="kd_group" column="kd_group" />
 		<result property="biaya_description" column="biaya_description" />
 		<result property="f_putus" column="f_putus" />

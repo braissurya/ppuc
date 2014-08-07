@@ -23,7 +23,7 @@ public interface PpucHMapper {
 
 	public void remove(@Param("divisi_kd") String divisi_kd, @Param("subdiv_kd") String subdiv_kd, @Param("dept_kd") String dept_kd, @Param("lok_kd") String lok_kd, @Param("no_ppuc") String no_ppuc, @Param("tgl_ppuc") Date tgl_ppuc) throws DataAccessException;
 
-	public PpucH get(@Param("divisi_kd") String divisi_kd, @Param("subdiv_kd") String subdiv_kd, @Param("dept_kd") String dept_kd, @Param("lok_kd") String lok_kd, @Param("no_ppuc") String no_ppuc, @Param("tgl_ppuc") Date tgl_ppuc) throws DataAccessException;
+	public List<PpucH> get(@Param("divisi_kd") String divisi_kd, @Param("subdiv_kd") String subdiv_kd, @Param("dept_kd") String dept_kd, @Param("lok_kd") String lok_kd, @Param("no_ppuc") String no_ppuc, @Param("tgl_ppuc") Date tgl_ppuc,  @Param("no_batch") String no_batch) throws DataAccessException;
 
 	public List<PpucH> getAll() throws DataAccessException;
 

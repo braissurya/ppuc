@@ -1,6 +1,7 @@
 package com.melawai.ppuc.web.validator;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -13,6 +14,7 @@ import com.melawai.ppuc.model.PpucH;
  * @Description	: Validator for table PpucH
  * @Revision	:
  */
+@Component
 public class PpucHValidator extends LocalValidatorFactoryBean implements Validator {
 	
 	private static Logger logger = Logger.getLogger(PpucHValidator.class);
@@ -24,7 +26,9 @@ public class PpucHValidator extends LocalValidatorFactoryBean implements Validat
 
 	@Override
 	public void validate(Object obj, Errors e) {
-		// TODO Auto-generated method stub
+		if(!e.hasErrors()){
+			
+		}
 	}
 
 }

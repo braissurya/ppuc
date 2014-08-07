@@ -31,8 +31,8 @@ public class UserDivisiManager extends BaseService {
 	private UserDivisiMapper userdivisiMapper;
 
 	/** Ambil DATA berdasarkan id_user_divisi, user_id, divisi_kd, subdiv_kd, dept_kd **/
-	public UserDivisi get( Long id_user_divisi) {
-		return userdivisiMapper.get(id_user_divisi);
+	public List<UserDivisi> get(Long id_user_divisi,String user_id, String divisi_kd, String subdiv_kd, String dept_kd, String lok_kd) {
+		return userdivisiMapper.get(id_user_divisi, user_id, divisi_kd, subdiv_kd, dept_kd, lok_kd);
 	}
 
 	/** Apakah data dengan id_user_divisi, user_id, divisi_kd, subdiv_kd, dept_kd ini ada? **/
@@ -40,8 +40,18 @@ public class UserDivisiManager extends BaseService {
 		return userdivisiMapper.exists(id_user_divisi,user_id, divisi_kd, subdiv_kd, dept_kd, lok_kd).size()>0;
 	}
 	
-	public boolean exists(Long id_user_divisi) {	
-		return get(id_user_divisi)!=null;
+	public UserDivisi get(Long id_user_divisi) {
+		List<UserDivisi> sd=userdivisiMapper.get(id_user_divisi, null, null, null, null, null);
+		return sd.isEmpty()?null:sd.get(0);
+	}
+	
+	public  List<UserDivisi> get(String user_id) {
+		return userdivisiMapper.get(null, user_id, null, null, null, null);
+	}
+	
+	public UserDivisi getDivisiNSubdivUser(String user_id){
+		List<UserDivisi> tmp=get(user_id);
+		return tmp.isEmpty()?new UserDivisi():tmp.get(0);
 	}
 
 	/** Delete data berdasarkan id_user_divisi **/
@@ -80,7 +90,7 @@ public class UserDivisiManager extends BaseService {
 		userdivisi.lok_kd=userdivisi.lok_kd.substring(userdivisi.lok_kd.lastIndexOf(".") + 1);
 		
 		
-		if (!exists(userdivisi.id_user_divisi)) {
+		if (userdivisi.id_user_divisi==null) {
 		
 			userdivisi.setTgl_create(selectSysdate());
 			userdivisi.setUser_create(CommonUtil.getCurrentUserId());

@@ -64,6 +64,121 @@
 		<result property="hp_tujuan_batal" column="hp_tujuan_batal" />
 		<result property="email_asal_batal" column="email_asal_batal" />
 		<result property="email_tujuan_batal" column="email_tujuan_batal" />
+		<association property="divisi" javaType="Divisi">
+			<id property="divisi_kd" column="dc_divisi_kd"  />  
+			<result property="divisi_nm" column="dc_divisi_nm" />
+		</association>
+		<association property="divisi_app" javaType="Divisi">
+			<id property="divisi_kd" column="dac_divisi_kd"  />  
+			<result property="divisi_nm" column="dac_divisi_nm" />
+		</association>
+		<association property="subdivisi" javaType="Subdivisi">
+			<id property="subdiv_kd" column="sc_subdiv_kd"  />  
+			<result property="subdiv_nm" column="sc_subdiv_nm" />
+		</association>
+		<association property="subdivisi_app" javaType="Subdivisi">
+			<id property="subdiv_kd" column="sac_subdiv_kd"  />  
+			<result property="subdiv_nm" column="sac_subdiv_nm" />
+		</association>
+		<association property="departmen" javaType="Departmen">
+			<id property="dept_kd" column="dpc_dept_kd"  />  
+			<result property="dept_nm" column="dpc_dept_nm" />
+		</association>
+		<association property="departmen_app" javaType="Departmen">
+			<id property="dept_kd" column="dpac_dept_kd"  />  
+			<result property="dept_nm" column="dpac_dept_nm" />
+		</association>
+		<association property="lokasi" javaType="Lokasi">
+			<id property="lok_kd" column="lc_lok_kd"  />  
+			<result property="lok_nm" column="lc_lok_nm" />
+			<result property="propinsi" column="lc_propinsi" />
+			<result property="kota" column="lc_kota" />
+			<result property="email" column="lc_email" />
+			<result property="f_tutup" column="lc_f_tutup" />
+			<result property="tgl_tutup" column="lc_tgl_tutup" />
+		</association>
+		<association property="user_d" javaType="User">
+			<id property="user_id" column="uc_user_id"  />  
+			<result property="user_name" column="uc_user_name" />
+			<result property="no_hp" column="uc_no_hp" />
+			<result property="email" column="uc_email" />
+		</association>
+		<association property="user_conf_d" javaType="User">
+			<id property="user_id" column="ucc_user_id"  />  
+			<result property="user_name" column="ucc_user_name" />
+			<result property="no_hp" column="ucc_no_hp" />
+			<result property="email" column="ucc_email" />
+		</association>
+		<association property="user_app_d" javaType="User">
+			<id property="user_id" column="uac_user_id"  />  
+			<result property="user_name" column="uac_user_name" />
+			<result property="no_hp" column="uac_no_hp" />
+			<result property="email" column="uac_email" />
+		</association>
+		<association property="user_real_d" javaType="User">
+			<id property="user_id" column="urc_user_id"  />  
+			<result property="user_name" column="urc_user_name" />
+			<result property="no_hp" column="urc_no_hp" />
+			<result property="email" column="urc_email" />
+		</association>
+		<association property="user_conf_real_d" javaType="User">
+			<id property="user_id" column="ucrc_user_id"  />  
+			<result property="user_name" column="ucrc_user_name" />
+			<result property="no_hp" column="ucrc_no_hp" />
+			<result property="email" column="ucrc_email" />
+		</association>
+		<association property="user_conf_oc_d" javaType="User">
+			<id property="user_id" column="ucoc_user_id"  />  
+			<result property="user_name" column="ucoc_user_name" />
+			<result property="no_hp" column="ucoc_no_hp" />
+			<result property="email" column="ucoc_email" />
+		</association>
+		<collection property="ppucds" ofType="PpucD">
+			<id property="divisi_kd" column="pd_divisi_kd"  />  
+			<id property="subdiv_kd" column="pd_subdiv_kd"  />  
+			<id property="dept_kd" column="pd_dept_kd"  />  
+			<id property="lok_kd" column="pd_lok_kd"  />  
+			<id property="no_ppuc" column="pd_no_ppuc"  />  
+			<id property="tgl_ppuc" column="pd_tgl_ppuc"  />  
+			<id property="kd_biaya" column="pd_kd_biaya"  />  
+			<result property="divisi_kd" column="pd_divisi_kd" />
+			<result property="subdiv_kd" column="pd_subdiv_kd" />
+			<result property="dept_kd" column="pd_dept_kd" />
+			<result property="lok_kd" column="pd_lok_kd" />
+			<result property="no_ppuc" column="pd_no_ppuc" />
+			<result property="tgl_ppuc" column="pd_tgl_ppuc" />
+			<result property="kd_group" column="pd_kd_group" />
+			<result property="kd_biaya" column="pd_kd_biaya" />
+			<result property="no_batch" column="pd_no_batch" />
+			<result property="qty" column="pd_qty" />
+			<result property="harga" column="pd_harga" />
+			<result property="total" column="pd_total" />
+			<result property="qty_old" column="pd_qty_old" />
+			<result property="harga_old" column="pd_harga_old" />
+			<result property="total_old" column="pd_total_old" />
+			<result property="keterangan" column="pd_keterangan" />
+			<result property="ket_approve" column="pd_ket_approve" />
+			<result property="no_realisasi" column="pd_no_realisasi" />
+			<result property="qty_real_cbg" column="pd_qty_real_cbg" />
+			<result property="harga_real_cbg" column="pd_harga_real_cbg" />
+			<result property="total_real_cbg" column="pd_total_real_cbg" />
+			<result property="qty_real_oc" column="pd_qty_real_oc" />
+			<result property="harga_real_oc" column="pd_harga_real_oc" />
+			<result property="total_real_oc" column="pd_total_real_oc" />
+			<result property="nilai_charge" column="pd_nilai_charge" />
+			<association property="groupbiaya" javaType="GroupBiaya">
+				<id property="kd_group" column="kd_group"  />  
+				<result property="nm_group" column="nm_group" />
+			</association>
+			<association property="detailbiaya" javaType="DetailBiaya">
+				<id property="kd_biaya" column="kd_biaya"  />  
+				<result property="kd_group" column="kd_group" />
+				<result property="biaya_description" column="biaya_description" />
+				<result property="f_putus" column="f_putus" />
+				<result property="f_used" column="f_used" />
+				<result property="acc_no" column="acc_no" />
+			</association>
+		</collection>
 	</resultMap>
 
 	<!-- nama kolom yang ingin ditampilkan -->
@@ -118,7 +233,75 @@
 		C.SYS_HP_ASAL_BATAL as hp_asal_batal,
 		C.SYS_HP_TUJUAN_BATAL as hp_tujuan_batal,
 		C.SYS_EMAIL_ASAL_BATAL as email_asal_batal,
-		C.SYS_EMAIL_TUJUAN_BATAL as email_tujuan_batal
+		C.SYS_EMAIL_TUJUAN_BATAL as email_tujuan_batal,
+		PD.DIVISI_KD as pd_divisi_kd,
+		PD.SUBDIV_KD as pd_subdiv_kd,
+		PD.DEPT_KD as pd_dept_kd,
+		PD.LOK_KD as pd_lok_kd,
+		PD.SYS_NO_PPUC as pd_no_ppuc,
+		PD.TGL_PPUC as pd_tgl_ppuc,
+		PD.KD_GROUP as pd_kd_group,
+		PD.KD_BIAYA as pd_kd_biaya,
+		PD.NO_BATCH as pd_no_batch,
+		PD.QTY as pd_qty,
+		PD.HARGA as pd_harga,
+		PD.TOTAL as pd_total,
+		PD.QTY_OLD as pd_qty_old,
+		PD.HARGA_OLD as pd_harga_old,
+		PD.TOTAL_OLD as pd_total_old,
+		PD.KETERANGAN as pd_keterangan,
+		PD.KET_APPROVE as pd_ket_approve,
+		PD.NO_REALISASI as pd_no_realisasi,
+		PD.QTY_REAL_CBG as pd_qty_real_cbg,
+		PD.HARGA_REAL_CBG as pd_harga_real_cbg,
+		PD.TOTAL_REAL_CBG as pd_total_real_cbg,
+		PD.QTY_REAL_OC as pd_qty_real_oc,
+		PD.HARGA_REAL_OC as pd_harga_real_oc,
+		PD.TOTAL_REAL_OC as pd_total_real_oc,
+		PD.NILAI_CHARGE as pd_nilai_charge,
+		dc.DIVISI_KD as dc_divisi_kd,
+		dc.DIVISI_NM as dc_divisi_nm,
+		dac.DIVISI_KD as dac_divisi_kd,
+		dac.DIVISI_NM as dac_divisi_nm,
+		sc.SUBDIV_KD as sc_subdiv_kd,
+		sc.SUBDIV_NM as sc_subdiv_nm,
+		sac.SUBDIV_KD as sac_subdiv_kd,
+		sac.SUBDIV_NM as sac_subdiv_nm,
+		dpc.DEPT_KD as dpc_dept_kd,
+		dpc.DEPT_NM as dpc_dept_nm,
+		dpac.DEPT_KD as dpac_dept_kd,
+		dpac.DEPT_NM as dpac_dept_nm,
+		lc.LOK_KD as lc_lok_kd,
+		lc.LOK_NM as lc_lok_nm,
+		lc.PROPINSI as lc_propinsi,
+		lc.KOTA as lc_kota,
+		lc.EMAIL as lc_email,
+		lc.F_TUTUP as lc_f_tutup,
+		lc.TGL_TUTUP as lc_tgl_tutup,
+		uc.USER_ID as uc_user_id,
+		uc.USER_NAME as uc_user_name,
+		uc.NO_HP as uc_no_hp,
+		uc.EMAIL as uc_email,
+		ucc.USER_ID as ucc_user_id,
+		ucc.USER_NAME as ucc_user_name,
+		ucc.NO_HP as ucc_no_hp,
+		ucc.EMAIL as ucc_email,
+		uac.USER_ID as uac_user_id,
+		uac.USER_NAME as uac_user_name,
+		uac.NO_HP as uac_no_hp,
+		uac.EMAIL as uac_email,
+		urc.USER_ID as urc_user_id,
+		urc.USER_NAME as urc_user_name,
+		urc.NO_HP as urc_no_hp,
+		urc.EMAIL as urc_email,
+		ucrc.USER_ID as ucrc_user_id,
+		ucrc.USER_NAME as ucrc_user_name,
+		ucrc.NO_HP as ucrc_no_hp,
+		ucrc.EMAIL as ucrc_email,
+		ucoc.USER_ID as ucoc_user_id,
+		ucoc.USER_NAME as ucoc_user_name,
+		ucoc.NO_HP as ucoc_no_hp,
+		ucoc.EMAIL as ucoc_email	
 	</sql>
 
 	<!-- query select, dengan kolom yang default di atas, apabila mau ditambahkan join juga bisa disini
@@ -126,6 +309,20 @@
 	<sql id="selectQuery">
 		select * from (
 			select <include refid="defaultColoumn" /> from ppuc_h C
+			left outer join ppuc_d PD on C.sys_no_ppuc = PD.sys_no_ppuc and C.tgl_ppuc = PD.tgl_ppuc and C.lok_kd = PD.lok_kd
+			left outer join divisi dc on C.divisi_kd = dc.divisi_kd
+			left outer join subdivisi sc on C.subdiv_kd = sc.subdiv_kd
+			left outer join departmen dpc on C.dept_kd = dpc.dept_kd
+			left outer join lokasi lc on C.lok_kd = lc.lok_kd
+			left outer join divisi dac on C.sys_divisi_kd_apprv = dac.divisi_kd
+			left outer join subdivisi sac on C.sys_subdiv_kd_apprv = sac.subdiv_kd
+			left outer join departmen dpac on C.sys_dept_kd_apprv = dpac.dept_kd
+			left outer join user uc on C.sys_user_create = uc.user_id
+			left outer join user ucc on C.sys_user_confirm = ucc.user_id
+			left outer join user uac on C.sys_user_approve = uac.user_id
+			left outer join user urc on C.sys_user_realisasi = urc.user_id
+			left outer join user ucrc on C.sys_user_conf_real = ucrc.user_id
+			left outer join user ucoc on C.sys_user_conf_oc = ucoc.user_id
 		)T
 	</sql>
 
@@ -379,6 +576,7 @@
 			<if test="lok_kd != null"> AND T.lok_kd= #{lok_kd} </if>
 			<if test="no_ppuc != null"> AND T.no_ppuc= #{no_ppuc} </if>
 			<if test="tgl_ppuc != null"> AND T.tgl_ppuc= #{tgl_ppuc} </if>
+			<if test="no_batch != null"> AND T.no_batch= #{no_batch} </if>
 		 </where> 
 	</select>
 
@@ -420,5 +618,9 @@
 	</select>
 
 	<!-- QUERY CUSTOM LAIN-LAIN bisa dimasukkan dibawah ini -->
+	
+	<select id="selectMessageTemplate" parameterType="HashMap" resultType="HashMap" >
+	columns
+	</select>
 
 </mapper>

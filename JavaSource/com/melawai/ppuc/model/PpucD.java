@@ -55,15 +55,15 @@ public class PpucD extends BaseObject implements Serializable  {
 
 	public Long qty;
 
-	public double harga;
+	public Double harga;
 
-	public double total;
+	public Double total;
 
 	public Long qty_old;
 
-	public double harga_old;
+	public Double harga_old;
 
-	public double total_old;
+	public Double total_old;
 
 	@Size(max=65535)
 	public String keterangan;
@@ -77,17 +77,17 @@ public class PpucD extends BaseObject implements Serializable  {
 
 	public Long qty_real_cbg;
 
-	public double harga_real_cbg;
+	public Double harga_real_cbg;
 
-	public double total_real_cbg;
+	public Double total_real_cbg;
 
 	public Long qty_real_oc;
 
-	public double harga_real_oc;
+	public Double harga_real_oc;
 
-	public double total_real_oc;
+	public Double total_real_oc;
 
-	public double nilai_charge;
+	public Double nilai_charge;
 
 	//****************** COLOMN FROM TABLE END HERE ******************/
 
@@ -95,13 +95,40 @@ public class PpucD extends BaseObject implements Serializable  {
 	//****************** OTHERS START HERE ******************/
 
 	public String itemId;
+	
+	public GroupBiaya groupBiaya;
+	public DetailBiaya detailBiaya;
 	//****************** OTHERS END HERE ******************/
 
 
 	//****************** CONSTRUCTOR START HERE ******************/
 	public PpucD(){
-		//TODO: standard constructor free to change
 	}
+	
+
+
+
+	public PpucD(String divisi_kd, String subdiv_kd, String dept_kd,
+			String lok_kd, String no_ppuc, Date tgl_ppuc, String kd_group,
+			String kd_biaya, Long qty, Double harga, Double total,
+			String keterangan) {
+		super();
+		this.divisi_kd = divisi_kd;
+		this.subdiv_kd = subdiv_kd;
+		this.dept_kd = dept_kd;
+		this.lok_kd = lok_kd;
+		this.no_ppuc = no_ppuc;
+		this.tgl_ppuc = tgl_ppuc;
+		this.kd_group = kd_group;
+		this.kd_biaya = kd_biaya;
+		this.qty = qty;
+		this.harga = harga;
+		this.total = total;
+		this.keterangan = keterangan;
+	}
+
+
+
 
 	//****************** CONSTRUCTOR END HERE ******************/
 
@@ -137,20 +164,20 @@ public class PpucD extends BaseObject implements Serializable  {
 	public Long getQty(){ return qty; }
 	public void setQty(Long qty){ this.qty = qty; }
 
-	public double getHarga(){ return harga; }
-	public void setHarga(double harga){ this.harga = harga; }
+	public Double getHarga(){ return harga; }
+	public void setHarga(Double harga){ this.harga = harga; }
 
-	public double getTotal(){ return total; }
-	public void setTotal(double total){ this.total = total; }
+	public Double getTotal(){ return total; }
+	public void setTotal(Double total){ this.total = total; }
 
 	public Long getQty_old(){ return qty_old; }
 	public void setQty_old(Long qty_old){ this.qty_old = qty_old; }
 
-	public double getHarga_old(){ return harga_old; }
-	public void setHarga_old(double harga_old){ this.harga_old = harga_old; }
+	public Double getHarga_old(){ return harga_old; }
+	public void setHarga_old(Double harga_old){ this.harga_old = harga_old; }
 
-	public double getTotal_old(){ return total_old; }
-	public void setTotal_old(double total_old){ this.total_old = total_old; }
+	public Double getTotal_old(){ return total_old; }
+	public void setTotal_old(Double total_old){ this.total_old = total_old; }
 
 	public String getKeterangan(){ return keterangan; }
 	public void setKeterangan(String keterangan){ this.keterangan = keterangan; }
@@ -164,26 +191,54 @@ public class PpucD extends BaseObject implements Serializable  {
 	public Long getQty_real_cbg(){ return qty_real_cbg; }
 	public void setQty_real_cbg(Long qty_real_cbg){ this.qty_real_cbg = qty_real_cbg; }
 
-	public double getHarga_real_cbg(){ return harga_real_cbg; }
-	public void setHarga_real_cbg(double harga_real_cbg){ this.harga_real_cbg = harga_real_cbg; }
+	public Double getHarga_real_cbg(){ return harga_real_cbg; }
+	public void setHarga_real_cbg(Double harga_real_cbg){ this.harga_real_cbg = harga_real_cbg; }
 
-	public double getTotal_real_cbg(){ return total_real_cbg; }
-	public void setTotal_real_cbg(double total_real_cbg){ this.total_real_cbg = total_real_cbg; }
+	public Double getTotal_real_cbg(){ return total_real_cbg; }
+	public void setTotal_real_cbg(Double total_real_cbg){ this.total_real_cbg = total_real_cbg; }
 
 	public Long getQty_real_oc(){ return qty_real_oc; }
 	public void setQty_real_oc(Long qty_real_oc){ this.qty_real_oc = qty_real_oc; }
 
-	public double getHarga_real_oc(){ return harga_real_oc; }
-	public void setHarga_real_oc(double harga_real_oc){ this.harga_real_oc = harga_real_oc; }
+	public Double getHarga_real_oc(){ return harga_real_oc; }
+	public void setHarga_real_oc(Double harga_real_oc){ this.harga_real_oc = harga_real_oc; }
 
-	public double getTotal_real_oc(){ return total_real_oc; }
-	public void setTotal_real_oc(double total_real_oc){ this.total_real_oc = total_real_oc; }
+	public Double getTotal_real_oc(){ return total_real_oc; }
+	public void setTotal_real_oc(Double total_real_oc){ this.total_real_oc = total_real_oc; }
 
-	public double getNilai_charge(){ return nilai_charge; }
-	public void setNilai_charge(double nilai_charge){ this.nilai_charge = nilai_charge; }
+	public Double getNilai_charge(){ return nilai_charge; }
+	public void setNilai_charge(Double nilai_charge){ this.nilai_charge = nilai_charge; }
 
 	public String getItemId() {return ""+divisi_kd+"/"+subdiv_kd+"/"+dept_kd+"/"+lok_kd+"/"+no_ppuc+"/"+tgl_ppuc+"/"+kd_biaya;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}
+
+
+
+
+	public GroupBiaya getGroupBiaya() {
+		return groupBiaya;
+	}
+
+
+
+
+	public void setGroupBiaya(GroupBiaya groupBiaya) {
+		this.groupBiaya = groupBiaya;
+	}
+
+
+
+
+	public DetailBiaya getDetailBiaya() {
+		return detailBiaya;
+	}
+
+
+
+
+	public void setDetailBiaya(DetailBiaya detailBiaya) {
+		this.detailBiaya = detailBiaya;
+	}
 
 	//****************** GETTER SETTER END HERE ******************/
 

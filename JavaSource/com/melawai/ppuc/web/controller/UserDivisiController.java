@@ -1,5 +1,7 @@
 package com.melawai.ppuc.web.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.melawai.ppuc.model.DropDown;
 import com.melawai.ppuc.model.UserDivisi;
 import com.melawai.ppuc.services.UserDivisiManager;
 import com.melawai.ppuc.utils.Utils;
@@ -42,10 +45,19 @@ public class UserDivisiController extends ParentController{
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	public String create(@ModelAttribute("userdivisi") @Valid UserDivisi userdivisi, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		// tambahan validasi khusus
-		if (userdivisiManager.exists(userdivisi.id_user_divisi,userdivisi.user_id, userdivisi.divisi_kd, userdivisi.subdiv_kd, userdivisi.dept_kd,userdivisi.getLok_kd())) {
+		if (userdivisiManager.exists(null,userdivisi.user_id, userdivisi.divisi_kd, userdivisi.subdiv_kd, userdivisi.dept_kd,userdivisi.getLok_kd())) {
 			bindingResult.rejectValue("lok_kd", "duplicate", new String[] { "LOKASI KD : " + userdivisi.lok_kd + " | DIVISI KD : " + userdivisi.divisi_kd + " | SUBDIVISI KD : " + userdivisi.subdiv_kd
 					+ " | DEPARTMEN KD : " + userdivisi.dept_kd+ " | User ID : " + userdivisi.user_id  + ", " }, null);
 		}
+		
+		if(userdivisiManager.selectCountTable("user_divisi", "user_id='"+userdivisi.user_id+"'")>0){
+			UserDivisi tmp=userdivisiManager.getDivisiNSubdivUser(userdivisi.user_id);
+			if(!tmp.divisi_kd.equals(userdivisi.divisi_kd)||!tmp.subdiv_kd.equals(userdivisi.subdiv_kd)){
+				bindingResult.rejectValue("subdiv_kd", "existWith", new String[]{"This User ID","DIVISI KD : " + userdivisi.divisi_kd + " and SUBDIVISI KD : " + userdivisi.subdiv_kd+""},null);
+			}
+			
+		}
+
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, userdivisi);
 			return "userdivisi/create";

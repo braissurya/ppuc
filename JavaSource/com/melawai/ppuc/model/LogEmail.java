@@ -74,8 +74,28 @@ public class LogEmail extends BaseObject implements Serializable  {
 
 	//****************** CONSTRUCTOR START HERE ******************/
 	public LogEmail(){
-		//TODO: standard constructor free to change
 	}
+	
+	
+
+	public LogEmail(Long id_log_email, String divisi_kd, String subdiv_kd, String dept_kd, String lok_kd, String no_ppuc, Date tgl_ppuc, Date send_date, String send_time, String status, String isi_email, String mail_maker, String mail_approval) {
+		super();
+		this.id_log_email = id_log_email;
+		this.divisi_kd = divisi_kd;
+		this.subdiv_kd = subdiv_kd;
+		this.dept_kd = dept_kd;
+		this.lok_kd = lok_kd;
+		this.no_ppuc = no_ppuc;
+		this.tgl_ppuc = tgl_ppuc;
+		this.send_date = send_date;
+		this.send_time = send_time;
+		this.status = status;
+		this.isi_email = isi_email;
+		this.mail_maker = mail_maker;
+		this.mail_approval = mail_approval;
+	}
+
+
 
 	//****************** CONSTRUCTOR END HERE ******************/
 

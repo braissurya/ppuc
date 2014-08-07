@@ -108,13 +108,20 @@
 	</delete>
 
 	<!-- get berdasarkan primary key -->
-	<select id="get" parameterType="Long" resultMap="UserDivisiMap">
+	<select id="get" parameterType="HashMap" resultMap="UserDivisiMap">
 		<include refid="selectQuery" />
-		 where 
-			 T.id_user_divisi= #{value}
+		 <where> 
+		 	<if test="id_user_divisi != null">T.id_user_divisi = #{id_user_divisi}</if>
+			<if test="lok_kd != null">AND T.lok_kd= #{lok_kd} </if>
+			<if test="user_id != null"> AND T.user_id= #{user_id} </if>
+			<if test="divisi_kd != null"> AND T.divisi_kd= #{divisi_kd} </if>
+			<if test="subdiv_kd != null"> AND T.subdiv_kd= #{subdiv_kd} </if>
+			<if test="dept_kd != null"> AND T.dept_kd= #{dept_kd} </if>
+		 </where> 
 	</select>
 	
-		<!-- get berdasarkan primary key -->
+	
+	<!-- get berdasarkan primary key -->
 	<select id="exists"  resultMap="UserDivisiMap">
 		<include refid="selectQuery" />
 		 <where> 
@@ -127,6 +134,7 @@
 			<if test="dept_kd != null"> AND T.dept_kd= #{dept_kd} </if>
 		 </where> 
 	</select>
+	
 
 	<!-- get ALL row -->
 	<select id="getAll" resultMap="UserDivisiMap">

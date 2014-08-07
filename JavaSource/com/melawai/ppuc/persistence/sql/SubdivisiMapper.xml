@@ -8,7 +8,6 @@
 	<!-- result map-->
 	<resultMap type="Subdivisi" id="SubdivisiMap">
 		<id property="subdiv_kd" column="subdiv_kd"  />  
-		<result property="subdiv_kd" column="subdiv_kd" />
 		<result property="divisi_kd" column="divisi_kd" />
 		<result property="subdiv_nm" column="subdiv_nm" />
 		<result property="user_update" column="user_update" />

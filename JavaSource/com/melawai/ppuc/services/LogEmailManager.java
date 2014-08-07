@@ -38,7 +38,8 @@ public class LogEmailManager {
 	/** Delete data berdasarkan id_log_email **/
 	@Transactional
 	public void remove(Long id_log_email) {
-		logemailMapper.remove(id_log_email);
+		throw new RuntimeException ("Remove Email Not Implement");
+		//logemailMapper.remove(id_log_email);
 	}
 
 	/** Ambil jumlah seluruh data **/

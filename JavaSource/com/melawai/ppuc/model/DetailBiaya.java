@@ -49,8 +49,23 @@ public class DetailBiaya extends BaseObject implements Serializable  {
 
 	//****************** CONSTRUCTOR START HERE ******************/
 	public DetailBiaya(){
-		//TODO: standard constructor free to change
 	}
+	
+	
+
+	public DetailBiaya(String kd_biaya, String kd_group,
+			String biaya_description, Integer f_putus, Integer f_used,
+			String acc_no) {
+		super();
+		this.kd_biaya = kd_biaya;
+		this.kd_group = kd_group;
+		this.biaya_description = biaya_description;
+		this.f_putus = f_putus;
+		this.f_used = f_used;
+		this.acc_no = acc_no;
+	}
+
+
 
 	//****************** CONSTRUCTOR END HERE ******************/
 

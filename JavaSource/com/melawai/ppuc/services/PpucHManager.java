@@ -19,21 +19,37 @@ import com.melawai.ppuc.persistence.PpucHMapper;
  */
 
 @Service("ppuchManager")
-public class PpucHManager {
+public class PpucHManager extends BaseService {
 
 	private static Logger logger = Logger.getLogger(PpucHManager.class);
 
 	@Autowired
 	private PpucHMapper ppuchMapper;
+	
+	@Autowired
+	private GroupBiayaManager groupBiayaManager;
 
 	/** Ambil DATA berdasarkan divisi_kd, subdiv_kd, dept_kd, lok_kd, no_ppuc, tgl_ppuc **/
+	public List<PpucH> get(String divisi_kd, String subdiv_kd, String dept_kd, String lok_kd, String no_ppuc, Date tgl_ppuc,String no_batch) {
+		return ppuchMapper.get(divisi_kd, subdiv_kd, dept_kd, lok_kd, no_ppuc, tgl_ppuc, no_batch);
+	}
+	
 	public PpucH get(String divisi_kd, String subdiv_kd, String dept_kd, String lok_kd, String no_ppuc, Date tgl_ppuc) {
-		return ppuchMapper.get(divisi_kd, subdiv_kd, dept_kd, lok_kd, no_ppuc, tgl_ppuc);
+		List<PpucH> ppucHs=ppuchMapper.get(divisi_kd, subdiv_kd, dept_kd, lok_kd, no_ppuc, tgl_ppuc, null);
+		return ppucHs.isEmpty()?null:ppucHs.get(0);
+	}
+	
+	public List<PpucH> get(String no_batch) {
+		return ppuchMapper.get(null, null,  null, null, null, null, no_batch);
 	}
 
 	/** Apakah data dengan divisi_kd, subdiv_kd, dept_kd, lok_kd, no_ppuc, tgl_ppuc ini ada? **/
 	public boolean exists(String divisi_kd, String subdiv_kd, String dept_kd, String lok_kd, String no_ppuc, Date tgl_ppuc) {	
 		return get(divisi_kd, subdiv_kd, dept_kd, lok_kd, no_ppuc, tgl_ppuc)!=null;
+	}
+	
+	public String getGroupBiaya(String kd_group){
+		return groupBiayaManager.get(kd_group).nm_group;
 	}
 
 	/** Delete data berdasarkan id **/

@@ -7,11 +7,11 @@
   <spring:url var="roo" value="/resources/images/banner-graphic.png" />
   
   <spring:url var="home" value="/" />
- <!-- <spring:message code="button_home" var="home_label" htmlEscape="false" />
+<spring:message code="button_home" var="home_label" htmlEscape="false" />
    <a href="${home}" name="${fn:escapeXml(home_label)}" title="${fn:escapeXml(home_label)}">
     <img src="${roo}" style="width: 100%"/>
-  </a>-->
-  
+  </a>
+   <!-- 
   <a href="${home}" name="${fn:escapeXml(home_label)}" title="${fn:escapeXml(home_label)}">
     <img src="${banner}" class="banner"/>
   </a>
@@ -19,5 +19,5 @@
   <div style="float: right;">
     <img src="${ppuc}" /> 
   </div>
-  
+  -->
 </div> 

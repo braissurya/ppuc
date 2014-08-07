@@ -34,9 +34,9 @@ import com.melawai.ppuc.model.DropDown;
  * @author Yusuf
  * @since Feb 7, 2011 (4:51:10 PM)
  */
+//@Component berarti otomatis register sebagai bean, tanpa perlu didefinisikan
+//di spring xml
 @Component
-// @Component berarti otomatis register sebagai bean, tanpa perlu didefinisikan
-// di spring xml
 public class Email {
 
 	@Autowired

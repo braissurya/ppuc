@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.melawai.ppuc.model.Audittrail;
 import com.melawai.ppuc.model.HakApprove;
 import com.melawai.ppuc.services.HakApproveManager;
+import com.melawai.ppuc.utils.CommonUtil;
+import com.melawai.ppuc.utils.Utils;
 import com.melawai.ppuc.web.validator.HakApproveValidator;
 
 @RequestMapping("/master/hakapprove")
@@ -29,13 +32,20 @@ public class HakApproveController extends ParentController{
 
 	@Autowired
 	private HakApproveManager hakapproveManager;
+	
+	@Autowired
+	private HakApproveValidator hakApproveValidator;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		binder.setValidator(new HakApproveValidator());
+		binder.addValidators(hakApproveValidator);
 	}
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	public String create(@Valid HakApprove hakapprove, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+		if (hakapproveManager.exists(hakapprove.user_id, hakapprove.divisi_kd, hakapprove.subdiv_kd, hakapprove.dept_kd, hakapprove.kd_group, hakapprove.kd_biaya)) {
+			bindingResult.rejectValue("kd_biaya", "duplicate", new String[] { "DIVISI KD : " + hakapprove.divisi_kd + " | SUBDIVISI KD : " + hakapprove.subdiv_kd + " | DEPARTMEN KD : " + hakapprove.dept_kd + " | KD HAKBIAYA : " + hakapprove.kd_biaya + ", " }, null);
+		}
+		
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, hakapprove);
 			return "hakapprove/create";
@@ -54,8 +64,11 @@ public class HakApproveController extends ParentController{
 	@RequestMapping(value = "/{user_id}/{divisi_kd}/{subdiv_kd}/{dept_kd}/{kd_group}/{kd_biaya}", produces = "text/html")
 	public String show(@PathVariable("user_id") String user_id, @PathVariable("divisi_kd") String divisi_kd, @PathVariable("subdiv_kd") String subdiv_kd, @PathVariable("dept_kd") String dept_kd, @PathVariable("kd_group") String kd_group, @PathVariable("kd_biaya") String kd_biaya, Model uiModel) {
 		addDateTimeFormatPatterns(uiModel);
-		uiModel.addAttribute("hakapprove", hakapproveManager.get(user_id, divisi_kd, subdiv_kd, dept_kd, kd_group, kd_biaya));
+		HakApprove hakapprove=hakapproveManager.get(user_id, divisi_kd, subdiv_kd, dept_kd, kd_group, kd_biaya);
+		uiModel.addAttribute("hakapprove",hakapprove );
 		uiModel.addAttribute("itemId", user_id+"/"+divisi_kd+"/"+subdiv_kd+"/"+dept_kd+"/"+kd_group+"/"+kd_biaya);
+		
+		populateEditFormAdditional(uiModel, hakapprove);
 		return "hakapprove/show";
 	}
 
@@ -109,5 +122,72 @@ public class HakApproveController extends ParentController{
 	void populateEditForm(Model uiModel, HakApprove hakapprove) {
 		uiModel.addAttribute("hakapprove", hakapprove);
 		addDateTimeFormatPatterns(uiModel);
+		
+		populateEditFormAdditional(uiModel, hakapprove);
+	}
+	
+	void populateEditFormAdditional(Model uiModel, HakApprove hakapprove){
+		uiModel.addAttribute("useridList", baseService.selectDropDown("concat(user_id,' [ ',user_name,' ]')", "user_id", "user", "kd_fungsi='APV'", "user_id"));
+		
+		uiModel.addAttribute("divisiList", baseService.selectDropDown("divisi_nm", "divisi_kd", "divisi", null, "divisi_nm"));
+		
+		uiModel.addAttribute("groupbiayaList", baseService.selectDropDown("nm_group", "kd_group", "group_biaya", null, "nm_group"));
+
+		
+		if (hakapproveManager.selectCountTable("subdivisi", "divisi_kd = '" + hakapprove.divisi_kd + "'")>0)
+			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "concat(divisi_kd, '.', subdiv_kd)", "subdivisi", "divisi_kd = '" + hakapprove.divisi_kd + "'", "subdiv_nm"));
+		else
+			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "concat(divisi_kd, '.', subdiv_kd)", "subdivisi", null, "subdiv_nm"));
+
+		if (hakapproveManager.selectCountTable("departmen", " divisi_kd = '" + hakapprove.divisi_kd + "' and subdiv_kd = '" + hakapprove.subdiv_kd + "'")>0)
+			uiModel.addAttribute("deptList", baseService.selectDropDown("dept_nm","concat(divisi_kd, '.', subdiv_kd, '.', dept_kd)", "departmen", " divisi_kd = '" + hakapprove.divisi_kd + "' and subdiv_kd = '" + hakapprove.subdiv_kd + "'", "dept_nm"));
+		else
+			uiModel.addAttribute("deptList", baseService.selectDropDown("dept_nm","concat(divisi_kd, '.', subdiv_kd, '.', dept_kd)",  "departmen", null, "dept_nm"));
+
+		if (hakapproveManager.selectCountTable("lokasi", " divisi_kd = '" + hakapprove.divisi_kd + "' and subdiv_kd = '" + hakapprove.subdiv_kd + "' and dept_kd = '" + hakapprove.dept_kd + "'")>0)
+			uiModel.addAttribute("lokList", baseService.selectDropDown("lok_nm","concat(divisi_kd, '.', subdiv_kd, '.', dept_kd, '.', lok_kd)", "lokasi", " divisi_kd = '" + hakapprove.divisi_kd + "' and subdiv_kd = '" + hakapprove.subdiv_kd + "' and dept_kd = '" + hakapprove.dept_kd + "'", "lok_nm"));
+		else
+			uiModel.addAttribute("lokList", baseService.selectDropDown("lok_nm","concat(divisi_kd, '.', subdiv_kd, '.', dept_kd, '.', lok_kd)",  "lokasi", null, "lok_nm"));
+		
+		if (hakapproveManager.selectCountTable("detail_biaya", "kd_group ='" + hakapprove.kd_group + "'") > 0)
+			uiModel.addAttribute("detailbiayaList", baseService.selectDropDown("kd_biaya", "kd_biaya", "detail_biaya", "kd_group = '" + hakapprove.kd_group + "' and f_used <> 1", "kd_biaya"));
+		else
+			uiModel.addAttribute("detailbiayaList", baseService.selectDropDown("kd_biaya", "kd_biaya", "detail_biaya", null, "kd_biaya"));
+		
+	}
+	
+	@RequestMapping(value = "/aktifnonaktif", method = RequestMethod.POST, produces = "text/html")
+	public String nonaktif(@RequestParam(value = "tgl", required = true) String tgl,@RequestParam(value = "user_id", required = true) String user_id, @RequestParam(value = "divisi_kd", required = true) String divisi_kd, @RequestParam(value = "subdiv_kd", required = true) String subdiv_kd,@RequestParam(value = "dept_kd", required = true) String dept_kd, @RequestParam(value = "kd_group", required = true) String kd_group, @RequestParam(value = "kd_biaya", required = true) String kd_biaya, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size,
+			Model uiModel, HttpServletRequest request) {
+		HakApprove hakapprove = hakapproveManager.get(user_id, divisi_kd, subdiv_kd, dept_kd, kd_group, kd_biaya);
+		
+		if(hakapprove.getF_aktif()==1){
+			hakapprove.setF_aktif(0);
+			hakapprove.setTgl_nonaktif(hakapproveManager.selectSysdate());
+			hakapprove.setUser_nonaktif(CommonUtil.getCurrentUserId());
+			hakapprove.setSptgl(Utils.convertStringToDate(tgl, "dd/MM/yyyy"));
+		}else{
+			hakapprove.setF_aktif(1);
+			hakapprove.setTgl_nonaktif(null);
+			hakapprove.setJam_nonaktif(null);
+			hakapprove.setUser_nonaktif(null);
+			hakapprove.setDrtgl(Utils.convertStringToDate(tgl, "dd/MM/yyyy"));
+			hakapprove.setSptgl(null);
+		}
+		
+		
+		hakapproveManager.save(hakapprove);
+		
+		if(hakapprove.getF_aktif()==1){	
+			hakapproveManager.audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.AKTIF, hakapprove.getClass().getSimpleName(), hakapprove.getItemId(), CommonUtil.getIpAddr(request), "AKTIFKAN HAK APPROVE",CommonUtil.getCurrentUser(), null);
+		}else{
+			hakapproveManager.audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.NONAKTIF, hakapprove.getClass().getSimpleName(), hakapprove.getItemId(), CommonUtil.getIpAddr(request), "NON AKTIFKAN HAK APPROVE",CommonUtil.getCurrentUser(), null);
+		}
+		uiModel.asMap().clear();
+		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
+		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
+		uiModel.addAttribute("pesan", messageSource.getMessage("entity_success", new String[]{hakapprove.getIsActive()+" Hak Approve "+hakapprove.kd_biaya}, LocaleContextHolder.getLocale()));
+		
+		return "redirect:/master/hakapprove";
 	}
 }

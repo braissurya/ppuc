@@ -1,7 +1,9 @@
 package com.melawai.ppuc.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -184,6 +186,29 @@ public class PpucH extends BaseObject implements Serializable  {
 	//****************** OTHERS START HERE ******************/
 
 	public String itemId;
+	
+	public List<PpucD> ppucds = new ArrayList<PpucD>();
+	
+	public PpucD ppucd;
+	public Divisi divisi;
+	public Divisi divisi_app;
+	public Subdivisi subdivisi;
+	public Subdivisi subdivisi_app;
+	public Departmen departmen;
+	public Departmen departmen_app;
+	public Lokasi lokasi;
+	public User user_d;
+	public User user_conf_d;
+	public User user_app_d;
+	public User user_real_d;
+	public User user_conf_real_d;
+	public User user_conf_oc_d;
+	
+	public String kd_group;
+	public String kd_biaya;
+	
+	
+	
 	//****************** OTHERS END HERE ******************/
 
 
@@ -343,6 +368,143 @@ public class PpucH extends BaseObject implements Serializable  {
 
 	public String getItemId() {return ""+divisi_kd+"/"+subdiv_kd+"/"+dept_kd+"/"+lok_kd+"/"+no_ppuc+"/"+tgl_ppuc;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}
+
+	public PpucD getPpucd() {
+		return ppucd;
+	}
+
+	public void setPpucd(PpucD ppucd) {
+		this.ppucd = ppucd;
+	}
+
+	public Divisi getDivisi() {
+		return divisi;
+	}
+
+	public void setDivisi(Divisi divisi) {
+		this.divisi = divisi;
+	}
+
+	public Divisi getDivisi_app() {
+		return divisi_app;
+	}
+
+	public void setDivisi_app(Divisi divisi_app) {
+		this.divisi_app = divisi_app;
+	}
+
+	public Subdivisi getSubdivisi() {
+		return subdivisi;
+	}
+
+	public void setSubdivisi(Subdivisi subdivisi) {
+		this.subdivisi = subdivisi;
+	}
+
+	public Subdivisi getSubdivisi_app() {
+		return subdivisi_app;
+	}
+
+	public void setSubdivisi_app(Subdivisi subdivisi_app) {
+		this.subdivisi_app = subdivisi_app;
+	}
+
+	public Departmen getDepartmen() {
+		return departmen;
+	}
+
+	public void setDepartmen(Departmen departmen) {
+		this.departmen = departmen;
+	}
+
+	public Departmen getDepartmen_app() {
+		return departmen_app;
+	}
+
+	public void setDepartmen_app(Departmen departmen_app) {
+		this.departmen_app = departmen_app;
+	}
+
+	public Lokasi getLokasi() {
+		return lokasi;
+	}
+
+	public void setLokasi(Lokasi lokasi) {
+		this.lokasi = lokasi;
+	}
+
+	public User getUser_d() {
+		return user_d;
+	}
+
+	public void setUser_d(User user_d) {
+		this.user_d = user_d;
+	}
+
+	public User getUser_conf_d() {
+		return user_conf_d;
+	}
+
+	public void setUser_conf_d(User user_conf_d) {
+		this.user_conf_d = user_conf_d;
+	}
+
+	public User getUser_app_d() {
+		return user_app_d;
+	}
+
+	public void setUser_app_d(User user_app_d) {
+		this.user_app_d = user_app_d;
+	}
+
+	public User getUser_real_d() {
+		return user_real_d;
+	}
+
+	public void setUser_real_d(User user_real_d) {
+		this.user_real_d = user_real_d;
+	}
+
+	public User getUser_conf_real_d() {
+		return user_conf_real_d;
+	}
+
+	public void setUser_conf_real_d(User user_conf_real_d) {
+		this.user_conf_real_d = user_conf_real_d;
+	}
+
+	public User getUser_conf_oc_d() {
+		return user_conf_oc_d;
+	}
+
+	public void setUser_conf_oc_d(User user_conf_oc_d) {
+		this.user_conf_oc_d = user_conf_oc_d;
+	}
+
+	public List<PpucD> getPpucds() {
+		return ppucds;
+	}
+
+	public void setPpucds(List<PpucD> ppucds) {
+		this.ppucds = ppucds;
+	}
+
+	public String getKd_group() {
+		return kd_group;
+	}
+
+	public void setKd_group(String kd_group) {
+		this.kd_group = kd_group;
+	}
+
+	public String getKd_biaya() {
+		return kd_biaya;
+	}
+
+	public void setKd_biaya(String kd_biaya) {
+		this.kd_biaya = kd_biaya;
+	}
+
 
 	//****************** GETTER SETTER END HERE ******************/
 

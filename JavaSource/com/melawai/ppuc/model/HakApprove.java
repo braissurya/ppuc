@@ -8,7 +8,10 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.melawai.ppuc.utils.Utils;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -22,31 +25,26 @@ public class HakApprove extends BaseObject implements Serializable  {
 	private static final long serialVersionUID = 3917846671656716785L;
 
 	//****************** COLOMN FROM TABLE START HERE ******************/
-	@NotNull
+	@NotEmpty
 	@Size(max=50)
 	public String user_id;
 
-	@NotNull
-	@Size(max=3)
+	@NotEmpty
 	public String divisi_kd;
 
-	@NotNull
-	@Size(max=3)
+	@NotEmpty
 	public String subdiv_kd;
 
-	@NotNull
-	@Size(max=3)
+	@NotEmpty
 	public String dept_kd;
 
-	@NotNull
-	@Size(max=5)
+	@NotEmpty
 	public String kd_group;
 
-	@NotNull
-	@Size(max=30)
+	@NotEmpty
 	public String kd_biaya;
 
-	public Long f_aktif;
+	public Integer f_aktif;
 
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(style="M-")
@@ -72,6 +70,9 @@ public class HakApprove extends BaseObject implements Serializable  {
 	//****************** OTHERS START HERE ******************/
 
 	public String itemId;
+	public Integer filter_faktif;
+	public String isActive;
+	public String revActive;
 	//****************** OTHERS END HERE ******************/
 
 
@@ -102,8 +103,21 @@ public class HakApprove extends BaseObject implements Serializable  {
 	public String getKd_biaya(){ return kd_biaya; }
 	public void setKd_biaya(String kd_biaya){ this.kd_biaya = kd_biaya; }
 
-	public Long getF_aktif(){ return f_aktif; }
-	public void setF_aktif(Long f_aktif){ this.f_aktif = f_aktif; }
+	public Integer getF_aktif(){ 
+		if (f_aktif == null) f_aktif = 0;
+		return f_aktif;
+	}
+	public void setF_aktif(Integer f_aktif){ 
+		if(f_aktif==null)f_aktif=0;
+		this.f_aktif = f_aktif;
+		if(f_aktif==0){
+			revActive="Active";
+			isActive="Non-Active";
+		}else{
+			revActive="Non-Active";
+			isActive="Active";
+		} 
+	}
 
 	public Date getDrtgl(){ return drtgl; }
 	public void setDrtgl(Date drtgl){ this.drtgl = drtgl; }
@@ -115,7 +129,12 @@ public class HakApprove extends BaseObject implements Serializable  {
 	public void setUser_nonaktif(String user_nonaktif){ this.user_nonaktif = user_nonaktif; }
 
 	public Date getTgl_nonaktif(){ return tgl_nonaktif; }
-	public void setTgl_nonaktif(Date tgl_nonaktif){ this.tgl_nonaktif = tgl_nonaktif; }
+	public void setTgl_nonaktif(Date tgl_nonaktif){
+		this.tgl_nonaktif = tgl_nonaktif; 
+		if (tgl_nonaktif != null) {
+			this.jam_nonaktif = Utils.convertDateToString(tgl_nonaktif, jam_format);
+		}
+	}
 
 	public String getJam_nonaktif(){ return jam_nonaktif; }
 	public void setJam_nonaktif(String jam_nonaktif){ this.jam_nonaktif = jam_nonaktif; }
@@ -123,6 +142,30 @@ public class HakApprove extends BaseObject implements Serializable  {
 
 	public String getItemId() {return ""+user_id+"/"+divisi_kd+"/"+subdiv_kd+"/"+dept_kd+"/"+kd_group+"/"+kd_biaya;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}
+
+	public Integer getFilter_faktif() {
+		return filter_faktif;
+	}
+
+	public void setFilter_faktif(Integer filter_faktif) {
+		this.filter_faktif = filter_faktif;
+	}
+
+	public String getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
+	}
+
+	public String getRevActive() {
+		return revActive;
+	}
+
+	public void setRevActive(String revActive) {
+		this.revActive = revActive;
+	}
 
 	//****************** GETTER SETTER END HERE ******************/
 

@@ -151,7 +151,14 @@ public class JsonController extends ParentController {
 				result = baseService.selectDropDown("DISTINCT kd_biaya","kd_biaya",  "detail_biaya", "kd_group = '"+ param +"' group by kd_biaya", "kd_biaya");
 			}
 
-		}
+		} else if (tipe.equals("detailbiaya3")) {
+			if (param.equals("")) {
+//				result = baseService.selectDropDown("kd_biaya", "kd_biaya", "detail_biaya", null, "kd_biaya");
+			} else {
+				result = baseService.selectDropDown("kd_biaya", "kd_biaya", "detail_biaya", "kd_group = '" + param + "' and f_used <> 1", "kd_biaya");
+			}
+
+		} 
 
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();

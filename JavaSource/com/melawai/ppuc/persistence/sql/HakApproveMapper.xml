@@ -119,23 +119,17 @@
 	<!-- update query untuk table ini -->
 	<update id="update" parameterType="HakApprove">
 		UPDATE hak_approve
-		<set>
-			<if test="user_id != null">USER_ID = #{user_id}, </if>
-			<if test="divisi_kd != null">DIVISI_KD = #{divisi_kd}, </if>
-			<if test="subdiv_kd != null">SUBDIV_KD = #{subdiv_kd}, </if>
-			<if test="dept_kd != null">DEPT_KD = #{dept_kd}, </if>
-			<if test="kd_group != null">KD_GROUP = #{kd_group}, </if>
-			<if test="kd_biaya != null">KD_BIAYA = #{kd_biaya}, </if>
+		set SPTGL = #{sptgl},
+		SYS_USER_NONAKTIF = #{user_nonaktif},
+		SYS_TGL_NONAKTIF = #{tgl_nonaktif}, 
+		SYS_JAM_NONAKTIF = #{jam_nonaktif},
+		<trim suffixOverrides=",">	
 			<if test="f_aktif != null">F_AKTIF = #{f_aktif}, </if>
 			<if test="drtgl != null">DRTGL = #{drtgl}, </if>
-			<if test="sptgl != null">SPTGL = #{sptgl}, </if>
 			<if test="user_create != null">SYS_USER_CREATE = #{user_create}, </if>
 			<if test="tgl_create != null">SYS_TGL_CREATE = #{tgl_create}, </if>
 			<if test="jam_create != null">SYS_JAM_CREATE = #{jam_create}, </if>
-			<if test="user_nonaktif != null">SYS_USER_NONAKTIF = #{user_nonaktif}, </if>
-			<if test="tgl_nonaktif != null">SYS_TGL_NONAKTIF = #{tgl_nonaktif}, </if>
-			<if test="jam_nonaktif != null">SYS_JAM_NONAKTIF = #{jam_nonaktif} </if>
-		</set>
+		</trim>
 		WHERE  
 			USER_ID= #{user_id} 
 			AND DIVISI_KD= #{divisi_kd}

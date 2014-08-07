@@ -1,19 +1,98 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:c="http://java.sun.com/jsp/jstl/core"  xmlns:formtag="urn:jsptagdir:/WEB-INF/tags/form"   xmlns:spring="http://www.springframework.org/tags"  xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:fn="http://java.sun.com/jsp/jstl/functions"  xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
+    <spring:url value="/" var="path" />
     <page:list id="pl_com_melawai_ppuc_model_hakapprove"  items="${hakapproveList}" >
-        <table:table data="${hakapproveList}" id="l_com_melawai_ppuc_model_HakApprove" typeIdFieldName="itemId" path="/master/hakapprove" >
-       <table:column id="c_com_melawai_ppuc_model_hakapprove_user_id" property="user_id" label="User Id" />
-       <table:column id="c_com_melawai_ppuc_model_hakapprove_divisi_kd" property="divisi_kd" label="Divisi Kd" />
-       <table:column id="c_com_melawai_ppuc_model_hakapprove_subdiv_kd" property="subdiv_kd" label="Subdiv Kd" />
-       <table:column id="c_com_melawai_ppuc_model_hakapprove_dept_kd" property="dept_kd" label="Dept Kd" />
-       <table:column id="c_com_melawai_ppuc_model_hakapprove_kd_group" property="kd_group" label="Kd Group" />
-       <table:column id="c_com_melawai_ppuc_model_hakapprove_kd_biaya" property="kd_biaya" label="Kd Biaya" />
-       <table:column id="c_com_melawai_ppuc_model_hakapprove_user_create" property="user_create" label="User Create" />
-       <table:column id="c_com_melawai_ppuc_model_hakapprove_jam_create" property="jam_create" label="Jam Create" />
-       <table:column id="c_com_melawai_ppuc_model_hakapprove_user_nonaktif" property="user_nonaktif" label="User Nonaktif" />
-       <table:column id="c_com_melawai_ppuc_model_hakapprove_jam_nonaktif" property="jam_nonaktif" label="Jam Nonaktif" />
+    	<script>
+			require(["dijit/Dialog", "dojo/query",  "dijit/form/TextBox","dojo/NodeList-manipulate", "dijit/form/CheckBox","dijit/form/Button","dijit/form/ValidationTextBox", "dijit/form/DateTextBox"]);
+		</script>
+		<script type="text/javascript">
+			function showDialog(f_akftif,id){
+				
+					myDialog.show();
+					var ids=id.split("/");
+					
+					dojo.query("#user_id").val(ids[0]);
+					dojo.query("#divisi_kd").val(ids[1]);
+					dojo.query("#subdiv_kd").val(ids[2]);
+					dojo.query("#dept_kd").val(ids[3]);
+					dojo.query("#kd_group").val(ids[4]);
+					dojo.query("#kd_biaya").val(ids[5]);
+					
+					dojo.query("#_faktif_id").val(f_akftif);
+					if(f_akftif=="Non-Active")
+						dojo.query("#_tgl_lb_id").innerHTML("Tanggal Berakhir : ");
+					else
+						dojo.query("#_tgl_lb_id").innerHTML("Tanggal Berlaku Baru : ");	
+			}
+		</script>
+		 
+		
+		<div data-dojo-type="dijit/Dialog" data-dojo-id="myDialog" title="Please fill this Field">
+			<form action="${path }master/hakapprove/aktifnonaktif" name="formAktifNon" method="POST">
+		    <table class="dijitDialogPaneContentArea noborder">
+		        <tr>
+		            <td><span id="_tgl_lb_id">Tanggal:</span></td>
+		            <td><input  name="tgl" id="_tgl_id" required="true"/>
+		            	 <input type="hidden" name="user_id" id="user_id" />
+		            	 <input type="hidden" name="divisi_kd" id="divisi_kd" />
+		            	 <input type="hidden" name="subdiv_kd" id="subdiv_kd" />
+		            	 <input type="hidden" name="dept_kd" id="dept_kd" />
+		            	 <input type="hidden" name="kd_group" id="kd_group" />
+		            	 <input type="hidden" name="kd_biaya" id="kd_biaya" />
+		            	 <input type="hidden" name="faktif" id="_faktif_id" />
+		            	
+		            	 <script type="text/javascript">
+				       		 Spring.addDecoration(new Spring.ElementDecoration({elementId : '_tgl_id', widgetType : 'dijit.form.DateTextBox', widgetAttrs : {promptMessage: '${sec_field_validation}', invalidMessage: '${sec_field_invalid}', required:true, constraints: {datePattern : 'dd/MM/yyyy', required : true}, datePattern : 'dd/MM/yyyy'}})); 
+				        </script>
+		            </td>
+		        </tr>
+		        <tr>
+		        	<td>
+		        	</td>
+		        	<td>
+							<div class="dijitDialogPaneActionBar">
+					    	<script type="text/javascript">
+								Spring.addDecoration(new Spring.ValidateAllDecoration({
+									elementId : 'ok',
+									event : 'onclick'
+								}));
+								
+								function cancelDialog(){
+									dijit.byId("_tgl_id").value="";
+									myDialog.hide();
+								}
+								
+							</script>
+					        <button data-dojo-type="dijit/form/Button"  type="submit" id="ok">Submit</button>
+					        <button data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onClick:function(){cancelDialog();}"
+					                id="cancel">Cancel</button>
+					    </div>
+		        	</td>
+		        </tr>
+		    </table>
+			</form>
+		   
+		</div>
+       <table:table data="${hakapproveList}" id="l_com_melawai_ppuc_model_HakApprove" typeIdFieldName="itemId" path="/master/hakapprove" delete="false" update="false" show="false"> 
+	       <table:column id="c_com_melawai_ppuc_model_hakapprove_user_id" property="user_id" label="User Id" />
+	       <table:column id="c_com_melawai_ppuc_model_hakapprove_divisi_kd" property="divisi_kd" label="Divisi Kd" />
+	       <table:column id="c_com_melawai_ppuc_model_hakapprove_subdiv_kd" property="subdiv_kd" label="Subdiv Kd" />
+	       <table:column id="c_com_melawai_ppuc_model_hakapprove_dept_kd" property="dept_kd" label="Dept Kd" />
+	       <table:column id="c_com_melawai_ppuc_model_hakapprove_kd_group" property="kd_group" label="Kd Group" />
+	       <table:column id="c_com_melawai_ppuc_model_hakapprove_kd_biaya" property="kd_biaya" label="Kd Biaya" />
+	       <table:column id="c_com_melawai_ppuc_model_hakapprove_user_create" property="user_create" label="User Create" />
+	       <table:column id="c_com_melawai_ppuc_model_hakapprove_jam_create" property="jam_create" label="Jam Create" />
+	       <table:column id="c_com_melawai_ppuc_model_hakapprove_user_nonaktif" property="user_nonaktif" label="User Nonaktif" />
+	       <table:column id="c_com_melawai_ppuc_model_hakapprove_jam_nonaktif" property="jam_nonaktif" label="Jam Nonaktif" />
+	       <table:column id="c_com_melawai_ppuc_model_hakapprove_aktifnonaktif" label=" " custom="true" property="revActive">
+				<spring:url value="javascript:showDialog('#prop','#itemID')" var="aktif_form_url" />
+				<spring:url value="/resources/images/icons/#prop.png" var="aktif_image_url" />
+				<c:set value="Click To #propd User" var="label_aktif" />
+				<a href="${aktif_form_url}" alt="${label_aktif}" title="${label_aktif}"> <img alt="${label_aktif}" class="image" src="${aktif_image_url}" title="${label_aktif}" />
+				</a>
+			</table:column>
         </table:table>
     </page:list>
 </div>

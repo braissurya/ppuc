@@ -8,7 +8,6 @@
 	<!-- result map-->
 	<resultMap type="GroupBiaya" id="GroupBiayaMap">
 		<id property="kd_group" column="kd_group"  />  
-		<result property="kd_group" column="kd_group" />
 		<result property="nm_group" column="nm_group" />
 		<result property="user_create" column="user_create" />
 		<result property="tgl_create" column="tgl_create" />
