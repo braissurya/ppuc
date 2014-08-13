@@ -20,7 +20,7 @@ import com.melawai.ppuc.services.SubdivisiManager;
  * @Revision	:
  */
 @Component
-public class HakApproveValidator extends LocalValidatorFactoryBean implements Validator {
+public class HakApproveValidator  implements Validator {
 	
 	private static Logger logger = Logger.getLogger(HakApproveValidator.class);
 	

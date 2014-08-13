@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:form="http://www.springframework.org/tags/form" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:fm="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<spring:url value="/" var="path" />
 	<jsp:output omit-xml-declaration="yes" />
-	<form:create id="fc_com_melawai_ppuc_model_ppuch" modelAttribute="ppuch" path="/master/ppuch" render="${ empty dependencies }">
+	<fm:create id="fc_com_melawai_ppuc_model_ppuch" modelAttribute="ppuch" path="/trans/ppuch" render="${ empty dependencies }">
 		<field:input field="no_batch" label="No Batch" id="c_com_melawai_ppuc_model_ppuch_no_batch" required="false" disabled="true" max="10" />
-		<field:select field="divisi_kd" label="Divisi Kd" id="c_com_melawai_ppuc_model_ppuch_divisi_kd" items="${divisiList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/divisi" />
-		<field:select field="subdiv_kd" label="Subdiv Kd" id="c_com_melawai_ppuc_model_ppuch_subdiv_kd" items="${subdivList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/subdivisi" />
+		<field:select field="divisi_kd" label="Divisi Kd" readonly="true" id="c_com_melawai_ppuc_model_ppuch_divisi_kd" items="${divisiList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/divisi" />
+		<field:select field="subdiv_kd" label="Subdiv Kd"  readonly="true"   id="c_com_melawai_ppuc_model_ppuch_subdiv_kd" items="${subdivList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/subdivisi" />
 		<field:select field="dept_kd" label="Dept Kd" id="c_com_melawai_ppuc_model_ppuch_dept_kd" items="${deptList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/departmen" />
 		<field:select field="lok_kd" label="Lok Kd" required="true" id="c_com_melawai_ppuc_model_ppuch_lok_kd" items="${lokList}" itemLabel="key" itemValue="value" blank="true" path="/master/lokasi" />
 		<field:datetime field="tgl_ppuc" label="Tgl Ppuc" id="c_com_melawai_ppuc_model_ppuch_tgl_ppuc" required="true" dateTimePattern="${ppuch_tgl_ppuc_date_format}" />
@@ -15,9 +16,51 @@
 		<spring:message arguments="Dept KD" code="field_choice" var="choice_deptkd" htmlEscape="false" />
 		<spring:message arguments="KD Group" code="field_choice" var="choice_kdGroup" htmlEscape="false" />
 		<spring:message arguments="KD Biaya" code="field_choice" var="choice_kdbiaya" htmlEscape="false" />
-		<table border="0" cellspacing="0" cellpadding="0">
+		<h4>
+			Detail Biaya : <form:errors path="idx" id="_idx_error_id" cssClass="errors"/>
+			<spring:url value="/resources/images/icons/cross.png" var="errorIcon" />
+			<![CDATA[
+				<script type="text/javascript">
+					 require(["dijit/Tooltip","dojo/query", "dojo/NodeList-manipulate", "dojo/domReady!"], function(Tooltip, query){
+						 try{
+							var node = query("#_idx_error_id");
+							var pesan=node.innerHTML();
+							new Tooltip({
+						        connectId: ["_idx_error_id"],
+						        label: "<span class='errors'>"+pesan+"</span>",
+						    });
+							    node.innerHTML("<img alt=\""+pesan+"\" src=\"${errorIcon}\" class=\"errors\"/> ");
+						 }catch(err){
+							 
+						 }
+					    
+					}); 
+					
+				</script>
+			]]>
+		</h4>
+		<table class="noborder" style="width: auto;">
 			<tr>
-				<td>
+				<th>
+					<label>KD Group :</label>
+				</th>
+				<th>
+					<label>KD Biaya :</label>
+				</th>
+				<th>
+					<label>QTY :</label>
+				</th>
+				<th>
+					<label>Harga :</label>
+				</th>
+				<th>
+					<label>Keterangan :</label>
+				</th>
+				<th>
+				</th>
+			</tr>
+			<tr>
+				<td class="vtop">
 					<select name="kd_group" id="_kd_group_id">
 							<option value=" ">${choice_kdGroup }</option>
 							<c:forEach items="${groupbiayaList}" var="v">
@@ -42,7 +85,7 @@
 						}));
 					</script>
 				</td>
-				<td>
+				<td class="vtop">
 					<select name="kd_biaya" id="_kd_biaya_id">
 							<option value=" ">${choice_kdbiaya }</option>
 							<c:forEach items="${detailbiayaList}" var="v">
@@ -67,18 +110,28 @@
 						}));
 					</script>
 				</td>
-				<td>
-					<input type="text" name="qty" id="qty"/>
+				<td class="vtop">
+					<input type="text" name="qty" id="_qty_id" class="nominal"/>
+				</td>
+				<td class="vtop">
+					<input type="text" name="harga" id="_harga_id" class="nominal"/>
+				</td>
+				<td class="vtop">
+					<![CDATA[
+					<textarea name="keterangan" id="_keterangan_id" rows="2" ></textarea>
+					]]>
+					
 				</td>
 				<td>
-					<input type="text" name="harga" id="harga"/>
+					<input type="hidden" name="no_ppuc" id="_no_ppuc_id" />
+					<span class="submit" id="filterHakBiaya_filter_submit" style="margin-left: 15px;">
+						<input type="button" name="add" class="add" id="add" value="ADD"/>
+					</span>
 				</td>
-				<td><a href="#" class="add" id="add"> <img src="/PPUC/resources/images/add.png" alt="Add" />
-				</a></td>
 			</tr>
 		</table>
 		<div id="table_wrapper">
-			<table class="gridTables" id="listPPUC" border="0" cellspacing="0" cellpadding="0">
+			<table class="gridTables" id="listTable" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<th>PPUC No</th>
 					<th>Tgl PPUC</th>
@@ -90,25 +143,46 @@
 					<th>Total</th>
 					<th class="utilbox"></th>
 				</tr>
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td class="utilbox"></td>
-				</tr>
+				<c:choose>
+					<c:when test="${not empty ppuch.ppucds }">
+						<c:forEach items="${ppuch.ppucds}" var="i" varStatus="s">
+							<tr>
+								<td><input type="hidden" name="no_ppuc_${s.count}" id="no_ppuc_${s.count}" value="${i.no_ppuc}" />${i.no_ppuc}<input type="hidden" name="idx" id="idx" value="${s.count}" /></td>			 	
+								<td><input type="hidden" name="tgl_ppuc_${s.count}" id="tgl_ppuc_${s.count}" value="${i.tgl_ppuc}" />${i.tgl_ppuc}</td>
+								<td><input type="hidden" name="kd_group_${s.count}" id="kd_group_${s.count}" value="${i.kd_group}" /><input type="hidden" name="nm_group_${s.count}" id="nm_group_${s.count}" value="${i.nm_group}" />${i.nm_group}</td>
+								<td><input type="hidden" name="kd_biaya_${s.count}" id="kd_biaya_${s.count}" value="${i.kd_biaya}" />${i.nm_biaya}</td>
+								<td><input type="hidden" name="keterangan_${s.count}" id="keterangan_${s.count}" value="${i.keterangan}" />${i.keterangan}</td>
+								<td><input type="hidden" name="qty_${s.count}" id="qty_${s.count}" value="${i.qty}" />${i.qty}</td>
+								<td><input type="hidden" name="harga_${s.count}" id="harga_${s.count}" value="${i.harga}" />${i.harga}</td>
+								<td><input type="hidden" name="total_${s.count}" id="total_${s.count}" value="${i.total}"  />${i.total}</td>
+								<td class="utilbox"><a href="#" class="edit" id="edit" rel="${s.count}"> <img src="${path}resources/images/update.png" alt="Edit" /> </a> </td>
+							 	<td class="utilbox"><a href="#" class="remove" id="remove" rel="${s.count}"> <img src="${path}resources/images/delete.png" alt="Delete" /> </a> </td>
+							</tr>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td class="utilbox"></td>
+						</tr>
+					</c:otherwise>
+				</c:choose>
+				
 			</table>
 		</div>
 
-	</form:create>
-	<form:dependency dependencies="${dependencies}" id="d_com_melawai_ppuc_model_ppuch" render="${ not empty dependencies }" />
+	</fm:create>
+	<fm:dependency dependencies="${dependencies}" id="d_com_melawai_ppuc_model_ppuch" render="${ not empty dependencies }" />
 
 
-	<spring:url value="/" var="path" />
+	
 	<c:if test="${not empty ppuch.subdiv_kd}">
 		<c:set var="value_subdivkd" value="${ppuch.divisi_kd}.${ppuch.subdiv_kd}" />
 	</c:if>
@@ -118,24 +192,39 @@
 	<c:if test="${not empty ppuch.lok_kd}">
 		<c:set var="value_lokkd" value="${ppuch.divisi_kd}.${ppuch.subdiv_kd}.${ppuch.dept_kd}.${ppuch.lok_kd}" />
 	</c:if>
-	<c:if test="${not empty ppuch.kd_biaya}">
-		<c:set var="value_kdbiaya" value="${ppuch.kd_biaya }" />
+	<c:if test="${not empty ppuch.kd_group}">
+		<c:set var="value_kdgroup" value="${ppuch.divisi_kd}.${ppuch.subdiv_kd}.${ppuch.dept_kd}.${ppuch.lok_kd}.${ppuch.kd_group }" />
 	</c:if>
-
+	<c:if test="${not empty ppuch.kd_biaya}">
+		<c:set var="value_kdbiaya" value="${ppuch.divisi_kd}.${ppuch.subdiv_kd}.${ppuch.dept_kd}.${ppuch.lok_kd}.${ppuch.kd_group }.${ppuch.kd_biaya }" />
+	</c:if>
+	
 	<script type="text/javascript">
 		dojo.ready(function() {
-
-			autoPopulateSelect3("${path}", "subdivisi2", "_divisi_kd_id", true,
+			
+			autoPopulateSelect5("${path}", "subdivisi_ppuc", "_divisi_kd_id", true,
 					"${choice_subdivkd}", "${value_subdivkd}", "_subdiv_kd_id",
-					"_dept_kd_id", "_lok_kd_id");
-			autoPopulateSelect2("${path}", "departmen", "_subdiv_kd_id", true,
+					"_dept_kd_id", "_lok_kd_id","_kd_group_id", "_kd_biaya_id");
+			
+			autoPopulateSelect4("${path}", "dept_ppuc", "_subdiv_kd_id", true,
 					"${choice_deptkd}", "${value_deptkd}", "_dept_kd_id",
-					"_lok_kd_id");
-			autoPopulateSelect("${path}", "lokasi", "_dept_kd_id", true,
-					"${choice_lokkd}", "${value_lokkd}", "_lok_kd_id");
+					"_lok_kd_id","_kd_group_id", "_kd_biaya_id");
+			
+			autoPopulateSelect3("${path}", "lok_ppuc", "_dept_kd_id", true,
+					"${choice_lokkd}", "${value_lokkd}",
+					"_lok_kd_id","_kd_group_id", "_kd_biaya_id");
+			
+			autoPopulateSelect3("${path}", "groupbiaya_ppuc", "_dept_kd_id", true,
+					"${choice_kdGroup}", "${value_kdgroup}", 
+					"_kd_group_id","_lok_kd_id", "_kd_biaya_id");
+			
+			autoPopulateSelect2("${path}", "groupbiaya_ppuc", "_lok_kd_id", true,
+					"${choice_kdGroup}", "${value_kdgroup}", 
+					"_kd_group_id", "_kd_biaya_id");
 
-			autoPopulateSelect("${path}", "detailbiaya", "_kd_group_id", true,
-					"${choice_kdbiaya}", "${value_kdbiaya}", "_kd_biaya_id");
+			autoPopulateSelect("${path}", "detailbiaya_ppuc", "_kd_group_id", true,
+					"${choice_kdbiaya}", "${value_kdbiaya}",
+					"_kd_biaya_id"); 
 
 		});
 	</script>

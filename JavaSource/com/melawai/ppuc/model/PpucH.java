@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -25,31 +27,24 @@ public class PpucH extends BaseObject implements Serializable  {
 
 	//****************** COLOMN FROM TABLE START HERE ******************/
 	@NotEmpty
-	@Size(max=3)
 	public String divisi_kd;
 
 	@NotEmpty
-	@Size(max=3)
 	public String subdiv_kd;
 
 	@NotEmpty
-	@Size(max=3)
 	public String dept_kd;
 
 	@NotEmpty
-	@Size(max=5)
 	public String lok_kd;
 
-	@NotEmpty
-	@Size(max=9)
 	public String no_ppuc;
 
-	@NotEmpty
+	@NotNull
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(style="M-")
 	public Date tgl_ppuc;
 
-	@NotEmpty
 	@Size(max=10)
 	public String no_batch;
 
@@ -179,6 +174,8 @@ public class PpucH extends BaseObject implements Serializable  {
 
 	@Size(max=100)
 	public String email_tujuan_batal;
+	
+	public Integer posisi;
 
 	//****************** COLOMN FROM TABLE END HERE ******************/
 
@@ -204,10 +201,19 @@ public class PpucH extends BaseObject implements Serializable  {
 	public User user_conf_real_d;
 	public User user_conf_oc_d;
 	
+	
 	public String kd_group;
 	public String kd_biaya;
 	
+	public String divisi_nm;
+	public String subdiv_nm;
+	public String dept_nm;
+	public String lok_nm;
 	
+	public String posisi_desc;
+	
+	@NotEmpty(message="At least one Detail Biaya is required")
+	public Integer[] idx;
 	
 	//****************** OTHERS END HERE ******************/
 
@@ -505,6 +511,61 @@ public class PpucH extends BaseObject implements Serializable  {
 		this.kd_biaya = kd_biaya;
 	}
 
+	public Integer[] getIdx() {
+		return idx;
+	}
+
+	public void setIdx(Integer[] idx) {
+		this.idx = idx;
+	}
+
+	public Integer getPosisi() {
+		return posisi;
+	}
+
+	public void setPosisi(Integer posisi) {
+		this.posisi = posisi;
+	}
+
+	public String getPosisi_desc() {
+		return posisi_desc;
+	}
+
+	public void setPosisi_desc(String posisi_desc) {
+		this.posisi_desc = posisi_desc;
+	}
+
+	public String getDivisi_nm() {
+		return divisi_nm;
+	}
+
+	public void setDivisi_nm(String divisi_nm) {
+		this.divisi_nm = divisi_nm;
+	}
+
+	public String getSubdiv_nm() {
+		return subdiv_nm;
+	}
+
+	public void setSubdiv_nm(String subdiv_nm) {
+		this.subdiv_nm = subdiv_nm;
+	}
+
+	public String getDept_nm() {
+		return dept_nm;
+	}
+
+	public void setDept_nm(String dept_nm) {
+		this.dept_nm = dept_nm;
+	}
+
+	public String getLok_nm() {
+		return lok_nm;
+	}
+
+	public void setLok_nm(String lok_nm) {
+		this.lok_nm = lok_nm;
+	}
 
 	//****************** GETTER SETTER END HERE ******************/
 

@@ -59,7 +59,7 @@ function reset(idSelect) {
 					} ]
 				});
 //				dijit.byId(idSelect).set('value', '');
-				
+//				alert(idSelect);
 			});
 }
 
@@ -76,17 +76,23 @@ function setSelect(jsonData, idSelect, selectedId, optionALLText) {
 				dijit.byId(idSelect).store = new dojo.store.Memory({
 					data : jsonData
 				});
-				
 				dijit.byId(idSelect).set('value', " ");
 				var cekselectedId=selectedId.replace(/\./g,'');
 				cekselectedId=cekselectedId.replace(/\ /g,'');
 				
 				if (cekselectedId != ""){
-					
-					dijit.byId(idSelect).set('value', selectedId);
+					setSelectValue(idSelect, selectedId);
 				}
 				
 			});
+}
+
+function setSelectValue(idSelect, selectedId) {
+	require([  "dijit/form/Select", "dojo/domReady!" ],
+	function(Memory, Select) {
+		dijit.byId(idSelect).set('value', selectedId);
+		
+	});
 }
 
 function setSelect2(jsonData, idSelect, selectedId, optionALLText) {
@@ -139,7 +145,7 @@ function autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
 							"id" : item.key
 						});
 					});
-
+					
 					setSelect(datas, childSelectId, selectedId, optionALLText);
 
 				}, function(error) {
@@ -523,6 +529,77 @@ function autoPopulateSelect3(path, ajaxType, parentSelectId, optionALL,
 			reset(childSelectId);
 			reset(childSelectId2);
 			reset(childSelectId3);
+			autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
+					selectedId, optionALLText);
+		});
+		/*
+		*/
+	}); // end of on
+
+}
+
+function autoPopulateSelect4(path, ajaxType, parentSelectId, optionALL,
+		optionALLText, selectedId, childSelectId, childSelectId2,childSelectId3,childSelectId4) {
+	
+	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
+			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
+			"dojo/domReady!" ], function(query, ready, domAttr, Select,
+			SimpleTextarea, on, parser) {
+		ready(function() {
+			
+			var s = dijit.byId(parentSelectId);
+			
+			on(s, "change", function(e) {
+				
+				if(childSelectId!=null)reset(childSelectId);
+				if(childSelectId2!=null)reset(childSelectId2);
+				if(childSelectId3!=null)reset(childSelectId3);
+				if(childSelectId4!=null)reset(childSelectId4);
+				
+				autoPop(path, ajaxType, parentSelectId, childSelectId,
+						optionALL, selectedId, optionALLText);
+			}) // end of event handler
+			
+			reset(childSelectId);
+			reset(childSelectId2);
+			reset(childSelectId3);
+			reset(childSelectId4);
+			autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
+					selectedId, optionALLText);
+		});
+		/*
+		*/
+	}); // end of on
+
+}
+
+function autoPopulateSelect5(path, ajaxType, parentSelectId, optionALL,
+		optionALLText, selectedId, childSelectId, childSelectId2,childSelectId3,childSelectId4,childSelectId5) {
+	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
+			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
+			"dojo/domReady!" ], function(query, ready, domAttr, Select,
+			SimpleTextarea, on, parser) {
+		ready(function() {
+			
+//			var s = dijit.byId(parentSelectId);
+			
+			/*on(s, "change", function(e) {
+				
+				if(childSelectId!=null)reset(childSelectId);
+				if(childSelectId2!=null)reset(childSelectId2);
+				if(childSelectId3!=null)reset(childSelectId3);
+				if(childSelectId4!=null)reset(childSelectId4);
+				if(childSelectId5!=null)reset(childSelectId5);
+				autoPop(path, ajaxType, parentSelectId, childSelectId,
+						optionALL, selectedId, optionALLText);
+			}) */// end of event handler
+			
+			reset(childSelectId);
+			reset(childSelectId2);
+			reset(childSelectId3);
+			reset(childSelectId4);
+			reset(childSelectId5);
+			
 			autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
 					selectedId, optionALLText);
 		});
@@ -996,3 +1073,4 @@ function multiselect(multi_id){
 	  return false;
 	});
 }
+

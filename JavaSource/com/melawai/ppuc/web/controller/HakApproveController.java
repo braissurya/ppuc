@@ -46,6 +46,10 @@ public class HakApproveController extends ParentController{
 			bindingResult.rejectValue("kd_biaya", "duplicate", new String[] { "DIVISI KD : " + hakapprove.divisi_kd + " | SUBDIVISI KD : " + hakapprove.subdiv_kd + " | DEPARTMEN KD : " + hakapprove.dept_kd + " | KD HAKBIAYA : " + hakapprove.kd_biaya + ", " }, null);
 		}
 		
+		if(hakapproveManager.selectCountTable("detail_biaya", "kd_biaya = '"+hakapprove.kd_biaya+"' and f_used =1")>0){
+			bindingResult.rejectValue("kd_biaya", "entity_not_exist", new String[] { "KD BIAYA" }, null);
+		}
+		
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, hakapprove);
 			return "hakapprove/create";
@@ -127,7 +131,7 @@ public class HakApproveController extends ParentController{
 	}
 	
 	void populateEditFormAdditional(Model uiModel, HakApprove hakapprove){
-		uiModel.addAttribute("useridList", baseService.selectDropDown("concat(user_id,' [ ',user_name,' ]')", "user_id", "user", "kd_fungsi='APV'", "user_id"));
+		uiModel.addAttribute("useridList", baseService.selectDropDown("concat(user_id,' [ ',user_name,' ]')", "user_id", "user", "kd_fungsi='AP'", "user_id"));
 		
 		uiModel.addAttribute("divisiList", baseService.selectDropDown("divisi_nm", "divisi_kd", "divisi", null, "divisi_nm"));
 		

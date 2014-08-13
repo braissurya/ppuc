@@ -1,7 +1,9 @@
 package com.melawai.ppuc.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -73,6 +75,10 @@ public class HakApprove extends BaseObject implements Serializable  {
 	public Integer filter_faktif;
 	public String isActive;
 	public String revActive;
+	
+	public User user;
+	public DetailBiaya detailbiaya;
+	public List<PpucD> ppucds=new ArrayList<PpucD>();
 	//****************** OTHERS END HERE ******************/
 
 
@@ -165,6 +171,30 @@ public class HakApprove extends BaseObject implements Serializable  {
 
 	public void setRevActive(String revActive) {
 		this.revActive = revActive;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public List<PpucD> getPpucds() {
+		return ppucds;
+	}
+
+	public void setPpucds(List<PpucD> ppucds) {
+		this.ppucds = ppucds;
+	}
+
+	public DetailBiaya getDetailbiaya() {
+		return detailbiaya;
+	}
+
+	public void setDetailbiaya(DetailBiaya detailbiaya) {
+		this.detailbiaya = detailbiaya;
 	}
 
 	//****************** GETTER SETTER END HERE ******************/

@@ -1,59 +1,235 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
-    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:form="http://www.springframework.org/tags/form" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:fm="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<spring:url value="/" var="path" />
     <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_com_melawai_ppuc_model_ppuch" modelAttribute="ppuch" path="/master/ppuch" idField="itemId" versionField="none" >
-       <field:input field="divisi_kd" label="Divisi Kd" id="c_com_melawai_ppuc_model_ppuch_divisi_kd" required="true" />
-       <field:input field="subdiv_kd" label="Subdiv Kd" id="c_com_melawai_ppuc_model_ppuch_subdiv_kd" required="true" />
-       <field:input field="dept_kd" label="Dept Kd" id="c_com_melawai_ppuc_model_ppuch_dept_kd" required="true" />
-       <field:input field="lok_kd" label="Lok Kd" id="c_com_melawai_ppuc_model_ppuch_lok_kd" required="true" />
-       <field:input field="no_ppuc" label="No Ppuc" id="c_com_melawai_ppuc_model_ppuch_no_ppuc" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:datetime field="tgl_ppuc" label="Tgl Ppuc" id="c_com_melawai_ppuc_model_ppuch_tgl_ppuc" required="true" dateTimePattern="${ppuch_tgl_ppuc_date_format}" />
-       <field:input field="no_batch" label="No Batch" id="c_com_melawai_ppuc_model_ppuch_no_batch" required="true" />
-       <field:input field="user_create" label="User Create" id="c_com_melawai_ppuc_model_ppuch_user_create" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="tgl_create" label="Tgl Create" id="c_com_melawai_ppuc_model_ppuch_tgl_create" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="jam_create" label="Jam Create" id="c_com_melawai_ppuc_model_ppuch_jam_create" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="user_confirm" label="User Confirm" id="c_com_melawai_ppuc_model_ppuch_user_confirm" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="tgl_confirm" label="Tgl Confirm" id="c_com_melawai_ppuc_model_ppuch_tgl_confirm" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="jam_confirm" label="Jam Confirm" id="c_com_melawai_ppuc_model_ppuch_jam_confirm" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="hp_asal_create" label="Hp Asal Create" id="c_com_melawai_ppuc_model_ppuch_hp_asal_create" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="hp_tujuan_create" label="Hp Tujuan Create" id="c_com_melawai_ppuc_model_ppuch_hp_tujuan_create" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="email_asal_create" label="Email Asal Create" id="c_com_melawai_ppuc_model_ppuch_email_asal_create" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="email_tujuan_create" label="Email Tujuan Create" id="c_com_melawai_ppuc_model_ppuch_email_tujuan_create" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="divisi_kd_apprv" label="Divisi Kd Apprv" id="c_com_melawai_ppuc_model_ppuch_divisi_kd_apprv" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="subdiv_kd_apprv" label="Subdiv Kd Apprv" id="c_com_melawai_ppuc_model_ppuch_subdiv_kd_apprv" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="dept_kd_apprv" label="Dept Kd Apprv" id="c_com_melawai_ppuc_model_ppuch_dept_kd_apprv" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="user_approve" label="User Approve" id="c_com_melawai_ppuc_model_ppuch_user_approve" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="tgl_approve" label="Tgl Approve" id="c_com_melawai_ppuc_model_ppuch_tgl_approve" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="jam_approve" label="Jam Approve" id="c_com_melawai_ppuc_model_ppuch_jam_approve" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="f_approval" label="F Approval" id="c_com_melawai_ppuc_model_ppuch_f_approval"  validationMessageCode="field_invalid_integer" />
-       <field:input field="hp_asal_approve" label="Hp Asal Approve" id="c_com_melawai_ppuc_model_ppuch_hp_asal_approve" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="hp_tujuan_approve" label="Hp Tujuan Approve" id="c_com_melawai_ppuc_model_ppuch_hp_tujuan_approve" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="email_asal_approve" label="Email Asal Approve" id="c_com_melawai_ppuc_model_ppuch_email_asal_approve" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="email_tujuan_approve" label="Email Tujuan Approve" id="c_com_melawai_ppuc_model_ppuch_email_tujuan_approve" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="no_realisasi" label="No Realisasi" id="c_com_melawai_ppuc_model_ppuch_no_realisasi"  />
-       <field:input field="user_realisasi" label="User Realisasi" id="c_com_melawai_ppuc_model_ppuch_user_realisasi" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="tgl_realisasi" label="Tgl Realisasi" id="c_com_melawai_ppuc_model_ppuch_tgl_realisasi" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="jam_realisasi" label="Jam Realisasi" id="c_com_melawai_ppuc_model_ppuch_jam_realisasi" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="user_conf_real" label="User Conf Real" id="c_com_melawai_ppuc_model_ppuch_user_conf_real" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="tgl_conf_real" label="Tgl Conf Real" id="c_com_melawai_ppuc_model_ppuch_tgl_conf_real" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="jam_conf_real" label="Jam Conf Real" id="c_com_melawai_ppuc_model_ppuch_jam_conf_real"  />
-       <field:input field="user_conf_oc" label="User Conf Oc" id="c_com_melawai_ppuc_model_ppuch_user_conf_oc" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="tgl_conf_oc" label="Tgl Conf Oc" id="c_com_melawai_ppuc_model_ppuch_tgl_conf_oc" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="jam_conf_oc" label="Jam Conf Oc" id="c_com_melawai_ppuc_model_ppuch_jam_conf_oc" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="hp_asal_conf_oc" label="Hp Asal Conf Oc" id="c_com_melawai_ppuc_model_ppuch_hp_asal_conf_oc" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="hp_tujuan_conf_oc" label="Hp Tujuan Conf Oc" id="c_com_melawai_ppuc_model_ppuch_hp_tujuan_conf_oc" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="email_asal_conf_oc" label="Email Asal Conf Oc" id="c_com_melawai_ppuc_model_ppuch_email_asal_conf_oc" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="email_tujuan_conf_oc" label="Email Tujuan Conf Oc" id="c_com_melawai_ppuc_model_ppuch_email_tujuan_conf_oc" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="f_batal" label="F Batal" id="c_com_melawai_ppuc_model_ppuch_f_batal"  validationMessageCode="field_invalid_integer" />
-       <field:input field="user_batal" label="User Batal" id="c_com_melawai_ppuc_model_ppuch_user_batal" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="tgl_batal" label="Tgl Batal" id="c_com_melawai_ppuc_model_ppuch_tgl_batal" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="jam_batal" label="Jam Batal" id="c_com_melawai_ppuc_model_ppuch_jam_batal" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="alasan_batal" label="Alasan Batal" id="c_com_melawai_ppuc_model_ppuch_alasan_batal" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="hp_asal_batal" label="Hp Asal Batal" id="c_com_melawai_ppuc_model_ppuch_hp_asal_batal" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="hp_tujuan_batal" label="Hp Tujuan Batal" id="c_com_melawai_ppuc_model_ppuch_hp_tujuan_batal" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="email_asal_batal" label="Email Asal Batal" id="c_com_melawai_ppuc_model_ppuch_email_asal_batal" readonly="true" validationMessageCode="field_invalid_number" />
-       <field:input field="email_tujuan_batal" label="Email Tujuan Batal" id="c_com_melawai_ppuc_model_ppuch_email_tujuan_batal" readonly="true" validationMessageCode="field_invalid_number" />
-	</form:update>
+    <fm:update id="fu_com_melawai_ppuc_model_ppuch" modelAttribute="ppuch" path="/trans/ppuch/batch" idField="itemId" versionField="none" >
+      <field:input field="no_batch" label="No Batch" id="c_com_melawai_ppuc_model_ppuch_no_batch" required="false" disabled="true" max="10" />
+		<field:select field="divisi_kd" label="Divisi Kd" readonly="true" id="c_com_melawai_ppuc_model_ppuch_divisi_kd" items="${divisiList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/divisi" />
+		<field:select field="subdiv_kd" label="Subdiv Kd"  readonly="true"   id="c_com_melawai_ppuc_model_ppuch_subdiv_kd" items="${subdivList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/subdivisi" />
+		<field:select field="dept_kd" label="Dept Kd" id="c_com_melawai_ppuc_model_ppuch_dept_kd" items="${deptList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/departmen" />
+		<field:select field="lok_kd" label="Lok Kd" required="true" id="c_com_melawai_ppuc_model_ppuch_lok_kd" items="${lokList}" itemLabel="key" itemValue="value" blank="true" path="/master/lokasi" />
+		<field:datetime field="tgl_ppuc" label="Tgl Ppuc" id="c_com_melawai_ppuc_model_ppuch_tgl_ppuc" required="true" dateTimePattern="${ppuch_tgl_ppuc_date_format}" />
+
+		<spring:message arguments="Subdivisi KD" code="field_choice" var="choice_subdivkd" htmlEscape="false" />
+		<spring:message arguments="lokasi KD" code="field_choice" var="choice_lokkd" htmlEscape="false" />
+		<spring:message arguments="Dept KD" code="field_choice" var="choice_deptkd" htmlEscape="false" />
+		<spring:message arguments="KD Group" code="field_choice" var="choice_kdGroup" htmlEscape="false" />
+		<spring:message arguments="KD Biaya" code="field_choice" var="choice_kdbiaya" htmlEscape="false" />
+		<h4>
+			Detail Biaya : <form:errors path="idx" id="_idx_error_id" cssClass="errors"/>
+			<spring:url value="/resources/images/icons/cross.png" var="errorIcon" />
+			<![CDATA[
+				<script type="text/javascript">
+					 require(["dijit/Tooltip","dojo/query", "dojo/NodeList-manipulate", "dojo/domReady!"], function(Tooltip, query){
+						 try{
+							var node = query("#_idx_error_id");
+							var pesan=node.innerHTML();
+							new Tooltip({
+						        connectId: ["_idx_error_id"],
+						        label: "<span class='errors'>"+pesan+"</span>",
+						    });
+							    node.innerHTML("<img alt=\""+pesan+"\" src=\"${errorIcon}\" class=\"errors\"/> ");
+						 }catch(err){
+							 
+						 }
+					    
+					}); 
+					
+				</script>
+			]]>
+		</h4>
+		<table class="noborder" style="width: auto;">
+			<tr>
+				<th>
+					<label>KD Group :</label>
+				</th>
+				<th>
+					<label>KD Biaya :</label>
+				</th>
+				<th>
+					<label>QTY :</label>
+				</th>
+				<th>
+					<label>Harga :</label>
+				</th>
+				<th>
+					<label>Keterangan :</label>
+				</th>
+				<th>
+				</th>
+			</tr>
+			<tr>
+				<td class="vtop">
+					<select name="kd_group" id="_kd_group_id">
+							<option value=" ">${choice_kdGroup }</option>
+							<c:forEach items="${groupbiayaList}" var="v">
+								<c:choose>
+									<c:when test="${v.value eq ppuch.kd_group }">
+										<c:set value="selected='selected'" var="selectAktifkb" />
+									</c:when>
+									<c:otherwise>
+										<c:set value=" " var="selectAktifkb" />
+									</c:otherwise>
+								</c:choose>
+								<![CDATA[<option value="${v.value }" ${selectAktifkb }>${v.key }</option>]]>
+							</c:forEach>
+					</select> 
+					<script type="text/javascript">
+						Spring.addDecoration(new Spring.ElementDecoration({
+							elementId : '_kd_group_id',
+							widgetType : 'dijit.form.FilteringSelect',
+							widgetAttrs : {
+								hasDownArrow : true
+							}
+						}));
+					</script>
+				</td>
+				<td class="vtop">
+					<select name="kd_biaya" id="_kd_biaya_id">
+							<option value=" ">${choice_kdbiaya }</option>
+							<c:forEach items="${detailbiayaList}" var="v">
+								<c:choose>
+									<c:when test="${v.value eq ppuch.kd_biaya }">
+										<c:set value="selected='selected'" var="selectAktifkb" />
+									</c:when>
+									<c:otherwise>
+										<c:set value=" " var="selectAktifkb" />
+									</c:otherwise>
+								</c:choose>
+								<![CDATA[<option value="${v.value }" ${selectAktifkb }>${v.key }</option>]]>
+							</c:forEach>
+					</select> 
+					<script type="text/javascript">
+						Spring.addDecoration(new Spring.ElementDecoration({
+							elementId : '_kd_biaya_id',
+							widgetType : 'dijit.form.FilteringSelect',
+							widgetAttrs : {
+								hasDownArrow : true
+							}
+						}));
+					</script>
+				</td>
+				<td class="vtop">
+					<input type="text" name="qty" id="_qty_id" class="nominal"/>
+				</td>
+				<td class="vtop">
+					<input type="text" name="harga" id="_harga_id" class="nominal"/>
+				</td>
+				<td class="vtop">
+					<![CDATA[
+					<textarea name="keterangan" id="_keterangan_id" rows="2" ></textarea>
+					]]>
+					
+				</td>
+				<td>
+					<input type="hidden" name="no_ppuc" id="_no_ppuc_id" />
+					<span class="submit" id="filterHakBiaya_filter_submit" style="margin-left: 15px;">
+						<input type="button" name="add" class="add" id="add" value="ADD"/>
+					</span>
+				</td>
+			</tr>
+		</table>
+		<div id="table_wrapper">
+			<table class="gridTables" id="listTable" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<th>PPUC No</th>
+					<th>Tgl PPUC</th>
+					<th>KD Group</th>
+					<th>KD Biaya</th>
+					<th>Keterangan</th>
+					<th>QTY</th>
+					<th>Harga</th>
+					<th>Total</th>
+					<th class="utilbox"></th>
+				</tr>
+				<c:choose>
+					<c:when test="${not empty ppuch.ppucds }">
+						<c:forEach items="${ppuch.ppucds}" var="i" varStatus="s">
+							<tr>
+								<td><input type="hidden" name="no_ppuc_${s.count}" id="no_ppuc_${s.count}" value="${i.no_ppuc}" />${i.no_ppuc}<input type="hidden" name="idx" id="idx" value="${s.count}" /></td>			 	
+								<td><input type="hidden" name="tgl_ppuc_${s.count}" id="tgl_ppuc_${s.count}" value="${i.tgl_ppuc}" />${i.tgl_ppuc}</td>
+								<td><input type="hidden" name="kd_group_${s.count}" id="kd_group_${s.count}" value="${i.kd_group}" /><input type="hidden" name="nm_group_${s.count}" id="nm_group_${s.count}" value="${i.nm_group}" />${i.nm_group}</td>
+								<td><input type="hidden" name="kd_biaya_${s.count}" id="kd_biaya_${s.count}" value="${i.kd_biaya}" />${i.nm_biaya}</td>
+								<td><input type="hidden" name="keterangan_${s.count}" id="keterangan_${s.count}" value="${i.keterangan}" />${i.keterangan}</td>
+								<td><input type="hidden" name="qty_${s.count}" id="qty_${s.count}" value="${i.qty}" />${i.qty}</td>
+								<td><input type="hidden" name="harga_${s.count}" id="harga_${s.count}" value="${i.harga}" />${i.harga}</td>
+								<td><input type="hidden" name="total_${s.count}" id="total_${s.count}" value="${i.total}"  />${i.total}</td>
+								<td class="utilbox"><a href="#" class="edit" id="edit" rel="${s.count}"> <img src="${path}resources/images/update.png" alt="Edit" /> </a> </td>
+							 	<td class="utilbox"><a href="#" class="remove" id="remove" rel="${s.count}"> <img src="${path}resources/images/delete.png" alt="Delete" /> </a> </td>
+							</tr>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td class="utilbox"></td>
+						</tr>
+					</c:otherwise>
+				</c:choose>
+				
+			</table>
+		</div>
+
+
+	
+	<c:if test="${not empty ppuch.subdiv_kd}">
+		<c:set var="value_subdivkd" value="${ppuch.divisi_kd}.${ppuch.subdiv_kd}" />
+	</c:if>
+	<c:if test="${not empty ppuch.dept_kd}">
+		<c:set var="value_deptkd" value="${ppuch.divisi_kd}.${ppuch.subdiv_kd}.${ppuch.dept_kd}" />
+	</c:if>
+	<c:if test="${not empty ppuch.lok_kd}">
+		<c:set var="value_lokkd" value="${ppuch.divisi_kd}.${ppuch.subdiv_kd}.${ppuch.dept_kd}.${ppuch.lok_kd}" />
+	</c:if>
+	<c:if test="${not empty ppuch.kd_group}">
+		<c:set var="value_kdgroup" value="${ppuch.divisi_kd}.${ppuch.subdiv_kd}.${ppuch.dept_kd}.${ppuch.lok_kd}.${ppuch.kd_group }" />
+	</c:if>
+	<c:if test="${not empty ppuch.kd_biaya}">
+		<c:set var="value_kdbiaya" value="${ppuch.divisi_kd}.${ppuch.subdiv_kd}.${ppuch.dept_kd}.${ppuch.lok_kd}.${ppuch.kd_group }.${ppuch.kd_biaya }" />
+	</c:if>
+	
+	<script type="text/javascript">
+		dojo.ready(function() {
+			
+			autoPopulateSelect5("${path}", "subdivisi_ppuc", "_divisi_kd_id", true,
+					"${choice_subdivkd}", "${value_subdivkd}", "_subdiv_kd_id",
+					"_dept_kd_id", "_lok_kd_id","_kd_group_id", "_kd_biaya_id");
+			
+			autoPopulateSelect4("${path}", "dept_ppuc", "_subdiv_kd_id", true,
+					"${choice_deptkd}", "${value_deptkd}", "_dept_kd_id",
+					"_lok_kd_id","_kd_group_id", "_kd_biaya_id");
+			
+			autoPopulateSelect3("${path}", "lok_ppuc", "_dept_kd_id", true,
+					"${choice_lokkd}", "${value_lokkd}",
+					"_lok_kd_id","_kd_group_id", "_kd_biaya_id");
+			
+			autoPopulateSelect3("${path}", "groupbiaya_ppuc", "_dept_kd_id", true,
+					"${choice_kdGroup}", "${value_kdgroup}", 
+					"_kd_group_id","_lok_kd_id", "_kd_biaya_id");
+			
+			autoPopulateSelect2("${path}", "groupbiaya_ppuc", "_lok_kd_id", true,
+					"${choice_kdGroup}", "${value_kdgroup}", 
+					"_kd_group_id", "_kd_biaya_id");
+
+			autoPopulateSelect("${path}", "detailbiaya_ppuc", "_kd_group_id", true,
+					"${choice_kdbiaya}", "${value_kdbiaya}",
+					"_kd_biaya_id"); 
+
+		});
+	</script>
+
+	<![CDATA[
+	<script src="/PPUC/resources/static/ppuchelper.js" type="text/javascript">	</script>
+	]]>
+
+	</fm:update>
 </div>
 

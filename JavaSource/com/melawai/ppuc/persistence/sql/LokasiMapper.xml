@@ -126,13 +126,13 @@
 			#{email},
 			#{f_tutup},
 			#{tgl_tutup},
-			#{ctr_ppuc},
-			#{max_ctr_ppuc},
-			#{ctr_batch},
-			#{max_ctr_batch},
-			#{ctr_realisasi},
-			#{max_ctr_realisasi},
-			#{curr_ctr_date},
+			0,
+			1000000,
+			0,
+			10000,
+			0,
+			1000000000,
+			sysdate(),
 			#{user_update},
 			#{tgl_update},
 			#{jam_update},
@@ -161,8 +161,6 @@
 			<if test="user_update != null">SYS_USER_UPDATE = #{user_update}, </if>
 			<if test="tgl_update != null">SYS_TGL_UPDATE = #{tgl_update}, </if>
 			<if test="jam_update != null">SYS_JAM_UPDATE = #{jam_update}, </if>
-			<if test="user_create != null">SYS_USER_CREATE = #{user_create}, </if>
-			<if test="tgl_create != null">SYS_TGL_CREATE = #{tgl_create} </if>
 		</trim>
 		WHERE LOK_KD= #{lok_kd} 
 		AND	DEPT_KD= #{dept_kd}
@@ -190,6 +188,18 @@
 			<if test="subdiv_kd != null"> AND T.subdiv_kd= #{subdiv_kd} </if>
 			<if test="dept_kd != null"> AND T.dept_kd= #{dept_kd} </if>
 		 </where> 
+	</select>
+	
+	<!-- get berdasarkan primary key -->
+	<select id="getCounter" resultMap="LokasiMap">
+		<include refid="selectQuery" />
+		 <where> 
+			<if test="lok_kd != null"> T.lok_kd= #{lok_kd} </if>
+			<if test="divisi_kd != null"> AND T.divisi_kd= #{divisi_kd} </if>
+			<if test="subdiv_kd != null"> AND T.subdiv_kd= #{subdiv_kd} </if>
+			<if test="dept_kd != null"> AND T.dept_kd= #{dept_kd} </if>
+		 </where> 
+		 FOR UPDATE
 	</select>
 
 	<!-- get ALL row -->

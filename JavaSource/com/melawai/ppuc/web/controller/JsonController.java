@@ -26,6 +26,7 @@ import com.melawai.ppuc.model.GroupLokasiH;
 import com.melawai.ppuc.model.User;
 import com.melawai.ppuc.services.GroupLokasiHManager;
 import com.melawai.ppuc.utils.CommonUtil;
+import com.melawai.ppuc.utils.Utils;
 
 /**
  * JSONC CONTROLLER
@@ -158,7 +159,73 @@ public class JsonController extends ParentController {
 				result = baseService.selectDropDown("kd_biaya", "kd_biaya", "detail_biaya", "kd_group = '" + param + "' and f_used <> 1", "kd_biaya");
 			}
 
-		} 
+		} else if(tipe.equals("subdivisi_ppuc")) {
+			if (!param.equals("")){
+				String user_div="";
+				if("MK".contains(CommonUtil.getCurrentUserKdFungsi()))
+					user_div="and ud.user_id='"+CommonUtil.getCurrentUserId()+"'";
+				
+				try{
+					String[] paramSplit=param.split("\\.");
+					result =  baseService.selectDropDown("DISTINCT concat(sd.divisi_kd, '.', sd.subdiv_kd)", "sd.subdiv_nm", "user_divisi ud, subdivisi sd", "ud.divisi_kd = sd.divisi_kd and ud.subdiv_kd = sd.subdiv_kd and ud.divisi_kd = '" + paramSplit[0] + "' "+user_div+" group by sd.subdiv_nm, sd.subdiv_kd", "sd.subdiv_nm");
+				}catch(Exception e){
+					
+				}
+			}
+		}else if(tipe.equals("dept_ppuc")) {
+			if (!param.equals("")){
+				String user_div="";
+				if("MK".contains(CommonUtil.getCurrentUserKdFungsi()))
+					user_div="and ud.user_id='"+CommonUtil.getCurrentUserId()+"'";
+				
+				try{
+					String[] paramSplit=param.split("\\.");
+					result =  baseService.selectDropDown("DISTINCT concat(dp.divisi_kd, '.', dp.subdiv_kd, '.', dp.dept_kd)","dp.dept_nm", "user_divisi ud, departmen dp", "ud.divisi_kd = dp.divisi_kd and ud.subdiv_kd = dp.subdiv_kd and ud.dept_kd = dp.dept_kd and ud.divisi_kd = '" + paramSplit[0] + "' and ud.subdiv_kd = '" + paramSplit[1] + "'  "+user_div+" group by dp.dept_nm, dp.dept_kd", "dept_nm");
+				}catch(Exception e){
+					
+				}
+			}
+		}else if(tipe.equals("lok_ppuc")) {
+			if (!param.equals("")){
+				String user_div="";
+				if("MK".contains(CommonUtil.getCurrentUserKdFungsi()))
+					user_div="and ud.user_id='"+CommonUtil.getCurrentUserId()+"'";
+				
+				try{
+					String[] paramSplit=param.split("\\.");
+					result =  baseService.selectDropDown("DISTINCT concat(lk.divisi_kd, '.', lk.subdiv_kd, '.', lk.dept_kd, '.', lk.lok_kd)","lk.lok_nm", "user_divisi ud,lokasi lk", "ud.divisi_kd = lk.divisi_kd and ud.subdiv_kd = lk.subdiv_kd and ud.dept_kd = lk.dept_kd and ud.lok_kd = lk.lok_kd and ud.divisi_kd = '" + paramSplit[0] + "' and ud.subdiv_kd = '" + paramSplit[1] + "' and ud.dept_kd = '" + paramSplit[2] + "' "+user_div+" group by lk.lok_nm, lk.lok_kd", "lk.lok_nm");
+				}catch(Exception e){
+					
+				}
+			}
+
+		}else if(tipe.equals("groupbiaya_ppuc")) {
+			if (!param.equals("")){
+				try{
+					String[] paramSplit=param.split("\\.");
+					if (paramSplit.length==4)
+						result =  baseService.selectDropDown("DISTINCT concat(hb.divisi_kd, '.', hb.subdiv_kd, '.', hb.dept_kd, '.', hb.lok_kd,'.',hb.kd_group)", "gb.nm_group", "hak_biaya hb, group_biaya gb", "hb.kd_group = gb.kd_group and hb.f_aktif=1 and hb.divisi_kd = '" + paramSplit[0] + "' and hb.subdiv_kd = '" + paramSplit[1] + "' and hb.dept_kd = '" + paramSplit[2] + "' and hb.lok_kd = '" + paramSplit[3] + "' group by gb.nm_group, gb.kd_group", "gb.nm_group");
+					else if (paramSplit.length==3)
+						result =  baseService.selectDropDown("DISTINCT concat(hb.divisi_kd, '.', hb.subdiv_kd, '.', hb.dept_kd, '.', hb.lok_kd,'.',hb.kd_group)", "gb.nm_group", "hak_biaya hb, group_biaya gb", "hb.kd_group = gb.kd_group and hb.f_aktif=1 and hb.divisi_kd = '" + paramSplit[0] + "' and hb.subdiv_kd = '" + paramSplit[1] + "' and hb.dept_kd = '" + paramSplit[2] + "' group by gb.nm_group, gb.kd_group", "gb.nm_group");
+							
+				}catch(Exception e){
+					
+				}
+			}
+		}else if(tipe.equals("detailbiaya_ppuc")) {
+			if (!param.equals("")){
+				try{
+					String[] paramSplit=param.split("\\.");
+					if (paramSplit.length==5)
+						result =  baseService.selectDropDown("DISTINCT concat(hb.divisi_kd, '.', hb.subdiv_kd, '.', hb.dept_kd, '.', hb.lok_kd,'.',hb.kd_group,'.',db.kd_biaya)", "db.kd_biaya", "hak_biaya hb, detail_biaya db", "hb.kd_group = db.kd_group and hb.kd_biaya = db.kd_biaya and  db.f_used = 1 and hb.f_aktif=1 and hb.divisi_kd = '" + paramSplit[0] + "' and hb.subdiv_kd = '" + paramSplit[1] + "' and hb.dept_kd = '" + paramSplit[2] + "' and hb.lok_kd = '" + paramSplit[3] + "'  and db.kd_group = '" + paramSplit[4] + "'  group by db.kd_biaya", "db.kd_biaya");
+					else if (paramSplit.length==4)
+						result =  baseService.selectDropDown("DISTINCT concat(hb.divisi_kd, '.', hb.subdiv_kd, '.', hb.dept_kd, '.', hb.lok_kd,'.',hb.kd_group,'.',db.kd_biaya)", "db.kd_biaya", "hak_biaya hb, detail_biaya db", "hb.kd_group = db.kd_group and hb.kd_biaya = db.kd_biaya  and  db.f_used = 1 and hb.f_aktif=1 and hb.divisi_kd = '" + paramSplit[0] + "' and hb.subdiv_kd = '" + paramSplit[1] + "' and hb.dept_kd = '" + paramSplit[2] + "' and db.kd_group = '" + paramSplit[3] + "'  group by db.kd_biaya", "db.kd_biaya");
+							
+				}catch(Exception e){
+					
+				}
+			}
+		}
 
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();

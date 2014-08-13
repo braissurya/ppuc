@@ -22,7 +22,7 @@ public interface HakApproveMapper {
 
 	public void remove(@Param("user_id") String user_id, @Param("divisi_kd") String divisi_kd, @Param("subdiv_kd") String subdiv_kd, @Param("dept_kd") String dept_kd, @Param("kd_group") String kd_group, @Param("kd_biaya") String kd_biaya) throws DataAccessException;
 
-	public HakApprove get(@Param("user_id") String user_id, @Param("divisi_kd") String divisi_kd, @Param("subdiv_kd") String subdiv_kd, @Param("dept_kd") String dept_kd, @Param("kd_group") String kd_group, @Param("kd_biaya") String kd_biaya) throws DataAccessException;
+	public HakApprove get(@Param("user_id") String user_id, @Param("divisi_kd") String divisi_kd, @Param("subdiv_kd") String subdiv_kd, @Param("dept_kd") String dept_kd, @Param("kd_group") String kd_group, @Param("kd_biaya") String kd_biaya, @Param("f_aktif") Integer f_aktif) throws DataAccessException;
 
 	public List<HakApprove> getAll() throws DataAccessException;
 

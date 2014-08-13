@@ -53,7 +53,7 @@ public class UserDivisiController extends ParentController{
 		if(userdivisiManager.selectCountTable("user_divisi", "user_id='"+userdivisi.user_id+"'")>0){
 			UserDivisi tmp=userdivisiManager.getDivisiNSubdivUser(userdivisi.user_id);
 			if(!tmp.divisi_kd.equals(userdivisi.divisi_kd)||!tmp.subdiv_kd.equals(userdivisi.subdiv_kd)){
-				bindingResult.rejectValue("subdiv_kd", "existWith", new String[]{"This User ID","DIVISI KD : " + userdivisi.divisi_kd + " and SUBDIVISI KD : " + userdivisi.subdiv_kd+""},null);
+				bindingResult.rejectValue("subdiv_kd", "existWith", new String[]{"This User ID","DIVISI KD : " + tmp.divisi_kd + " and SUBDIVISI KD : " + tmp.subdiv_kd+""},null);
 			}
 			
 		}

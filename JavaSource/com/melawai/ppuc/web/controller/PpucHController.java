@@ -20,9 +20,11 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.DataBinder;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -57,10 +59,24 @@ public class PpucHController extends ParentController{
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		binder.addValidators(ppucHValidator);
+		binder.addValidators(this.ppucHValidator);
 	}
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
-	public String create(@Valid PpucH ppuch, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String create(@ModelAttribute("ppuch") @Valid PpucH ppuch, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	
+		if(!bindingResult.hasErrors()){
+			for(PpucD ppucd:ppuch.ppucds){
+				DataBinder binder2 = new DataBinder(ppucd);
+				binder2.addValidators(validator);
+				// bind to the target object
+				binder2.validate();
+
+				if (binder2.getBindingResult().hasErrors()) {
+					bindingResult.reject("idx", null, Utils.errorListToString(Utils.errorBinderToList(binder2.getBindingResult(), messageSource)));
+				}
+			}
+		}
+		
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, ppuch);
 			return "ppuch/create";
@@ -90,22 +106,47 @@ public class PpucHController extends ParentController{
 	}
 
 	@RequestMapping(produces = "text/html")
-	public String list(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size,@RequestParam(value = "search", required = false) String search, @RequestParam(value = "sortFieldName", required = false) String sortFieldName, @RequestParam(value = "sortOrder", required = false) String sortOrder, Model uiModel) {
+	public String listInput(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size,@RequestParam(value = "search", required = false) String search, @RequestParam(value = "sortFieldName", required = false) String sortFieldName, @RequestParam(value = "sortOrder", required = false) String sortOrder, Model uiModel) {
 		if (page == null) {
 			page=1;
 		}
 
 			int sizeNo = size == null ? 10 : size.intValue();
 			final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-			uiModel.addAttribute("ppuchList",ppuchManager.selectPagingList(search,sortFieldName,sortOrder, firstResult, sizeNo) );
-			float nrOfPages = (float) ppuchManager.selectPagingCount(search) / sizeNo;
+			uiModel.addAttribute("ppuchList",ppuchManager.selectPagingList(search,sortFieldName,sortOrder, firstResult, sizeNo,1) );
+			float nrOfPages = (float) ppuchManager.selectPagingCount(search,1) / sizeNo;
 			uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
 		addDateTimeFormatPatterns(uiModel);
 		return "ppuch/list";
 	}
 
+	@RequestMapping(value = "/batch",method = RequestMethod.PUT, produces = "text/html")
+	public String updateInput(@ModelAttribute("ppuch") @Valid PpucH ppuch, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+		if (bindingResult.hasErrors()) {
+			populateEditForm(uiModel, ppuch);
+			return "ppuch/update";
+		}
+		uiModel.asMap().clear();
+		ppuchManager.save(ppuch);
+		return "redirect:/master/ppuch/" + encodeUrlPathSegment(ppuch.getDivisi_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getSubdiv_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getDept_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getLok_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getNo_ppuc().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getTgl_ppuc().toString(), httpServletRequest);
+	}
+
+	@RequestMapping(value = "/batch/{no_batch}", params = "form", produces = "text/html")
+	public String updateFormInput(@PathVariable("no_batch") String no_batch, Model uiModel) {
+		List<PpucH> ppuchs=ppuchManager.get(no_batch);
+		if(!ppuchs.isEmpty()){
+			PpucH ppuch=ppuchs.get(0);
+			ppuch.ppucds=new ArrayList<PpucD>();
+			for(PpucH pp:ppuchs){
+				ppuch.ppucds.addAll(pp.ppucds);
+			}
+			populateEditForm(uiModel,ppuch);
+		}
+		return "ppuch/update";
+	}
+	
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-	public String update(@Valid PpucH ppuch, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String update(@ModelAttribute("ppuch") @Valid PpucH ppuch, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, ppuch);
 			return "ppuch/update";
@@ -146,32 +187,33 @@ public class PpucHController extends ParentController{
 	}
 	
 	void populateEditFormAdditional(Model uiModel, PpucH ppuch){
+		String user_div="";
 		
-		uiModel.addAttribute("divisiList", baseService.selectDropDown("divisi_nm", "divisi_kd", "divisi", null, "divisi_nm"));
+		if("MK".contains(CommonUtil.getCurrentUserKdFungsi()))
+			user_div="and ud.user_id='"+CommonUtil.getCurrentUserId()+"'";
 		
-		//FIXME: group sesuai divisi
-		uiModel.addAttribute("groupbiayaList", baseService.selectDropDown("nm_group", "kd_group", "group_biaya", null, "nm_group"));
+		uiModel.addAttribute("divisiList", baseService.selectDropDown("DISTINCT d.divisi_nm", "d.divisi_kd", "user_divisi ud, divisi d", "ud.divisi_kd = d.divisi_kd "+user_div+"  group by d.divisi_nm, d.divisi_kd", "d.divisi_nm"));
+		
+		if (!Utils.isEmpty( ppuch.divisi_kd ))
+			uiModel.addAttribute("subdivList", baseService.selectDropDown("DISTINCT concat(sd.divisi_kd, '.', sd.subdiv_kd)", "sd.subdiv_nm", "user_divisi ud, subdivisi sd", "ud.divisi_kd = sd.divisi_kd and ud.subdiv_kd = sd.subdiv_kd and ud.divisi_kd = '" + ppuch.divisi_kd + "' "+user_div+" group by sd.subdiv_nm, sd.subdiv_kd", "sd.subdiv_nm"));
 
-		
-		if (ppuchManager.selectCountTable("subdivisi", "divisi_kd = '" + ppuch.divisi_kd + "'")>0)
-			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "concat(divisi_kd, '.', subdiv_kd)", "subdivisi", "divisi_kd = '" + ppuch.divisi_kd + "'", "subdiv_nm"));
-		else
-			uiModel.addAttribute("subdivList", baseService.selectDropDown("subdiv_nm", "concat(divisi_kd, '.', subdiv_kd)", "subdivisi", null, "subdiv_nm"));
+		if (!Utils.isEmpty( ppuch.divisi_kd )&&!Utils.isEmpty( ppuch.subdiv_kd ))
+			uiModel.addAttribute("deptList", baseService.selectDropDown("DISTINCT concat(dp.divisi_kd, '.', dp.subdiv_kd, '.', dp.dept_kd)","dp.dept_nm", "user_divisi ud, departmen dp", "ud.divisi_kd = dp.divisi_kd and ud.subdiv_kd = dp.subdiv_kd and ud.dept_kd = dp.dept_kd and ud.divisi_kd = '" + ppuch.divisi_kd + "' and ud.subdiv_kd = '" + ppuch.subdiv_kd + "'  "+user_div+" group by dp.dept_nm, dp.dept_kd", "dept_nm"));
 
-		if (ppuchManager.selectCountTable("departmen", " divisi_kd = '" + ppuch.divisi_kd + "' and subdiv_kd = '" + ppuch.subdiv_kd + "'")>0)
-			uiModel.addAttribute("deptList", baseService.selectDropDown("dept_nm","concat(divisi_kd, '.', subdiv_kd, '.', dept_kd)", "departmen", " divisi_kd = '" + ppuch.divisi_kd + "' and subdiv_kd = '" + ppuch.subdiv_kd + "'", "dept_nm"));
-		else
-			uiModel.addAttribute("deptList", baseService.selectDropDown("dept_nm","concat(divisi_kd, '.', subdiv_kd, '.', dept_kd)",  "departmen", null, "dept_nm"));
-
-		if (ppuchManager.selectCountTable("lokasi", " divisi_kd = '" + ppuch.divisi_kd + "' and subdiv_kd = '" + ppuch.subdiv_kd + "' and dept_kd = '" + ppuch.dept_kd + "'")>0)
-			uiModel.addAttribute("lokList", baseService.selectDropDown("lok_nm","concat(divisi_kd, '.', subdiv_kd, '.', dept_kd, '.', lok_kd)", "lokasi", " divisi_kd = '" + ppuch.divisi_kd + "' and subdiv_kd = '" + ppuch.subdiv_kd + "' and dept_kd = '" + ppuch.dept_kd + "'", "lok_nm"));
-		else
-			uiModel.addAttribute("lokList", baseService.selectDropDown("lok_nm","concat(divisi_kd, '.', subdiv_kd, '.', dept_kd, '.', lok_kd)",  "lokasi", null, "lok_nm"));
+		if (!Utils.isEmpty( ppuch.divisi_kd )&&!Utils.isEmpty( ppuch.subdiv_kd )&&!Utils.isEmpty( ppuch.dept_kd ))
+			uiModel.addAttribute("lokList", baseService.selectDropDown("DISTINCT concat(lk.divisi_kd, '.', lk.subdiv_kd, '.', lk.dept_kd, '.', lk.lok_kd)","lk.lok_nm", "user_divisi ud,lokasi lk", "ud.divisi_kd = lk.divisi_kd and ud.subdiv_kd = lk.subdiv_kd and ud.dept_kd = lk.dept_kd and ud.lok_kd = lk.lok_kd and ud.divisi_kd = '" + ppuch.divisi_kd + "' and ud.subdiv_kd = '" + ppuch.subdiv_kd + "' and ud.dept_kd = '" + ppuch.dept_kd + "' "+user_div+" group by lk.lok_nm, lk.lok_kd", "lk.lok_nm"));
+		else if (!Utils.isEmpty( ppuch.divisi_kd )&&!Utils.isEmpty( ppuch.subdiv_kd ))
+			uiModel.addAttribute("lokList", baseService.selectDropDown("DISTINCT concat(lk.divisi_kd, '.', lk.subdiv_kd, '.', lk.dept_kd, '.', lk.lok_kd)","lk.lok_nm", "user_divisi ud,lokasi lk", "ud.divisi_kd = lk.divisi_kd and ud.subdiv_kd = lk.subdiv_kd and ud.dept_kd = lk.dept_kd and ud.lok_kd = lk.lok_kd and ud.divisi_kd = '" + ppuch.divisi_kd + "' and ud.subdiv_kd = '" + ppuch.subdiv_kd + "' "+user_div+" group by lk.lok_nm, lk.lok_kd", "lk.lok_nm"));
 		
-		if (ppuchManager.selectCountTable("detail_biaya", "kd_group ='" + ppuch.kd_group + "'") > 0)
-			uiModel.addAttribute("detailbiayaList", baseService.selectDropDown("kd_biaya", "kd_biaya", "detail_biaya", "kd_group = '" + ppuch.kd_group + "' and f_used <> 1", "kd_biaya"));
-		else
-			uiModel.addAttribute("detailbiayaList", baseService.selectDropDown("kd_biaya", "kd_biaya", "detail_biaya", null, "kd_biaya"));
+		if (!Utils.isEmpty( ppuch.divisi_kd )&&!Utils.isEmpty( ppuch.subdiv_kd )&&!Utils.isEmpty( ppuch.dept_kd )&&!Utils.isEmpty( ppuch.lok_kd))
+			uiModel.addAttribute("groupbiayaList", baseService.selectDropDown("DISTINCT concat(hb.divisi_kd, '.', hb.subdiv_kd, '.', hb.dept_kd, '.', hb.lok_kd,'.',hb.kd_group)", "gb.nm_group", "hak_biaya hb, group_biaya gb", "hb.kd_group = gb.kd_group and hb.f_aktif=1 and hb.divisi_kd = '" + ppuch.divisi_kd + "' and hb.subdiv_kd = '" + ppuch.subdiv_kd + "' and hb.dept_kd = '" + ppuch.dept_kd + "' and hb.lok_kd = '" + ppuch.lok_kd + "' group by gb.nm_group, gb.kd_group", "gb.nm_group"));
+		else if (!Utils.isEmpty( ppuch.divisi_kd )&&!Utils.isEmpty( ppuch.subdiv_kd )&&!Utils.isEmpty( ppuch.dept_kd ))
+			uiModel.addAttribute("groupbiayaList", baseService.selectDropDown("DISTINCT concat(hb.divisi_kd, '.', hb.subdiv_kd, '.', hb.dept_kd, '.', hb.lok_kd,'.',hb.kd_group)", "gb.nm_group", "hak_biaya hb, group_biaya gb", "hb.kd_group = gb.kd_group and hb.f_aktif=1 and hb.divisi_kd = '" + ppuch.divisi_kd + "' and hb.subdiv_kd = '" + ppuch.subdiv_kd + "' and hb.dept_kd = '" + ppuch.dept_kd + "' group by gb.nm_group, gb.kd_group", "gb.nm_group"));
+			
+		if (!Utils.isEmpty( ppuch.divisi_kd )&&!Utils.isEmpty( ppuch.subdiv_kd )&&!Utils.isEmpty( ppuch.dept_kd )&&!Utils.isEmpty( ppuch.lok_kd)&&!Utils.isEmpty( ppuch.kd_group))
+			uiModel.addAttribute("detailbiayaList", baseService.selectDropDown("DISTINCT concat(hb.divisi_kd, '.', hb.subdiv_kd, '.', hb.dept_kd, '.', hb.lok_kd,'.',hb.kd_group,'.',db.kd_biaya)", "db.kd_biaya", "hak_biaya hb, detail_biaya db", "hb.kd_group = db.kd_group and db.f_used = 1 and hb.kd_biaya = db.kd_biaya and hb.f_aktif=1 and hb.divisi_kd = '" + ppuch.divisi_kd + "' and hb.subdiv_kd = '" + ppuch.subdiv_kd + "' and hb.dept_kd = '" + ppuch.dept_kd + "' and hb.lok_kd = '" + ppuch.lok_kd + "'  and db.kd_group = '" + ppuch.kd_group + "'  group by db.kd_biaya", "db.kd_biaya"));
+		else if (!Utils.isEmpty( ppuch.divisi_kd )&&!Utils.isEmpty( ppuch.subdiv_kd )&&!Utils.isEmpty( ppuch.dept_kd )&&!Utils.isEmpty( ppuch.kd_group))
+			uiModel.addAttribute("detailbiayaList", baseService.selectDropDown("DISTINCT concat(hb.divisi_kd, '.', hb.subdiv_kd, '.', hb.dept_kd, '.', hb.lok_kd,'.',hb.kd_group,'.',db.kd_biaya)", "db.kd_biaya", "hak_biaya hb, detail_biaya db", "hb.kd_group = db.kd_group and  db.f_used = 1 and hb.kd_biaya = db.kd_biaya and hb.f_aktif=1 and hb.divisi_kd = '" + ppuch.divisi_kd + "' and hb.subdiv_kd = '" + ppuch.subdiv_kd + "' and hb.dept_kd = '" + ppuch.dept_kd + "' and db.kd_group = '" + ppuch.kd_group + "'  group by db.kd_biaya", "db.kd_biaya"));
 		
 	}
 	
@@ -181,7 +223,7 @@ public class PpucHController extends ParentController{
 	 */
 	
 	@RequestMapping("/json/getData")
-	public String jsonGrouplokasihGetData(HttpServletRequest request, HttpServletResponse response, 
+	public String jsonGetData(HttpServletRequest request, HttpServletResponse response, 
 			@RequestParam(value = "no_batch", required = true, defaultValue="") String no_batch) throws IOException, ParseException {
 		response.setContentType("application/json");
 
@@ -189,7 +231,6 @@ public class PpucHController extends ParentController{
 
 
 			if (!lsPPuch.isEmpty()) {
-				String row = "";
 				int rowNum = 1;
 
 				List<Map> ppuchList = new ArrayList<Map>();
@@ -197,12 +238,13 @@ public class PpucHController extends ParentController{
 					for(PpucD ppucd:ppuch.getPpucds()){
 						Map<String, Object> map = new HashMap<String, Object>();
 						map.put("idx", rowNum);
-						map.put("ppuc_no", ppucd.lok_kd);
-						map.put("tgl_ppuc", Utils.convertDateToString( ppucd.tgl_ppuc,"dd/MM/yyyy"));
+						map.put("no_ppuc", ppucd.no_ppuc);
+						map.put("tgl_ppuc", Utils.convertDateToString( ppucd.tgl_ppuc,DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale())));
 						map.put("kd_group", ppucd.kd_group);
 						map.put("nm_group", ppucd.groupBiaya.nm_group);
 						map.put("kd_biaya", ppucd.kd_biaya);
-						map.put("qty", ppucd.qty);
+						map.put("nm_biaya", Utils.getLastDelimiterString(ppucd.kd_biaya, "."));
+						map.put("qty", Utils.formatNumber(props.getProperty("number.curr.format"), ppucd.qty));
 						if(ppucd.harga != null)map.put("harga", Utils.formatNumber(props.getProperty("number.curr.format"), ppucd.harga));
 						if(ppucd.total != null)map.put("total", Utils.formatNumber(props.getProperty("number.curr.format"), ppucd.total));
 						map.put("keterangan", ppucd.keterangan);
@@ -237,12 +279,13 @@ public class PpucHController extends ParentController{
 	}
 
 	@RequestMapping("/json/addData")
-	public String jsonPPUCHAddData(HttpServletRequest request, HttpServletResponse response,
+	public String jsonAddData(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "divisi_kd", required = false, defaultValue = "") String divisi_kd,
 			@RequestParam(value = "subdiv_kd", required = false, defaultValue = "") String subdiv_kd,
 			@RequestParam(value = "dept_kd", required = false, defaultValue = "") String dept_kd,
 			@RequestParam(value = "lok_kd", required = false, defaultValue = "") String lok_kd,
 			@RequestParam(value = "kd_group", required = false, defaultValue = "") String kd_group,
+			@RequestParam(value = "tgl_ppuc", required = false, defaultValue = "") String tgl_ppuc,
 			@RequestParam(value = "kd_biaya", required = false, defaultValue = "") String kd_biaya,
 			@RequestParam(value = "qty", required = false, defaultValue = "") String qty,
 			@RequestParam(value = "harga", required = false, defaultValue = "") String harga,
@@ -258,7 +301,18 @@ public class PpucHController extends ParentController{
 		if (idxList.length != 0) {
 
 			for (int idx : idxList) {
-				PpucD ppucd= new PpucD(divisi_kd, subdiv_kd, dept_kd, lok_kd, ServletRequestUtils.getStringParameter(request, "no_ppuc_" + idx, null), Utils.convertStringToDate(ServletRequestUtils.getStringParameter(request, "tgl_ppuc_" + idx, null), "dd/MM/yyyy"), ServletRequestUtils.getStringParameter(request, "kd_group_" + idx, null), ServletRequestUtils.getStringParameter(request, "kd_biaya_" + idx,null), CommonUtil.convertToLong(ServletRequestUtils.getStringParameter(request, "qty_" + idx, null)), CommonUtil.convertCurrencyToDouble(ServletRequestUtils.getStringParameter(request, "harga_" + idx, null)), CommonUtil.convertCurrencyToDouble(ServletRequestUtils.getStringParameter(request, "total_" + idx, null)), ServletRequestUtils.getStringParameter(request, "keterangan_" + idx, null));
+				PpucD ppucd= new PpucD(divisi_kd, subdiv_kd, dept_kd, lok_kd,
+						ServletRequestUtils.getStringParameter(request, "no_ppuc_" + idx, null),
+						Utils.convertStringToDate(ServletRequestUtils.getStringParameter(request, "tgl_ppuc_" + idx, null),
+								DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale())),
+								ServletRequestUtils.getStringParameter(request, "kd_group_" + idx, null),
+								ServletRequestUtils.getStringParameter(request, "kd_biaya_" + idx,null), 
+								CommonUtil.convertToLong(ServletRequestUtils.getStringParameter(request, "qty_" + idx, null)), 
+								CommonUtil.convertCurrencyToDouble(ServletRequestUtils.getStringParameter(request, "harga_" + idx, null)), 
+								CommonUtil.convertCurrencyToDouble(ServletRequestUtils.getStringParameter(request, "total_" + idx, null)), 
+								ServletRequestUtils.getStringParameter(request, "keterangan_" + idx, null),
+								ServletRequestUtils.getStringParameter(request, "nm_group_" + idx, ""),
+								ServletRequestUtils.getStringParameter(request, "nm_biaya_" + idx, ""));
 
 				if (kd_biaya.equals(ppucd.kd_biaya)) {
 					isSame = true;
@@ -266,12 +320,13 @@ public class PpucHController extends ParentController{
 
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("idx", rowNum);
-				map.put("ppuc_no", ppucd.lok_kd);
-				map.put("tgl_ppuc", Utils.convertDateToString( ppucd.tgl_ppuc,"dd/MM/yyyy"));
+				map.put("no_ppuc", ppucd.no_ppuc);
+				map.put("tgl_ppuc", Utils.convertDateToString( ppucd.tgl_ppuc,DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale())));
 				map.put("kd_group", ppucd.kd_group);
-				map.put("nm_group", ServletRequestUtils.getStringParameter(request, "nm_group_" + idx, ""));
+				map.put("nm_group", ppucd.nm_group);
 				map.put("kd_biaya", ppucd.kd_biaya);
-				map.put("qty", ppucd.qty);
+				map.put("nm_biaya", Utils.getLastDelimiterString( ppucd.kd_biaya, "."));
+				map.put("qty", Utils.formatNumber(props.getProperty("number.curr.format"), ppucd.qty));
 				if(ppucd.harga != null)map.put("harga", Utils.formatNumber(props.getProperty("number.curr.format"), ppucd.harga));
 				if(ppucd.harga != null && ppucd.qty != null)map.put("total", Utils.formatNumber(props.getProperty("number.curr.format"), ppucd.harga * ppucd.qty));
 				map.put("keterangan", ppucd.keterangan);
@@ -282,16 +337,19 @@ public class PpucHController extends ParentController{
 		}
 
 		if (!isSame) {
+			Long qtyV=CommonUtil.convertToLong(qty);
+			Double hargaV= CommonUtil.convertCurrencyToDouble(harga);
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("idx", rowNum);
-			map.put("ppuc_no", "");
-			map.put("tgl_ppuc", "");
+			map.put("no_ppuc", "");
+			map.put("tgl_ppuc", tgl_ppuc);
 			map.put("kd_group", kd_group);
-			map.put("nm_group", ppuchManager.getGroupBiaya(kd_group));
+			map.put("nm_group", ppuchManager.getGroupBiaya(Utils.getLastDelimiterString(kd_group, ".")));
 			map.put("kd_biaya", kd_biaya);
-			map.put("qty", qty);
-			map.put("harga", harga);
-			map.put("total", total);
+			map.put("nm_biaya", Utils.getLastDelimiterString(kd_biaya, "."));
+			map.put("qty", Utils.formatNumber(props.getProperty("number.curr.format"), qtyV));
+			map.put("harga", Utils.formatNumber(props.getProperty("number.curr.format"), hargaV));
+			map.put("total", Utils.formatNumber(props.getProperty("number.curr.format"), qtyV*hargaV));
 			map.put("keterangan", keterangan);
 			ppuchList.add(map);
 		}
@@ -306,7 +364,7 @@ public class PpucHController extends ParentController{
 	}
 
 	@RequestMapping("/json/removeData")
-	public String jsonPPUCHRemoveData(HttpServletRequest request, HttpServletResponse response, 
+	public String jsonRemoveData(HttpServletRequest request, HttpServletResponse response, 
 			@RequestParam(value = "divisi_kd", required = false, defaultValue = "") String divisi_kd,
 			@RequestParam(value = "subdiv_kd", required = false, defaultValue = "") String subdiv_kd,
 			@RequestParam(value = "dept_kd", required = false, defaultValue = "") String dept_kd,
@@ -326,18 +384,18 @@ public class PpucHController extends ParentController{
 				if (idx == id)
 					continue;
 
-				PpucD ppucd= new PpucD(divisi_kd, subdiv_kd, dept_kd, lok_kd, ServletRequestUtils.getStringParameter(request, "no_ppuc_" + idx, null), Utils.convertStringToDate(ServletRequestUtils.getStringParameter(request, "tgl_ppuc_" + idx, null), "dd/MM/yyyy"), ServletRequestUtils.getStringParameter(request, "kd_group_" + idx, null), ServletRequestUtils.getStringParameter(request, "kd_biaya_" + idx,null), CommonUtil.convertToLong(ServletRequestUtils.getStringParameter(request, "qty_" + idx, null)), CommonUtil.convertCurrencyToDouble(ServletRequestUtils.getStringParameter(request, "harga_" + idx, null)), CommonUtil.convertCurrencyToDouble(ServletRequestUtils.getStringParameter(request, "total_" + idx, null)), ServletRequestUtils.getStringParameter(request, "keterangan_" + idx, null));
+				PpucD ppucd= new PpucD(divisi_kd, subdiv_kd, dept_kd, lok_kd, ServletRequestUtils.getStringParameter(request, "no_ppuc_" + idx, null), Utils.convertStringToDate(ServletRequestUtils.getStringParameter(request, "tgl_ppuc_" + idx, null),DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale())), ServletRequestUtils.getStringParameter(request, "kd_group_" + idx, null), ServletRequestUtils.getStringParameter(request, "kd_biaya_" + idx,null), CommonUtil.convertToLong(ServletRequestUtils.getStringParameter(request, "qty_" + idx, null)), CommonUtil.convertCurrencyToDouble(ServletRequestUtils.getStringParameter(request, "harga_" + idx, null)), CommonUtil.convertCurrencyToDouble(ServletRequestUtils.getStringParameter(request, "total_" + idx, null)), ServletRequestUtils.getStringParameter(request, "keterangan_" + idx, null),ServletRequestUtils.getStringParameter(request, "nm_group_" + idx, ""),ServletRequestUtils.getStringParameter(request, "nm_biaya_" + idx, ""));
 
 
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("idx", rowNum);
-				map.put("idx", rowNum);
-				map.put("ppuc_no", ppucd.lok_kd);
-				map.put("tgl_ppuc", Utils.convertDateToString( ppucd.tgl_ppuc,"dd/MM/yyyy"));
+				map.put("no_ppuc", ppucd.no_ppuc);
+				map.put("tgl_ppuc", Utils.convertDateToString( ppucd.tgl_ppuc,DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale())));
 				map.put("kd_group", ppucd.kd_group);
 				map.put("nm_group", ServletRequestUtils.getStringParameter(request, "nm_group_" + idx, ""));
 				map.put("kd_biaya", ppucd.kd_biaya);
-				map.put("qty", ppucd.qty);
+				map.put("nm_biaya", Utils.getLastDelimiterString( ppucd.kd_biaya, "."));
+				map.put("qty", Utils.formatNumber(props.getProperty("number.curr.format"), ppucd.qty));
 				if(ppucd.harga != null)map.put("harga", Utils.formatNumber(props.getProperty("number.curr.format"), ppucd.harga));
 				if(ppucd.harga != null && ppucd.qty != null)map.put("total", Utils.formatNumber(props.getProperty("number.curr.format"), ppucd.harga * ppucd.qty));
 				map.put("keterangan", ppucd.keterangan);

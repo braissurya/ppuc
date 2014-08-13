@@ -28,6 +28,20 @@
 		<result property="user_nonaktif" column="user_nonaktif" />
 		<result property="tgl_nonaktif" column="tgl_nonaktif" />
 		<result property="jam_nonaktif" column="jam_nonaktif" />
+		<association property="user" javaType="User">
+			<id property="user_id" column="uc_user_id"  />  
+			<result property="user_name" column="uc_user_name" />
+			<result property="no_hp" column="uc_no_hp" />
+			<result property="email" column="uc_email" />
+		</association>
+		<association property="detailbiaya" javaType="DetailBiaya">
+			<id property="kd_biaya" column="db_kd_biaya"  />  
+			<result property="kd_group" column="db_kd_group" />
+			<result property="biaya_description" column="db_biaya_description" />
+			<result property="f_putus" column="db_f_putus" />
+			<result property="f_used" column="db_f_used" />
+			<result property="acc_no" column="db_acc_no" />
+		</association>
 	</resultMap>
 
 	<!-- nama kolom yang ingin ditampilkan -->
@@ -46,7 +60,17 @@
 		C.SYS_JAM_CREATE as jam_create,
 		C.SYS_USER_NONAKTIF as user_nonaktif,
 		C.SYS_TGL_NONAKTIF as tgl_nonaktif,
-		C.SYS_JAM_NONAKTIF as jam_nonaktif
+		C.SYS_JAM_NONAKTIF as jam_nonaktif,
+		uc.USER_ID as uc_user_id,
+		uc.USER_NAME as uc_user_name,
+		uc.NO_HP as uc_no_hp,
+		uc.EMAIL as uc_email,
+		db.KD_BIAYA as db_kd_biaya,
+		db.KD_GROUP as db_kd_group,
+		db.BIAYA_DESCRIPTION as db_biaya_description,
+		db.F_PUTUS as db_f_putus,
+		db.F_USED as db_f_used,
+		db.ACC_NO as db_acc_no
 	</sql>
 
 	<!-- query select, dengan kolom yang default di atas, apabila mau ditambahkan join juga bisa disini
@@ -54,6 +78,8 @@
 	<sql id="selectQuery">
 		select * from (
 			select <include refid="defaultColoumn" /> from hak_approve C
+			left outer join user uc on C.user_id = uc.user_id
+			left outer join detail_biaya db on C.kd_biaya = db.kd_biaya
 		)T
 	</sql>
 
@@ -162,6 +188,7 @@
 			<if test="dept_kd != null"> AND T.dept_kd= #{dept_kd} </if>
 			<if test="kd_group != null"> AND T.kd_group= #{kd_group} </if>
 			<if test="kd_biaya != null"> AND T.kd_biaya= #{kd_biaya} </if>
+			<if test="f_aktif != null"> AND T.f_aktif= #{f_aktif} </if>
 		 </where> 
 	</select>
 

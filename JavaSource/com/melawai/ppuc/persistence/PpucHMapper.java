@@ -33,5 +33,7 @@ public interface PpucHMapper {
 
 	// QUERY CUSTOM yang lain dibawah sini
 
+	public List<PpucH> selectPagingListSatu(PpucH ppuch) throws DataAccessException;
 
+	public Integer selectPagingCountSatu(PpucH ppuch) throws DataAccessException;
 }

@@ -787,6 +787,11 @@ public class Utils {
 			}
 			return result;
 		}
+		
+		public static String getLastDelimiterString(String param,String delimiter){
+			if(param == null )return null;
+			return param.substring(param.lastIndexOf(delimiter) + 1);
+		}
 	
 
 }

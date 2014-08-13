@@ -14,7 +14,6 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,9 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.melawai.ppuc.model.Audittrail;
-import com.melawai.ppuc.model.DropDown;
 import com.melawai.ppuc.model.HakBiaya;
-import com.melawai.ppuc.model.User;
 import com.melawai.ppuc.services.HakBiayaManager;
 import com.melawai.ppuc.utils.CommonUtil;
 import com.melawai.ppuc.utils.Utils;

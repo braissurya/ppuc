@@ -37,13 +37,23 @@ public class HakApproveManager extends BaseService {
 	private DetailBiayaManager detailBiayaManager;
 
 	/** Ambil DATA berdasarkan user_id, divisi_kd, subdiv_kd, dept_kd, kd_group, kd_biaya **/
+	public HakApprove get(String user_id, String divisi_kd, String subdiv_kd, String dept_kd, String kd_group, String kd_biaya,Integer f_aktif) {
+		return hakapproveMapper.get(user_id, divisi_kd, subdiv_kd, dept_kd, kd_group, kd_biaya, f_aktif);
+	}
+	
+	/** Ambil DATA berdasarkan user_id, divisi_kd, subdiv_kd, dept_kd, kd_group, kd_biaya **/
 	public HakApprove get(String user_id, String divisi_kd, String subdiv_kd, String dept_kd, String kd_group, String kd_biaya) {
-		return hakapproveMapper.get(user_id, divisi_kd, subdiv_kd, dept_kd, kd_group, kd_biaya);
+		return hakapproveMapper.get(user_id, divisi_kd, subdiv_kd, dept_kd, kd_group, kd_biaya, null);
 	}
 
 	/** Apakah data dengan user_id, divisi_kd, subdiv_kd, dept_kd, kd_group, kd_biaya ini ada? **/
+	public boolean exists(String user_id, String divisi_kd, String subdiv_kd, String dept_kd, String kd_group, String kd_biaya,Integer f_aktif) {	
+		return get(user_id, divisi_kd, subdiv_kd, dept_kd, kd_group, kd_biaya, f_aktif)!=null;
+	}
+	
+	/** Apakah data dengan user_id, divisi_kd, subdiv_kd, dept_kd, kd_group, kd_biaya ini ada? **/
 	public boolean exists(String user_id, String divisi_kd, String subdiv_kd, String dept_kd, String kd_group, String kd_biaya) {	
-		return get(user_id, divisi_kd, subdiv_kd, dept_kd, kd_group, kd_biaya)!=null;
+		return get(user_id, divisi_kd, subdiv_kd, dept_kd, kd_group, kd_biaya, null)!=null;
 	}
 
 	/** Delete data berdasarkan id **/
@@ -75,12 +85,12 @@ public class HakApproveManager extends BaseService {
 	public HakApprove save(HakApprove hakapprove) {
 		hakapprove.subdiv_kd = hakapprove.subdiv_kd.substring(hakapprove.subdiv_kd.lastIndexOf(".") + 1);
 		hakapprove.dept_kd = hakapprove.dept_kd.substring(hakapprove.dept_kd.lastIndexOf(".") + 1);
-		if (!exists(hakapprove.user_id, hakapprove.divisi_kd, hakapprove.subdiv_kd, hakapprove.dept_kd, hakapprove.kd_group, hakapprove.kd_biaya)) {
+		if (!exists(hakapprove.user_id, hakapprove.divisi_kd, hakapprove.subdiv_kd, hakapprove.dept_kd, hakapprove.kd_group, hakapprove.kd_biaya,1)) {
 			
 			hakapprove.setTgl_create(selectSysdate());
 			hakapprove.setUser_create(CommonUtil.getCurrentUserId());
 
-			Set<AudittrailDetail> changes = CommonUtil.changes(hakapprove, get(hakapprove.user_id, hakapprove.divisi_kd, hakapprove.subdiv_kd, hakapprove.dept_kd, hakapprove.kd_group, hakapprove.kd_biaya));
+			Set<AudittrailDetail> changes = CommonUtil.changes(hakapprove, get(hakapprove.user_id, hakapprove.divisi_kd, hakapprove.subdiv_kd, hakapprove.dept_kd, hakapprove.kd_group, hakapprove.kd_biaya,1));
 
 			hakapproveMapper.insert(hakapprove);
 			
@@ -89,7 +99,7 @@ public class HakApproveManager extends BaseService {
 			audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.ADD, hakapprove.getClass().getSimpleName(), hakapprove.getItemId(), CommonUtil.getIpAddr(httpServletRequest), "ADD HAK APPROVE", CommonUtil.getCurrentUser(), changes);
 		} else {
 			
-			HakApprove tmp = get(hakapprove.user_id, hakapprove.divisi_kd, hakapprove.subdiv_kd, hakapprove.dept_kd, hakapprove.kd_group, hakapprove.kd_biaya);
+			HakApprove tmp = get(hakapprove.user_id, hakapprove.divisi_kd, hakapprove.subdiv_kd, hakapprove.dept_kd, hakapprove.kd_group, hakapprove.kd_biaya,1);
 			Set<AudittrailDetail> changes = CommonUtil.changes(hakapprove, tmp);
 
 			hakapproveMapper.update(hakapprove);

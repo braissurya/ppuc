@@ -462,3 +462,6 @@ table.noborder, table.noborder td, table.noborder tbody,table.noborder tr{
 	color: white !important;
 }
 
+.vtop{
+	vertical-align: top;
+}

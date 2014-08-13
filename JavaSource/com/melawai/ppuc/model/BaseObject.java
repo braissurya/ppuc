@@ -33,6 +33,8 @@ public class BaseObject implements Serializable {
 	public String sort;
 	public String search;
 	
+	public Integer typeQuery;
+	
 	@Size(max = 50)
 	public String user_update;
 
@@ -113,6 +115,12 @@ public class BaseObject implements Serializable {
 	}
 	public String getJam_format() {
 		return jam_format;
+	}
+	public Integer getTypeQuery() {
+		return typeQuery;
+	}
+	public void setTypeQuery(Integer typeQuery) {
+		this.typeQuery = typeQuery;
 	}
 	
 	

@@ -24,7 +24,9 @@ public interface LokasiMapper {
 	public void remove(@Param("lok_kd") String lok_kd, @Param("dept_kd") String dept_kd, @Param("subdiv_kd") String subdiv_kd, @Param("divisi_kd") String divisi_kd) throws DataAccessException;
 
 	public Lokasi get(@Param("lok_kd") String lok_kd, @Param("dept_kd") String dept_kd, @Param("subdiv_kd") String subdiv_kd, @Param("divisi_kd") String divisi_kd) throws DataAccessException;
-
+	
+	public Lokasi getCounter(@Param("lok_kd") String lok_kd, @Param("dept_kd") String dept_kd, @Param("subdiv_kd") String subdiv_kd, @Param("divisi_kd") String divisi_kd) throws DataAccessException;
+	
 	public List<Lokasi> getAll() throws DataAccessException;
 
 	public List<Lokasi> selectPagingList(Lokasi lokasi) throws DataAccessException;

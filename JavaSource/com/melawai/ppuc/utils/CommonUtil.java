@@ -182,6 +182,17 @@ public class CommonUtil {
 			return loginUser.getUser_id();
 		return null;
 	}
+	
+	/**
+	 * additional function
+	 * @return
+	 */
+	public static String getCurrentUserKdFungsi() {
+		User loginUser = getCurrentUser();
+		if (loginUser != null)
+			return loginUser.getKd_fungsi();
+		return null;
+	}
 
 	/**
 	 * @Method_name : convertCurrencyToDouble

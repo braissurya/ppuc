@@ -5,9 +5,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.TransactionIsolationLevel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.melawai.ppuc.model.Audittrail;
@@ -16,6 +19,7 @@ import com.melawai.ppuc.model.Departmen;
 import com.melawai.ppuc.model.Lokasi;
 import com.melawai.ppuc.persistence.LokasiMapper;
 import com.melawai.ppuc.utils.CommonUtil;
+import com.melawai.ppuc.utils.Utils;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -116,6 +120,75 @@ public class LokasiManager extends BaseService {
 			save(lokasi);
 		}
 
+	}
+	
+	public String getCounterPPUC(String lok_kd, String dept_kd, String subdiv_kd, String divisi_kd){
+		Lokasi lok=lokasiMapper.getCounter(lok_kd, dept_kd, subdiv_kd, divisi_kd);
+		Date now=selectSysdate();
+		
+		lok.ctr_ppuc=lok.ctr_ppuc==null?0l:lok.ctr_ppuc;
+		lok.max_ctr_ppuc=new Long(props.getProperty("counter.max_ctr_ppuc"));
+		lok.curr_ctr_date=lok.curr_ctr_date==null?now:lok.curr_ctr_date;
+		
+		Integer tahun=Integer.parseInt(Utils.convertDateToString(lok.curr_ctr_date, "yy"));
+		
+		if(lok.max_ctr_ppuc==lok.ctr_batch)lok.ctr_batch=1l;
+		else if(tahun<Integer.parseInt(Utils.convertDateToString(now, "yy"))){
+			lok.ctr_ppuc=1l;
+			lok.curr_ctr_date=now;
+			tahun=Integer.parseInt(Utils.convertDateToString(now, "yy"));
+		}
+		else lok.ctr_ppuc++;
+		
+		lokasiMapper.update(lok);
+		
+		return lok_kd+"-"+tahun+"-"+Utils.rpad("0",""+lok.ctr_ppuc, props.getProperty("counter.max_ctr_ppuc").length());
+	}
+	
+	public String getCounterBatch(String lok_kd, String dept_kd, String subdiv_kd, String divisi_kd){
+		Lokasi lok=lokasiMapper.getCounter(lok_kd, dept_kd, subdiv_kd, divisi_kd);
+		Date now=selectSysdate();
+		
+		lok.ctr_batch=lok.ctr_batch==null?0l:lok.ctr_batch;
+		lok.max_ctr_batch=new Long(props.getProperty("counter.max_ctr_batch"));
+		lok.curr_ctr_date=lok.curr_ctr_date==null?now:lok.curr_ctr_date;
+		
+		Integer tahun=Integer.parseInt(Utils.convertDateToString(lok.curr_ctr_date, "yy"));
+		
+		if(lok.max_ctr_batch==lok.ctr_batch)lok.ctr_batch=1l;
+		else if(tahun<Integer.parseInt(Utils.convertDateToString(now, "yy"))){
+			lok.ctr_batch=1l;
+			lok.curr_ctr_date=now;
+			tahun=Integer.parseInt(Utils.convertDateToString(now, "yy"));
+		}
+		else lok.ctr_batch++;
+		
+		lokasiMapper.update(lok);
+		
+		return "B"+"-"+lok_kd+"-"+tahun+"-"+Utils.rpad("0",""+lok.ctr_batch, props.getProperty("counter.max_ctr_batch").length());
+	}
+	
+	public String getCounterRealisasi(String lok_kd, String dept_kd, String subdiv_kd, String divisi_kd){
+		Lokasi lok=lokasiMapper.getCounter(lok_kd, dept_kd, subdiv_kd, divisi_kd);
+		Date now=selectSysdate();
+		
+		lok.ctr_realisasi=lok.ctr_realisasi==null?0l:lok.ctr_realisasi;
+		lok.max_ctr_realisasi=new Long(props.getProperty("counter.max_ctr_realisasi"));
+		lok.curr_ctr_date=lok.curr_ctr_date==null?now:lok.curr_ctr_date;
+		
+		Integer tahun=Integer.parseInt(Utils.convertDateToString(lok.curr_ctr_date, "yy"));
+		
+		if(lok.max_ctr_realisasi==lok.ctr_realisasi)lok.ctr_realisasi=1l;
+		else if(tahun<Integer.parseInt(Utils.convertDateToString(now, "yy"))){
+			lok.ctr_realisasi=1l;
+			lok.curr_ctr_date=now;
+			tahun=Integer.parseInt(Utils.convertDateToString(now, "yy"));
+		}
+		else lok.ctr_realisasi++;
+		
+		lokasiMapper.update(lok);
+		
+		return "R"+"-"+lok_kd+"-"+tahun+"-"+Utils.rpad("0",""+lok.ctr_realisasi, props.getProperty("counter.max_ctr_realisasi").length());
 	}
 
 }

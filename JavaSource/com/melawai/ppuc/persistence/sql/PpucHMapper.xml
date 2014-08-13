@@ -64,6 +64,8 @@
 		<result property="hp_tujuan_batal" column="hp_tujuan_batal" />
 		<result property="email_asal_batal" column="email_asal_batal" />
 		<result property="email_tujuan_batal" column="email_tujuan_batal" />
+		<result property="posisi" column="posisi"/>
+		<result property="posisi_desc" column="posisi_desc"/>
 		<association property="divisi" javaType="Divisi">
 			<id property="divisi_kd" column="dc_divisi_kd"  />  
 			<result property="divisi_nm" column="dc_divisi_nm" />
@@ -166,23 +168,23 @@
 			<result property="harga_real_oc" column="pd_harga_real_oc" />
 			<result property="total_real_oc" column="pd_total_real_oc" />
 			<result property="nilai_charge" column="pd_nilai_charge" />
-			<association property="groupbiaya" javaType="GroupBiaya">
-				<id property="kd_group" column="kd_group"  />  
-				<result property="nm_group" column="nm_group" />
+			<association property="groupBiaya" javaType="GroupBiaya">
+				<id property="kd_group" column="gb_kd_group"  />  
+				<result property="nm_group" column="gb_nm_group" />
 			</association>
-			<association property="detailbiaya" javaType="DetailBiaya">
-				<id property="kd_biaya" column="kd_biaya"  />  
-				<result property="kd_group" column="kd_group" />
-				<result property="biaya_description" column="biaya_description" />
-				<result property="f_putus" column="f_putus" />
-				<result property="f_used" column="f_used" />
-				<result property="acc_no" column="acc_no" />
+			<association property="detailBiaya" javaType="DetailBiaya">
+				<id property="kd_biaya" column="db_kd_biaya"  />  
+				<result property="kd_group" column="db_kd_group" />
+				<result property="biaya_description" column="db_biaya_description" />
+				<result property="f_putus" column="db_f_putus" />
+				<result property="f_used" column="db_f_used" />
+				<result property="acc_no" column="db_acc_no" />
 			</association>
 		</collection>
 	</resultMap>
 
 	<!-- nama kolom yang ingin ditampilkan -->
-	<sql id="defaultColoumn">
+	<sql id="basicColoumn">
 		C.DIVISI_KD as divisi_kd,
 		C.SUBDIV_KD as subdiv_kd,
 		C.DEPT_KD as dept_kd,
@@ -234,6 +236,12 @@
 		C.SYS_HP_TUJUAN_BATAL as hp_tujuan_batal,
 		C.SYS_EMAIL_ASAL_BATAL as email_asal_batal,
 		C.SYS_EMAIL_TUJUAN_BATAL as email_tujuan_batal,
+		C.POSISI as posisi
+	</sql>
+	
+	<sql id="defaultColoumn">
+		<include refid="basicColoumn"/>,
+		P.DESCRIPTION as posisi_desc,
 		PD.DIVISI_KD as pd_divisi_kd,
 		PD.SUBDIV_KD as pd_subdiv_kd,
 		PD.DEPT_KD as pd_dept_kd,
@@ -301,7 +309,15 @@
 		ucoc.USER_ID as ucoc_user_id,
 		ucoc.USER_NAME as ucoc_user_name,
 		ucoc.NO_HP as ucoc_no_hp,
-		ucoc.EMAIL as ucoc_email	
+		ucoc.EMAIL as ucoc_email,
+		gb.KD_GROUP as gb_kd_group,
+		gb.NM_GROUP as gb_nm_group,
+		db.KD_BIAYA as db_kd_biaya,
+		db.KD_GROUP as db_kd_group,
+		db.BIAYA_DESCRIPTION as db_biaya_description,
+		db.F_PUTUS as db_f_putus,
+		db.F_USED as db_f_used,
+		db.ACC_NO as db_acc_no	
 	</sql>
 
 	<!-- query select, dengan kolom yang default di atas, apabila mau ditambahkan join juga bisa disini
@@ -309,6 +325,7 @@
 	<sql id="selectQuery">
 		select * from (
 			select <include refid="defaultColoumn" /> from ppuc_h C
+			left outer join sys_posisi_dok P on C.POSISI = P.ID
 			left outer join ppuc_d PD on C.sys_no_ppuc = PD.sys_no_ppuc and C.tgl_ppuc = PD.tgl_ppuc and C.lok_kd = PD.lok_kd
 			left outer join divisi dc on C.divisi_kd = dc.divisi_kd
 			left outer join subdivisi sc on C.subdiv_kd = sc.subdiv_kd
@@ -323,13 +340,16 @@
 			left outer join user urc on C.sys_user_realisasi = urc.user_id
 			left outer join user ucrc on C.sys_user_conf_real = ucrc.user_id
 			left outer join user ucoc on C.sys_user_conf_oc = ucoc.user_id
+			left outer join group_biaya gb on PD.kd_group = gb.kd_group
+			left outer join detail_biaya db on PD.kd_biaya = db.kd_biaya
 		)T
 	</sql>
 
 	<!-- kolom apa aja yang mau disearching -->
 	<sql id="searchTambahan">
 		Where 1=1
-			<!--!!TAMBAHAN parameter untuk search-->
+			<if test="no_batch != null">AND T.no_batch = #{no_batch}</if>
+			<if test="no_ppuc != null">AND T.no_ppuc = #{no_ppuc}</if>
 	</sql>
 
 	<!-- kolom apa aja yang mau disearching -->
@@ -432,7 +452,8 @@
 			SYS_HP_ASAL_BATAL,
 			SYS_HP_TUJUAN_BATAL,
 			SYS_EMAIL_ASAL_BATAL,
-			SYS_EMAIL_TUJUAN_BATAL
+			SYS_EMAIL_TUJUAN_BATAL,
+			POSISI
 		) values (
 			#{divisi_kd},
 			#{subdiv_kd},
@@ -484,7 +505,8 @@
 			#{hp_asal_batal},
 			#{hp_tujuan_batal},
 			#{email_asal_batal},
-			#{email_tujuan_batal}
+			#{email_tujuan_batal},
+			#{posisi}
 		)
 	</insert>
 
@@ -542,7 +564,8 @@
 			<if test="hp_asal_batal != null">SYS_HP_ASAL_BATAL = #{hp_asal_batal}, </if>
 			<if test="hp_tujuan_batal != null">SYS_HP_TUJUAN_BATAL = #{hp_tujuan_batal}, </if>
 			<if test="email_asal_batal != null">SYS_EMAIL_ASAL_BATAL = #{email_asal_batal}, </if>
-			<if test="email_tujuan_batal != null">SYS_EMAIL_TUJUAN_BATAL = #{email_tujuan_batal} </if>
+			<if test="email_tujuan_batal != null">SYS_EMAIL_TUJUAN_BATAL = #{email_tujuan_batal}, </if>
+			<if test="posisi != null">POSISI = #{posisi} </if>
 		</set>
 		WHERE  
 			DIVISI_KD= #{divisi_kd} 
@@ -619,8 +642,60 @@
 
 	<!-- QUERY CUSTOM LAIN-LAIN bisa dimasukkan dibawah ini -->
 	
+	<sql id="selectQuerySatu">
+		select * from (
+			select <include refid="basicColoumn" />, P.description posisi_desc,
+			dc.divisi_nm, sc.subdiv_nm, dpc.dept_nm, lc.lok_nm
+			from ppuc_h C, sys_posisi_dok P , divisi dc ,subdivisi sc, departmen dpc, lokasi lc 
+			where  C.POSISI = P.ID
+			and  C.divisi_kd = dc.divisi_kd
+			and C.subdiv_kd = sc.subdiv_kd and C.divisi_kd = sc.divisi_kd
+			and C.dept_kd = dpc.dept_kd and C.subdiv_kd = dpc.subdiv_kd and C.divisi_kd = dpc.divisi_kd
+			and  C.lok_kd = lc.lok_kd and C.dept_kd = lc.dept_kd and C.subdiv_kd = lc.subdiv_kd and C.divisi_kd = lc.divisi_kd
+		)T
+	</sql>
+	
+	<!-- kolom apa aja yang mau disearching -->
+	<sql id="searchTambahanSatu">
+		Where 1=1
+			<if test="no_batch != null">AND T.no_batch = #{no_batch}</if>
+		group by no_batch
+	</sql>
+	
+	<!-- select berdasarkan paging parameter -->
+	<select id="selectPagingListSatu" parameterType="PpucH" resultType="PpucH">
+			SELECT x.* from (
+				select * from (
+					<include refid="selectQuerySatu" />
+					<include refid="searchTambahanSatu" />
+				) y
+				<if test="search != null">
+					<include refid="search" />
+				</if>
+				<if test="sort != null">
+					order by ${sort}
+				</if>
+				 LIMIT #{page} , #{rowcount}
+			)x
+	</select>
+
+	<!-- select jumlah seluruh data yang akan di paging -->
+	<select id="selectPagingCountSatu" parameterType="PpucH" resultType="Integer">
+		select count(*) from(
+			SELECT x.* from (
+				select * from (
+					<include refid="selectQuerySatu" />
+					<include refid="searchTambahanSatu" />
+				) y
+				<if test="search != null">
+					<include refid="search" />
+				</if>
+			)x
+		) z
+	</select>
+	
 	<select id="selectMessageTemplate" parameterType="HashMap" resultType="HashMap" >
-	columns
+<!-- 	columns -->
 	</select>
 
 </mapper>

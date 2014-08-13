@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -34,23 +35,19 @@ public class PpucD extends BaseObject implements Serializable  {
 	@NotEmpty
 	public String lok_kd;
 
-	@NotEmpty
-	@Size(max=9)
 	public String no_ppuc;
 
-	@NotEmpty
+	@NotNull
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(style="M-")
 	public Date tgl_ppuc;
 
-	@Size(max=5)
+	@NotEmpty
 	public String kd_group;
 
 	@NotEmpty
-	@Size(max=30)
 	public String kd_biaya;
 
-	@Size(max=10)
 	public String no_batch;
 
 	public Long qty;
@@ -71,7 +68,6 @@ public class PpucD extends BaseObject implements Serializable  {
 	@Size(max=65535)
 	public String ket_approve;
 
-	@NotEmpty
 	@Size(max=25)
 	public String no_realisasi;
 
@@ -95,6 +91,8 @@ public class PpucD extends BaseObject implements Serializable  {
 	//****************** OTHERS START HERE ******************/
 
 	public String itemId;
+	public String nm_group;
+	public String nm_biaya;
 	
 	public GroupBiaya groupBiaya;
 	public DetailBiaya detailBiaya;
@@ -111,7 +109,7 @@ public class PpucD extends BaseObject implements Serializable  {
 	public PpucD(String divisi_kd, String subdiv_kd, String dept_kd,
 			String lok_kd, String no_ppuc, Date tgl_ppuc, String kd_group,
 			String kd_biaya, Long qty, Double harga, Double total,
-			String keterangan) {
+			String keterangan, String nm_group, String nm_biaya) {
 		super();
 		this.divisi_kd = divisi_kd;
 		this.subdiv_kd = subdiv_kd;
@@ -125,6 +123,8 @@ public class PpucD extends BaseObject implements Serializable  {
 		this.harga = harga;
 		this.total = total;
 		this.keterangan = keterangan;
+		this.nm_biaya=nm_biaya;
+		this.nm_group=nm_group;
 	}
 
 
@@ -238,6 +238,34 @@ public class PpucD extends BaseObject implements Serializable  {
 
 	public void setDetailBiaya(DetailBiaya detailBiaya) {
 		this.detailBiaya = detailBiaya;
+	}
+
+
+
+
+	public String getNm_group() {
+		return nm_group;
+	}
+
+
+
+
+	public void setNm_group(String nm_group) {
+		this.nm_group = nm_group;
+	}
+
+
+
+
+	public String getNm_biaya() {
+		return nm_biaya;
+	}
+
+
+
+
+	public void setNm_biaya(String nm_biaya) {
+		this.nm_biaya = nm_biaya;
 	}
 
 	//****************** GETTER SETTER END HERE ******************/
