@@ -14,6 +14,8 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.melawai.ppuc.utils.Utils;
+
 /**
  * GENERATE BY BraisSpringMVCHelp
  * @since		: Thu Jun 19 23:42:37 ICT 2014
@@ -45,7 +47,6 @@ public class PpucH extends BaseObject implements Serializable  {
 	@DateTimeFormat(style="M-")
 	public Date tgl_ppuc;
 
-	@Size(max=10)
 	public String no_batch;
 
 	@Size(max=50)
@@ -252,7 +253,12 @@ public class PpucH extends BaseObject implements Serializable  {
 	public void setUser_confirm(String user_confirm){ this.user_confirm = user_confirm; }
 
 	public Date getTgl_confirm(){ return tgl_confirm; }
-	public void setTgl_confirm(Date tgl_confirm){ this.tgl_confirm = tgl_confirm; }
+	public void setTgl_confirm(Date tgl_confirm){ 
+		this.tgl_confirm = tgl_confirm; 
+		if (tgl_confirm != null) {
+			this.jam_confirm = Utils.convertDateToString(tgl_confirm, jam_format);
+		}
+	}
 
 	public String getJam_confirm(){ return jam_confirm; }
 	public void setJam_confirm(String jam_confirm){ this.jam_confirm = jam_confirm; }
@@ -282,7 +288,12 @@ public class PpucH extends BaseObject implements Serializable  {
 	public void setUser_approve(String user_approve){ this.user_approve = user_approve; }
 
 	public Date getTgl_approve(){ return tgl_approve; }
-	public void setTgl_approve(Date tgl_approve){ this.tgl_approve = tgl_approve; }
+	public void setTgl_approve(Date tgl_approve){ 
+		this.tgl_approve = tgl_approve;
+		if (tgl_approve != null) {
+			this.jam_approve = Utils.convertDateToString(tgl_approve, jam_format);
+		}
+	}
 
 	public String getJam_approve(){ return jam_approve; }
 	public void setJam_approve(String jam_approve){ this.jam_approve = jam_approve; }
@@ -309,7 +320,12 @@ public class PpucH extends BaseObject implements Serializable  {
 	public void setUser_realisasi(String user_realisasi){ this.user_realisasi = user_realisasi; }
 
 	public Date getTgl_realisasi(){ return tgl_realisasi; }
-	public void setTgl_realisasi(Date tgl_realisasi){ this.tgl_realisasi = tgl_realisasi; }
+	public void setTgl_realisasi(Date tgl_realisasi){ 
+		this.tgl_realisasi = tgl_realisasi; 
+		if (tgl_realisasi!= null) {
+			this.jam_realisasi = Utils.convertDateToString(tgl_realisasi, jam_format);
+		}
+	}
 
 	public String getJam_realisasi(){ return jam_realisasi; }
 	public void setJam_realisasi(String jam_realisasi){ this.jam_realisasi = jam_realisasi; }
@@ -318,7 +334,12 @@ public class PpucH extends BaseObject implements Serializable  {
 	public void setUser_conf_real(String user_conf_real){ this.user_conf_real = user_conf_real; }
 
 	public Date getTgl_conf_real(){ return tgl_conf_real; }
-	public void setTgl_conf_real(Date tgl_conf_real){ this.tgl_conf_real = tgl_conf_real; }
+	public void setTgl_conf_real(Date tgl_conf_real){ 
+		this.tgl_conf_real = tgl_conf_real; 
+		if (tgl_conf_real != null) {
+			this.jam_conf_real = Utils.convertDateToString(tgl_conf_real, jam_format);
+		}
+	}
 
 	public String getJam_conf_real(){ return jam_conf_real; }
 	public void setJam_conf_real(String jam_conf_real){ this.jam_conf_real = jam_conf_real; }
@@ -327,7 +348,12 @@ public class PpucH extends BaseObject implements Serializable  {
 	public void setUser_conf_oc(String user_conf_oc){ this.user_conf_oc = user_conf_oc; }
 
 	public Date getTgl_conf_oc(){ return tgl_conf_oc; }
-	public void setTgl_conf_oc(Date tgl_conf_oc){ this.tgl_conf_oc = tgl_conf_oc; }
+	public void setTgl_conf_oc(Date tgl_conf_oc){ 
+		this.tgl_conf_oc = tgl_conf_oc; 
+		if (tgl_conf_oc != null) {
+			this.jam_conf_oc = Utils.convertDateToString(tgl_conf_oc, jam_format);
+		}
+	}
 
 	public String getJam_conf_oc(){ return jam_conf_oc; }
 	public void setJam_conf_oc(String jam_conf_oc){ this.jam_conf_oc = jam_conf_oc; }
@@ -351,7 +377,12 @@ public class PpucH extends BaseObject implements Serializable  {
 	public void setUser_batal(String user_batal){ this.user_batal = user_batal; }
 
 	public Date getTgl_batal(){ return tgl_batal; }
-	public void setTgl_batal(Date tgl_batal){ this.tgl_batal = tgl_batal; }
+	public void setTgl_batal(Date tgl_batal){ 
+		this.tgl_batal = tgl_batal; 
+		if (tgl_batal != null) {
+			this.jam_batal = Utils.convertDateToString(tgl_batal, jam_format);
+		}
+	}
 
 	public String getJam_batal(){ return jam_batal; }
 	public void setJam_batal(String jam_batal){ this.jam_batal = jam_batal; }

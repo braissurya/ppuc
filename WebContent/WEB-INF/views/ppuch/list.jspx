@@ -1,27 +1,97 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:c="http://java.sun.com/jsp/jstl/core"  xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields"  xmlns:spring="http://www.springframework.org/tags" version="2.0">
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form"  xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"  xmlns:c="http://java.sun.com/jsp/jstl/core"  xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields"  xmlns:spring="http://www.springframework.org/tags" xmlns:form="http://www.springframework.org/tags/form" version="2.0">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
 	<page:list id="pl_com_melawai_ppuc_model_ppuch" items="${ppuchList}">
-		<table:table data="${ppuchList}" id="l_com_melawai_ppuc_model_PpucH" typeIdFieldName="itemId" update="false" path="/trans/ppuch">
-			<table:column id="c_com_melawai_ppuc_model_ppuch_no_batch" property="no_batch" label="No Batch" />
-			<table:column id="c_com_melawai_ppuc_model_ppuch_tgl_ppuc" property="tgl_ppuc" label="Tgl PPUC"   date="true" dateTimePattern="${ppuch_tgl_ppuc_date_format}"/>
-			<table:column id="c_com_melawai_ppuc_model_ppuch_divisi_kd" property="divisi_nm" label="Divisi Kd" />
-			<table:column id="c_com_melawai_ppuc_model_ppuch_subdiv_kd" property="subdiv_nm" label="Subdiv Kd" />
-			<table:column id="c_com_melawai_ppuc_model_ppuch_dept_kd" property="dept_nm" label="Dept Kd" />
-			<table:column id="c_com_melawai_ppuc_model_ppuch_lok_kd" property="lok_nm" label="Lok Kd" />
-			<table:column id="c_com_melawai_ppuc_model_ppuch_user_create" property="user_create" label="User Create" />
-			<table:column id="c_com_melawai_ppuc_model_ppuch_tgl_create" property="tgl_create" label="Tgl Create"   date="true" dateTimePattern="${ppuch_tgl_create_date_format}"/>
-			<table:column id="c_com_melawai_ppuc_model_ppuch_user_confirm" property="user_confirm" label="User Confirm" />
-			<table:column id="c_com_melawai_ppuc_model_ppuch_tgl_confirm" property="tgl_confirm" label="Tgl Confirm"   date="true" dateTimePattern="${ppuch_tgl_confirm_date_format}"/>
-			<table:column id="c_com_melawai_ppuc_model_ppuch_posisi_desc" property="posisi_desc" label="Posisi" />
-			<table:column custom="true" id="c_com_melawai_ppuc_model_ppuch_edit_batch" property="no_batch" label=" " >
-				<spring:url value="/trans/ppuch/batch/#prop?form" var="aktif_form_url" />
-				<spring:url value="/resources/images/update.png" var="aktif_image_url" />
-				<c:set value="Click To Edit PPUC" var="label_aktif" />
-				<a href="${aktif_form_url}" alt="${label_aktif}" title="${label_aktif}"> <img alt="${label_aktif}" class="image" src="${aktif_image_url}" title="${label_aktif}" />
-				</a>
-			</table:column>
-		</table:table>
+		<table>
+			<tr>
+				<th>No Batch</th>
+				<th>Tgl PPUC</th>
+				<th>Divisi</th>
+				<th>Subdivisi</th>
+				<th>Departmen</th>
+				<th>Lokasi</th>
+				<th>User Create</th>
+				<th>Tgl Create</th>
+				<th>User Confirm</th>
+				<th>Tgl Confirm</th>
+				<th class="utilbox"></th>
+				<th class="utilbox"></th>
+				<th class="utilbox"></th>
+			</tr>
+			<c:forEach items="${ppuchList}" var="v" varStatus="vs">
+				<tr>
+					<td>${v.no_batch }</td>
+					<td><fmt:formatDate value="${v.tgl_ppuc }" pattern="${ppuch_tgl_ppuc_date_format}"/></td>
+					<td>${v.divisi_nm }</td>
+					<td>${v.subdiv_nm }</td>
+					<td>${v.dept_nm }</td>
+					<td>${v.lok_nm }</td>
+					<td>${v.user_create }</td>
+					<td><fmt:formatDate value="${v.tgl_create }" pattern="${ppuch_tgl_create_date_format}"/></td>
+					<td>${v.user_confirm }</td>
+					<td><fmt:formatDate value="${v.tgl_confirm }" pattern="${ppuch_tgl_confirm_date_format}"/></td>
+					<td class="utilbox">
+						<c:if test="${v.posisi lt 2 }">
+							<spring:url value="/trans/ppuch/confirm/${v.no_batch}" var="confirm_form_url" /> 
+							<spring:url value="/resources/images/icons/filetick.gif" var="confirm_image_url" /> 
+							<form:form action="${confirm_form_url}" method="PUT">
+								<spring:message arguments="Confirm Input PPUC ?" code="entity_global" var="confirm_label" htmlEscape="false" />
+								<c:set var="confirm_confirm_msg">
+									<spring:escapeBody javaScriptEscape="true">
+										<spring:message arguments="Confirm" code="entity_global_confirm" />
+									</spring:escapeBody>
+								</c:set>
+								<input alt="${fn:escapeXml(confirm_label)}" class="image" src="${confirm_image_url}" title="${fn:escapeXml(confirm_label)}" type="image" value="${fn:escapeXml(confirm_label)}" onclick="return confirm('${confirm_confirm_msg}');" />
+								<c:if test="${not empty param.page}">
+									<input name="page" type="hidden" value="1" />
+								</c:if>
+								<c:if test="${not empty param.size}">
+									<input name="size" type="hidden" value="${fn:escapeXml(param.size)}" />
+								</c:if>
+							</form:form>
+						</c:if>
+					</td>
+					<td class="utilbox">
+						<c:if test="${v.posisi lt 2 }">
+							<spring:url value="/trans/ppuch/batch/${v.no_batch }?form" var="aktif_form_url" />
+							<spring:url value="/resources/images/update.png" var="aktif_image_url" />
+							<c:set value="Click To Edit PPUC" var="label_aktif" />
+							<a href="${aktif_form_url}" alt="${label_aktif}" title="${label_aktif}"> <img alt="${label_aktif}" class="image" src="${aktif_image_url}" title="${label_aktif}" />
+							</a>
+						</c:if>
+					</td>
+					<td class="utilbox">
+						<c:if test="${v.posisi lt 2 }">
+							<spring:url value="/trans/ppuch/${v.no_batch}" var="delete_form_url" /> 
+							<spring:url value="/resources/images/delete.png" var="delete_image_url" /> 
+							<form:form action="${delete_form_url}" method="DELETE">
+								<spring:message arguments="PPUC" code="entity_delete" var="delete_label" htmlEscape="false" />
+								<c:set var="delete_confirm_msg">
+									<spring:escapeBody javaScriptEscape="true">
+										<spring:message code="entity_delete_confirm" />
+									</spring:escapeBody>
+								</c:set>
+								<input alt="${fn:escapeXml(delete_label)}" class="image" src="${delete_image_url}" title="${fn:escapeXml(delete_label)}" type="image" value="${fn:escapeXml(delete_label)}" onclick="return confirm('${delete_confirm_msg}');" />
+								<c:if test="${not empty param.page}">
+									<input name="page" type="hidden" value="1" />
+								</c:if>
+								<c:if test="${not empty param.size}">
+									<input name="size" type="hidden" value="${fn:escapeXml(param.size)}" />
+								</c:if>
+							</form:form>
+						</c:if>
+					</td>
+				</tr>
+			</c:forEach>
+			<tr class="footer">
+				<td colspan="14">
+					 <c:if test="${not empty maxPages}">
+						<util:pagination maxPages="${maxPages}" page="${param.page}" size="${param.size}" />
+					</c:if> 
+				</td>
+			</tr>
+		</table>
+	
 	</page:list>
 </div>

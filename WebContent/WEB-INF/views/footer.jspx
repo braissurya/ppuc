@@ -14,7 +14,7 @@
 	<spring:message code="global_sponsored" htmlEscape="false" var="sponsored" />
 	<spring:message code="version_app" var="version_app" htmlEscape="false" />
 	<spring:message code="copy_right" var="copy_right" htmlEscape="false" />
-	<!-- 
+	 
 	<table style="border: none;">
 		<tr>
 			<td align="left" width="40%" style="border: none;">
@@ -31,6 +31,6 @@
 				</span>
 			</td>
 		</tr>
-	</table> -->
+	</table> 
 	
 </div>

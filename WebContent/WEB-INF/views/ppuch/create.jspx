@@ -118,7 +118,7 @@
 				</td>
 				<td class="vtop">
 					<![CDATA[
-					<textarea name="keterangan" id="_keterangan_id" rows="2" ></textarea>
+					<textarea name="keterangan" id="_keterangan_id" rows="1" ></textarea>
 					]]>
 					
 				</td>
@@ -177,7 +177,7 @@
 				
 			</table>
 		</div>
-
+	<br/>
 	</fm:create>
 	<fm:dependency dependencies="${dependencies}" id="d_com_melawai_ppuc_model_ppuch" render="${ not empty dependencies }" />
 

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:form="http://www.springframework.org/tags/form" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:fm="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:form="http://www.springframework.org/tags/form" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"  xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:fm="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<spring:url value="/" var="path" />
     <jsp:output omit-xml-declaration="yes"/>
-    <fm:update id="fu_com_melawai_ppuc_model_ppuch" modelAttribute="ppuch" path="/trans/ppuch/batch" idField="itemId" versionField="none" >
-      <field:input field="no_batch" label="No Batch" id="c_com_melawai_ppuc_model_ppuch_no_batch" required="false" disabled="true" max="10" />
+    <fm:update id="fu_com_melawai_ppuc_model_ppuch" modelAttribute="ppuch" path="/trans/ppuch/batch" back="/trans/ppuch" idField="itemId" versionField="none" >
+      <field:input field="no_batch" label="No Batch" id="c_com_melawai_ppuc_model_ppuch_no_batch" required="false" readonly="true" max="10" />
 		<field:select field="divisi_kd" label="Divisi Kd" readonly="true" id="c_com_melawai_ppuc_model_ppuch_divisi_kd" items="${divisiList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/divisi" />
 		<field:select field="subdiv_kd" label="Subdiv Kd"  readonly="true"   id="c_com_melawai_ppuc_model_ppuch_subdiv_kd" items="${subdivList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/subdivisi" />
 		<field:select field="dept_kd" label="Dept Kd" id="c_com_melawai_ppuc_model_ppuch_dept_kd" items="${deptList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/departmen" />
@@ -118,7 +118,7 @@
 				</td>
 				<td class="vtop">
 					<![CDATA[
-					<textarea name="keterangan" id="_keterangan_id" rows="2" ></textarea>
+					<textarea name="keterangan" id="_keterangan_id" rows="1" ></textarea>
 					]]>
 					
 				</td>
@@ -142,19 +142,24 @@
 					<th>Harga</th>
 					<th>Total</th>
 					<th class="utilbox"></th>
+					<th class="utilbox"></th>
 				</tr>
 				<c:choose>
 					<c:when test="${not empty ppuch.ppucds }">
 						<c:forEach items="${ppuch.ppucds}" var="i" varStatus="s">
+							<fmt:formatDate var="tglppuc" value="${i.tgl_ppuc}" pattern="${ppuch_tgl_ppuc_date_format}"/>
+							<fmt:formatNumber pattern="#,##0" value="${i.qty}" var="qtyValue"/>
+							<fmt:formatNumber pattern="#,##0" value="${i.harga}" var="hargaValue"/>
+							<fmt:formatNumber pattern="#,##0" value="${i.qty * i.harga}" var="totalValue"/>
 							<tr>
 								<td><input type="hidden" name="no_ppuc_${s.count}" id="no_ppuc_${s.count}" value="${i.no_ppuc}" />${i.no_ppuc}<input type="hidden" name="idx" id="idx" value="${s.count}" /></td>			 	
-								<td><input type="hidden" name="tgl_ppuc_${s.count}" id="tgl_ppuc_${s.count}" value="${i.tgl_ppuc}" />${i.tgl_ppuc}</td>
-								<td><input type="hidden" name="kd_group_${s.count}" id="kd_group_${s.count}" value="${i.kd_group}" /><input type="hidden" name="nm_group_${s.count}" id="nm_group_${s.count}" value="${i.nm_group}" />${i.nm_group}</td>
-								<td><input type="hidden" name="kd_biaya_${s.count}" id="kd_biaya_${s.count}" value="${i.kd_biaya}" />${i.nm_biaya}</td>
+								<td><input type="hidden" name="tgl_ppuc_${s.count}" id="tgl_ppuc_${s.count}" value="${tglppuc}" />${tglppuc }</td>
+								<td><input type="hidden" name="kd_group_${s.count}" id="kd_group_${s.count}" value="${i.divisi_kd}.${i.subdiv_kd}.${i.dept_kd}.${i.lok_kd}.${i.groupBiaya.kd_group }" /><input type="hidden" name="nm_group_${s.count}" id="nm_group_${s.count}" value="${i.groupBiaya.nm_group}" />${i.groupBiaya.nm_group}</td>
+								<td><input type="hidden" name="kd_biaya_${s.count}" id="kd_biaya_${s.count}" value="${i.divisi_kd}.${i.subdiv_kd}.${i.dept_kd}.${i.lok_kd}.${i.groupBiaya.kd_group }.${i.detailBiaya.kd_biaya}" />${i.detailBiaya.kd_biaya}</td>
 								<td><input type="hidden" name="keterangan_${s.count}" id="keterangan_${s.count}" value="${i.keterangan}" />${i.keterangan}</td>
-								<td><input type="hidden" name="qty_${s.count}" id="qty_${s.count}" value="${i.qty}" />${i.qty}</td>
-								<td><input type="hidden" name="harga_${s.count}" id="harga_${s.count}" value="${i.harga}" />${i.harga}</td>
-								<td><input type="hidden" name="total_${s.count}" id="total_${s.count}" value="${i.total}"  />${i.total}</td>
+								<td><input type="hidden" name="qty_${s.count}" id="qty_${s.count}" value="${qtyValue}" />${qtyValue}</td>
+								<td><input type="hidden" name="harga_${s.count}" id="harga_${s.count}" value="${hargaValue}" />${hargaValue}</td>
+								<td><input type="hidden" name="total_${s.count}" id="total_${s.count}" value="${totalValue}"  />${totalValue}</td>
 								<td class="utilbox"><a href="#" class="edit" id="edit" rel="${s.count}"> <img src="${path}resources/images/update.png" alt="Edit" /> </a> </td>
 							 	<td class="utilbox"><a href="#" class="remove" id="remove" rel="${s.count}"> <img src="${path}resources/images/delete.png" alt="Delete" /> </a> </td>
 							</tr>
@@ -171,11 +176,13 @@
 							<td></td>
 							<td></td>
 							<td class="utilbox"></td>
+							<td class="utilbox"></td>
 						</tr>
 					</c:otherwise>
 				</c:choose>
 				
 			</table>
+			<br/>
 		</div>
 
 
@@ -229,6 +236,8 @@
 	<![CDATA[
 	<script src="/PPUC/resources/static/ppuchelper.js" type="text/javascript">	</script>
 	]]>
+	
+	<input type="hidden" name="path" value="${path }" id="path"/>
 
 	</fm:update>
 </div>

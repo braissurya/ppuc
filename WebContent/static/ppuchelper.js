@@ -102,22 +102,38 @@ $(document).ready(function(){
 	$('#table_wrapper').on('click',"#edit", function() {
 		var id=$(this).attr('rel');
 		setSelectValue('_kd_group_id', $('#kd_group_'+id).val());
-		setSelectValue('_kd_biaya_id', $('#kd_biaya_'+id).val());
 		$('#_qty_id').val($('#qty_'+id).val());
 		$('#_harga_id').val($('#harga_'+id).val());
 		$('#_keterangan_id').val($('#keterangan_'+id).val());
 		$('#_no_ppuc_id').val($('#no_ppuc_'+id).val());
+		$("#_kd_group_id").focus().select();
+		autoPop($('#path').val(), "detailbiaya_ppuc", "_kd_group_id", "_kd_biaya_id", false,
+				$('#kd_biaya_'+id).val(), "");
+//		setSelectValue('_kd_biaya_id', $('#kd_biaya_'+id).val());
+		
 		deleteRow($(this),'/trans/ppuch/json/removeData');
 	});
 	
 	function addRow(dis){
-		if($('#_kd_group_id').val()=='-- choose KD Group --') alert('KD Group Belum diisi');
-		else if($('#_kd_biaya_id').val()=='-- choose KD Biaya --') alert('KD Biaya Belum diisi');
-		else if($('#_qty_id').val()=='') alert('QTY Belum diisi');
-		else if($('#_qty_id').val()<=0) alert('QTY minimal 1');
-		else if($('#_harga_id').val()=='') alert('Harga Belum diisi');
-		else if($('#_tgl_ppuc_id').val()=='') alert('Tgl PPUC Belum diisi');
-		else{	
+		if($('#_kd_group_id').val()=='-- choose KD Group --') {
+			alert('KD Group Belum diisi');
+			$("#_kd_group_id").focus().select();
+		} else if($('#_kd_biaya_id').val()=='-- choose KD Biaya --') {
+			alert('KD Biaya Belum diisi');
+			$("#_kd_biaya_id").focus().select();
+		} else if($('#_qty_id').val()==''){
+			alert('QTY Belum diisi');
+			$("#_qty_id").focus().select();
+		} else if($('#_qty_id').val()<=0){
+			alert('QTY minimal 1');
+			$("#_qty_id").focus().select();
+		} else if($('#_harga_id').val()=='') {
+			alert('Harga Belum diisi');
+			$("#_harga_id").focus().select();
+		} else if($('#_tgl_ppuc_id').val()=='') {
+			alert('Tgl PPUC Belum diisi');
+			$("#_tgl_ppuc_id").focus().select();
+		} else{	
 			addRowJson(dis,'/trans/ppuch/json/addData');
 			$('#_kd_group_id').val('-- choose KD Group --');
 			$('#_kd_biaya_id').val('-- choose KD Biaya --');
@@ -125,6 +141,7 @@ $(document).ready(function(){
 			$('#_harga_id').val('');
 			$('#_keterangan_id').val('');
 			$('#_no_ppuc_id').val('');
+			$("#_kd_group_id").focus().select();
 		}
 		return false;
 	}

@@ -75,25 +75,50 @@
 			</form>
 		   
 		</div>
-       <table:table data="${hakapproveList}" id="l_com_melawai_ppuc_model_HakApprove" typeIdFieldName="itemId" path="/master/hakapprove" delete="false" update="false" show="false"> 
-	       <table:column id="c_com_melawai_ppuc_model_hakapprove_user_id" property="user_id" label="User Id" />
-	       <table:column id="c_com_melawai_ppuc_model_hakapprove_divisi_kd" property="divisi_kd" label="Divisi Kd" />
-	       <table:column id="c_com_melawai_ppuc_model_hakapprove_subdiv_kd" property="subdiv_kd" label="Subdiv Kd" />
-	       <table:column id="c_com_melawai_ppuc_model_hakapprove_dept_kd" property="dept_kd" label="Dept Kd" />
-	       <table:column id="c_com_melawai_ppuc_model_hakapprove_kd_group" property="kd_group" label="Kd Group" />
-	       <table:column id="c_com_melawai_ppuc_model_hakapprove_kd_biaya" property="kd_biaya" label="Kd Biaya" />
-	       <table:column id="c_com_melawai_ppuc_model_hakapprove_user_create" property="user_create" label="User Create" />
-	       <table:column id="c_com_melawai_ppuc_model_hakapprove_jam_create" property="jam_create" label="Jam Create" />
-	       <table:column id="c_com_melawai_ppuc_model_hakapprove_user_nonaktif" property="user_nonaktif" label="User Nonaktif" />
-	       <table:column id="c_com_melawai_ppuc_model_hakapprove_jam_nonaktif" property="jam_nonaktif" label="Jam Nonaktif" />
-	       <table:column id="c_com_melawai_ppuc_model_hakapprove_aktifnonaktif" label=" " custom="true" property="revActive">
-				<spring:url value="javascript:showDialog('#prop','#itemID')" var="aktif_form_url" />
-				<spring:url value="/resources/images/icons/#prop.png" var="aktif_image_url" />
-				<c:set value="Click To #propd User" var="label_aktif" />
-				<a href="${aktif_form_url}" alt="${label_aktif}" title="${label_aktif}"> <img alt="${label_aktif}" class="image" src="${aktif_image_url}" title="${label_aktif}" />
-				</a>
-			</table:column>
-        </table:table>
+		<table>
+			<tr>
+				<th>User Id</th>
+				<th>Divisi KD</th>
+				<th>Subdivisi KD</th>
+				<th>Dept KD</th>
+				<th>KD Group</th>
+				<th>KD Biaya</th>
+				<th>Dari Tanggal</th>
+				<th>Sampai Tanggal</th>
+				<th>User Create</th>
+				<th>Tgl Create</th>
+				<th>User Non Aktif</th>
+				<th>Tgl Non Aktif</th>
+				<th class="utilbox"></th>
+			</tr>
+			<c:forEach items="${hakapproveList}" var="i">
+				<tr>
+					<td>${i.user_id}</td>
+					<td>${i.divisi_kd}</td>
+					<td>${i.subdiv_kd }</td>
+					<td>${i.dept_kd }</td>
+					<td>${i.kd_group }</td>
+					<td>${i.kd_biaya }</td>
+					<td><fmt:formatDate value="${i.drtgl }" pattern="${hakapprove_drtgl_date_format}"/></td>
+					<td><fmt:formatDate  value="${i.sptgl }" pattern="${hakapprove_sptgl_date_format}"/></td>
+					<td>${i.user_create }</td>
+					<td><fmt:formatDate  value="${i.tgl_create }" pattern="${hakapprove_tgl_create_date_format}"/></td>
+					<td>${i.user_nonaktif }</td>
+					<td><fmt:formatDate value="${i.tgl_nonaktif }" pattern="${hakapprove_tgl_nonaktif_date_format}"/></td>
+					<td class="utilbox">
+						<c:set value="Non-Active" var="nonAc" />
+						<c:if test="${i.revActive eq nonAc }">
+							<spring:url value="javascript:showDialog('${i.revActive}','${i.itemId}')" var="aktif_form_url" />
+							<spring:url value="/resources/images/icons/${i.revActive}.png" var="aktif_image_url" />
+							<c:set value="Click To #propd User" var="label_aktif" />
+							<a href="${aktif_form_url}" alt="${label_aktif}" title="${label_aktif}"> <img alt="${label_aktif}" class="image" src="${aktif_image_url}" title="${label_aktif}" />
+							</a>
+						</c:if>
+					</td>
+				</tr>
+			</c:forEach>
+		</table>
+
     </page:list>
 </div>
 

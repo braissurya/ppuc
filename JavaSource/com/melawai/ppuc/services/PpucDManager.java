@@ -2,14 +2,19 @@ package com.melawai.ppuc.services;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.melawai.ppuc.model.Audittrail;
+import com.melawai.ppuc.model.AudittrailDetail;
 import com.melawai.ppuc.model.PpucD;
+import com.melawai.ppuc.model.Subdivisi;
 import com.melawai.ppuc.persistence.PpucDMapper;
+import com.melawai.ppuc.utils.CommonUtil;
 
 /**
  * GENERATE BY BraisSpringMVCHelp
@@ -19,7 +24,7 @@ import com.melawai.ppuc.persistence.PpucDMapper;
  */
 
 @Service("ppucdManager")
-public class PpucDManager {
+public class PpucDManager extends BaseService {
 
 	private static Logger logger = Logger.getLogger(PpucDManager.class);
 
@@ -39,7 +44,11 @@ public class PpucDManager {
 	/** Delete data berdasarkan id **/
 	@Transactional
 	public void remove(String divisi_kd, String subdiv_kd, String dept_kd, String lok_kd, String no_ppuc, Date tgl_ppuc, String kd_biaya) {
+		PpucD tmp = get(divisi_kd, subdiv_kd, dept_kd, lok_kd, no_ppuc, tgl_ppuc, kd_biaya);
+		Set<AudittrailDetail> changes = CommonUtil.changes(tmp, null);
 		ppucdMapper.remove(divisi_kd, subdiv_kd, dept_kd, lok_kd, no_ppuc, tgl_ppuc, kd_biaya);
+		audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.DELETE, tmp.getClass().getSimpleName(), tmp.getItemId(), CommonUtil.getIpAddr(httpServletRequest), "DELETE PPUCD",
+				CommonUtil.getCurrentUser(), changes);
 	}
 
 	/** Ambil jumlah seluruh data **/
@@ -63,9 +72,25 @@ public class PpucDManager {
 	@Transactional
 	public PpucD save(PpucD ppucd) {
 		if (ppucd.getTgl_create()==null) {
+			ppucd.tgl_create=selectSysdate();
+			ppucd.user_create=CommonUtil.getCurrentUserId();
+
+			Set<AudittrailDetail> changes = CommonUtil.changes(ppucd, get(ppucd.divisi_kd, ppucd.subdiv_kd, ppucd.dept_kd, ppucd.lok_kd, ppucd.no_ppuc, ppucd.tgl_ppuc, ppucd.kd_biaya));
+
 			ppucdMapper.insert(ppucd);
+
+			audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.ADD, ppucd.getClass().getSimpleName(), ppucd.getItemId(), CommonUtil.getIpAddr(httpServletRequest), "ADD PPUCD",
+					CommonUtil.getCurrentUser(), changes);
 		} else {
+			ppucd.setTgl_update(selectSysdate());
+			ppucd.setUser_update(CommonUtil.getCurrentUserId());
+
+			Set<AudittrailDetail> changes = CommonUtil.changes(ppucd,  get(ppucd.divisi_kd, ppucd.subdiv_kd, ppucd.dept_kd, ppucd.lok_kd, ppucd.no_ppuc, ppucd.tgl_ppuc, ppucd.kd_biaya));
+
 			ppucdMapper.update(ppucd);
+
+			audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.UPDATE, ppucd.getClass().getSimpleName(), ppucd.getItemId(), CommonUtil.getIpAddr(httpServletRequest),
+					"UPDATE PPUCD", CommonUtil.getCurrentUser(), changes);
 		} 
 		return ppucd;
 	}

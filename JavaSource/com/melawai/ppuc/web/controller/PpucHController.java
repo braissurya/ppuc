@@ -82,8 +82,8 @@ public class PpucHController extends ParentController{
 			return "ppuch/create";
 		}
 		uiModel.asMap().clear();
-		ppuchManager.save(ppuch);
-		return "redirect:/master/ppuch/" + encodeUrlPathSegment(ppuch.getDivisi_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getSubdiv_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getDept_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getLok_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getNo_ppuc().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getTgl_ppuc().toString(), httpServletRequest);
+		ppuchManager.saveAll(ppuch);
+		return "redirect:/trans/ppuch/batch/"+encodeUrlPathSegment(ppuch.getNo_batch().toString(), httpServletRequest)+"?form";
 	}
 
 	@RequestMapping(params = "form", produces = "text/html")
@@ -127,8 +127,8 @@ public class PpucHController extends ParentController{
 			return "ppuch/update";
 		}
 		uiModel.asMap().clear();
-		ppuchManager.save(ppuch);
-		return "redirect:/master/ppuch/" + encodeUrlPathSegment(ppuch.getDivisi_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getSubdiv_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getDept_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getLok_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getNo_ppuc().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getTgl_ppuc().toString(), httpServletRequest);
+		ppuchManager.saveAll(ppuch);
+		return "redirect:/trans/ppuch/batch/"+encodeUrlPathSegment(ppuch.getNo_batch().toString(), httpServletRequest)+"?form";
 	}
 
 	@RequestMapping(value = "/batch/{no_batch}", params = "form", produces = "text/html")
@@ -136,10 +136,29 @@ public class PpucHController extends ParentController{
 		List<PpucH> ppuchs=ppuchManager.get(no_batch);
 		if(!ppuchs.isEmpty()){
 			PpucH ppuch=ppuchs.get(0);
-			ppuch.ppucds=new ArrayList<PpucD>();
+			List<PpucD> tmp=new ArrayList<PpucD>();
 			for(PpucH pp:ppuchs){
-				ppuch.ppucds.addAll(pp.ppucds);
+				tmp.addAll(pp.ppucds);
 			}
+			
+			List<PpucD> tmp2=new ArrayList<PpucD>();
+			for(PpucD pd:tmp){
+				if(tmp2.isEmpty())tmp2.add(pd);
+				else {
+					boolean add=true;
+					for (int i = 0; i < tmp2.size(); i++) {
+						if(pd.kd_biaya.equals(tmp2.get(i).kd_biaya)){
+							tmp2.get(i).qty+=pd.qty;
+							tmp2.get(i).no_ppuc+=";"+pd.no_ppuc;
+							add=false;
+							break;
+						}
+					}
+					
+					if(add)tmp2.add(pd);
+				}
+			}
+			ppuch.ppucds=tmp2;
 			populateEditForm(uiModel,ppuch);
 		}
 		return "ppuch/update";
@@ -152,8 +171,8 @@ public class PpucHController extends ParentController{
 			return "ppuch/update";
 		}
 		uiModel.asMap().clear();
-		ppuchManager.save(ppuch);
-		return "redirect:/master/ppuch/" + encodeUrlPathSegment(ppuch.getDivisi_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getSubdiv_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getDept_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getLok_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getNo_ppuc().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getTgl_ppuc().toString(), httpServletRequest);
+		ppuchManager.saveAll(ppuch);
+		return "redirect:/trans/ppuch/" + encodeUrlPathSegment(ppuch.getDivisi_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getSubdiv_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getDept_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getLok_kd().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getNo_ppuc().toString(), httpServletRequest)+"/" + encodeUrlPathSegment(ppuch.getTgl_ppuc().toString(), httpServletRequest);
 	}
 
 	@RequestMapping(value = "/{divisi_kd}/{subdiv_kd}/{dept_kd}/{lok_kd}/{no_ppuc}/{tgl_ppuc}", params = "form", produces = "text/html")
@@ -168,17 +187,51 @@ public class PpucHController extends ParentController{
 		uiModel.asMap().clear();
 		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
 		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
-		return "redirect:/master/ppuch";
+		return "redirect:/trans/ppuch";
 	}
+	
+	@RequestMapping(value = "/{no_batch}", method = RequestMethod.DELETE, produces = "text/html")
+	public String delete(@PathVariable("no_batch") String no_batch, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+		
+		String pesan=messageSource.getMessage("entity_success", new String[]{"Delete PPUC : "+no_batch+","}, LocaleContextHolder.getLocale());
+		if(ppuchManager.get(no_batch).isEmpty()){
+			pesan="No Batch "+no_batch+" tidak ditemukan";
+			messageSource.getMessage("entity_not_found", new String[]{"No Batch : "+no_batch+","}, LocaleContextHolder.getLocale());
+		}else{
+			ppuchManager.remove(no_batch);
+		}
+		uiModel.asMap().clear();
+		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
+		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
+		uiModel.addAttribute("pesan", pesan);
+		return "redirect:/trans/ppuch";
+	}
+	
+	@RequestMapping(value = "/confirm/{no_batch}",method = RequestMethod.PUT, produces = "text/html")
+	public String confirmInput(@PathVariable("no_batch") String no_batch, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+		String pesan=messageSource.getMessage("entity_success", new String[]{"Confirm Input PPUC : "+no_batch+","}, LocaleContextHolder.getLocale());
+		if(ppuchManager.get(no_batch).isEmpty()){
+			pesan="No Batch "+no_batch+" tidak ditemukan";
+			messageSource.getMessage("entity_not_found", new String[]{"No Batch : "+no_batch+","}, LocaleContextHolder.getLocale());
+		}else{
+			ppuchManager.confirmInput(no_batch);
+		}
+		uiModel.asMap().clear();
+		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
+		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
+		uiModel.addAttribute("pesan", pesan);
+		return "redirect:/trans/ppuch";
+	}
+	
 	void addDateTimeFormatPatterns(Model uiModel) {
 		uiModel.addAttribute("ppuch_tgl_ppuc_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
 		uiModel.addAttribute("ppuch_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("ppuch_sys_tgl_confirm_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("ppuch_sys_tgl_approve_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("ppuch_sys_tgl_realisasi_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("ppuch_sys_tgl_conf_real_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("ppuch_sys_tgl_conf_oc_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("ppuch_sys_tgl_batal_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("ppuch_tgl_confirm_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("ppuch_tgl_approve_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("ppuch_tgl_realisasi_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("ppuch_tgl_conf_real_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("ppuch_tgl_conf_oc_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("ppuch_tgl_batal_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 	void populateEditForm(Model uiModel, PpucH ppuch) {
 		uiModel.addAttribute("ppuch", ppuch);
@@ -285,6 +338,7 @@ public class PpucHController extends ParentController{
 			@RequestParam(value = "dept_kd", required = false, defaultValue = "") String dept_kd,
 			@RequestParam(value = "lok_kd", required = false, defaultValue = "") String lok_kd,
 			@RequestParam(value = "kd_group", required = false, defaultValue = "") String kd_group,
+			@RequestParam(value = "no_ppuc", required = false, defaultValue = "") String no_ppuc,
 			@RequestParam(value = "tgl_ppuc", required = false, defaultValue = "") String tgl_ppuc,
 			@RequestParam(value = "kd_biaya", required = false, defaultValue = "") String kd_biaya,
 			@RequestParam(value = "qty", required = false, defaultValue = "") String qty,
@@ -313,9 +367,9 @@ public class PpucHController extends ParentController{
 								ServletRequestUtils.getStringParameter(request, "keterangan_" + idx, null),
 								ServletRequestUtils.getStringParameter(request, "nm_group_" + idx, ""),
 								ServletRequestUtils.getStringParameter(request, "nm_biaya_" + idx, ""));
-
 				if (kd_biaya.equals(ppucd.kd_biaya)) {
 					isSame = true;
+					ppucd.qty=ppucd.qty+CommonUtil.convertToLong(qty);
 				}
 
 				Map<String, Object> map = new HashMap<String, Object>();
@@ -333,7 +387,6 @@ public class PpucHController extends ParentController{
 				ppuchList.add(map);
 				rowNum++;
 			}
-
 		}
 
 		if (!isSame) {
@@ -341,7 +394,7 @@ public class PpucHController extends ParentController{
 			Double hargaV= CommonUtil.convertCurrencyToDouble(harga);
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("idx", rowNum);
-			map.put("no_ppuc", "");
+			map.put("no_ppuc", no_ppuc);
 			map.put("tgl_ppuc", tgl_ppuc);
 			map.put("kd_group", kd_group);
 			map.put("nm_group", ppuchManager.getGroupBiaya(Utils.getLastDelimiterString(kd_group, ".")));

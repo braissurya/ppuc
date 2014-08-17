@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,9 +42,9 @@ public class HakApproveController extends ParentController{
 		binder.addValidators(hakApproveValidator);
 	}
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
-	public String create(@Valid HakApprove hakapprove, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-		if (hakapproveManager.exists(hakapprove.user_id, hakapprove.divisi_kd, hakapprove.subdiv_kd, hakapprove.dept_kd, hakapprove.kd_group, hakapprove.kd_biaya)) {
-			bindingResult.rejectValue("kd_biaya", "duplicate", new String[] { "DIVISI KD : " + hakapprove.divisi_kd + " | SUBDIVISI KD : " + hakapprove.subdiv_kd + " | DEPARTMEN KD : " + hakapprove.dept_kd + " | KD HAKBIAYA : " + hakapprove.kd_biaya + ", " }, null);
+	public String create(@ModelAttribute("hakapprove")@Valid HakApprove hakapprove, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+		if (hakapproveManager.exists(null, null, null, null, hakapprove.kd_group, hakapprove.kd_biaya,1)) {
+			bindingResult.rejectValue("kd_biaya", "duplicate", new String[] { /*"DIVISI KD : " + hakapprove.divisi_kd + " | SUBDIVISI KD : " + hakapprove.subdiv_kd + " | DEPARTMEN KD : " + hakapprove.dept_kd + */" KD HAKBIAYA : " + hakapprove.kd_biaya + ", " }, null);
 		}
 		
 		if(hakapproveManager.selectCountTable("detail_biaya", "kd_biaya = '"+hakapprove.kd_biaya+"' and f_used =1")>0){
@@ -82,17 +83,18 @@ public class HakApproveController extends ParentController{
 			page=1;
 		}
 
-			int sizeNo = size == null ? 10 : size.intValue();
-			final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-			uiModel.addAttribute("hakapproveList",hakapproveManager.selectPagingList(search,sortFieldName,sortOrder, firstResult, sizeNo) );
-			float nrOfPages = (float) hakapproveManager.selectPagingCount(search) / sizeNo;
-			uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
+		int sizeNo = size == null ? 10 : size.intValue();
+		final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
+		uiModel.addAttribute("hakapproveList",hakapproveManager.selectPagingList(search,sortFieldName,sortOrder, firstResult, sizeNo) );
+		float nrOfPages = (float) hakapproveManager.selectPagingCount(search) / sizeNo;
+		uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
 		addDateTimeFormatPatterns(uiModel);
+		
 		return "hakapprove/list";
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-	public String update(@Valid HakApprove hakapprove, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	public String update(@ModelAttribute("hakapprove")@Valid HakApprove hakapprove, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, hakapprove);
 			return "hakapprove/update";
