@@ -4,6 +4,9 @@
     <definition extends="default" name="ppuch/list">
         <put-attribute name="body" value="/WEB-INF/views/ppuch/list.jspx"/>
     </definition>
+     <definition extends="default" name="ppuch/listApp">
+        <put-attribute name="body" value="/WEB-INF/views/ppuch/listApp.jspx"/>
+    </definition>
 	<definition extends="default" name="ppuch/show">
         <put-attribute name="body" value="/WEB-INF/views/ppuch/show.jspx"/>
     </definition>

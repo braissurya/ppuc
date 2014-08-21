@@ -94,9 +94,18 @@ public class PpucHManager extends BaseService {
 	}
 
 	/** Ambil jumlah seluruh data **/
-	public int selectPagingCount(String search, Integer type) {
+	public int selectPagingCount(String search, Integer type, String nb, String np, String lk, String gb, String kb,Integer posisi_min,Integer posisi) {
 		PpucH ppuch = new PpucH();
 		ppuch.setSearch(search);
+		
+		if(!Utils.isEmpty(nb))ppuch.setNo_batch(nb);
+		if(!Utils.isEmpty(np))ppuch.setNo_ppuc(np);
+		if(!Utils.isEmpty(lk))ppuch.setLok_kd(lk);
+		if(!Utils.isEmpty(gb))ppuch.setKd_group(gb);
+		if(!Utils.isEmpty(kb))ppuch.setKd_biaya(kb);
+		
+		ppuch.setPosisi_min(posisi_min);
+		ppuch.setPosisi(posisi);
 
 		if (type == 1)
 			return ppuchMapper.selectPagingCountSatu(ppuch);
@@ -105,13 +114,25 @@ public class PpucHManager extends BaseService {
 	}
 
 	/** Ambil data paging **/
-	public List<PpucH> selectPagingList(String search, String sort, String sortOrder, int page, int rowcount, Integer type) {
+	public List<PpucH> selectPagingList(String search, String sort, String sortOrder, int page, int rowcount, Integer type, String nb, String np, String lk, String gb, String kb,Integer posisi_min,Integer posisi) {
 		PpucH ppuch = new PpucH();
 		ppuch.setSearch(search);
+		
+		if(sortOrder==null)sortOrder="asc";
 		if (sort != null)
 			ppuch.setSort(sort + " " + sortOrder);
 		ppuch.setPage(page);
 		ppuch.setRowcount(rowcount);
+		
+		if(!Utils.isEmpty(nb))ppuch.setNo_batch(nb);
+		if(!Utils.isEmpty(np))ppuch.setNo_ppuc(np);
+		if(!Utils.isEmpty(lk))ppuch.setLok_kd(lk);
+		if(!Utils.isEmpty(gb))ppuch.setKd_group(gb);
+		if(!Utils.isEmpty(kb))ppuch.setKd_biaya(kb);
+		
+		ppuch.setPosisi_min(posisi_min);
+		ppuch.setPosisi(posisi);
+		
 		if (type == 1)
 			return ppuchMapper.selectPagingListSatu(ppuch);
 		else
@@ -354,6 +375,33 @@ public class PpucHManager extends BaseService {
 		}
 		
 		//TODO : kirim email & sms klo tidak ada error
+		
+	}
+	
+	
+	@Transactional
+	public void saveAllApproval(List<PpucH> ppuchs) {
+		User currentUser =CommonUtil.getCurrentUser();
+		Date sysdate=selectSysdate();
+		for(PpucH ppuch:ppuchs){
+			ppuch.setTgl_approve(sysdate);
+			ppuch.setTgl_create(sysdate);
+			ppuch.setUser_approve(currentUser.getUser_id());
+			ppuch.setPosisi(PosisiDesc.PURCHASING);
+			save(ppuch);
+			for(PpucD ppucd:ppuch.ppucds){
+				ppucd.setTgl_create(sysdate);
+				ppucdManager.save(ppucd);
+			}
+		}
+		
+		//TODO :send email dan sms
+		for(PpucH ppuch:ppuchs){
+			for(PpucD ppucd:ppuch.ppucds){
+				
+			}
+		}
+		
 		
 	}
 }

@@ -228,9 +228,10 @@
 
 		});
 	</script>
+	<spring:url value="/resources/static/ppuchelper.js" var="js_url" />
 
 	<![CDATA[
-	<script src="/PPUC/resources/static/ppuchelper.js" type="text/javascript">	</script>
+	<script src="${js_url}" type="text/javascript">	</script>
 	]]>
 
 

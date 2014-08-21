@@ -209,7 +209,7 @@ public class CommonUtil {
 	 *           =====#===================#===========================#
 	 */
 	public static Double convertCurrencyToDouble(String nilai) {
-		return CommonUtil.isEmpty(nilai) ? 0.0 : new Double(nilai.replace(",", ""));
+		return CommonUtil.isEmpty(nilai) ? null : new Double(nilai.replace(",", ""));
 	}
 
 	/**

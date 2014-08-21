@@ -32,10 +32,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.google.gson.Gson;
 import com.melawai.ppuc.model.HakApprove;
+import com.melawai.ppuc.model.Posisi;
+import com.melawai.ppuc.model.Posisi.PosisiDesc;
 import com.melawai.ppuc.model.PpucD;
 import com.melawai.ppuc.model.PpucH;
+import com.melawai.ppuc.model.User;
 import com.melawai.ppuc.model.UserDivisi;
 import com.melawai.ppuc.services.GroupBiayaManager;
+import com.melawai.ppuc.services.PpucDManager;
 import com.melawai.ppuc.services.PpucHManager;
 import com.melawai.ppuc.services.UserDivisiManager;
 import com.melawai.ppuc.utils.CommonUtil;
@@ -50,6 +54,9 @@ public class PpucHController extends ParentController{
 
 	@Autowired
 	private PpucHManager ppuchManager;
+	
+	@Autowired
+	private PpucDManager ppucdManager;
 	
 	@Autowired
 	private UserDivisiManager userDivisiManager;
@@ -106,18 +113,156 @@ public class PpucHController extends ParentController{
 	}
 
 	@RequestMapping(produces = "text/html")
-	public String listInput(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size,@RequestParam(value = "search", required = false) String search, @RequestParam(value = "sortFieldName", required = false) String sortFieldName, @RequestParam(value = "sortOrder", required = false) String sortOrder, Model uiModel) {
+	public String listInput( @RequestParam(value = "groupBy", required = false) Integer groupBy, 
+							 @RequestParam(value = "nb", required = false) String nb,
+							 @RequestParam(value = "np", required = false) String np,
+							 @RequestParam(value = "lk", required = false) String lk,
+							 @RequestParam(value = "gb", required = false) String gb,
+							 @RequestParam(value = "kb", required = false) String kb,
+							 @RequestParam(value = "ps", required = false) Integer ps,
+							 @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size,@RequestParam(value = "search", required = false) String search, @RequestParam(value = "sortFieldName", required = false) String sortFieldName, @RequestParam(value = "sortOrder", required = false) String sortOrder, Model uiModel) {
 		if (page == null) {
 			page=1;
 		}
+		
+		if(groupBy==null)groupBy=1;
+		
+		if (Utils.isEmpty(nb))	nb = null;
+		else nb = nb.substring(nb.lastIndexOf(".") + 1);
+		
+		if (Utils.isEmpty(np)) 	np = null;
+		else np = np.substring(np.lastIndexOf(".") + 1);
+		
+		if (Utils.isEmpty(lk)) lk = null;
+		else lk = lk.substring(lk.lastIndexOf(".") + 1);
+		
+		if (Utils.isEmpty(gb))	gb = null;
+		else gb = gb.substring(gb.lastIndexOf(".") + 1);
+		
+		if (Utils.isEmpty(kb)) kb = null;
+		else kb = kb.substring(kb.lastIndexOf(".") + 1);
+		
+		if(groupBy==1) sortFieldName = "no_batch";
+		else  sortFieldName = "no_ppuc";
 
-			int sizeNo = size == null ? 10 : size.intValue();
-			final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-			uiModel.addAttribute("ppuchList",ppuchManager.selectPagingList(search,sortFieldName,sortOrder, firstResult, sizeNo,1) );
-			float nrOfPages = (float) ppuchManager.selectPagingCount(search,1) / sizeNo;
-			uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
+		int sizeNo = size == null ? 10000 : size.intValue();
+		final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
+		uiModel.addAttribute("ppuchList",ppuchManager.selectPagingList(search,sortFieldName,sortOrder, firstResult, sizeNo,groupBy, nb, np, lk, gb, kb,null,PosisiDesc.INPUT_PPUC));
+		float nrOfPages = (float) ppuchManager.selectPagingCount(search,groupBy,nb, np, lk, gb, kb,null,PosisiDesc.INPUT_PPUC) / sizeNo;
+		uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
 		addDateTimeFormatPatterns(uiModel);
+		populateEditForm(uiModel, nb, np, lk, gb, kb);
 		return "ppuch/list";
+	}
+	
+	@RequestMapping(value = "/approval",produces = "text/html")
+	public String listApp( @RequestParam(value = "groupBy", required = false) Integer groupBy, 
+							 @RequestParam(value = "nb", required = false) String nb,
+							 @RequestParam(value = "np", required = false) String np,
+							 @RequestParam(value = "lk", required = false) String lk,
+							 @RequestParam(value = "gb", required = false) String gb,
+							 @RequestParam(value = "kb", required = false) String kb,
+							 @RequestParam(value = "ps", required = false) Integer ps,
+							 @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size,@RequestParam(value = "search", required = false) String search, @RequestParam(value = "sortFieldName", required = false) String sortFieldName, @RequestParam(value = "sortOrder", required = false) String sortOrder, Model uiModel) {
+		if (page == null) {
+			page=1;
+		}
+		
+		if(groupBy==null)groupBy=3;
+		
+		if (Utils.isEmpty(nb))	nb = null;
+		else nb = nb.substring(nb.lastIndexOf(".") + 1);
+		
+		if (Utils.isEmpty(np)) 	np = null;
+		else np = np.substring(np.lastIndexOf(".") + 1);
+		
+		if (Utils.isEmpty(lk)) lk = null;
+		else lk = lk.substring(lk.lastIndexOf(".") + 1);
+		
+		if (Utils.isEmpty(gb))	gb = null;
+		else gb = gb.substring(gb.lastIndexOf(".") + 1);
+		
+		if (Utils.isEmpty(kb)) kb = null;
+		else kb = kb.substring(kb.lastIndexOf(".") + 1);
+		
+		if(groupBy==1) sortFieldName = "no_batch";
+		else  sortFieldName = "no_ppuc";
+
+		//FIXME : belum ada blok data hanya per divisi approval aja
+		int sizeNo = size == null ? 10000 : size.intValue();
+		final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
+		uiModel.addAttribute("ppuchList",ppuchManager.selectPagingList(search,sortFieldName,sortOrder, firstResult, sizeNo,groupBy, nb, np, lk, gb, kb,null,PosisiDesc.APPROVAL_PPUC));
+		float nrOfPages = (float) ppuchManager.selectPagingCount(search,groupBy,nb, np, lk, gb, kb,null,PosisiDesc.APPROVAL_PPUC) / sizeNo;
+		uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
+		addDateTimeFormatPatterns(uiModel);
+		populateEditForm(uiModel, nb, np, lk, gb, kb);
+		return "ppuch/listApp";
+	}
+	
+	@RequestMapping(value = "/approval/save",method = RequestMethod.POST, produces = "text/html")
+	public String saveListApp(@RequestParam(value = "ppuchs", required = true) String [] ppuchs,Model uiModel, HttpServletRequest request) {
+		List<String> errorMessages=new ArrayList<String>();
+		String pesan="";
+		List<PpucH> lsPPuch=new ArrayList<PpucH>();
+		for(String noppuc:ppuchs){
+			int[]ids=ServletRequestUtils.getIntParameters(request, "ids_"+noppuc);
+			PpucH ppuch=new PpucH(ServletRequestUtils.getStringParameter(request, "divisi_kd_"+noppuc, null),
+								  ServletRequestUtils.getStringParameter(request, "subdiv_kd_"+noppuc, null), 
+								  ServletRequestUtils.getStringParameter(request, "dept_kd_"+noppuc, null), 
+								  ServletRequestUtils.getStringParameter(request, "lok_kd_"+noppuc, null), 
+								  noppuc, 
+								  Utils.convertStringToDate(ServletRequestUtils.getStringParameter(request, "tgl_ppuc_"+noppuc, null),DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale())),
+								  ServletRequestUtils.getStringParameter(request, "no_batch_"+noppuc, null));
+			for(Integer id:ids){
+				PpucD ppucd= new PpucD(ppuch.divisi_kd, 
+							ppuch.subdiv_kd,
+							ppuch.dept_kd,
+							ppuch.lok_kd, 
+							ppuch.no_ppuc,
+							ppuch.tgl_ppuc,
+							ServletRequestUtils.getStringParameter(request, "kd_group_"+noppuc+"_" + id, null),
+							ServletRequestUtils.getStringParameter(request, "kd_biaya_"+noppuc+"_" + id,null), 
+							CommonUtil.convertToLong(ServletRequestUtils.getStringParameter(request, "qty_"+noppuc+"_" + id, null)), 
+							CommonUtil.convertCurrencyToDouble(ServletRequestUtils.getStringParameter(request, "harga_"+noppuc+"_" + id, null)), 
+							null, 
+							null,
+							null,
+							null);
+				
+				
+				
+				
+				String approval=ServletRequestUtils.getStringParameter(request, "status_"+noppuc+"_" + id,null);
+				if(approval.equals("ACCEPTED")){
+					if(ppucd.qty==null)errorMessages.add("Harap Isi QTY pada baris "+id);
+					if(ppucd.harga==null)errorMessages.add("Harap Isi Harga pada baris "+id);
+					
+					if(!errorMessages.isEmpty())break;
+					
+					ppucd.total=ppucd.qty*ppucd.harga;
+				}else if(approval.equals("DECLINED")){
+					ppucd.qty=0l;
+					ppucd.total=0.0;
+				}
+				ppucd.qty_old=CommonUtil.convertToLong(ServletRequestUtils.getStringParameter(request, "qty_old_"+noppuc+"_" + id, null));
+				ppucd.harga_old=CommonUtil.convertCurrencyToDouble(ServletRequestUtils.getStringParameter(request, "harga_old_"+noppuc+"_" + id, null));
+				
+				ppucd.total_old=ppucd.qty_old*ppucd.harga_old;
+				
+				ppuch.ppucds.add(ppucd);
+			}
+			lsPPuch.add(ppuch);
+		}
+		
+		if(errorMessages.isEmpty()){
+			ppuchManager.saveAllApproval(lsPPuch);
+			uiModel.addAttribute("pesan", messageSource.getMessage("entity_success", new String[]{"Approval PPUC"}, LocaleContextHolder.getLocale()));
+			
+		}else{
+			uiModel.addAttribute("errorMessages",Utils.errorListToString(errorMessages));
+		}
+		
+		return "redirect:/trans/ppuch/approval";
 	}
 
 	@RequestMapping(value = "/batch",method = RequestMethod.PUT, produces = "text/html")
@@ -268,6 +413,43 @@ public class PpucHController extends ParentController{
 		else if (!Utils.isEmpty( ppuch.divisi_kd )&&!Utils.isEmpty( ppuch.subdiv_kd )&&!Utils.isEmpty( ppuch.dept_kd )&&!Utils.isEmpty( ppuch.kd_group))
 			uiModel.addAttribute("detailbiayaList", baseService.selectDropDown("DISTINCT concat(hb.divisi_kd, '.', hb.subdiv_kd, '.', hb.dept_kd, '.', hb.lok_kd,'.',hb.kd_group,'.',db.kd_biaya)", "db.kd_biaya", "hak_biaya hb, detail_biaya db", "hb.kd_group = db.kd_group and  db.f_used = 1 and hb.kd_biaya = db.kd_biaya and hb.f_aktif=1 and hb.divisi_kd = '" + ppuch.divisi_kd + "' and hb.subdiv_kd = '" + ppuch.subdiv_kd + "' and hb.dept_kd = '" + ppuch.dept_kd + "' and db.kd_group = '" + ppuch.kd_group + "'  group by db.kd_biaya", "db.kd_biaya"));
 		
+	}
+	
+	void populateEditForm(Model uiModel,  String nb,String np, String lk,String gb,String kb) {
+		addDateTimeFormatPatterns(uiModel);
+		
+		//TODO : tambahan validasi untuk hak akses data belum ada
+		User currentUser=CommonUtil.getCurrentUser();
+		String filter_by_user="";
+		
+		
+		uiModel.addAttribute("f_nb", baseService.selectDropDown("DISTINCT no_batch","no_batch",  "ppuc_h", "1=1  "+filter_by_user+" group by no_batch", "no_batch"));
+		
+		if (!Utils.isEmpty(nb))
+			uiModel.addAttribute("f_np", baseService.selectDropDown("DISTINCT sys_no_ppuc", "sys_no_ppuc", "ppuc_h", "1=1 and no_batch='"+nb+"' "+filter_by_user+" group by sys_no_ppuc", "sys_no_ppuc"));
+		else
+			uiModel.addAttribute("f_np", baseService.selectDropDown("DISTINCT sys_no_ppuc", "sys_no_ppuc", "ppuc_h", "1=1 "+filter_by_user+" group by sys_no_ppuc", "sys_no_ppuc"));
+
+		if (!Utils.isEmpty(np))
+			uiModel.addAttribute("f_lk", baseService.selectDropDown("DISTINCT a.lok_kd","lok_nm",  "lokasi  a left join ppuc_h b ON a.lok_kd = b.lok_kd ", " 1=1 and b.sys_no_ppuc='"+np+"' "+filter_by_user+" group by a.lok_nm", "a.lok_nm"));
+		else
+			uiModel.addAttribute("f_lk", baseService.selectDropDown("DISTINCT a.lok_kd","lok_nm",  "lokasi  a left join ppuc_h b ON a.lok_kd = b.lok_kd ", " 1=1 "+filter_by_user+" group by a.lok_nm", "a.lok_nm"));
+		
+		if(!Utils.isEmpty(lk))
+			uiModel.addAttribute("f_gb", baseService.selectDropDown("DISTINCT a.kd_group","nm_group",  "group_biaya a left join ppuc_d b ON a.kd_group = b.kd_group ", "1=1 and b.lok_kd = '"+lk+"' "+filter_by_user+"  group by a.nm_group", "a.nm_group"));
+		else
+			uiModel.addAttribute("f_gb", baseService.selectDropDown("DISTINCT a.kd_group","nm_group",  "group_biaya a left join ppuc_d b ON a.kd_group = b.kd_group ", "1=1 "+filter_by_user+"  group by a.nm_group", "a.nm_group"));
+		
+		if(!Utils.isEmpty(gb))
+			uiModel.addAttribute("f_kb", baseService.selectDropDown("DISTINCT a.kd_biaya","a.kd_biaya",  "detail_biaya a left join ppuc_d b ON a.kd_biaya = b.kd_biaya ", "1=1 and a.kd_group = '"+gb+"' "+filter_by_user+" group by a.kd_biaya", "a.kd_biaya"));
+		else
+			uiModel.addAttribute("f_kb", baseService.selectDropDown("DISTINCT a.kd_biaya","a.kd_biaya",  "detail_biaya a left join ppuc_d b ON a.kd_biaya = b.kd_biaya ", "1=1  "+filter_by_user+" group by a.kd_biaya", "a.kd_biaya"));
+		
+		uiModel.addAttribute("nb", nb);
+		uiModel.addAttribute("np", np);
+		uiModel.addAttribute("lk", lk);
+		uiModel.addAttribute("gb", gb);
+		uiModel.addAttribute("kb", kb);
 	}
 	
 	

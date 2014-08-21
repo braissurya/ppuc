@@ -316,35 +316,35 @@
 			</form>
 		   
 		</div>
-<c:if test="${not empty aktif }">		
-			<script>
-				require([ "dojo/query", "dojo/on", "dojo/domReady!" ],
-				function(query, on) {
-					var masterSelect = null;
-	
-					query("input.masterSelectBox_id").forEach(function(node) {
-							masterSelect = node;
-							on(	node,"click",function(e) {
-								query("table td.selectBox input[type=checkbox]")
-									.forEach(
-										function(node) {
-											node.checked = masterSelect.checked;
-										});
+			<c:if test="${not empty aktif }">		
+				<script>
+					require([ "dojo/query", "dojo/on", "dojo/domReady!" ],
+					function(query, on) {
+						var masterSelect = null;
+		
+						query("input.masterSelectBox_id").forEach(function(node) {
+								masterSelect = node;
+								on(	node,"click",function(e) {
+									query("table td.selectBox input[type=checkbox]")
+										.forEach(
+											function(node) {
+												node.checked = masterSelect.checked;
+											});
+								})
 							})
-						})
-					
-					masterSelect.checked=false;
-					query("table td.selectBox input[type=checkbox]")
-					.forEach(
-						function(node) {
-							on(	node,"click",function(e) {
-								if(node.checked ==false	){
-									masterSelect.checked=false;
-								}
-							})
-						});
-				});
-			</script>
+						
+						masterSelect.checked=false;
+						query("table td.selectBox input[type=checkbox]")
+						.forEach(
+							function(node) {
+								on(	node,"click",function(e) {
+									if(node.checked ==false	){
+										masterSelect.checked=false;
+									}
+								})
+							});
+					});
+				</script>
 			</c:if>
 			<table class="noborder">
 				<tr>
@@ -438,27 +438,6 @@
 	<script type="text/javascript">
 			dojo
 					.ready(function() {
-	
-					   /* autoPopulateSelect3("${path}", "propinsi2",
-								"_gl_id", true, "All",
-								"${value_pr}",
-								"_pr_id", "_kt_id","_lk_id");
-					    autoPopulateSelect2(
-								"${path}",
-								"kota2",
-								"_pr_id",
-								true,
-								"All",
-								"${value_kt}",
-								"_kt_id","_lk_id");
-						 autoPopulateSelect(
-								"${path}",
-								"lokasi3",
-								"_kt_id",
-								true,
-								"All",
-								"${value_lk}",
-								"_lk_id");   */
 						
 							 autoPopulateMultiParamSelect3(
 									"${path}", "propinsi2","kota3","lokasi5",

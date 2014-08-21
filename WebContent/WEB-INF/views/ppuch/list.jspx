@@ -1,97 +1,519 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form"  xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"  xmlns:c="http://java.sun.com/jsp/jstl/core"  xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields"  xmlns:spring="http://www.springframework.org/tags" xmlns:form="http://www.springframework.org/tags/form" version="2.0">
+<div  xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:form="http://www.springframework.org/tags/form" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:c="http://java.sun.com/jsp/jstl/core"  xmlns:formtag="urn:jsptagdir:/WEB-INF/tags/form"   xmlns:spring="http://www.springframework.org/tags"  xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:fn="http://java.sun.com/jsp/jstl/functions"  xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
-	<page:list id="pl_com_melawai_ppuc_model_ppuch" items="${ppuchList}">
-		<table>
+	<spring:url value="/" var="path" />
+	<page:filter finderName="filter" path="/trans/ppuch" id="filterHakBiaya" label="filter">
+		<table class="noborder">
 			<tr>
-				<th>No Batch</th>
-				<th>Tgl PPUC</th>
-				<th>Divisi</th>
-				<th>Subdivisi</th>
-				<th>Departmen</th>
-				<th>Lokasi</th>
-				<th>User Create</th>
-				<th>Tgl Create</th>
-				<th>User Confirm</th>
-				<th>Tgl Confirm</th>
-				<th class="utilbox"></th>
-				<th class="utilbox"></th>
-				<th class="utilbox"></th>
+				<td >
+					<label class="filter">Group By </label>
+				</td>
+				<td >
+					<span class="doubleDot">:</span>
+				</td>
+				<td colspan="7">
+					<label class="filter" for="_groupBy_id"><input type="radio" class="radio" value="1" name="groupBy" checked="checked" id="_groupBy_id" onclick="form.submit();"/>No Batch</label>
+					<label class="filter" for="_groupBy_id1"><input type="radio" class="radio"  value="2" name="groupBy"   id="_groupBy_id1" onclick="form.submit();"/>No PPUC</label>
+					<label class="filter" for="_groupBy_id0"><input type="radio" class="radio"  value="3" name="groupBy" id="_groupBy_id0" onclick="form.submit();"/>Detail PPUC</label>
+				</td>
 			</tr>
-			<c:forEach items="${ppuchList}" var="v" varStatus="vs">
-				<tr>
-					<td>${v.no_batch }</td>
-					<td><fmt:formatDate value="${v.tgl_ppuc }" pattern="${ppuch_tgl_ppuc_date_format}"/></td>
-					<td>${v.divisi_nm }</td>
-					<td>${v.subdiv_nm }</td>
-					<td>${v.dept_nm }</td>
-					<td>${v.lok_nm }</td>
-					<td>${v.user_create }</td>
-					<td><fmt:formatDate value="${v.tgl_create }" pattern="${ppuch_tgl_create_date_format}"/></td>
-					<td>${v.user_confirm }</td>
-					<td><fmt:formatDate value="${v.tgl_confirm }" pattern="${ppuch_tgl_confirm_date_format}"/></td>
-					<td class="utilbox">
-						<c:if test="${v.posisi lt 2 }">
-							<spring:url value="/trans/ppuch/confirm/${v.no_batch}" var="confirm_form_url" /> 
-							<spring:url value="/resources/images/icons/filetick.gif" var="confirm_image_url" /> 
-							<form:form action="${confirm_form_url}" method="PUT">
-								<spring:message arguments="Confirm Input PPUC ?" code="entity_global" var="confirm_label" htmlEscape="false" />
-								<c:set var="confirm_confirm_msg">
-									<spring:escapeBody javaScriptEscape="true">
-										<spring:message arguments="Confirm" code="entity_global_confirm" />
-									</spring:escapeBody>
-								</c:set>
-								<input alt="${fn:escapeXml(confirm_label)}" class="image" src="${confirm_image_url}" title="${fn:escapeXml(confirm_label)}" type="image" value="${fn:escapeXml(confirm_label)}" onclick="return confirm('${confirm_confirm_msg}');" />
-								<c:if test="${not empty param.page}">
-									<input name="page" type="hidden" value="1" />
-								</c:if>
-								<c:if test="${not empty param.size}">
-									<input name="size" type="hidden" value="${fn:escapeXml(param.size)}" />
-								</c:if>
-							</form:form>
-						</c:if>
-					</td>
-					<td class="utilbox">
-						<c:if test="${v.posisi lt 2 }">
-							<spring:url value="/trans/ppuch/batch/${v.no_batch }?form" var="aktif_form_url" />
-							<spring:url value="/resources/images/update.png" var="aktif_image_url" />
-							<c:set value="Click To Edit PPUC" var="label_aktif" />
-							<a href="${aktif_form_url}" alt="${label_aktif}" title="${label_aktif}"> <img alt="${label_aktif}" class="image" src="${aktif_image_url}" title="${label_aktif}" />
-							</a>
-						</c:if>
-					</td>
-					<td class="utilbox">
-						<c:if test="${v.posisi lt 2 }">
-							<spring:url value="/trans/ppuch/${v.no_batch}" var="delete_form_url" /> 
-							<spring:url value="/resources/images/delete.png" var="delete_image_url" /> 
-							<form:form action="${delete_form_url}" method="DELETE">
-								<spring:message arguments="PPUC" code="entity_delete" var="delete_label" htmlEscape="false" />
-								<c:set var="delete_confirm_msg">
-									<spring:escapeBody javaScriptEscape="true">
-										<spring:message code="entity_delete_confirm" />
-									</spring:escapeBody>
-								</c:set>
-								<input alt="${fn:escapeXml(delete_label)}" class="image" src="${delete_image_url}" title="${fn:escapeXml(delete_label)}" type="image" value="${fn:escapeXml(delete_label)}" onclick="return confirm('${delete_confirm_msg}');" />
-								<c:if test="${not empty param.page}">
-									<input name="page" type="hidden" value="1" />
-								</c:if>
-								<c:if test="${not empty param.size}">
-									<input name="size" type="hidden" value="${fn:escapeXml(param.size)}" />
-								</c:if>
-							</form:form>
-						</c:if>
-					</td>
-				</tr>
-			</c:forEach>
-			<tr class="footer">
-				<td colspan="14">
-					 <c:if test="${not empty maxPages}">
-						<util:pagination maxPages="${maxPages}" page="${param.page}" size="${param.size}" />
-					</c:if> 
+			<tr>
+				<td >
+					<label class="filter">No Batch </label>
+				</td>
+				<td >
+					<span class="doubleDot">:</span>
+				</td>
+				<td >
+					<select name="nb" id="_nb_id"   >
+						<option value=" ">All</option>
+						<c:forEach items="${f_nb}" var="v">
+							<c:choose>
+								<c:when test="${v.value eq nb }"><c:set value="selected='selected'" var="selectAktifnb"/></c:when>
+								<c:otherwise><c:set value=" " var="selectAktifnb"/></c:otherwise>
+							</c:choose>
+							<![CDATA[<option value="${v.value }" ${selectAktifnb }>${v.value }</option>]]>
+						</c:forEach>
+					</select>
+					<script type="text/javascript">
+						Spring
+								.addDecoration(new Spring.ElementDecoration(
+										{
+											elementId : '_nb_id',
+											widgetType : 'dijit.form.FilteringSelect',
+											widgetAttrs : {
+												hasDownArrow : true
+											}
+										}));
+					</script>
+				</td>
+				<td width="100px">
+					<label class="filter">No PPUC </label>
+				</td>
+				<td width="10px">
+					<span class="doubleDot">:</span>
+				</td>
+				<td >
+					<select name="np" id="_np_id"   >
+						<option value=" ">All</option>
+						<c:forEach items="${f_np}" var="v">
+							<c:choose>
+								<c:when test="${v.value eq np }"><c:set value="selected='selected'" var="selectAktifnp"/></c:when>
+								<c:otherwise><c:set value=" " var="selectAktifnp"/></c:otherwise>
+							</c:choose>
+							<![CDATA[<option value="${v.value }" ${selectAktifnp }>${v.value }</option>]]>
+						</c:forEach>
+					</select>
+					<script type="text/javascript">
+						Spring
+								.addDecoration(new Spring.ElementDecoration(
+										{
+											elementId : '_np_id',
+											widgetType : 'dijit.form.FilteringSelect',
+											widgetAttrs : {
+												hasDownArrow : true
+											}
+										}));
+					</script>
+				</td>
+				<td>
+					<label class="filter">Lokasi</label>
+				</td>
+				<td>
+					<span class="doubleDot">:</span>
+				</td>
+				<td>
+					<select name="lk" id="_lk_id"   >
+						<option value=" ">All</option>
+						<c:forEach items="${f_lk}" var="v">
+							<c:choose>
+								<c:when test="${v.value eq lk }"><c:set value="selected='selected'" var="selectAktiflk"/></c:when>
+								<c:otherwise><c:set value=" " var="selectAktiflk"/></c:otherwise>
+							</c:choose>
+							<![CDATA[<option value="${v.value }" ${selectAktiflk }>${v.value }</option>]]>
+						</c:forEach>
+					</select>
+					<script type="text/javascript">
+						Spring
+								.addDecoration(new Spring.ElementDecoration(
+										{
+											elementId : '_lk_id',
+											widgetType : 'dijit.form.FilteringSelect',
+											widgetAttrs : {
+												hasDownArrow : true
+											}
+										}));
+					</script>
+				</td>
+				
+			</tr>
+			<tr>
+				<td>
+					<label class="filter">Group Biaya</label>
+				</td>
+				<td>
+					<span class="doubleDot">:</span>
+				</td>
+				<td>
+					<select name="gb" id="_gb_id"   >
+						<option value=" ">All</option>
+						<c:forEach items="${f_gb}" var="v">
+							<c:choose>
+								<c:when test="${v.key eq gb }"><c:set value="selected='selected'" var="selectAktifgb"/></c:when>
+								<c:otherwise><c:set value=" " var="selectAktifgb"/></c:otherwise>
+							</c:choose>
+							<![CDATA[<option value="${v.key }" ${selectAktifgb }>${v.value }</option>]]>
+						</c:forEach>
+					</select>
+					<script type="text/javascript">
+						Spring
+								.addDecoration(new Spring.ElementDecoration(
+										{
+											elementId : '_gb_id',
+											widgetType : 'dijit.form.FilteringSelect',
+											widgetAttrs : {
+												hasDownArrow : true
+											}
+										}));
+					</script>
+				</td>
+				<td >
+					<label class="filter">KD Biaya</label>
+				</td>
+				<td>
+					<span class="doubleDot">:</span>
+				</td>
+				<td colspan="7">
+					<select name="kb" id="_kb_id"   >
+						<option value=" ">All</option>
+						<c:forEach items="${f_kb}" var="v">
+							<c:choose>
+								<c:when test="${v.value eq kb }"><c:set value="selected='selected'" var="selectAktifkb"/></c:when>
+								<c:otherwise><c:set value=" " var="selectAktifkb"/></c:otherwise>
+							</c:choose>
+							<![CDATA[<option value="${v.key }" ${selectAktifkb }>${v.value }</option>]]>
+						</c:forEach>
+					</select>
+					<script type="text/javascript">
+						Spring
+								.addDecoration(new Spring.ElementDecoration(
+										{
+											elementId : '_kb_id',
+											widgetType : 'dijit.form.FilteringSelect',
+											widgetAttrs : {
+												hasDownArrow : true
+											}
+										}));
+					</script>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="9" align="center">
+					<input type="hidden" name="search" value="${param.search}"/>
+					
+					<span class="submit" id="filterHakBiaya_filter_submit" style="margin-left: 15px;">
+						<spring:message code="button_filter" var="filter_button" htmlEscape="false" />
+						<input type="submit" value="${fn:escapeXml(filter_button)}" />
+					</span>
+					<span class="submit" id="filterHakBiaya_filter_submit" style="margin-left: 15px;">
+						<spring:message code="button_reset" var="button_reset" htmlEscape="false" />
+						
+						<input type="button" value="${fn:escapeXml(button_reset)}"  onclick="window.location='${path}trans/ppuch'"/>
+					</span>
 				</td>
 			</tr>
 		</table>
+		
+		
+		
+		
+		
+	</page:filter>
+
+	<br/>
+	<page:list id="pl_com_melawai_ppuc_model_ppuch" items="${ppuchList}">
+		<c:choose>
+			<c:when test="${param.groupBy eq 2 }">
+				<table>
+					<tr>
+						<th>No Batch</th>
+						<th>No PPUC</th>
+						<th>Tgl PPUC</th>
+						<th>Divisi</th>
+						<th>Subdivisi</th>
+						<th>Departmen</th>
+						<th>Lokasi</th>
+						<th>User Create</th>
+						<th>Tgl Create</th>
+						<th>User Confirm</th>
+						<th>Tgl Confirm</th>
+						<th class="utilbox"></th>
+						<th class="utilbox"></th>
+						<th class="utilbox"></th>
+					</tr>
+					<c:forEach items="${ppuchList}" var="v" varStatus="vs">
+						<tr>
+							<td>${v.no_batch }</td>
+							<td>${v.no_ppuc }</td>
+							<td><fmt:formatDate value="${v.tgl_ppuc }" pattern="${ppuch_tgl_ppuc_date_format}"/></td>
+							<td>${v.divisi_nm }</td>
+							<td>${v.subdiv_nm }</td>
+							<td>${v.dept_nm }</td>
+							<td>${v.lok_nm }</td>
+							<td>${v.user_create }</td>
+							<td><fmt:formatDate value="${v.tgl_create }" pattern="${ppuch_tgl_create_date_format}"/></td>
+							<td>${v.user_confirm }</td>
+							<td><fmt:formatDate value="${v.tgl_confirm }" pattern="${ppuch_tgl_confirm_date_format}"/></td>
+							<td class="utilbox">
+								<c:if test="${v.posisi lt 2 }">
+									<spring:url value="/trans/ppuch/confirm/${v.no_batch}" var="confirm_form_url" /> 
+									<spring:url value="/resources/images/icons/filetick.gif" var="confirm_image_url" /> 
+									<form:form action="${confirm_form_url}" method="PUT">
+										<spring:message arguments="Confirm Input PPUC ?" code="entity_global" var="confirm_label" htmlEscape="false" />
+										<c:set var="confirm_confirm_msg">
+											<spring:escapeBody javaScriptEscape="true">
+												<spring:message arguments="Confirm" code="entity_global_confirm" />
+											</spring:escapeBody>
+										</c:set>
+										<input alt="${fn:escapeXml(confirm_label)}" class="image" src="${confirm_image_url}" title="${fn:escapeXml(confirm_label)}" type="image" value="${fn:escapeXml(confirm_label)}" onclick="return confirm('${confirm_confirm_msg}');" />
+										<c:if test="${not empty param.page}">
+											<input name="page" type="hidden" value="1" />
+										</c:if>
+										<c:if test="${not empty param.size}">
+											<input name="size" type="hidden" value="${fn:escapeXml(param.size)}" />
+										</c:if>
+									</form:form>
+								</c:if>
+							</td>
+							<td class="utilbox">
+								<c:if test="${v.posisi lt 2 }">
+									<spring:url value="/trans/ppuch/batch/${v.no_batch }?form" var="aktif_form_url" />
+									<spring:url value="/resources/images/update.png" var="aktif_image_url" />
+									<c:set value="Click To Edit PPUC" var="label_aktif" />
+									<a href="${aktif_form_url}" alt="${label_aktif}" title="${label_aktif}"> <img alt="${label_aktif}" class="image" src="${aktif_image_url}" title="${label_aktif}" />
+									</a>
+								</c:if>
+							</td>
+							<td class="utilbox">
+								<c:if test="${v.posisi lt 2 }">
+									<spring:url value="/trans/ppuch/${v.no_batch}" var="delete_form_url" /> 
+									<spring:url value="/resources/images/delete.png" var="delete_image_url" /> 
+									<form:form action="${delete_form_url}" method="DELETE">
+										<spring:message arguments="PPUC" code="entity_delete" var="delete_label" htmlEscape="false" />
+										<c:set var="delete_confirm_msg">
+											<spring:escapeBody javaScriptEscape="true">
+												<spring:message code="entity_delete_confirm" />
+											</spring:escapeBody>
+										</c:set>
+										<input alt="${fn:escapeXml(delete_label)}" class="image" src="${delete_image_url}" title="${fn:escapeXml(delete_label)}" type="image" value="${fn:escapeXml(delete_label)}" onclick="return confirm('${delete_confirm_msg}');" />
+										<c:if test="${not empty param.page}">
+											<input name="page" type="hidden" value="1" />
+										</c:if>
+										<c:if test="${not empty param.size}">
+											<input name="size" type="hidden" value="${fn:escapeXml(param.size)}" />
+										</c:if>
+									</form:form>
+								</c:if>
+							</td>
+						</tr>
+					</c:forEach>
+					<tr class="footer">
+						<td colspan="14">
+							 <c:if test="${not empty maxPages}">
+								<util:pagination maxPages="${maxPages}" page="${param.page}" size="${param.size}" />
+							</c:if> 
+						</td>
+					</tr>
+				</table>
+			</c:when>
+			<c:when test="${param.groupBy eq 3 }">
+				<table>
+					<tr >
+						<th colspan="14" style="text-align: center;"> Detail PPUC</th>
+					</tr>
+					<tr>
+						<th>Lokasi</th>
+						<th>Group Biaya</th>
+						<th>Kode Biaya</th>
+						<th>QTY</th>
+						<th>Harga</th>
+						<th>Total</th>
+						<th>User Create</th>
+						<th>Tgl Create</th>
+						<th>User Confirm</th>
+						<th>Tgl Confirm</th>
+						<th>Posisi</th>
+						<th class="utilbox"></th>
+						<th class="utilbox"></th>
+						<th class="utilbox"></th>
+					</tr>
+					<c:forEach items="${ppuchList}" var="v" varStatus="vs">
+						<tr style="background-color: gray;color: white;"  id="${v.no_ppuc }_nopp_id">
+							<td colspan="14">
+								<span style="font-weight: bold;color: white;">
+									 ${v.no_ppuc } [ NO BATCH : ${v.no_batch } ]
+								</span>
+								
+							
+								<c:set var="pesan">Tgl PPUC : <fmt:formatDate value="${v.tgl_ppuc }" pattern="${ppuch_tgl_ppuc_date_format}"/><br/> Divisi : ${v.divisi.divisi_nm }<br/>  Sub Divisi : ${v.subdivisi.subdiv_nm } <br/>  Departmen : ${v.departmen.dept_nm }<br/>  Lokasi : ${v.lokasi.lok_nm }<br/>  No. Batch : ${v.no_batch}</c:set>
+								
+								<script type="text/javascript">
+									require(["dijit/Tooltip", "dojo/domReady!"], function(Tooltip){
+									    new Tooltip({
+									        connectId: ["${v.no_ppuc }_nopp_id"],
+									        label: "${pesan}",
+									        position : ["above","below"]
+									    });
+									});
+								</script>
+								
+							</td>
+						</tr>
+						<c:forEach items="${v.ppucds}" var="p" varStatus="vp">
+							<tr>
+								<td>${v.lokasi.lok_nm}</td>
+								<td>${p.groupBiaya.nm_group}</td>
+								<td>${p.detailBiaya.kd_biaya}</td>
+								<td><fmt:formatNumber pattern="#,##0" value="${p.qty}" /></td>
+								<td><fmt:formatNumber pattern="#,##0" value="${p.harga}" /></td>
+								<td><fmt:formatNumber pattern="#,##0" value="${p.total}" /></td>
+								<td>${v.user_create }</td>
+								<td><fmt:formatDate value="${v.tgl_create }" pattern="${ppuch_tgl_create_date_format}"/></td>
+								<td>${v.user_confirm }</td>
+								<td><fmt:formatDate value="${v.tgl_confirm }" pattern="${ppuch_tgl_confirm_date_format}"/></td>
+								<td>${v.posisi_desc }</td>
+								<td class="utilbox">
+									<c:if test="${v.posisi lt 2 }">
+										<spring:url value="/trans/ppuch/confirm/${v.no_batch}" var="confirm_form_url" /> 
+										<spring:url value="/resources/images/icons/filetick.gif" var="confirm_image_url" /> 
+										<form:form action="${confirm_form_url}" method="PUT">
+											<spring:message arguments="Confirm Input PPUC ?" code="entity_global" var="confirm_label" htmlEscape="false" />
+											<c:set var="confirm_confirm_msg">
+												<spring:escapeBody javaScriptEscape="true">
+													<spring:message arguments="Confirm" code="entity_global_confirm" />
+												</spring:escapeBody>
+											</c:set>
+											<input alt="${fn:escapeXml(confirm_label)}" class="image" src="${confirm_image_url}" title="${fn:escapeXml(confirm_label)}" type="image" value="${fn:escapeXml(confirm_label)}" onclick="return confirm('${confirm_confirm_msg}');" />
+											<c:if test="${not empty param.page}">
+												<input name="page" type="hidden" value="1" />
+											</c:if>
+											<c:if test="${not empty param.size}">
+												<input name="size" type="hidden" value="${fn:escapeXml(param.size)}" />
+											</c:if>
+										</form:form>
+									</c:if>
+								</td>
+								<td class="utilbox">
+									<c:if test="${v.posisi lt 2 }">
+										<spring:url value="/trans/ppuch/batch/${v.no_batch }?form" var="aktif_form_url" />
+										<spring:url value="/resources/images/update.png" var="aktif_image_url" />
+										<c:set value="Click To Edit PPUC" var="label_aktif" />
+										<a href="${aktif_form_url}" alt="${label_aktif}" title="${label_aktif}"> <img alt="${label_aktif}" class="image" src="${aktif_image_url}" title="${label_aktif}" />
+										</a>
+									</c:if>
+								</td>
+								<td class="utilbox">
+									<c:if test="${v.posisi lt 2 }">
+										<spring:url value="/trans/ppuch/${v.no_batch}" var="delete_form_url" /> 
+										<spring:url value="/resources/images/delete.png" var="delete_image_url" /> 
+										<form:form action="${delete_form_url}" method="DELETE">
+											<spring:message arguments="PPUC" code="entity_delete" var="delete_label" htmlEscape="false" />
+											<c:set var="delete_confirm_msg">
+												<spring:escapeBody javaScriptEscape="true">
+													<spring:message code="entity_delete_confirm" />
+												</spring:escapeBody>
+											</c:set>
+											<input alt="${fn:escapeXml(delete_label)}" class="image" src="${delete_image_url}" title="${fn:escapeXml(delete_label)}" type="image" value="${fn:escapeXml(delete_label)}" onclick="return confirm('${delete_confirm_msg}');" />
+											<c:if test="${not empty param.page}">
+												<input name="page" type="hidden" value="1" />
+											</c:if>
+											<c:if test="${not empty param.size}">
+												<input name="size" type="hidden" value="${fn:escapeXml(param.size)}" />
+											</c:if>
+										</form:form>
+									</c:if>
+								</td>
+							</tr>
+						</c:forEach>
+						
+					</c:forEach>
+					<tr class="footer">
+						<td colspan="14">
+							 <c:if test="${not empty maxPages}">
+								<util:pagination maxPages="${maxPages}" page="${param.page}" size="${param.size}" />
+							</c:if> 
+						</td>
+					</tr>
+				</table>
+			</c:when>
+			<c:otherwise>
+				<table>
+					<tr>
+						<th>No Batch</th>
+						<th>Tgl PPUC</th>
+						<th>Divisi</th>
+						<th>Subdivisi</th>
+						<th>Departmen</th>
+						<th>Lokasi</th>
+						<th>User Create</th>
+						<th>Tgl Create</th>
+						<th>User Confirm</th>
+						<th>Tgl Confirm</th>
+						<th class="utilbox"></th>
+						<th class="utilbox"></th>
+						<th class="utilbox"></th>
+					</tr>
+					<c:forEach items="${ppuchList}" var="v" varStatus="vs">
+						<tr>
+							<td>${v.no_batch }</td>
+							<td><fmt:formatDate value="${v.tgl_ppuc }" pattern="${ppuch_tgl_ppuc_date_format}"/></td>
+							<td>${v.divisi_nm }</td>
+							<td>${v.subdiv_nm }</td>
+							<td>${v.dept_nm }</td>
+							<td>${v.lok_nm }</td>
+							<td>${v.user_create }</td>
+							<td><fmt:formatDate value="${v.tgl_create }" pattern="${ppuch_tgl_create_date_format}"/></td>
+							<td>${v.user_confirm }</td>
+							<td><fmt:formatDate value="${v.tgl_confirm }" pattern="${ppuch_tgl_confirm_date_format}"/></td>
+							<td class="utilbox">
+								<c:if test="${v.posisi lt 2 }">
+									<spring:url value="/trans/ppuch/confirm/${v.no_batch}" var="confirm_form_url" /> 
+									<spring:url value="/resources/images/icons/filetick.gif" var="confirm_image_url" /> 
+									<form:form action="${confirm_form_url}" method="PUT">
+										<spring:message arguments="Confirm Input PPUC ?" code="entity_global" var="confirm_label" htmlEscape="false" />
+										<c:set var="confirm_confirm_msg">
+											<spring:escapeBody javaScriptEscape="true">
+												<spring:message arguments="Confirm" code="entity_global_confirm" />
+											</spring:escapeBody>
+										</c:set>
+										<input alt="${fn:escapeXml(confirm_label)}" class="image" src="${confirm_image_url}" title="${fn:escapeXml(confirm_label)}" type="image" value="${fn:escapeXml(confirm_label)}" onclick="return confirm('${confirm_confirm_msg}');" />
+										<c:if test="${not empty param.page}">
+											<input name="page" type="hidden" value="1" />
+										</c:if>
+										<c:if test="${not empty param.size}">
+											<input name="size" type="hidden" value="${fn:escapeXml(param.size)}" />
+										</c:if>
+									</form:form>
+								</c:if>
+							</td>
+							<td class="utilbox">
+								<c:if test="${v.posisi lt 2 }">
+									<spring:url value="/trans/ppuch/batch/${v.no_batch }?form" var="aktif_form_url" />
+									<spring:url value="/resources/images/update.png" var="aktif_image_url" />
+									<c:set value="Click To Edit PPUC" var="label_aktif" />
+									<a href="${aktif_form_url}" alt="${label_aktif}" title="${label_aktif}"> <img alt="${label_aktif}" class="image" src="${aktif_image_url}" title="${label_aktif}" />
+									</a>
+								</c:if>
+							</td>
+							<td class="utilbox">
+								<c:if test="${v.posisi lt 2 }">
+									<spring:url value="/trans/ppuch/${v.no_batch}" var="delete_form_url" /> 
+									<spring:url value="/resources/images/delete.png" var="delete_image_url" /> 
+									<form:form action="${delete_form_url}" method="DELETE">
+										<spring:message arguments="PPUC" code="entity_delete" var="delete_label" htmlEscape="false" />
+										<c:set var="delete_confirm_msg">
+											<spring:escapeBody javaScriptEscape="true">
+												<spring:message code="entity_delete_confirm" />
+											</spring:escapeBody>
+										</c:set>
+										<input alt="${fn:escapeXml(delete_label)}" class="image" src="${delete_image_url}" title="${fn:escapeXml(delete_label)}" type="image" value="${fn:escapeXml(delete_label)}" onclick="return confirm('${delete_confirm_msg}');" />
+										<c:if test="${not empty param.page}">
+											<input name="page" type="hidden" value="1" />
+										</c:if>
+										<c:if test="${not empty param.size}">
+											<input name="size" type="hidden" value="${fn:escapeXml(param.size)}" />
+										</c:if>
+									</form:form>
+								</c:if>
+							</td>
+						</tr>
+					</c:forEach>
+					<tr class="footer">
+						<td colspan="14">
+							 <c:if test="${not empty maxPages}">
+								<util:pagination maxPages="${maxPages}" page="${param.page}" size="${param.size}" />
+							</c:if> 
+						</td>
+					</tr>
+				</table>
+			</c:otherwise>
+		</c:choose>
 	
 	</page:list>
+	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("input[value='${param.groupBy}']").prop('checked', true);;
+		});
+	</script>
+	<script type="text/javascript">
+		dojo.ready(function() {
+			autoPopulateMultiParamSelect4Field("${path}", true, "All",  "_nb_id",
+					"noppuc", "_np_id","${np}",
+					"lokasi6","_lk_id","${lk}",
+					"groupbiaya", "_gb_id","${gb}",
+					"detailbiaya4","_kb_id","${kb}");
+			});
+	</script>
 </div>

@@ -121,7 +121,7 @@ public class PpucD extends BaseObject implements Serializable  {
 		this.kd_biaya = kd_biaya;
 		this.qty = qty;
 		this.harga = harga;
-		this.total = total;
+		if(qty!=null&&harga!=null)this.total = qty*harga;
 		this.keterangan = keterangan;
 		this.nm_biaya=nm_biaya;
 		this.nm_group=nm_group;

@@ -196,8 +196,6 @@
 			<if test="harga_real_oc != null">HARGA_REAL_OC = #{harga_real_oc}, </if>
 			<if test="total_real_oc != null">TOTAL_REAL_OC = #{total_real_oc}, </if>
 			<if test="nilai_charge != null">NILAI_CHARGE = #{nilai_charge}, </if>
-			<if test="user_create != null">SYS_USER_CREATE = #{user_create}, </if>
-			<if test="tgl_create != null">SYS_TGL_CREATE = #{tgl_create} </if>
 		</set>
 		WHERE  
 			DIVISI_KD= #{divisi_kd} 

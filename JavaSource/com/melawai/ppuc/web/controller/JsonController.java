@@ -47,6 +47,7 @@ public class JsonController extends ParentController {
 		String param = ServletRequestUtils.getStringParameter(request, "param", "").trim();
 		String param2 = ServletRequestUtils.getStringParameter(request, "param2", "").trim();
 		String param3 = ServletRequestUtils.getStringParameter(request, "param3", "").trim();
+		String param4 = ServletRequestUtils.getStringParameter(request, "param4", "").trim();
 
 		if (tipe.equals("kota")) {
 			if (param.equals("")) {
@@ -225,8 +226,52 @@ public class JsonController extends ParentController {
 					
 				}
 			}
-		}
-
+		}else  if (tipe.equals("noppuc")) {
+			//TODO : tambahan validasi untuk hak akses data belum ada
+			User currentUser=CommonUtil.getCurrentUser();
+			String filter_by_user="";
+			
+			if(!param.equals("")) param = " and no_batch = '"+param+"' ";
+			
+			result = baseService.selectDropDown("DISTINCT sys_no_ppuc", "sys_no_ppuc", "ppuc_h", "1=1 "+param+" "+filter_by_user+" group by sys_no_ppuc", "sys_no_ppuc");
+		}else  if (tipe.equals("lokasi6")) {
+			//TODO : tambahan validasi untuk hak akses data belum ada
+			User currentUser=CommonUtil.getCurrentUser();
+			String filter_by_user="";
+			
+			if(!param.equals("")) param = " and b.no_batch = '"+param+"' ";
+			
+			if(!param2.equals("")) param2 = " and b.sys_no_ppuc = '"+param2+"' ";
+			
+			
+			result = baseService.selectDropDown("DISTINCT a.lok_kd","lok_nm",  "lokasi  a left join ppuc_h b ON a.lok_kd = b.lok_kd ", " 1=1 "+param+" "+param2+" "+filter_by_user+" group by a.lok_nm", "a.lok_nm");
+		}else  if (tipe.equals("groupbiaya")) {
+			//TODO : tambahan validasi untuk hak akses data belum ada
+			User currentUser=CommonUtil.getCurrentUser();
+			String filter_by_user="";
+			
+			if(!param.equals("")) param = " and b.no_batch = '"+param+"' ";
+			
+			if(!param2.equals("")) param2 = " and b.sys_no_ppuc = '"+param2+"' ";
+			
+			if(!param3.equals("")) param3 = " and b.lok_kd = '"+param3+"' ";
+			
+			result =  baseService.selectDropDown("DISTINCT a.kd_group","nm_group",  "group_biaya a left join ppuc_d b ON a.kd_group = b.kd_group ", "1=1 "+param+" "+param2+" "+param3+" "+filter_by_user+"  group by a.nm_group", "a.nm_group");
+		}else  if (tipe.equals("detailbiaya4")) {
+			//TODO : tambahan validasi untuk hak akses data belum ada
+			User currentUser=CommonUtil.getCurrentUser();
+			String filter_by_user="";
+			
+			if(!param.equals("")) param = " and b.no_batch = '"+param+"' ";
+			
+			if(!param2.equals("")) param2 = " and b.sys_no_ppuc = '"+param2+"' ";
+			
+			if(!param3.equals("")) param3 = " and b.lok_kd = '"+param3+"' ";
+			
+			if(!param4.equals("")) param4 = " and b.kd_group = '"+param4+"' ";
+			
+			result = baseService.selectDropDown("DISTINCT a.kd_biaya","a.kd_biaya",  "detail_biaya a left join ppuc_d b ON a.kd_biaya = b.kd_biaya ", "1=1 "+param+" "+param2+" "+param3+" "+param4+" "+filter_by_user+" group by a.kd_biaya", "a.kd_biaya");
+		}				
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
 		Gson gson = new Gson();

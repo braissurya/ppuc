@@ -212,6 +212,7 @@ public class PpucH extends BaseObject implements Serializable  {
 	public String lok_nm;
 	
 	public String posisi_desc;
+	public Integer posisi_min;
 	
 	@NotEmpty(message="At least one Detail Biaya is required")
 	public Integer[] idx;
@@ -223,6 +224,21 @@ public class PpucH extends BaseObject implements Serializable  {
 	public PpucH(){
 		//TODO: standard constructor free to change
 	}
+	
+	
+
+	public PpucH(String divisi_kd, String subdiv_kd, String dept_kd, String lok_kd, String no_ppuc, Date tgl_ppuc, String no_batch) {
+		super();
+		this.divisi_kd = divisi_kd;
+		this.subdiv_kd = subdiv_kd;
+		this.dept_kd = dept_kd;
+		this.lok_kd = lok_kd;
+		this.no_ppuc = no_ppuc;
+		this.tgl_ppuc = tgl_ppuc;
+		this.no_batch = no_batch;
+	}
+
+
 
 	//****************** CONSTRUCTOR END HERE ******************/
 
@@ -596,6 +612,14 @@ public class PpucH extends BaseObject implements Serializable  {
 
 	public void setLok_nm(String lok_nm) {
 		this.lok_nm = lok_nm;
+	}
+
+	public Integer getPosisi_min() {
+		return posisi_min;
+	}
+
+	public void setPosisi_min(Integer posisi_min) {
+		this.posisi_min = posisi_min;
 	}
 
 	//****************** GETTER SETTER END HERE ******************/

@@ -350,6 +350,11 @@
 		Where 1=1
 			<if test="no_batch != null">AND T.no_batch = #{no_batch}</if>
 			<if test="no_ppuc != null">AND T.no_ppuc = #{no_ppuc}</if>
+			<if test="kd_group != null">AND T.pd_kd_group = #{kd_group}</if>
+			<if test="kd_biaya != null">AND T.pd_kd_biaya = #{kd_biaya}</if>
+			<if test="lok_kd != null">AND T.lok_kd = #{lok_kd}</if>
+			<if test="posisi != null">AND T.posisi = #{posisi}</if>
+			<if test="posisi_min != null">AND T.posisi >= #{posisi_min}</if>
 	</sql>
 
 	<!-- kolom apa aja yang mau disearching -->
@@ -521,9 +526,6 @@
 			<if test="no_ppuc != null">SYS_NO_PPUC = #{no_ppuc}, </if>
 			<if test="tgl_ppuc != null">TGL_PPUC = #{tgl_ppuc}, </if>
 			<if test="no_batch != null">NO_BATCH = #{no_batch}, </if>
-			<if test="user_create != null">SYS_USER_CREATE = #{user_create}, </if>
-			<if test="tgl_create != null">SYS_TGL_CREATE = #{tgl_create}, </if>
-			<if test="jam_create != null">SYS_JAM_CREATE = #{jam_create}, </if>
 			<if test="user_confirm != null">SYS_USER_CONFIRM = #{user_confirm}, </if>
 			<if test="tgl_confirm != null">SYS_TGL_CONFIRM = #{tgl_confirm}, </if>
 			<if test="jam_confirm != null">SYS_JAM_CONFIRM = #{jam_confirm}, </if>
@@ -659,6 +661,8 @@
 	<sql id="searchTambahanSatu">
 		Where 1=1
 			<if test="no_batch != null">AND T.no_batch = #{no_batch}</if>
+			<if test="posisi != null">AND T.posisi = #{posisi}</if>
+			<if test="posisi_min != null">AND T.posisi >= #{posisi_min}</if>
 		group by no_batch
 	</sql>
 	
