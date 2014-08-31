@@ -99,6 +99,8 @@ public class PpucHController extends ParentController{
 		UserDivisi userdivisi=userDivisiManager.getDivisiNSubdivUser(CommonUtil.getCurrentUserId());
 		ppuch.divisi_kd = userdivisi.getDivisi_kd();
 		ppuch.subdiv_kd = userdivisi.getSubdiv_kd();
+		ppuch.dept_kd=userdivisi.getDept_kd();
+		ppuch.lok_kd=userdivisi.getLok_kd();
 		
 		populateEditForm(uiModel,ppuch);
 		return "ppuch/create";
@@ -147,8 +149,8 @@ public class PpucHController extends ParentController{
 
 		int sizeNo = size == null ? 10000 : size.intValue();
 		final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-		uiModel.addAttribute("ppuchList",ppuchManager.selectPagingList(search,sortFieldName,sortOrder, firstResult, sizeNo,groupBy, nb, np, lk, gb, kb,null,PosisiDesc.INPUT_PPUC));
-		float nrOfPages = (float) ppuchManager.selectPagingCount(search,groupBy,nb, np, lk, gb, kb,null,PosisiDesc.INPUT_PPUC) / sizeNo;
+		uiModel.addAttribute("ppuchList",ppuchManager.selectPagingList(search,sortFieldName,sortOrder, firstResult, sizeNo,groupBy, nb, np, lk, gb, kb,null,PosisiDesc.INPUT_PPUC,null));
+		float nrOfPages = (float) ppuchManager.selectPagingCount(search,groupBy,nb, np, lk, gb, kb,null,PosisiDesc.INPUT_PPUC,null) / sizeNo;
 		uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
 		addDateTimeFormatPatterns(uiModel);
 		populateEditForm(uiModel, nb, np, lk, gb, kb);
@@ -191,13 +193,14 @@ public class PpucHController extends ParentController{
 		//FIXME : belum ada blok data hanya per divisi approval aja
 		int sizeNo = size == null ? 10000 : size.intValue();
 		final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-		uiModel.addAttribute("ppuchList",ppuchManager.selectPagingList(search,sortFieldName,sortOrder, firstResult, sizeNo,groupBy, nb, np, lk, gb, kb,null,PosisiDesc.APPROVAL_PPUC));
-		float nrOfPages = (float) ppuchManager.selectPagingCount(search,groupBy,nb, np, lk, gb, kb,null,PosisiDesc.APPROVAL_PPUC) / sizeNo;
+		uiModel.addAttribute("ppuchList",ppuchManager.selectPagingList(search,sortFieldName,sortOrder, firstResult, sizeNo,groupBy, nb, np, lk, gb, kb,null,PosisiDesc.APPROVAL_PPUC,null));
+		float nrOfPages = (float) ppuchManager.selectPagingCount(search,groupBy,nb, np, lk, gb, kb,null,PosisiDesc.APPROVAL_PPUC,null) / sizeNo;
 		uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
 		addDateTimeFormatPatterns(uiModel);
 		populateEditForm(uiModel, nb, np, lk, gb, kb);
 		return "ppuch/listApp";
 	}
+	
 	
 	@RequestMapping(value = "/approval/save",method = RequestMethod.POST, produces = "text/html")
 	public String saveListApp(@RequestParam(value = "ppuchs", required = true) String [] ppuchs,Model uiModel, HttpServletRequest request) {
@@ -230,8 +233,6 @@ public class PpucHController extends ParentController{
 							null);
 				
 				
-				
-				
 				String approval=ServletRequestUtils.getStringParameter(request, "status_"+noppuc+"_" + id,null);
 				if(approval.equals("ACCEPTED")){
 					if(ppucd.qty==null)errorMessages.add("Harap Isi QTY pada baris "+id);
@@ -240,14 +241,17 @@ public class PpucHController extends ParentController{
 					if(!errorMessages.isEmpty())break;
 					
 					ppucd.total=ppucd.qty*ppucd.harga;
+					ppucd.f_approval=1;
 				}else if(approval.equals("DECLINED")){
 					ppucd.qty=0l;
 					ppucd.total=0.0;
+					ppucd.f_approval=0;
 				}
 				ppucd.qty_old=CommonUtil.convertToLong(ServletRequestUtils.getStringParameter(request, "qty_old_"+noppuc+"_" + id, null));
 				ppucd.harga_old=CommonUtil.convertCurrencyToDouble(ServletRequestUtils.getStringParameter(request, "harga_old_"+noppuc+"_" + id, null));
 				
 				ppucd.total_old=ppucd.qty_old*ppucd.harga_old;
+				ppucd.ket_approve=ServletRequestUtils.getStringParameter(request, "ket_approve_"+noppuc+"_" + id, null);
 				
 				ppuch.ppucds.add(ppucd);
 			}
@@ -263,6 +267,135 @@ public class PpucHController extends ParentController{
 		}
 		
 		return "redirect:/trans/ppuch/approval";
+	}
+
+	@RequestMapping(value = "/realisasi/cabang",produces = "text/html")
+	public String listRealCabang( @RequestParam(value = "groupBy", required = false) Integer groupBy, 
+							 @RequestParam(value = "nb", required = false) String nb,
+							 @RequestParam(value = "np", required = false) String np,
+							 @RequestParam(value = "lk", required = false) String lk,
+							 @RequestParam(value = "gb", required = false) String gb,
+							 @RequestParam(value = "kb", required = false) String kb,
+							 @RequestParam(value = "ps", required = false) Integer ps,
+							 @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size,@RequestParam(value = "search", required = false) String search, @RequestParam(value = "sortFieldName", required = false) String sortFieldName, @RequestParam(value = "sortOrder", required = false) String sortOrder, Model uiModel) {
+		if (page == null) {
+			page=1;
+		}
+		
+		if(groupBy==null)groupBy=2;
+		
+		if (Utils.isEmpty(nb))	nb = null;
+		else nb = nb.substring(nb.lastIndexOf(".") + 1);
+		
+		if (Utils.isEmpty(np)) 	np = null;
+		else np = np.substring(np.lastIndexOf(".") + 1);
+		
+		if (Utils.isEmpty(lk)) lk = null;
+		else lk = lk.substring(lk.lastIndexOf(".") + 1);
+		
+		if (Utils.isEmpty(gb))	gb = null;
+		else gb = gb.substring(gb.lastIndexOf(".") + 1);
+		
+		if (Utils.isEmpty(kb)) kb = null;
+		else kb = kb.substring(kb.lastIndexOf(".") + 1);
+		
+		if(groupBy==1) sortFieldName = "no_batch";
+		else  sortFieldName = "no_batch asc , no_ppuc";
+
+		//FIXME : belum ada blok data hanya per divisi approval aja
+		int sizeNo = size == null ? 10000 : size.intValue();
+		final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
+		uiModel.addAttribute("ppuchList",ppuchManager.selectPagingList(search,sortFieldName,sortOrder, firstResult, sizeNo,groupBy, nb, np, lk, gb, kb,null,null,new Integer []{PosisiDesc.PURCHASING}));
+		float nrOfPages = (float) ppuchManager.selectPagingCount(search,groupBy,nb, np, lk, gb, kb,null,null,new Integer []{PosisiDesc.PURCHASING}) / sizeNo;
+		uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
+		addDateTimeFormatPatterns(uiModel);
+		populateEditForm(uiModel, nb, np, lk, gb, kb);
+		return "ppuch/listRealCabang";
+	}
+
+	@RequestMapping(value = "/realisasi/cabang/noppuc/save",method = RequestMethod.POST, produces = "text/html")
+	public String saveRealCabang(@RequestParam(value = "ids", required = true) Integer [] ids,
+			@RequestParam(value = "no_batch", required = false) String no_batch,
+			@RequestParam(value = "no_ppuc", required = false) String no_ppuc,
+			@RequestParam(value = "divisi_kd", required = false) String divisi_kd,
+			@RequestParam(value = "subdiv_kd", required = false) String subdiv_kd,
+			@RequestParam(value = "dept_kd", required = false) String dept_kd,
+			@RequestParam(value = "lok_kd", required = false) String lok_kd,
+			@RequestParam(value = "tgl_ppuc", required = false) String tgl_ppuc,
+			Model uiModel, HttpServletRequest request) {
+			List<String> errorMessages=new ArrayList<String>();
+			String pesan="";
+			List<PpucH> lsPPuch=new ArrayList<PpucH>();
+			
+			PpucH ppuch=new PpucH(divisi_kd,
+								  subdiv_kd, 
+								  dept_kd, 
+								  lok_kd, 
+								  no_ppuc, 
+								  Utils.convertStringToDate(tgl_ppuc,DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale())),
+								  no_batch);
+			for(Integer id:ids){
+				PpucD ppucd= ppucdManager.get(divisi_kd, subdiv_kd, dept_kd, lok_kd, no_ppuc, ppuch.tgl_ppuc, ServletRequestUtils.getStringParameter(request, "kd_biaya_"+id,null));
+				
+				ppucd.qty_real_cbg=CommonUtil.convertToLong(ServletRequestUtils.getStringParameter(request, "qty_"+ id, null));
+				ppucd.harga_real_cbg=CommonUtil.convertCurrencyToDouble(ServletRequestUtils.getStringParameter(request, "harga_"+ id, null));
+				
+				if(ppucd.qty_real_cbg==null)errorMessages.add("Harap Isi QTY pada baris "+id);
+				if(ppucd.harga_real_cbg==null)errorMessages.add("Harap Isi Harga pada baris "+id);
+				
+				if(!errorMessages.isEmpty())break;
+				
+				ppucd.total_real_cbg=ppucd.qty_real_cbg*ppucd.harga_real_cbg;
+				
+				
+				ppuch.ppucds.add(ppucd);
+			}
+			lsPPuch.add(ppuch);
+			
+			if(errorMessages.isEmpty()){
+				ppuchManager.saveAllRealCabang(lsPPuch);
+				uiModel.addAttribute("pesan", messageSource.getMessage("entity_success", new String[]{"Realisasi Cabang PPUC"}, LocaleContextHolder.getLocale()));
+				
+			}else{
+				uiModel.addAttribute("errorMessages",Utils.errorListToString(errorMessages));
+				return "redirect:/trans/ppuch/realisasi/cabang/noppuc/"+encodeUrlPathSegment(no_ppuc, request)+"?form";
+			}
+			
+			return "redirect:/trans/ppuch/realisasi/cabang";
+		}
+
+
+	@RequestMapping(value = "/realisasi/cabang/noppuc/{no_ppuc}", params = "form", produces = "text/html")
+	public String updateFormRealisasiCabang(@PathVariable("no_ppuc") String no_ppuc, Model uiModel) {
+		List<PpucH> ppuchs=ppuchManager.getBynoppuc(no_ppuc);
+		if(!ppuchs.isEmpty()){
+			PpucH ppuch=ppuchs.get(0);
+			List<PpucD> tmp=new ArrayList<PpucD>();
+			for(PpucH pp:ppuchs){
+				tmp.addAll(pp.ppucds);
+			}
+			
+			List<PpucD> tmp2=new ArrayList<PpucD>();
+			for(PpucD pd:tmp){
+				if(tmp2.isEmpty())tmp2.add(pd);
+				else {
+					boolean add=true;
+					for (int i = 0; i < tmp2.size(); i++) {
+						if(pd.kd_biaya.equals(tmp2.get(i).kd_biaya)){
+							tmp2.get(i).qty+=pd.qty;
+							tmp2.get(i).no_ppuc+=";"+pd.no_ppuc;
+							add=false;
+							break;
+						}
+					}
+					
+					if(add)tmp2.add(pd);
+				}
+			}
+			ppuch.ppucds=tmp2;
+			populateEditForm(uiModel,ppuch);
+		}
+		return "ppuch/updateRealCabang";
 	}
 
 	@RequestMapping(value = "/batch",method = RequestMethod.PUT, produces = "text/html")
@@ -308,7 +441,6 @@ public class PpucHController extends ParentController{
 		}
 		return "ppuch/update";
 	}
-	
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
 	public String update(@ModelAttribute("ppuch") @Valid PpucH ppuch, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {

@@ -186,6 +186,7 @@ public class PpucH extends BaseObject implements Serializable  {
 	public String itemId;
 	
 	public List<PpucD> ppucds = new ArrayList<PpucD>();
+	public List<PpucH> ppuchs= new ArrayList<PpucH>();
 	
 	public PpucD ppucd;
 	public Divisi divisi;
@@ -212,6 +213,7 @@ public class PpucH extends BaseObject implements Serializable  {
 	public String lok_nm;
 	
 	public String posisi_desc;
+	public String posisiGroup;
 	public Integer posisi_min;
 	
 	@NotEmpty(message="At least one Detail Biaya is required")
@@ -620,6 +622,30 @@ public class PpucH extends BaseObject implements Serializable  {
 
 	public void setPosisi_min(Integer posisi_min) {
 		this.posisi_min = posisi_min;
+	}
+
+
+
+	public String getPosisiGroup() {
+		return posisiGroup;
+	}
+
+
+
+	public void setPosisiGroup(String posisiGroup) {
+		this.posisiGroup = posisiGroup;
+	}
+
+
+
+	public List<PpucH> getPpuchs() {
+		return ppuchs;
+	}
+
+
+
+	public void setPpuchs(List<PpucH> ppuchs) {
+		this.ppuchs = ppuchs;
 	}
 
 	//****************** GETTER SETTER END HERE ******************/

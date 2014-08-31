@@ -7,169 +7,148 @@
 		<table class="noborder">
 			<tr>
 				<td >
-					<label class="filter">Group By </label>
-				</td>
-				<td >
-					<span class="doubleDot">:</span>
-				</td>
-				<td colspan="7">
-					<label class="filter" for="_groupBy_id"><input type="radio" class="radio" value="1" name="groupBy" checked="checked" id="_groupBy_id" onclick="form.submit();"/>No Batch</label>
-					<label class="filter" for="_groupBy_id1"><input type="radio" class="radio"  value="2" name="groupBy"   id="_groupBy_id1" onclick="form.submit();"/>No PPUC</label>
-					<label class="filter" for="_groupBy_id0"><input type="radio" class="radio"  value="3" name="groupBy" id="_groupBy_id0" onclick="form.submit();"/>Detail PPUC</label>
-				</td>
-			</tr>
-			<tr>
-				<td >
-					<label class="filter">No Batch </label>
-				</td>
-				<td >
-					<span class="doubleDot">:</span>
-				</td>
-				<td >
-					<select name="nb" id="_nb_id"   >
-						<option value=" ">All</option>
-						<c:forEach items="${f_nb}" var="v">
-							<c:choose>
-								<c:when test="${v.value eq nb }"><c:set value="selected='selected'" var="selectAktifnb"/></c:when>
-								<c:otherwise><c:set value=" " var="selectAktifnb"/></c:otherwise>
-							</c:choose>
-							<![CDATA[<option value="${v.value }" ${selectAktifnb }>${v.value }</option>]]>
-						</c:forEach>
-					</select>
-					<script type="text/javascript">
-						Spring
-								.addDecoration(new Spring.ElementDecoration(
-										{
-											elementId : '_nb_id',
-											widgetType : 'dijit.form.FilteringSelect',
-											widgetAttrs : {
-												hasDownArrow : true
-											}
-										}));
-					</script>
-				</td>
-				<td width="100px">
-					<label class="filter">No PPUC </label>
-				</td>
-				<td width="10px">
-					<span class="doubleDot">:</span>
-				</td>
-				<td >
-					<select name="np" id="_np_id"   >
-						<option value=" ">All</option>
-						<c:forEach items="${f_np}" var="v">
-							<c:choose>
-								<c:when test="${v.value eq np }"><c:set value="selected='selected'" var="selectAktifnp"/></c:when>
-								<c:otherwise><c:set value=" " var="selectAktifnp"/></c:otherwise>
-							</c:choose>
-							<![CDATA[<option value="${v.value }" ${selectAktifnp }>${v.value }</option>]]>
-						</c:forEach>
-					</select>
-					<script type="text/javascript">
-						Spring
-								.addDecoration(new Spring.ElementDecoration(
-										{
-											elementId : '_np_id',
-											widgetType : 'dijit.form.FilteringSelect',
-											widgetAttrs : {
-												hasDownArrow : true
-											}
-										}));
-					</script>
-				</td>
-				<td>
-					<label class="filter">Lokasi</label>
-				</td>
-				<td>
-					<span class="doubleDot">:</span>
-				</td>
-				<td>
-					<select name="lk" id="_lk_id"   >
-						<option value=" ">All</option>
-						<c:forEach items="${f_lk}" var="v">
-							<c:choose>
-								<c:when test="${v.value eq lk }"><c:set value="selected='selected'" var="selectAktiflk"/></c:when>
-								<c:otherwise><c:set value=" " var="selectAktiflk"/></c:otherwise>
-							</c:choose>
-							<![CDATA[<option value="${v.value }" ${selectAktiflk }>${v.value }</option>]]>
-						</c:forEach>
-					</select>
-					<script type="text/javascript">
-						Spring
-								.addDecoration(new Spring.ElementDecoration(
-										{
-											elementId : '_lk_id',
-											widgetType : 'dijit.form.FilteringSelect',
-											widgetAttrs : {
-												hasDownArrow : true
-											}
-										}));
-					</script>
-				</td>
-				
-			</tr>
-			<tr>
-				<td>
-					<label class="filter">Group Biaya</label>
-				</td>
-				<td>
-					<span class="doubleDot">:</span>
-				</td>
-				<td>
-					<select name="gb" id="_gb_id"   >
-						<option value=" ">All</option>
-						<c:forEach items="${f_gb}" var="v">
-							<c:choose>
-								<c:when test="${v.key eq gb }"><c:set value="selected='selected'" var="selectAktifgb"/></c:when>
-								<c:otherwise><c:set value=" " var="selectAktifgb"/></c:otherwise>
-							</c:choose>
-							<![CDATA[<option value="${v.key }" ${selectAktifgb }>${v.value }</option>]]>
-						</c:forEach>
-					</select>
-					<script type="text/javascript">
-						Spring
-								.addDecoration(new Spring.ElementDecoration(
-										{
-											elementId : '_gb_id',
-											widgetType : 'dijit.form.FilteringSelect',
-											widgetAttrs : {
-												hasDownArrow : true
-											}
-										}));
-					</script>
-				</td>
-				<td >
-					<label class="filter">KD Biaya</label>
-				</td>
-				<td>
-					<span class="doubleDot">:</span>
-				</td>
-				<td colspan="7">
-					<select name="kb" id="_kb_id"   >
-						<option value=" ">All</option>
-						<c:forEach items="${f_kb}" var="v">
-							<c:choose>
-								<c:when test="${v.value eq kb }"><c:set value="selected='selected'" var="selectAktifkb"/></c:when>
-								<c:otherwise><c:set value=" " var="selectAktifkb"/></c:otherwise>
-							</c:choose>
-							<![CDATA[<option value="${v.key }" ${selectAktifkb }>${v.value }</option>]]>
-						</c:forEach>
-					</select>
-					<script type="text/javascript">
-						Spring
-								.addDecoration(new Spring.ElementDecoration(
-										{
-											elementId : '_kb_id',
-											widgetType : 'dijit.form.FilteringSelect',
-											widgetAttrs : {
-												hasDownArrow : true
-											}
-										}));
-					</script>
+					<div>
+						<label class="filter">Group By </label>
+						<div class="doubleDot filterField">:</div>
+						<div class="filterField">
+							<label class="filter" for="_groupBy_id"><input type="radio" class="radio" value="1" name="groupBy" checked="checked" id="_groupBy_id" onclick="form.submit();"/>No Batch</label>
+							<label class="filter" for="_groupBy_id1"><input type="radio" class="radio"  value="2" name="groupBy"   id="_groupBy_id1" onclick="form.submit();"/>No PPUC</label>
+							<label class="filter" for="_groupBy_id0"><input type="radio" class="radio"  value="3" name="groupBy" id="_groupBy_id0" onclick="form.submit();"/>Detail PPUC</label>
+						</div>
+					</div>
 				</td>
 			</tr>
 			<tr>
-				<td colspan="9" align="center">
+				<td >
+					<div class="filterField">
+						<label class="filter">No Batch </label>
+						<span class="doubleDot">:</span>
+						<select name="nb" id="_nb_id"   >
+							<option value=" ">All</option>
+							<c:forEach items="${f_nb}" var="v">
+								<c:choose>
+									<c:when test="${v.value eq nb }"><c:set value="selected='selected'" var="selectAktifnb"/></c:when>
+									<c:otherwise><c:set value=" " var="selectAktifnb"/></c:otherwise>
+								</c:choose>
+								<![CDATA[<option value="${v.value }" ${selectAktifnb }>${v.value }</option>]]>
+							</c:forEach>
+						</select>
+						<script type="text/javascript">
+							Spring
+									.addDecoration(new Spring.ElementDecoration(
+											{
+												elementId : '_nb_id',
+												widgetType : 'dijit.form.FilteringSelect',
+												widgetAttrs : {
+													hasDownArrow : true
+												}
+											}));
+						</script>
+					</div>
+					<div class="filterField">
+						<label class="filter">No PPUC </label>
+						<span class="doubleDot">:</span>
+						<select name="np" id="_np_id"   >
+							<option value=" ">All</option>
+							<c:forEach items="${f_np}" var="v">
+								<c:choose>
+									<c:when test="${v.value eq np }"><c:set value="selected='selected'" var="selectAktifnp"/></c:when>
+									<c:otherwise><c:set value=" " var="selectAktifnp"/></c:otherwise>
+								</c:choose>
+								<![CDATA[<option value="${v.value }" ${selectAktifnp }>${v.value }</option>]]>
+							</c:forEach>
+						</select>
+						<script type="text/javascript">
+							Spring
+									.addDecoration(new Spring.ElementDecoration(
+											{
+												elementId : '_np_id',
+												widgetType : 'dijit.form.FilteringSelect',
+												widgetAttrs : {
+													hasDownArrow : true
+												}
+											}));
+						</script>
+					</div>
+					<div class="filterField">
+						<label class="filter">Lokasi</label>
+						<span class="doubleDot">:</span>
+						<select name="lk" id="_lk_id"   >
+							<option value=" ">All</option>
+							<c:forEach items="${f_lk}" var="v">
+								<c:choose>
+									<c:when test="${v.value eq lk }"><c:set value="selected='selected'" var="selectAktiflk"/></c:when>
+									<c:otherwise><c:set value=" " var="selectAktiflk"/></c:otherwise>
+								</c:choose>
+								<![CDATA[<option value="${v.value }" ${selectAktiflk }>${v.value }</option>]]>
+							</c:forEach> 
+						</select>
+						<script type="text/javascript">
+							Spring
+									.addDecoration(new Spring.ElementDecoration(
+											{
+												elementId : '_lk_id',
+												widgetType : 'dijit.form.FilteringSelect',
+												widgetAttrs : {
+													hasDownArrow : true
+												}
+											}));
+						</script>
+					</div>
+					<div class="filterField">
+						<label class="filter">Group Biaya</label>
+						<span class="doubleDot">:</span>
+						<select name="gb" id="_gb_id"   >
+							<option value=" ">All</option>
+							<c:forEach items="${f_gb}" var="v">
+								<c:choose>
+									<c:when test="${v.key eq gb }"><c:set value="selected='selected'" var="selectAktifgb"/></c:when>
+									<c:otherwise><c:set value=" " var="selectAktifgb"/></c:otherwise>
+								</c:choose>
+								<![CDATA[<option value="${v.key }" ${selectAktifgb }>${v.value }</option>]]>
+							</c:forEach>
+						</select>
+						<script type="text/javascript">
+							Spring
+									.addDecoration(new Spring.ElementDecoration(
+											{
+												elementId : '_gb_id',
+												widgetType : 'dijit.form.FilteringSelect',
+												widgetAttrs : {
+													hasDownArrow : true
+												}
+											}));
+						</script>
+					</div>
+					<div class="filterField">
+						<label class="filter">KD Biaya</label>
+						<span class="doubleDot">:</span>
+						<select name="kb" id="_kb_id"   >
+							<option value=" ">All</option>
+							<c:forEach items="${f_kb}" var="v">
+								<c:choose>
+									<c:when test="${v.value eq kb }"><c:set value="selected='selected'" var="selectAktifkb"/></c:when>
+									<c:otherwise><c:set value=" " var="selectAktifkb"/></c:otherwise>
+								</c:choose>
+								<![CDATA[<option value="${v.key }" ${selectAktifkb }>${v.value }</option>]]>
+							</c:forEach>
+						</select>
+						<script type="text/javascript">
+							Spring
+									.addDecoration(new Spring.ElementDecoration(
+											{
+												elementId : '_kb_id',
+												widgetType : 'dijit.form.FilteringSelect',
+												widgetAttrs : {
+													hasDownArrow : true
+												}
+											}));
+						</script>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td  align="center">
 					<input type="hidden" name="search" value="${param.search}"/>
 					
 					<span class="submit" id="filterHakBiaya_filter_submit" style="margin-left: 15px;">
@@ -197,12 +176,8 @@
 			<c:when test="${param.groupBy eq 2 }">
 				<table>
 					<tr>
-						<th>No Batch</th>
 						<th>No PPUC</th>
 						<th>Tgl PPUC</th>
-						<th>Divisi</th>
-						<th>Subdivisi</th>
-						<th>Departmen</th>
 						<th>Lokasi</th>
 						<th>User Create</th>
 						<th>Tgl Create</th>
@@ -213,78 +188,94 @@
 						<th class="utilbox"></th>
 					</tr>
 					<c:forEach items="${ppuchList}" var="v" varStatus="vs">
-						<tr>
-							<td>${v.no_batch }</td>
-							<td>${v.no_ppuc }</td>
-							<td><fmt:formatDate value="${v.tgl_ppuc }" pattern="${ppuch_tgl_ppuc_date_format}"/></td>
-							<td>${v.divisi_nm }</td>
-							<td>${v.subdiv_nm }</td>
-							<td>${v.dept_nm }</td>
-							<td>${v.lok_nm }</td>
-							<td>${v.user_create }</td>
-							<td><fmt:formatDate value="${v.tgl_create }" pattern="${ppuch_tgl_create_date_format}"/></td>
-							<td>${v.user_confirm }</td>
-							<td><fmt:formatDate value="${v.tgl_confirm }" pattern="${ppuch_tgl_confirm_date_format}"/></td>
-							<td class="utilbox">
-								<c:if test="${v.posisi lt 2 }">
-									<spring:url value="/trans/ppuch/confirm/${v.no_batch}" var="confirm_form_url" /> 
-									<spring:url value="/resources/images/icons/filetick.gif" var="confirm_image_url" /> 
-									<form:form action="${confirm_form_url}" method="PUT">
-										<spring:message arguments="Confirm Input PPUC ?" code="entity_global" var="confirm_label" htmlEscape="false" />
-										<c:set var="confirm_confirm_msg">
-											<spring:escapeBody javaScriptEscape="true">
-												<spring:message arguments="Confirm" code="entity_global_confirm" />
-											</spring:escapeBody>
-										</c:set>
-										<input alt="${fn:escapeXml(confirm_label)}" class="image" src="${confirm_image_url}" title="${fn:escapeXml(confirm_label)}" type="image" value="${fn:escapeXml(confirm_label)}" onclick="return confirm('${confirm_confirm_msg}');" />
-										<c:if test="${not empty param.page}">
-											<input name="page" type="hidden" value="1" />
-										</c:if>
-										<c:if test="${not empty param.size}">
-											<input name="size" type="hidden" value="${fn:escapeXml(param.size)}" />
-										</c:if>
-									</form:form>
-								</c:if>
-							</td>
-							<td class="utilbox">
-								<c:if test="${v.posisi lt 2 }">
-									<spring:url value="/trans/ppuch/batch/${v.no_batch }?form" var="aktif_form_url" />
-									<spring:url value="/resources/images/update.png" var="aktif_image_url" />
-									<c:set value="Click To Edit PPUC" var="label_aktif" />
-									<a href="${aktif_form_url}" alt="${label_aktif}" title="${label_aktif}"> <img alt="${label_aktif}" class="image" src="${aktif_image_url}" title="${label_aktif}" />
-									</a>
-								</c:if>
-							</td>
-							<td class="utilbox">
-								<c:if test="${v.posisi lt 2 }">
-									<spring:url value="/trans/ppuch/${v.no_batch}" var="delete_form_url" /> 
-									<spring:url value="/resources/images/delete.png" var="delete_image_url" /> 
-									<form:form action="${delete_form_url}" method="DELETE">
-										<spring:message arguments="PPUC" code="entity_delete" var="delete_label" htmlEscape="false" />
-										<c:set var="delete_confirm_msg">
-											<spring:escapeBody javaScriptEscape="true">
-												<spring:message code="entity_delete_confirm" />
-											</spring:escapeBody>
-										</c:set>
-										<input alt="${fn:escapeXml(delete_label)}" class="image" src="${delete_image_url}" title="${fn:escapeXml(delete_label)}" type="image" value="${fn:escapeXml(delete_label)}" onclick="return confirm('${delete_confirm_msg}');" />
-										<c:if test="${not empty param.page}">
-											<input name="page" type="hidden" value="1" />
-										</c:if>
-										<c:if test="${not empty param.size}">
-											<input name="size" type="hidden" value="${fn:escapeXml(param.size)}" />
-										</c:if>
-									</form:form>
-								</c:if>
+						<tr style="background-color: gray; color: white;">
+							<td colspan="10">
+								<span style="color: white;"> 
+									NO BATCH : ${v.no_batch } 
+								</span> 
 							</td>
 						</tr>
+						<c:forEach items="${v.ppuchs}" var="vd" varStatus="vds">
+							<tr>
+								<td>${vd.no_ppuc }</td>
+								<td><fmt:formatDate value="${vd.tgl_ppuc }" pattern="${ppuch_tgl_ppuc_date_format}"/></td>
+								<td><span id="_${vd.no_ppuc }_${vd.lokasi.lok_nm }" class="hint">${vd.lok_kd } - ${vd.lokasi.lok_nm }</span>
+									<c:set var="pesan">Divisi : ${vd.divisi.divisi_nm }<br />Sub Divisi : ${vd.subdivisi.subdiv_nm }<br />Departmen : ${vd.departmen.dept_nm }<br />Lokasi : ${vd.lokasi.lok_nm }</c:set>
+									<script type="text/javascript">
+										require(
+												[ "dijit/Tooltip",
+														"dojo/domReady!" ],
+												function(Tooltip) {
+													new Tooltip(
+															{
+																connectId : [ "_${vd.no_ppuc }_${vd.lokasi.lok_nm }" ],
+																label : "${pesan}",
+																position : [
+																		"above",
+																		"below" ]
+															});
+												});
+										</script>
+								</td>
+								<td>${vd.user_create }</td>
+								<td><fmt:formatDate value="${vd.tgl_create }" pattern="${ppuch_tgl_create_date_format}"/></td>
+								<td>${vd.user_confirm }</td>
+								<td><fmt:formatDate value="${vd.tgl_confirm }" pattern="${ppuch_tgl_confirm_date_format}"/></td>
+								<td class="utilbox">
+									<c:if test="${vd.posisi lt 2 }">
+										<spring:url value="/trans/ppuch/confirm/${vd.no_batch}" var="confirm_form_url" /> 
+										<spring:url value="/resources/images/icons/filetick.gif" var="confirm_image_url" /> 
+										<form:form action="${confirm_form_url}" method="PUT">
+											<spring:message arguments="Confirm Input PPUC ?" code="entity_global" var="confirm_label" htmlEscape="false" />
+											<c:set var="confirm_confirm_msg">
+												<spring:escapeBody javaScriptEscape="true">
+													<spring:message arguments="Confirm" code="entity_global_confirm" />
+												</spring:escapeBody>
+											</c:set>
+											<input alt="${fn:escapeXml(confirm_label)}" class="image" src="${confirm_image_url}" title="${fn:escapeXml(confirm_label)}" type="image" value="${fn:escapeXml(confirm_label)}" onclick="return confirm('${confirm_confirm_msg}');" />
+											<c:if test="${not empty param.page}">
+												<input name="page" type="hidden" value="1" />
+											</c:if>
+											<c:if test="${not empty param.size}">
+												<input name="size" type="hidden" value="${fn:escapeXml(param.size)}" />
+											</c:if>
+										</form:form>
+									</c:if>
+								</td>
+								<td class="utilbox">
+									<c:if test="${vd.posisi lt 2 }">
+										<spring:url value="/trans/ppuch/batch/${vd.no_batch }?form" var="aktif_form_url" />
+										<spring:url value="/resources/images/update.png" var="aktif_image_url" />
+										<c:set value="Click To Edit PPUC" var="label_aktif" />
+										<a href="${aktif_form_url}" alt="${label_aktif}" title="${label_aktif}"> <img alt="${label_aktif}" class="image" src="${aktif_image_url}" title="${label_aktif}" />
+										</a>
+									</c:if>
+								</td>
+								<td class="utilbox">
+									<c:if test="${vd.posisi lt 2 }">
+										<spring:url value="/trans/ppuch/${vd.no_batch}" var="delete_form_url" /> 
+										<spring:url value="/resources/images/delete.png" var="delete_image_url" /> 
+										<form:form action="${delete_form_url}" method="DELETE">
+											<spring:message arguments="PPUC" code="entity_delete" var="delete_label" htmlEscape="false" />
+											<c:set var="delete_confirm_msg">
+												<spring:escapeBody javaScriptEscape="true">
+													<spring:message code="entity_delete_confirm" />
+												</spring:escapeBody>
+											</c:set>
+											<input alt="${fn:escapeXml(delete_label)}" class="image" src="${delete_image_url}" title="${fn:escapeXml(delete_label)}" type="image" value="${fn:escapeXml(delete_label)}" onclick="return confirm('${delete_confirm_msg}');" />
+											<c:if test="${not empty param.page}">
+												<input name="page" type="hidden" value="1" />
+											</c:if>
+											<c:if test="${not empty param.size}">
+												<input name="size" type="hidden" value="${fn:escapeXml(param.size)}" />
+											</c:if>
+										</form:form>
+									</c:if>
+								</td>
+							</tr>
+						</c:forEach>
 					</c:forEach>
-					<tr class="footer">
-						<td colspan="14">
-							 <c:if test="${not empty maxPages}">
-								<util:pagination maxPages="${maxPages}" page="${param.page}" size="${param.size}" />
-							</c:if> 
-						</td>
-					</tr>
+					
 				</table>
 			</c:when>
 			<c:when test="${param.groupBy eq 3 }">

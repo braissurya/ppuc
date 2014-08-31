@@ -152,6 +152,7 @@
 			<result property="kd_group" column="pd_kd_group" />
 			<result property="kd_biaya" column="pd_kd_biaya" />
 			<result property="no_batch" column="pd_no_batch" />
+			<result property="posisi" column="pd_posisi" />
 			<result property="qty" column="pd_qty" />
 			<result property="harga" column="pd_harga" />
 			<result property="total" column="pd_total" />
@@ -160,6 +161,7 @@
 			<result property="total_old" column="pd_total_old" />
 			<result property="keterangan" column="pd_keterangan" />
 			<result property="ket_approve" column="pd_ket_approve" />
+			<result property="f_approval" column="pd_f_approval" />
 			<result property="no_realisasi" column="pd_no_realisasi" />
 			<result property="qty_real_cbg" column="pd_qty_real_cbg" />
 			<result property="harga_real_cbg" column="pd_harga_real_cbg" />
@@ -251,6 +253,7 @@
 		PD.KD_GROUP as pd_kd_group,
 		PD.KD_BIAYA as pd_kd_biaya,
 		PD.NO_BATCH as pd_no_batch,
+		PD.POSISI as pd_posisi,
 		PD.QTY as pd_qty,
 		PD.HARGA as pd_harga,
 		PD.TOTAL as pd_total,
@@ -258,6 +261,7 @@
 		PD.HARGA_OLD as pd_harga_old,
 		PD.TOTAL_OLD as pd_total_old,
 		PD.KETERANGAN as pd_keterangan,
+		PD.F_APPROVAL as pd_f_approval,
 		PD.KET_APPROVE as pd_ket_approve,
 		PD.NO_REALISASI as pd_no_realisasi,
 		PD.QTY_REAL_CBG as pd_qty_real_cbg,
@@ -353,8 +357,9 @@
 			<if test="kd_group != null">AND T.pd_kd_group = #{kd_group}</if>
 			<if test="kd_biaya != null">AND T.pd_kd_biaya = #{kd_biaya}</if>
 			<if test="lok_kd != null">AND T.lok_kd = #{lok_kd}</if>
-			<if test="posisi != null">AND T.posisi = #{posisi}</if>
-			<if test="posisi_min != null">AND T.posisi >= #{posisi_min}</if>
+			<if test="posisi != null">AND T.pd_posisi = #{posisi}</if>
+			<if test="posisiGroup != null">AND T.pd_posisi in (${posisiGroup})</if>
+			<if test="posisi_min != null">AND T.pd_posisi >= #{posisi_min}</if>
 	</sql>
 
 	<!-- kolom apa aja yang mau disearching -->
@@ -662,6 +667,7 @@
 		Where 1=1
 			<if test="no_batch != null">AND T.no_batch = #{no_batch}</if>
 			<if test="posisi != null">AND T.posisi = #{posisi}</if>
+			<if test="posisiGroup != null">AND T.posisi in (${posisiGroup})</if>
 			<if test="posisi_min != null">AND T.posisi >= #{posisi_min}</if>
 		group by no_batch
 	</sql>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div  xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:form="http://www.springframework.org/tags/form" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:c="http://java.sun.com/jsp/jstl/core"  xmlns:formtag="urn:jsptagdir:/WEB-INF/tags/form"   xmlns:spring="http://www.springframework.org/tags"  xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:fn="http://java.sun.com/jsp/jstl/functions"  xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	<spring:url value="/" var="path" />
+	<page:filter finderName="filter" path="/trans/ppuch/realisasi/cabang" id="filterHakBiaya"  label="filter">
+		<table class="noborder">
+			<tr>
+				<td align="center" >
+					<div class="filterField">
+						<label class="filter">No Batch </label>
+						<span class="doubleDot">:</span>
+						<select name="nb" id="_nb_id"   >
+							<option value=" ">All</option>
+							<c:forEach items="${f_nb}" var="v">
+								<c:choose>
+									<c:when test="${v.value eq nb }"><c:set value="selected='selected'" var="selectAktifnb"/></c:when>
+									<c:otherwise><c:set value=" " var="selectAktifnb"/></c:otherwise>
+								</c:choose>
+								<![CDATA[<option value="${v.value }" ${selectAktifnb }>${v.value }</option>]]>
+							</c:forEach>
+						</select>
+						<script type="text/javascript">
+							Spring
+									.addDecoration(new Spring.ElementDecoration(
+											{
+												elementId : '_nb_id',
+												widgetType : 'dijit.form.FilteringSelect',
+												widgetAttrs : {
+													hasDownArrow : true
+												}
+											}));
+						</script>
+					</div>
+					<div class="filterField">
+						<label class="filter">No PPUC </label>
+						<span class="doubleDot">:</span>
+						<select name="np" id="_np_id"   >
+							<option value=" ">All</option>
+							<c:forEach items="${f_np}" var="v">
+								<c:choose>
+									<c:when test="${v.value eq np }"><c:set value="selected='selected'" var="selectAktifnp"/></c:when>
+									<c:otherwise><c:set value=" " var="selectAktifnp"/></c:otherwise>
+								</c:choose>
+								<![CDATA[<option value="${v.value }" ${selectAktifnp }>${v.value }</option>]]>
+							</c:forEach>
+						</select>
+						<script type="text/javascript">
+							Spring
+									.addDecoration(new Spring.ElementDecoration(
+											{
+												elementId : '_np_id',
+												widgetType : 'dijit.form.FilteringSelect',
+												widgetAttrs : {
+													hasDownArrow : true
+												}
+											}));
+						</script>
+					</div>
+					<div class="filterField">
+						<label class="filter">Lokasi</label>
+						<span class="doubleDot">:</span>
+						<select name="lk" id="_lk_id"   >
+							<option value=" ">All</option>
+							<c:forEach items="${f_lk}" var="v">
+								<c:choose>
+									<c:when test="${v.value eq lk }"><c:set value="selected='selected'" var="selectAktiflk"/></c:when>
+									<c:otherwise><c:set value=" " var="selectAktiflk"/></c:otherwise>
+								</c:choose>
+								<![CDATA[<option value="${v.value }" ${selectAktiflk }>${v.value }</option>]]>
+							</c:forEach> 
+						</select>
+						<script type="text/javascript">
+							Spring
+									.addDecoration(new Spring.ElementDecoration(
+											{
+												elementId : '_lk_id',
+												widgetType : 'dijit.form.FilteringSelect',
+												widgetAttrs : {
+													hasDownArrow : true
+												}
+											}));
+						</script>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td  align="center">
+					<input type="hidden" name="search" value="${param.search}"/>
+					
+					<span class="submit" id="filterHakBiaya_filter_submit" style="margin-left: 15px;">
+						<spring:message code="button_filter" var="filter_button" htmlEscape="false" />
+						<input type="submit" value="${fn:escapeXml(filter_button)}" />
+					</span>
+					<span class="submit" id="filterHakBiaya_filter_submit" style="margin-left: 15px;">
+						<spring:message code="button_reset" var="button_reset" htmlEscape="false" />
+						
+						<input type="button" value="${fn:escapeXml(button_reset)}"  onclick="window.location='${path}trans/ppuch'"/>
+					</span>
+				</td>
+			</tr>
+		</table>
+		
+		
+		
+		
+		
+	</page:filter>
+
+	<br/>
+	<page:list id="pl_com_melawai_ppuc_model_ppuch" items="${ppuchList}" create="false" searching="false">
+		<table>
+			<tr>
+				<th>No PPUC</th>
+				<th>Tgl PPUC</th>
+				<th>Lokasi</th>
+				<th>User Create</th>
+				<th>Tgl Create</th>
+				<th>User Confirm</th>
+				<th>Tgl Confirm</th>
+				<th class="utilbox"></th>
+			</tr>
+			<c:forEach items="${ppuchList}" var="v" varStatus="vs">
+				<tr style="background-color: gray; color: white;">
+					<td colspan="10">
+						<span style="color: white;"> 
+							NO BATCH : ${v.no_batch } 
+						</span> 
+					</td>
+				</tr>
+				<c:forEach items="${v.ppuchs}" var="vd" varStatus="vds">
+					<tr>
+						<td>
+							<spring:url value="/trans/ppuch/realisasi/cabang/noppuc/${vd.no_ppuc}?form" var="real_form_url" />
+							<a href="${real_form_url}">${vd.no_ppuc }</a>
+						</td>
+						<td><fmt:formatDate value="${vd.tgl_ppuc }" pattern="${ppuch_tgl_ppuc_date_format}"/></td>
+						<td><span id="_${vd.no_ppuc }_${vd.lokasi.lok_nm}" class="hint">${vd.lok_kd } - ${vd.lokasi.lok_nm }</span>
+							<c:set var="pesan">Divisi : ${vd.divisi.divisi_nm }<br />Sub Divisi : ${vd.subdivisi.subdiv_nm }<br />Departmen : ${vd.departmen.dept_nm }<br />Lokasi : ${vd.lokasi.lok_nm }</c:set>
+							<script type="text/javascript">
+								require(
+										[ "dijit/Tooltip",
+												"dojo/domReady!" ],
+										function(Tooltip) {
+											new Tooltip(
+													{
+														connectId : [ "_${vd.no_ppuc }_${vd.lokasi.lok_nm }" ],
+														label : "${pesan}",
+														position : [
+																"above",
+																"below" ]
+													});
+										});
+								</script>
+						</td>
+						<td>${vd.user_create }</td>
+						<td><fmt:formatDate value="${vd.tgl_create }" pattern="${ppuch_tgl_create_date_format}"/></td>
+						<td>${vd.user_confirm }</td>
+						<td><fmt:formatDate value="${vd.tgl_confirm }" pattern="${ppuch_tgl_confirm_date_format}"/></td>
+						
+						<td class="utilbox">
+							<spring:url value="/resources/images/update.png" var="aktif_image_url" />
+							<c:set value="Click To Edit PPUC" var="label_aktif" />
+							<a href="${real_form_url}" alt="${label_aktif}" title="${label_aktif}"> <img alt="${label_aktif}" class="image" src="${aktif_image_url}" title="${label_aktif}" />
+							</a>
+						</td>
+						
+					</tr>
+				</c:forEach>
+			</c:forEach>
+			
+		</table>
+	
+	</page:list>
+	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("input[value='${param.groupBy}']").prop('checked', true);;
+		});
+	</script>
+	<script type="text/javascript">
+		dojo.ready(function() {
+			autoPopulateMultiParamSelect2FieldNoAll("${path}", true, "All",  "_nb_id",
+					"noppuc", "_np_id","${np}",
+					"lokasi6","_lk_id","${lk}");
+			});
+	</script>
+</div>

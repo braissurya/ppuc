@@ -3,24 +3,28 @@
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
 	<page:filter finderName="filter" path="/master/user" id="filterUser" label="filter">
-		<c:choose>
-			<c:when test="${aktif eq 1 }">
-				<c:set value="checked='checked'" var="selectAktif"/>
-			</c:when>
-			<c:when test="${aktif eq 0 }">
-				<c:set value="checked='checked'" var="selectNonAktif"/>
-			</c:when>
-			<c:otherwise></c:otherwise>
-		</c:choose>
-		<label class="filter">F-Aktif</label>
-		<span class="doubleDot">:</span>
-		<![CDATA[
-		<label class="filter" for="_aktif_id"><input type="radio" class="radio" value="" name="aktif" checked="checked" id="_aktif_id" onclick="form.submit();"/> All</label>
-		<label class="filter" for="_aktif_id1"><input type="radio" class="radio"  value="1" name="aktif" ${selectAktif }  id="_aktif_id1" onclick="form.submit();"/> Active</label>
-		<label class="filter" for="_aktif_id0"><input type="radio" class="radio"  value="0" name="aktif" ${selectNonAktif }  id="_aktif_id0" onclick="form.submit();"/> Non Active</label>
-		]]>
-		<input type="hidden" name="group" value="${param.group}"/>
-		<input type="hidden" name="search" value="${param.search}"/>
+		<div  class="filterField">
+			<c:choose>
+				<c:when test="${aktif eq 1 }">
+					<c:set value="checked='checked'" var="selectAktif"/>
+				</c:when>
+				<c:when test="${aktif eq 0 }">
+					<c:set value="checked='checked'" var="selectNonAktif"/>
+				</c:when>
+				<c:otherwise></c:otherwise>
+			</c:choose>
+			<label class="filter">F-Aktif</label>
+			<div class="doubleDot filterField">:</div >
+			<div class="filterField">
+				<![CDATA[
+				<label class="filter" for="_aktif_id"><input type="radio" class="radio" value="" name="aktif" checked="checked" id="_aktif_id" onclick="form.submit();"/> All</label>
+				<label class="filter" for="_aktif_id1"><input type="radio" class="radio"  value="1" name="aktif" ${selectAktif }  id="_aktif_id1" onclick="form.submit();"/> Active</label>
+				<label class="filter" for="_aktif_id0"><input type="radio" class="radio"  value="0" name="aktif" ${selectNonAktif }  id="_aktif_id0" onclick="form.submit();"/> Non Active</label>
+				]]>
+			</div>
+			<input type="hidden" name="group" value="${param.group}"/>
+			<input type="hidden" name="search" value="${param.search}"/>
+		</div><br/>
 	</page:filter>
 	<br/>
 	<page:list id="pl_com_melawai_ppuc_model_user" items="${userList}" path="/master/user" create="false" searching="false">

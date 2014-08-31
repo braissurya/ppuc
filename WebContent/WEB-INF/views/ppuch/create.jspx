@@ -7,8 +7,8 @@
 		<field:input field="no_batch" label="No Batch" id="c_com_melawai_ppuc_model_ppuch_no_batch" required="false" disabled="true" max="10" />
 		<field:select field="divisi_kd" label="Divisi Kd" readonly="true" id="c_com_melawai_ppuc_model_ppuch_divisi_kd" items="${divisiList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/divisi" />
 		<field:select field="subdiv_kd" label="Subdiv Kd"  readonly="true"   id="c_com_melawai_ppuc_model_ppuch_subdiv_kd" items="${subdivList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/subdivisi" />
-		<field:select field="dept_kd" label="Dept Kd" id="c_com_melawai_ppuc_model_ppuch_dept_kd" items="${deptList}" itemLabel="key" itemValue="value" required="true" blank="true" path="/master/departmen" />
-		<field:select field="lok_kd" label="Lok Kd" required="true" id="c_com_melawai_ppuc_model_ppuch_lok_kd" items="${lokList}" itemLabel="key" itemValue="value" blank="true" path="/master/lokasi" />
+		<field:select field="dept_kd" label="Dept Kd" readonly="true" id="c_com_melawai_ppuc_model_ppuch_dept_kd" items="${deptList}" itemLabel="key" itemValue="value" required="true"  blank="true" path="/master/departmen" />
+		<field:select field="lok_kd" label="Lok Kd"  readonly="true" required="true" id="c_com_melawai_ppuc_model_ppuch_lok_kd" items="${lokList}" itemLabel="key" itemValue="value" blank="true" path="/master/lokasi" />
 		<field:datetime field="tgl_ppuc" label="Tgl Ppuc" id="c_com_melawai_ppuc_model_ppuch_tgl_ppuc" required="true" dateTimePattern="${ppuch_tgl_ppuc_date_format}" />
 
 		<spring:message arguments="Subdivisi KD" code="field_choice" var="choice_subdivkd" htmlEscape="false" />

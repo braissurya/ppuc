@@ -49,6 +49,8 @@ public class PpucD extends BaseObject implements Serializable  {
 	public String kd_biaya;
 
 	public String no_batch;
+	
+	public Integer posisi;
 
 	public Long qty;
 
@@ -65,6 +67,8 @@ public class PpucD extends BaseObject implements Serializable  {
 	@Size(max=65535)
 	public String keterangan;
 
+	public Integer f_approval;
+	
 	@Size(max=65535)
 	public String ket_approve;
 
@@ -266,6 +270,34 @@ public class PpucD extends BaseObject implements Serializable  {
 
 	public void setNm_biaya(String nm_biaya) {
 		this.nm_biaya = nm_biaya;
+	}
+
+
+
+
+	public Integer getPosisi() {
+		return posisi;
+	}
+
+
+
+
+	public void setPosisi(Integer posisi) {
+		this.posisi = posisi;
+	}
+
+
+
+
+	public Integer getF_approval() {
+		return f_approval;
+	}
+
+
+
+
+	public void setF_approval(Integer f_approval) {
+		this.f_approval = f_approval;
 	}
 
 	//****************** GETTER SETTER END HERE ******************/

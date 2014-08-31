@@ -4,8 +4,11 @@
     <definition extends="default" name="ppuch/list">
         <put-attribute name="body" value="/WEB-INF/views/ppuch/list.jspx"/>
     </definition>
-     <definition extends="default" name="ppuch/listApp">
+    <definition extends="default" name="ppuch/listApp">
         <put-attribute name="body" value="/WEB-INF/views/ppuch/listApp.jspx"/>
+    </definition>
+    <definition extends="default" name="ppuch/listRealCabang">
+        <put-attribute name="body" value="/WEB-INF/views/ppuch/listRealCabang.jspx"/>
     </definition>
 	<definition extends="default" name="ppuch/show">
         <put-attribute name="body" value="/WEB-INF/views/ppuch/show.jspx"/>
@@ -15,6 +18,9 @@
     </definition>
 	<definition extends="default" name="ppuch/update">
         <put-attribute name="body" value="/WEB-INF/views/ppuch/update.jspx"/>
+    </definition>
+    <definition extends="popup" name="ppuch/updateRealCabang">
+        <put-attribute name="body" value="/WEB-INF/views/ppuch/updateRealCabang.jspx"/>
     </definition>
 </tiles-definitions>
 

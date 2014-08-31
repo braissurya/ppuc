@@ -8,6 +8,7 @@ public class Posisi implements Serializable {
 		public static final Integer INPUT_PPUC  = 1;
 		public static final Integer CONFIRM_PPUC = 2;
 		public static final Integer APPROVAL_PPUC  = 10;
+		public static final Integer DECLINE_PPUC  = 12;
 		public static final Integer PURCHASING = 21;
 		public static final Integer OVER_BUDGET = 25;
 		public static final Integer CONFIRM_OVER_BUDGET = 26;
@@ -15,7 +16,7 @@ public class Posisi implements Serializable {
 		public static final Integer INPUT_REALIZATION = 31;
 		public static final Integer CONFIRM_REALIZATION = 32;
 		public static final Integer TRANSFER_ACCOUNTING = 40;
-		public static final Integer INPUT_REAL_REALITATION = 50;
+		public static final Integer INPUT_REAL_REALIZATION = 50;
 		public static final Integer DUMP_TO_FINANCE = 99;
 		
 	}

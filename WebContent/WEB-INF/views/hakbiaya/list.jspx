@@ -7,208 +7,184 @@
 		<table class="noborder">
 			<tr>
 				<td>
-					<label class="filter">Group Lokasi</label>
-				</td>
-				<td>
-					<span class="doubleDot">:</span>
-				</td>
-				<td>
-					<select name="gl" id="_gl_id"   >
-						<option value=" ">All</option>
-						<c:forEach items="${f_gl}" var="v">
-							<c:choose>
-								<c:when test="${v.value eq gl }"><c:set value="selected='selected'" var="selectAktifgl"/></c:when>
-								<c:otherwise><c:set value=" " var="selectAktifgl"/></c:otherwise>
-							</c:choose>
-							<![CDATA[<option value="${v.key }" ${selectAktifgl }>${v.value }</option>]]>
-						</c:forEach>
-					</select>
-					<script type="text/javascript">
-						Spring
-								.addDecoration(new Spring.ElementDecoration(
-										{
-											elementId : '_gl_id',
-											widgetType : 'dijit.form.FilteringSelect',
-											widgetAttrs : {
-												hasDownArrow : true
-											}
-										}));
-					</script>
-				</td>
-				<td>
-					<label class="filter">Propinsi</label>
-				</td>
-				<td>
-					<span class="doubleDot">:</span>
-				</td>
-				<td>
-					<select name="pr" id="_pr_id"   >
-						<option value=" ">All</option>
-						<c:forEach items="${f_pr}" var="v">
-							<c:choose>
-								<c:when test="${v.value eq pr }"><c:set value="selected='selected'" var="selectAktifpr"/></c:when>
-								<c:otherwise><c:set value=" " var="selectAktifpr"/></c:otherwise>
-							</c:choose>
-							<![CDATA[<option value="${v.key }" ${selectAktifpr }>${v.value }</option>]]>
-						</c:forEach>
-					</select>
-					<script type="text/javascript">
-						Spring
-								.addDecoration(new Spring.ElementDecoration(
-										{
-											elementId : '_pr_id',
-											widgetType : 'dijit.form.FilteringSelect',
-											widgetAttrs : {
-												hasDownArrow : true
-											}
-										}));
-					</script>
-				</td>
-				<td>
-					<label class="filter">Kota</label>
-				</td>
-				<td>
-					<span class="doubleDot">:</span>
-				</td>
-				<td>
-					<select name="kt" id="_kt_id"   >
-						<option value=" ">All</option>
-						<c:forEach items="${f_kt}" var="v">
-							<c:choose>
-								<c:when test="${v.value eq kt }"><c:set value="selected='selected'" var="selectAktifkt"/></c:when>
-								<c:otherwise><c:set value=" " var="selectAktifkt"/></c:otherwise>
-							</c:choose>
-							<![CDATA[<option value="${v.key }" ${selectAktifkt }>${v.value }</option>]]>
-						</c:forEach>
-					</select>
-					<script type="text/javascript">
-						Spring
-								.addDecoration(new Spring.ElementDecoration(
-										{
-											elementId : '_kt_id',
-											widgetType : 'dijit.form.FilteringSelect',
-											widgetAttrs : {
-												hasDownArrow : true
-											}
-										}));
-					</script>
-				</td>
-				<td>
-					<label class="filter">Lokasi</label>
-				</td>
-				<td>
-					<span class="doubleDot">:</span>
-				</td>
-				<td>
-					<select name="lk" id="_lk_id"   >
-						<option value=" ">All</option>
-						<c:forEach items="${f_lk}" var="v">
-							<c:choose>
-								<c:when test="${v.value eq lk }"><c:set value="selected='selected'" var="selectAktiflk"/></c:when>
-								<c:otherwise><c:set value=" " var="selectAktiflk"/></c:otherwise>
-							</c:choose>
-							<![CDATA[<option value="${v.value }" ${selectAktiflk }>${v.value }</option>]]>
-						</c:forEach>
-					</select>
-					<script type="text/javascript">
-						Spring
-								.addDecoration(new Spring.ElementDecoration(
-										{
-											elementId : '_lk_id',
-											widgetType : 'dijit.form.FilteringSelect',
-											widgetAttrs : {
-												hasDownArrow : true
-											}
-										}));
-					</script>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<label class="filter">Group Biaya</label>
-				</td>
-				<td>
-					<span class="doubleDot">:</span>
-				</td>
-				<td>
-					<select name="gb" id="_gb_id"   >
-						<option value=" ">All</option>
-						<c:forEach items="${f_gb}" var="v">
-							<c:choose>
-								<c:when test="${v.value eq gb }"><c:set value="selected='selected'" var="selectAktifgb"/></c:when>
-								<c:otherwise><c:set value=" " var="selectAktifgb"/></c:otherwise>
-							</c:choose>
-							<![CDATA[<option value="${v.value }" ${selectAktifgb }>${v.key }</option>]]>
-						</c:forEach>
-					</select>
-					<script type="text/javascript">
-						Spring
-								.addDecoration(new Spring.ElementDecoration(
-										{
-											elementId : '_gb_id',
-											widgetType : 'dijit.form.FilteringSelect',
-											widgetAttrs : {
-												hasDownArrow : true
-											}
-										}));
-					</script>
-				</td>
-				<td >
-					<label class="filter">KD Biaya</label>
-				</td>
-				<td>
-					<span class="doubleDot">:</span>
-				</td>
-				<td colspan="7">
-					<select name="kb" id="_kb_id"   >
-						<option value=" ">All</option>
-						<c:forEach items="${f_kb}" var="v">
-							<c:choose>
-								<c:when test="${v.value eq kb }"><c:set value="selected='selected'" var="selectAktifkb"/></c:when>
-								<c:otherwise><c:set value=" " var="selectAktifkb"/></c:otherwise>
-							</c:choose>
-							<![CDATA[<option value="${v.key }" ${selectAktifkb }>${v.value }</option>]]>
-						</c:forEach>
-					</select>
-					<script type="text/javascript">
-						Spring
-								.addDecoration(new Spring.ElementDecoration(
-										{
-											elementId : '_kb_id',
-											widgetType : 'dijit.form.FilteringSelect',
-											widgetAttrs : {
-												hasDownArrow : true
-											}
-										}));
-					</script>
+					<div class="filterField">
+						<label class="filter">Group Lokasi</label>
+						<span class="doubleDot">:</span>
+						<select name="gl" id="_gl_id"   >
+							<option value=" ">All</option>
+							<c:forEach items="${f_gl}" var="v">
+								<c:choose>
+									<c:when test="${v.value eq gl }"><c:set value="selected='selected'" var="selectAktifgl"/></c:when>
+									<c:otherwise><c:set value=" " var="selectAktifgl"/></c:otherwise>
+								</c:choose>
+								<![CDATA[<option value="${v.key }" ${selectAktifgl }>${v.value }</option>]]>
+							</c:forEach>
+						</select>
+						<script type="text/javascript">
+							Spring
+									.addDecoration(new Spring.ElementDecoration(
+											{
+												elementId : '_gl_id',
+												widgetType : 'dijit.form.FilteringSelect',
+												widgetAttrs : {
+													hasDownArrow : true
+												}
+											}));
+						</script>
+					</div>
+					<div class="filterField">
+						<label class="filter">Propinsi</label>
+						<span class="doubleDot">:</span>
+						<select name="pr" id="_pr_id"   >
+							<option value=" ">All</option>
+							<c:forEach items="${f_pr}" var="v">
+								<c:choose>
+									<c:when test="${v.value eq pr }"><c:set value="selected='selected'" var="selectAktifpr"/></c:when>
+									<c:otherwise><c:set value=" " var="selectAktifpr"/></c:otherwise>
+								</c:choose>
+								<![CDATA[<option value="${v.key }" ${selectAktifpr }>${v.value }</option>]]>
+							</c:forEach>
+						</select>
+						<script type="text/javascript">
+							Spring
+									.addDecoration(new Spring.ElementDecoration(
+											{
+												elementId : '_pr_id',
+												widgetType : 'dijit.form.FilteringSelect',
+												widgetAttrs : {
+													hasDownArrow : true
+												}
+											}));
+						</script>
+					</div>
+					<div class="filterField">
+						<label class="filter">Kota</label>
+						<span class="doubleDot">:</span>
+						<select name="kt" id="_kt_id"   >
+							<option value=" ">All</option>
+							<c:forEach items="${f_kt}" var="v">
+								<c:choose>
+									<c:when test="${v.value eq kt }"><c:set value="selected='selected'" var="selectAktifkt"/></c:when>
+									<c:otherwise><c:set value=" " var="selectAktifkt"/></c:otherwise>
+								</c:choose>
+								<![CDATA[<option value="${v.key }" ${selectAktifkt }>${v.value }</option>]]>
+							</c:forEach>
+						</select>
+						<script type="text/javascript">
+							Spring
+									.addDecoration(new Spring.ElementDecoration(
+											{
+												elementId : '_kt_id',
+												widgetType : 'dijit.form.FilteringSelect',
+												widgetAttrs : {
+													hasDownArrow : true
+												}
+											}));
+						</script>
+					</div>
+					<div class="filterField">
+						<label class="filter">Lokasi</label>
+						<span class="doubleDot">:</span>
+						<select name="lk" id="_lk_id"   >
+							<option value=" ">All</option>
+							<c:forEach items="${f_lk}" var="v">
+								<c:choose>
+									<c:when test="${v.value eq lk }"><c:set value="selected='selected'" var="selectAktiflk"/></c:when>
+									<c:otherwise><c:set value=" " var="selectAktiflk"/></c:otherwise>
+								</c:choose>
+								<![CDATA[<option value="${v.value }" ${selectAktiflk }>${v.value }</option>]]>
+							</c:forEach>
+						</select>
+						<script type="text/javascript">
+							Spring
+									.addDecoration(new Spring.ElementDecoration(
+											{
+												elementId : '_lk_id',
+												widgetType : 'dijit.form.FilteringSelect',
+												widgetAttrs : {
+													hasDownArrow : true
+												}
+											}));
+						</script>
+					</div>
+					<div class="filterField">
+						<label class="filter">Group Biaya</label>
+						<span class="doubleDot">:</span>
+						<select name="gb" id="_gb_id"   >
+							<option value=" ">All</option>
+							<c:forEach items="${f_gb}" var="v">
+								<c:choose>
+									<c:when test="${v.value eq gb }"><c:set value="selected='selected'" var="selectAktifgb"/></c:when>
+									<c:otherwise><c:set value=" " var="selectAktifgb"/></c:otherwise>
+								</c:choose>
+								<![CDATA[<option value="${v.value }" ${selectAktifgb }>${v.key }</option>]]>
+							</c:forEach>
+						</select>
+						<script type="text/javascript">
+							Spring
+									.addDecoration(new Spring.ElementDecoration(
+											{
+												elementId : '_gb_id',
+												widgetType : 'dijit.form.FilteringSelect',
+												widgetAttrs : {
+													hasDownArrow : true
+												}
+											}));
+						</script>
+					</div>
+					<div class="filterField">
+						<label class="filter">KD Biaya</label>
+						<span class="doubleDot">:</span>
+						<select name="kb" id="_kb_id"   >
+							<option value=" ">All</option>
+							<c:forEach items="${f_kb}" var="v">
+								<c:choose>
+									<c:when test="${v.value eq kb }"><c:set value="selected='selected'" var="selectAktifkb"/></c:when>
+									<c:otherwise><c:set value=" " var="selectAktifkb"/></c:otherwise>
+								</c:choose>
+								<![CDATA[<option value="${v.key }" ${selectAktifkb }>${v.value }</option>]]>
+							</c:forEach>
+						</select>
+						<script type="text/javascript">
+							Spring
+									.addDecoration(new Spring.ElementDecoration(
+											{
+												elementId : '_kb_id',
+												widgetType : 'dijit.form.FilteringSelect',
+												widgetAttrs : {
+													hasDownArrow : true
+												}
+											}));
+						</script>
+					</div>
 				</td>
 			</tr>
 			<tr>
 				<td >
-					<c:choose>
-						<c:when test="${aktif eq 1 }">
-							<c:set value="checked='checked'" var="selectAktif"/>
-						</c:when>
-						<c:when test="${aktif eq 0 }">
-							<c:set value="checked='checked'" var="selectNonAktif"/>
-						</c:when>
-						<c:otherwise></c:otherwise>
-					</c:choose>
-					<label class="filter">F-Aktif</label>
-				</td>
-				<td>
-					<span class="doubleDot">:</span>
-				</td>
-				<td colspan="10">
-					<![CDATA[
-					<label class="filter" for="_aktif_id"><input type="radio" class="radio" value="" name="aktif" checked="checked" id="_aktif_id" onclick="form.submit();"/> All</label>
-					<label class="filter" for="_aktif_id1"><input type="radio" class="radio"  value="1" name="aktif" ${selectAktif }  id="_aktif_id1" onclick="form.submit();"/> Active</label>
-					<label class="filter" for="_aktif_id0"><input type="radio" class="radio"  value="0" name="aktif" ${selectNonAktif }  id="_aktif_id0" onclick="form.submit();"/> Non Active</label>
-					]]>
+					<div  class="filterField">
+						<c:choose>
+							<c:when test="${aktif eq 1 }">
+								<c:set value="checked='checked'" var="selectAktif"/>
+							</c:when>
+							<c:when test="${aktif eq 0 }">
+								<c:set value="checked='checked'" var="selectNonAktif"/>
+							</c:when>
+							<c:otherwise></c:otherwise>
+						</c:choose>
+						<label class="filter">F-Aktif</label>
+						<div class="doubleDot filterField">:</div>
+						<div class="filterField">
+						<![CDATA[
+						<label class="filter" for="_aktif_id"><input type="radio" class="radio" value="" name="aktif" checked="checked" id="_aktif_id" onclick="form.submit();"/> All</label>
+						<label class="filter" for="_aktif_id1"><input type="radio" class="radio"  value="1" name="aktif" ${selectAktif }  id="_aktif_id1" onclick="form.submit();"/> Active</label>
+						<label class="filter" for="_aktif_id0"><input type="radio" class="radio"  value="0" name="aktif" ${selectNonAktif }  id="_aktif_id0" onclick="form.submit();"/> Non Active</label>
+						]]>
+						</div>
+					</div>
 				</td>
 			</tr>
 			<tr>
-				<td colspan="12" align="center">
+				<td  align="center">
 					<input type="hidden" name="search" value="${param.search}"/>
 					
 					<span class="submit" id="filterHakBiaya_filter_submit" style="margin-left: 15px;">

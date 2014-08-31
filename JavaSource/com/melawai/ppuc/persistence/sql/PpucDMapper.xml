@@ -23,6 +23,7 @@
 		<result property="kd_group" column="kd_group" />
 		<result property="kd_biaya" column="kd_biaya" />
 		<result property="no_batch" column="no_batch" />
+		<result property="posisi" column="posisi" />
 		<result property="qty" column="qty" />
 		<result property="harga" column="harga" />
 		<result property="total" column="total" />
@@ -30,6 +31,7 @@
 		<result property="harga_old" column="harga_old" />
 		<result property="total_old" column="total_old" />
 		<result property="keterangan" column="keterangan" />
+		<result property="f_approval" column="f_approval" />
 		<result property="ket_approve" column="ket_approve" />
 		<result property="no_realisasi" column="no_realisasi" />
 		<result property="qty_real_cbg" column="qty_real_cbg" />
@@ -54,6 +56,7 @@
 		C.KD_GROUP as kd_group,
 		C.KD_BIAYA as kd_biaya,
 		C.NO_BATCH as no_batch,
+		C.POSISI as posisi,
 		C.QTY as qty,
 		C.HARGA as harga,
 		C.TOTAL as total,
@@ -61,6 +64,7 @@
 		C.HARGA_OLD as harga_old,
 		C.TOTAL_OLD as total_old,
 		C.KETERANGAN as keterangan,
+		C.F_APPROVAL as f_approval,
 		C.KET_APPROVE as ket_approve,
 		C.NO_REALISASI as no_realisasi,
 		C.QTY_REAL_CBG as qty_real_cbg,
@@ -118,6 +122,7 @@
 			KD_GROUP,
 			KD_BIAYA,
 			NO_BATCH,
+			POSISI,
 			QTY,
 			HARGA,
 			TOTAL,
@@ -125,6 +130,7 @@
 			HARGA_OLD,
 			TOTAL_OLD,
 			KETERANGAN,
+			F_APPROVAL,
 			KET_APPROVE,
 			NO_REALISASI,
 			QTY_REAL_CBG,
@@ -146,6 +152,7 @@
 			#{kd_group},
 			#{kd_biaya},
 			#{no_batch},
+			#{posisi},
 			#{qty},
 			#{harga},
 			#{total},
@@ -153,6 +160,7 @@
 			#{harga_old},
 			#{total_old},
 			#{keterangan},
+			#{f_approval},
 			#{ket_approve},
 			#{no_realisasi},
 			#{qty_real_cbg},
@@ -180,6 +188,7 @@
 			<if test="kd_group != null">KD_GROUP = #{kd_group}, </if>
 			<if test="kd_biaya != null">KD_BIAYA = #{kd_biaya}, </if>
 			<if test="no_batch != null">NO_BATCH = #{no_batch}, </if>
+			<if test="posisi != null">POSISI = #{posisi}, </if>
 			<if test="qty != null">QTY = #{qty}, </if>
 			<if test="harga != null">HARGA = #{harga}, </if>
 			<if test="total != null">TOTAL = #{total}, </if>
@@ -187,6 +196,7 @@
 			<if test="harga_old != null">HARGA_OLD = #{harga_old}, </if>
 			<if test="total_old != null">TOTAL_OLD = #{total_old}, </if>
 			<if test="keterangan != null">KETERANGAN = #{keterangan}, </if>
+			<if test="f_approval != null">F_APPROVAL = #{f_approval}, </if>
 			<if test="ket_approve != null">KET_APPROVE = #{ket_approve}, </if>
 			<if test="no_realisasi != null">NO_REALISASI = #{no_realisasi}, </if>
 			<if test="qty_real_cbg != null">QTY_REAL_CBG = #{qty_real_cbg}, </if>

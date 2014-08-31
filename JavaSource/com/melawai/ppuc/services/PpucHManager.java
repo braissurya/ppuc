@@ -70,6 +70,10 @@ public class PpucHManager extends BaseService {
 	public List<PpucH> get(String no_batch) {
 		return ppuchMapper.get(null, null, null, null, null, null, no_batch);
 	}
+	
+	public List<PpucH> getBynoppuc(String no_ppuc) {
+		return ppuchMapper.get(null, null, null, null, no_ppuc, null, null);
+	}
 
 	/**
 	 * Apakah data dengan divisi_kd, subdiv_kd, dept_kd, lok_kd, no_ppuc,
@@ -94,7 +98,7 @@ public class PpucHManager extends BaseService {
 	}
 
 	/** Ambil jumlah seluruh data **/
-	public int selectPagingCount(String search, Integer type, String nb, String np, String lk, String gb, String kb,Integer posisi_min,Integer posisi) {
+	public int selectPagingCount(String search, Integer type, String nb, String np, String lk, String gb, String kb,Integer posisi_min,Integer posisi,Integer [] posisiGroup) {
 		PpucH ppuch = new PpucH();
 		ppuch.setSearch(search);
 		
@@ -106,6 +110,16 @@ public class PpucHManager extends BaseService {
 		
 		ppuch.setPosisi_min(posisi_min);
 		ppuch.setPosisi(posisi);
+		
+		if(posisiGroup!=null){
+			String posGroup="";
+			int i=0;
+			for(Integer ps:posisiGroup){
+				if(i==0) posGroup+=ps;
+				else posGroup+=", "+ps;
+			}
+			ppuch.posisiGroup=posGroup;
+		}
 
 		if (type == 1)
 			return ppuchMapper.selectPagingCountSatu(ppuch);
@@ -114,7 +128,7 @@ public class PpucHManager extends BaseService {
 	}
 
 	/** Ambil data paging **/
-	public List<PpucH> selectPagingList(String search, String sort, String sortOrder, int page, int rowcount, Integer type, String nb, String np, String lk, String gb, String kb,Integer posisi_min,Integer posisi) {
+	public List<PpucH> selectPagingList(String search, String sort, String sortOrder, int page, int rowcount, Integer type, String nb, String np, String lk, String gb, String kb,Integer posisi_min,Integer posisi,Integer [] posisiGroup) {
 		PpucH ppuch = new PpucH();
 		ppuch.setSearch(search);
 		
@@ -133,10 +147,44 @@ public class PpucHManager extends BaseService {
 		ppuch.setPosisi_min(posisi_min);
 		ppuch.setPosisi(posisi);
 		
+		if(posisiGroup!=null){
+			String posGroup="";
+			int i=0;
+			for(Integer ps:posisiGroup){
+				if(i==0) posGroup+=ps;
+				else posGroup+=", "+ps;
+			}
+			ppuch.posisiGroup=posGroup;
+		}
+		
 		if (type == 1)
 			return ppuchMapper.selectPagingListSatu(ppuch);
-		else
+		else if (type == 2){
+			List<PpucH> ppucHs=new ArrayList<PpucH>();
+			
+			int i=0;
+			String no_batch="";
+			PpucH tmp=new PpucH();
+			for(PpucH pp: ppuchMapper.selectPagingList(ppuch)){
+				if(no_batch.equals("")){//baru masuk
+					tmp=pp;
+					tmp.ppuchs.add(pp);
+					no_batch=pp.no_batch;
+				}else if(no_batch.equals(pp.no_batch)){ // klo no batch masih sama masuk ke group sebelumnya;
+					tmp.ppuchs.add(pp);
+				}else{// klo sudah beda buat group baru  
+					ppucHs.add(tmp);
+					tmp=pp;
+					tmp.ppuchs.add(pp);
+					no_batch=pp.no_batch;
+				}
+			}
+			ppucHs.add(tmp);
+			
+			return ppucHs;
+		}else {
 			return ppuchMapper.selectPagingList(ppuch);
+		}
 	}
 
 	/** Save Model **/
@@ -219,7 +267,7 @@ public class PpucHManager extends BaseService {
 							ppuch.divisi_kd_apprv=hakApprove.divisi_kd;
 							ppuch.subdiv_kd_apprv=hakApprove.subdiv_kd;
 							ppuch.dept_kd_apprv=hakApprove.dept_kd;
-							ppuch.posisi=1;
+							ppuch.posisi=PosisiDesc.INPUT_PPUC;
 							ppuch.tgl_create=null;
 							save(ppuch);
 							
@@ -227,6 +275,7 @@ public class PpucHManager extends BaseService {
 							ppucd.no_batch=no_batch;
 							ppucd.qty=1l;
 							ppucd.tgl_create=null;
+							ppucd.posisi=PosisiDesc.INPUT_PPUC;
 							ppucdManager.save(ppucd);
 						}
 					}else{
@@ -244,6 +293,7 @@ public class PpucHManager extends BaseService {
 						ppucd.no_ppuc=no_ppuc;
 						ppucd.no_batch=no_batch;
 						ppucd.tgl_create=null;
+						ppucd.posisi=PosisiDesc.INPUT_PPUC;
 						ppucdManager.save(ppucd);
 						no++;
 						
@@ -310,7 +360,7 @@ public class PpucHManager extends BaseService {
 							ppuch.divisi_kd_apprv=hakApprove.divisi_kd;
 							ppuch.subdiv_kd_apprv=hakApprove.subdiv_kd;
 							ppuch.dept_kd_apprv=hakApprove.dept_kd;
-							ppuch.posisi=1;
+							ppuch.posisi=PosisiDesc.INPUT_PPUC;
 							ppuch.tgl_create=null;
 							save(ppuch);//harusnya selalu insert
 							
@@ -318,6 +368,7 @@ public class PpucHManager extends BaseService {
 							ppucd.no_batch=no_batch;
 							ppucd.qty=1l;
 							ppucd.tgl_create=null;
+							ppucd.posisi=PosisiDesc.INPUT_PPUC;
 							ppucdManager.save(ppucd);//harusnya selalu insert
 						}
 					}else{
@@ -328,13 +379,14 @@ public class PpucHManager extends BaseService {
 							ppuch.divisi_kd_apprv=hakApprove.divisi_kd;
 							ppuch.subdiv_kd_apprv=hakApprove.subdiv_kd;
 							ppuch.dept_kd_apprv=hakApprove.dept_kd;
-							ppuch.posisi=1;
+							ppuch.posisi=PosisiDesc.INPUT_PPUC;
 							ppuch.tgl_create=null;
 							save(ppuch);//harusnya selalu insert
 						}
 						ppucd.no_ppuc=ppuch.no_ppuc;
 						ppucd.no_batch=no_batch;
 						ppucd.tgl_create=null;
+						ppucd.posisi=PosisiDesc.INPUT_PPUC;
 						ppucdManager.save(ppucd);//harusnya selalu insert
 						no++;
 						
@@ -367,10 +419,16 @@ public class PpucHManager extends BaseService {
 	public void confirmInput(String no_batch) {
 		List<PpucH> ppuchs=get(no_batch);
 		List<PpucD> tmp=new ArrayList<PpucD>();
+		Date sysdate= selectSysdate();
 		for(PpucH pp:ppuchs){
 			pp.posisi = PosisiDesc.APPROVAL_PPUC;//ke posisi
 			pp.user_confirm = CommonUtil.getCurrentUserId();
-			pp.tgl_confirm = selectSysdate();
+			pp.tgl_confirm = sysdate;
+			for(PpucD ppucd:pp.ppucds){
+				ppucd.setTgl_create(sysdate);// ini untuk pancing biar bisa masuk ke update
+				ppucd.setPosisi(pp.posisi);
+				ppucdManager.save(ppucd);
+			}
 			save(pp);
 		}
 		
@@ -391,6 +449,43 @@ public class PpucHManager extends BaseService {
 			save(ppuch);
 			for(PpucD ppucd:ppuch.ppucds){
 				ppucd.setTgl_create(sysdate);
+				if(ppucd.qty==0){
+					ppucd.setPosisi(PosisiDesc.DECLINE_PPUC);
+					ppucd.setF_approval(0);
+				}else{
+					ppucd.setPosisi(ppuch.posisi);
+					ppucd.setF_approval(1);
+				}
+				ppucdManager.save(ppucd);
+			}
+		}
+		
+		//TODO :send email dan sms
+		for(PpucH ppuch:ppuchs){
+			for(PpucD ppucd:ppuch.ppucds){
+				
+			}
+		}
+		
+		
+	}
+	
+	@Transactional
+	public void saveAllRealCabang(List<PpucH> ppuchs) {
+		User currentUser =CommonUtil.getCurrentUser();
+		Date sysdate=selectSysdate();
+		for(PpucH ppuch:ppuchs){
+			ppuch.setTgl_approve(sysdate);
+			ppuch.setTgl_create(sysdate);
+			ppuch.setUser_approve(currentUser.getUser_id());
+			ppuch.setPosisi(PosisiDesc.INPUT_REALIZATION);
+			save(ppuch);
+			for(PpucD ppucd:ppuch.ppucds){
+				ppucd.setTgl_create(sysdate);
+				if(ppucd.total_real_cbg > ppucd.total)
+					ppucd.setPosisi(PosisiDesc.OVER_BUDGET);
+				else
+					ppucd.setPosisi(PosisiDesc.INPUT_REALIZATION);
 				ppucdManager.save(ppucd);
 			}
 		}

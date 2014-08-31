@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div  xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:form="http://www.springframework.org/tags/form" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:c="http://java.sun.com/jsp/jstl/core"  xmlns:formtag="urn:jsptagdir:/WEB-INF/tags/form"   xmlns:spring="http://www.springframework.org/tags"  xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:fn="http://java.sun.com/jsp/jstl/functions"  xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	<spring:url value="/" var="path" />
+	<page:filter finderName="filter" path="/trans/ppuch/approval" id="filterHakBiaya" label="filter">
+		<table class="noborder">
+			<tr>
+				<td >
+					<div class="filterField">
+						<label class="filter">No Batch </label>
+						<span class="doubleDot">:</span>
+						<select name="nb" id="_nb_id"   >
+							<option value=" ">All</option>
+							<c:forEach items="${f_nb}" var="v">
+								<c:choose>
+									<c:when test="${v.value eq nb }"><c:set value="selected='selected'" var="selectAktifnb"/></c:when>
+									<c:otherwise><c:set value=" " var="selectAktifnb"/></c:otherwise>
+								</c:choose>
+								<![CDATA[<option value="${v.value }" ${selectAktifnb }>${v.value }</option>]]>
+							</c:forEach>
+						</select>
+						<script type="text/javascript">
+							Spring
+									.addDecoration(new Spring.ElementDecoration(
+											{
+												elementId : '_nb_id',
+												widgetType : 'dijit.form.FilteringSelect',
+												widgetAttrs : {
+													hasDownArrow : true
+												}
+											}));
+						</script>
+					</div>
+					<div class="filterField">
+						<label class="filter">No PPUC </label>
+						<span class="doubleDot">:</span>
+						<select name="np" id="_np_id"   >
+							<option value=" ">All</option>
+							<c:forEach items="${f_np}" var="v">
+								<c:choose>
+									<c:when test="${v.value eq np }"><c:set value="selected='selected'" var="selectAktifnp"/></c:when>
+									<c:otherwise><c:set value=" " var="selectAktifnp"/></c:otherwise>
+								</c:choose>
+								<![CDATA[<option value="${v.value }" ${selectAktifnp }>${v.value }</option>]]>
+							</c:forEach>
+						</select>
+						<script type="text/javascript">
+							Spring
+									.addDecoration(new Spring.ElementDecoration(
+											{
+												elementId : '_np_id',
+												widgetType : 'dijit.form.FilteringSelect',
+												widgetAttrs : {
+													hasDownArrow : true
+												}
+											}));
+						</script>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td align="left">
+					<div class="filterField">
+						<label class="filter"> <![CDATA[&nbsp;]]></label>
+						<input type="hidden" name="search" value="${param.search}"/>
+						
+						<span class="submit" id="filterHakBiaya_filter_submit" style="margin-left: 15px;">
+							<spring:message code="button_filter" var="filter_button" htmlEscape="false" />
+							<input type="submit" value="${fn:escapeXml(filter_button)}" />
+						</span>
+						<span class="submit" id="filterHakBiaya_filter_submit" style="margin-left: 15px;">
+							<spring:message code="button_reset" var="button_reset" htmlEscape="false" />
+							
+							<input type="button" value="${fn:escapeXml(button_reset)}"  onclick="window.location='${path}trans/ppuch/approval'"/>
+						</span>
+					</div>
+					<br/>
+				</td>
+			</tr>
+		</table>
+	</page:filter>
+	
+	<br/>
+	<page:list id="pl_com_melawai_ppuc_model_ppuch" items="${ppuchList}" create="false">
+		<form action="${path }trans/ppuch/approval/save" name="approval" method="POST">
+			<div  style="text-align: center;">
+				<spring:url value="/resources/images/icons/tick.png" var="accept_image_url" />
+				<spring:url value="/resources/images/icons/cross.png" var="decline_image_url" />
+				<!-- <span class="info">
+					 To Approve or Decline PPUC, please "Checked" No PPUC from the list below and Click Icon
+					 <br/><img alt="PPUC Accepted, click this icon to Decline PPUC" title="PPUC Accepted, click this icon to Decline PPUC" src="${accept_image_url }"  /> 
+					 to Decline Detail PPUC 
+					 <br/>or
+					  <br/><img alt="PPUC Declined, click this icon to Accept PPUC" title="PPUC Declined, click this icon to Accept PPUC" src="${decline_image_url }"/> 
+					 to Accept Detail PPUC,
+					  <br/>and then click "Submit" button below to process PPUC approval.
+				 </span> <br /> -->
+				<br/>
+				<c:set var="confirm_approve_msg">
+					<spring:escapeBody javaScriptEscape="true">
+						<spring:message arguments="Submit" code="entity_global_confirm" />
+					</spring:escapeBody>
+				</c:set>
+				<span class="submit" style="margin: 15px;">
+	         		<input id="proceed" type="submit" name="submit" value="Submit" onclick="return confirm('${confirm_approve_msg}');" />
+	         	</span>
+	         	
+	         	<br/>
+	         	
+	         </div>
+	         <div id="table_wrapper" >
+	         <br/>
+				<table>
+					<tr>
+						<th rowspan="2"><input class="masterSelectBox_id" type="checkbox" name="id" /></th>
+						<th colspan="16" style="text-align: center;">Detail PPUC</th>
+					</tr>
+					<tr>
+						<th class="utilbox"></th>
+						<th>Lokasi</th>
+						<th>Group Biaya</th>
+						<th>Kode Biaya</th>
+						<th>QTY</th>
+						<th>Harga</th>
+						<th>Total</th>
+						<th>Ket. Input</th>
+						<th>Ket. Approval</th>
+						<th>User Create</th>
+						<th>Tgl Create</th>
+						<th>User Approval</th>
+						<th>Tgl Approval</th>
+					</tr>
+					
+					<c:forEach items="${ppuchList}" var="v" varStatus="vs">
+						<tr style="background-color: gray; color: white;" id="${v.no_ppuc }_nopp_id">
+							<td class="selectBox utilbox">
+								<c:if test="${v.posisi eq 21 }">
+									<input type="checkbox" name="ppuchs" id="_ppuchs_${v.no_ppuc }" value="${v.no_ppuc }" rel="${v.no_ppuc }" title="${v.no_ppuc }" />
+								</c:if> 
+							</td>
+							<td colspan="14">
+								<span style="font-weight: bold; color: white;"> 
+									${v.no_ppuc } [ NO BATCH : ${v.no_batch } ] 
+								</span> 
+								<fmt:formatDate value="${v.tgl_ppuc }" pattern="${ppuch_tgl_ppuc_date_format}" var="tglppuc" />
+								<c:set var="pesan">No Batch : ${v.no_batch}<br />No PPUC : ${v.no_ppuc }<br />Tgl PPUC : ${tglppuc }<br />Divisi : ${v.divisi.divisi_nm }<br />Sub Divisi : ${v.subdivisi.subdiv_nm }<br />Departmen : ${v.departmen.dept_nm }<br />Lokasi : ${v.lokasi.lok_nm }</c:set>
+								<script type="text/javascript">
+									require(
+										[ "dijit/Tooltip",
+												"dojo/domReady!" ],
+										function(Tooltip) {
+											new Tooltip(
+													{
+														connectId : [ "${v.no_ppuc }_nopp_id" ],
+														label : "${pesan}",
+														position : [
+																"above",
+																"below" ]
+													});
+										});
+								</script>
+								<input type="hidden" name="no_ppuc_${v.no_ppuc }" value="${v.no_ppuc}" /> 
+								<input type="hidden" name="tgl_ppuc_${v.no_ppuc }" value="${tglppuc }" /> 
+								<input type="hidden" name="divisi_kd_${v.no_ppuc }" value="${v.divisi_kd}" />
+								<input type="hidden" name="subdiv_kd_${v.no_ppuc }" value="${v.subdiv_kd}" /> 
+								<input type="hidden" name="dept_kd_${v.no_ppuc }" value="${v.dept_kd}" />
+								<input type="hidden" name="lok_kd_${v.no_ppuc }" value="${v.lok_kd}" />
+								<input type="hidden" name="no_batch_${v.no_ppuc }" value="${v.no_batch}" />  
+							</td>
+						</tr>
+						<spring:eval var="counter" expression="1" />
+						<c:forEach items="${v.ppucds}" var="p" varStatus="vp">
+							<tr>
+								<td>
+								</td>
+								<td class="utilbox">
+									<img alt="PPUC Accepted, click this icon to Decline PPUC" title="PPUC Accepted, click this icon to Decline PPUC" src="${accept_image_url }" id="acc_${v.no_ppuc }_${counter}" onclick="decline('${v.no_ppuc }_${counter}');" style="cursor: pointer;display: none;" />
+									<img alt="PPUC Declined, click this icon to Accept PPUC" title="PPUC Declined, click this icon to Accept PPUC" src="${decline_image_url }" id="dec_${v.no_ppuc }_${counter}" onclick="accept('${v.no_ppuc }_${counter}');" style="cursor: pointer;display: none;" />
+									<fmt:formatNumber pattern="#,##0" value="${p.qty}" var="qty" /> 
+									<fmt:formatNumber pattern="#,##0" value="${p.harga}" var="harga" /> 
+									<input type="hidden" name="status_${v.no_ppuc }_${counter}" id="_status_${v.no_ppuc }_${counter}" value="" /> 
+									<input type="hidden" name="ids_${v.no_ppuc }" value="${counter}" rel="${v.no_ppuc }_${counter}" title="${v.no_ppuc }_${counter}" /> 
+									
+									<input type="hidden" name="kd_group_${v.no_ppuc }_${counter}" value="${p.kd_group}" />
+									<input type="hidden" name="kd_biaya_${v.no_ppuc }_${counter}" value="${p.kd_biaya}" />
+									<input type="hidden" name="qty_old_${v.no_ppuc }_${counter}" id="_qty_old_${v.no_ppuc }_${counter}" value="${qty }" />
+									<input type="hidden" name="harga_old_${v.no_ppuc }_${counter}" id="_harga_old_${v.no_ppuc }_${counter}" value="${harga }" />
+								</td>
+								<td>${v.lokasi.lok_nm}</td>
+								<td>${p.groupBiaya.nm_group}</td>
+								<td>${p.detailBiaya.kd_biaya}</td>
+								<td>
+									<c:choose>
+										<c:when test="${v.posisi eq 21 }">
+											<input type="text" name="qty_real_cbg_${v.no_ppuc }_${counter}" id="_qty_real_cbg_${v.no_ppuc }_${counter}" value="" size="3" class="nominal" rel="${v.no_ppuc }_${counter}"  disabled="disabled" />
+										</c:when>
+										<c:when test="${v.posisi gt 21 }">
+											<fmt:formatNumber pattern="#,##0" value="${p.qty_real_cbg}" />
+										
+										</c:when>
+									</c:choose>
+									<br/>
+									<table class="nostyle">
+										<tr >
+											<td>Approve</td><td>:</td><td><fmt:formatNumber pattern="#,##0" value="${p.qty}" /></td>
+										</tr>
+										<tr>
+											<td>Input</td><td>:</td><td><fmt:formatNumber pattern="#,##0" value="${p.qty_old}" /></td>
+										</tr>
+									</table>
+								</td>
+								<td><c:choose>
+										<c:when test="${v.posisi eq 21 }">
+											<input type="text" name="harga_real_cbg_${v.no_ppuc }_${counter}" id="_harga_real_cbg_${v.no_ppuc }_${counter}" value="" size="6" class="nominal" rel="${v.no_ppuc }_${counter}" disabled="disabled" />
+										</c:when>
+										<c:when test="${v.posisi gt 21 }">
+											
+											<fmt:formatNumber pattern="#,##0" value="${p.harga_real_cbg}" />
+										</c:when>
+									</c:choose>
+									<br/>
+									<table class="nostyle">
+										<tr >
+											<td>Approve</td><td>:</td><td><fmt:formatNumber pattern="#,##0" value="${p.harga}" /></td>
+										</tr>
+										<tr>
+											<td>Input</td><td>:</td><td><fmt:formatNumber pattern="#,##0" value="${p.harga_old}" /></td>
+										</tr>
+									</table>
+								</td>
+								<td><c:choose>
+										<c:when test="${v.posisi eq 21 }">
+											<span id="_total_real_cbg_${v.no_ppuc }_${counter}"><fmt:formatNumber pattern="#,##0" value="${p.total_real_cbg}" /></span>
+										</c:when>
+										<c:when test="${v.posisi gt 21 }">
+											<fmt:formatNumber pattern="#,##0" value="${p.total_real_cbg}" />
+										</c:when>
+									</c:choose>
+									<br/>
+									<table class="nostyle">
+										<tr >
+											<td>Approve</td><td>:</td><td><fmt:formatNumber pattern="#,##0" value="${p.total}" /></td>
+										</tr>
+										<tr>
+											<td>Input</td><td>:</td><td><fmt:formatNumber pattern="#,##0" value="${p.total_old}" /></td>
+										</tr>
+									</table>
+								</td>
+								<td>${p.keterangan }</td>
+								<td>${p.ket_approve }</td>
+								<td>${v.user_create }</td>
+								<td><fmt:formatDate value="${v.tgl_create }" pattern="${ppuch_tgl_create_date_format}" /></td>
+								<td>${v.user_confirm }</td>
+								<td><fmt:formatDate value="${v.tgl_confirm }" pattern="${ppuch_tgl_confirm_date_format}" /></td>
+								
+							</tr>
+							<spring:eval var="counter" expression="counter + 1" />
+						</c:forEach>
+							<input type="hidden" name="countpp_${v.no_ppuc }" id="_countpp_${v.no_ppuc }" value="${counter}" />
+					</c:forEach>
+					
+				</table>
+			</div>
+		</form>
+	</page:list>
+	
+	<![CDATA[
+	<script>
+		function enableField(idx,from){
+			var countpp=$('#_countpp_'+idx).val();
+			if($("#_ppuchs_"+idx).is(':checked') ){
+				for (var i = 1; i <= countpp; i++) { 
+					accept(idx+"_"+i);
+				}
+				
+			}else{
+				for (var i = 1; i <= countpp; i++) { 
+					reset(idx+"_"+i);
+				}
+				
+			}
+		}
+	</script>
+	]]>
+	<script>
+		function reset(idx){
+			$('#_qty_real_cbg_'+idx).attr('disabled',true);
+			$('#_harga_real_cbg_'+idx).attr('disabled',true);
+			$('#_qty_real_cbg_'+idx).val('');
+			$('#_harga_real_cbg_'+idx).val('');
+			$('#_status_'+idx).val('');
+			$('#dec_'+idx).hide();
+			$('#acc_'+idx).hide();
+		}
+		function accept(idx){
+			$('#_qty_real_cbg_'+idx).removeAttr("disabled"); 
+			$('#_harga_real_cbg_'+idx).removeAttr("disabled"); 
+			$('#_status_'+idx).val('ACCEPTED');
+			$('#_qty_'+idx).focus().select();
+			$('#dec_'+idx).hide();
+			$('#acc_'+idx).show();
+		}
+		
+		function decline(idx){
+			$('#_qty_real_cbg_'+idx).attr('disabled',true);
+			$('#_harga_real_cbg_'+idx).attr('disabled',true);
+			$('#_status_'+idx).val('DECLINED');
+			$('#dec_'+idx).show();
+			$('#acc_'+idx).hide();
+		}
+		
+		require([ "dojo/query", "dojo/on", "dojo/domReady!" ],
+		function(query, on) {
+			var masterSelect = null;
+
+			query("input.masterSelectBox_id").forEach(function(node) {
+					masterSelect = node;
+					on(	node,"click",function(e) {
+						query("table td.selectBox input[type=checkbox]")
+							.forEach(
+								function(node) {
+									node.checked = masterSelect.checked;
+									if(node.title!=null)
+									enableField(node.title);
+								});
+					})
+				})
+			
+			masterSelect.checked=false;
+			query("table td.selectBox input[type=checkbox]")
+			.forEach(
+				function(node) {
+					on(	node,"click",function(e) {
+						if(node.checked ==false	){
+							masterSelect.checked=false;
+						}
+					})
+				});
+		});
+	</script>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			function syncPrice(idx){
+				var qty=Number(isNaN($('#_qty_real_cbg_'+idx).val())?0:$('#_qty_real_cbg_'+idx).val());
+       			var harga=parseFloat(
+				replaceComma($('#_harga_real_cbg_' + idx).val()));
+				$('#_total_real_cbg_' + idx).text(formatCurrency(qty * harga));
+			}
+
+			$("#table_wrapper").delegate('input:text', 'keyup',
+					function(e) {
+						syncPrice($(this).attr("rel"));
+					});
+
+			$("#table_wrapper").delegate('input:checkbox', 'click',
+					function(e) {
+				enableField($(this).attr("rel"));
+			});
+
+		});
+	</script>
+	<script type="text/javascript">
+		dojo.ready(function() {
+			 autoPopulateSelect(
+						"${path}",
+						"noppuc",
+						"_nb_id",
+						true,
+						"All",
+						"${np}",
+						"_np_id");
+			});
+	</script>
+</div>

@@ -146,7 +146,7 @@ $(document).ready(function(){
 		return false;
 	}
 				
-	$('#_kd_group_id,#_kd_biaya_id,#_qty_id,#_harga_id,#_keterangan_id').keypress(function(e) {
+	$('#_kd_group_id,#_kd_biaya_id,#_qty_id,#_harga_id').keypress(function(e) {
 		if (e.keyCode == '13') {
 	  		e.preventDefault();
 	  		addRow($(this));						

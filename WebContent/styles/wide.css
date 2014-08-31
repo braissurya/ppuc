@@ -119,11 +119,12 @@ label {
 	margin-top: 0px;
 }
 
-label.filter {
-	margin-right: 5px;
-	float: none;
-	width: auto;
+div .filterField{
+	float: left;
+	margin-right: 10px;
+	margin-bottom: 5px;
 }
+
 
 input {
 	height:20px;
@@ -445,6 +446,11 @@ table th {
 	color: blue;
 }
 
+.hint{
+	color: green;
+	cursor: help;
+}
+
 table.noborder, table.noborder td, table.noborder tbody,table.noborder tr{
 	border: none !important;
 }
@@ -464,4 +470,38 @@ table.noborder, table.noborder td, table.noborder tbody,table.noborder tr{
 
 .vtop{
 	vertical-align: top;
+}
+
+table.nostyle{
+	border: none;
+	background: none !important;
+}
+
+
+table.nostyle tr:nth-child(odd),table.nostyle tr:nth-child(even){
+	background: none !important;
+}
+
+table.nostyle, table.nostyle td, table.nostyle tbody,table.nostyle tr{
+	border: none !important;
+}
+
+._400 .dijitSelect, ._400 .dijitTextBox{
+	width: 400px !important;
+}
+
+._350 .dijitSelect, ._350 .dijitTextBox{
+	width: 350px !important;
+}
+
+._300 .dijitSelect, ._300 .dijitTextBox{
+	width: 300px !important;
+}
+
+._250 .dijitSelect, ._250 .dijitTextBox{
+	width: 250px !important;
+}
+
+.dijitSelect,  .dijitTextBox{
+	width: 200px !important;
 }
