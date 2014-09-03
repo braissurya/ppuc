@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function() {
 	setting();
 });
 
@@ -15,7 +15,7 @@ function formatCurrency(num) {
 	for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
 		num = num.substring(0, num.length - (4 * i + 3)) + ','
 				+ num.substring(num.length - (4 * i + 3));
-	return (((sign) ? '' : '-') + num );
+	return (((sign) ? '' : '-') + num);
 }
 
 function formatRate(num) {
@@ -34,23 +34,27 @@ function formatRate(num) {
 	return (((sign) ? '' : '-') + num + '.' + cents);
 }
 
-function replaceComma(nilai){
-	nilai=nilai.replace(/[^0-9\.]+/g,"");
-	if(isNaN(nilai)){
-		result=0;
-	}else{
-		var result=nilai;
-		if(result=="")result=nilai;
+function replaceComma(nilai) {
+	nilai = nilai.replace(/[^0-9\.]+/g, "");
+	if (isNaN(nilai)) {
+		result = 0;
+	} else {
+		var result = nilai;
+		if (result == "")
+			result = nilai;
 	}
-	//alert(result);
+	// alert(result);
 	return result;
 }
 
-function dialogAlert(txtTitle, txtContent)
-{
-    var thisdialog = new dijit.Dialog({ title: txtTitle, content: txtContent, style: "width: 600px;height:400px; " });
-    dojo.body().appendChild(thisdialog.domNode);
-    thisdialog.startup();
+function dialogAlert(txtTitle, txtContent) {
+	var thisdialog = new dijit.Dialog({
+		title : txtTitle,
+		content : txtContent,
+		style : "width: 600px;height:400px; "
+	});
+	dojo.body().appendChild(thisdialog.domNode);
+	thisdialog.startup();
 	thisdialog.show();
 
 }
@@ -86,16 +90,68 @@ function reset(idSelect) {
 						id : ''
 					} ]
 				});
-//				dijit.byId(idSelect).set('value', '');
-//				alert(idSelect);
+				// dijit.byId(idSelect).set('value', '');
+				// alert(idSelect);
 			});
 }
 
-function resetMultiSelect(childSelectId){
-	$("#ms-"+childSelectId+" .ms-selectable .ms-list").children().remove(); 
-	$("#ms-"+childSelectId+" .ms-selection .ms-list").children().remove(); 
-	$('#'+childSelectId).children().remove();
-//	$('#'+childSelectId).multiSelect('refresh');
+function doAction(linknya, title, width, height, reload, popup) {
+	if (popup == true) {
+		if (reload == true)
+			timedRefresh(1000);
+		popWin(linknya, height, width, 'no', 'no');
+
+	} else {
+		if (reload == true) {
+			$.window({
+				title : title, // title
+				url : linknya, // link url
+				width : width, // window width
+				height : height, // window height
+				onClose : function(wnd) { // a callback function while user
+											// click close button
+					location.reload(true);
+				},
+				showModal : true,
+				showRoundCorner : true,
+				minimizable : false,
+				maximizable : false,
+				bookmarkable : false,
+				resizable : false
+			});
+		} else {
+			$.window({
+				title : title, // title
+				url : linknya, // link url
+				width : width, // window width
+				height : height, // window height
+				showModal : true,
+				showRoundCorner : true,
+				minimizable : false,
+				maximizable : false,
+				bookmarkable : false,
+				resizable : false
+			});
+
+		}
+	}
+
+}
+
+function closeAction() {
+	// $("#element_to_pop_up").bPopup().close();
+	$.window.closeAll();
+	return false;
+}
+
+function lewat() {
+}
+
+function resetMultiSelect(childSelectId) {
+	$("#ms-" + childSelectId + " .ms-selectable .ms-list").children().remove();
+	$("#ms-" + childSelectId + " .ms-selection .ms-list").children().remove();
+	$('#' + childSelectId).children().remove();
+	// $('#'+childSelectId).multiSelect('refresh');
 }
 
 function setSelect(jsonData, idSelect, selectedId, optionALLText) {
@@ -105,22 +161,22 @@ function setSelect(jsonData, idSelect, selectedId, optionALLText) {
 					data : jsonData
 				});
 				dijit.byId(idSelect).set('value', " ");
-				var cekselectedId=selectedId.replace(/\./g,'');
-				cekselectedId=cekselectedId.replace(/\ /g,'');
-				
-				if (cekselectedId != ""){
+				var cekselectedId = selectedId.replace(/\./g, '');
+				cekselectedId = cekselectedId.replace(/\ /g, '');
+
+				if (cekselectedId != "") {
 					setSelectValue(idSelect, selectedId);
 				}
-				
+
 			});
 }
 
 function setSelectValue(idSelect, selectedId) {
-	require([  "dijit/form/Select", "dojo/domReady!" ],
-	function(Memory, Select) {
-		dijit.byId(idSelect).set('value', selectedId);
-		
-	});
+	require([ "dijit/form/Select", "dojo/domReady!" ],
+			function(Memory, Select) {
+				dijit.byId(idSelect).set('value', selectedId);
+
+			});
 }
 
 function setSelect2(jsonData, idSelect, selectedId, optionALLText) {
@@ -129,17 +185,17 @@ function setSelect2(jsonData, idSelect, selectedId, optionALLText) {
 				dijit.byId(idSelect).store = new dojo.store.Memory({
 					data : jsonData
 				});
-				
+
 				alert(idSelect);
 				dijit.byId(idSelect).set('value', " ");
-				var cekselectedId=selectedId.replace(/\./g,'');
-				cekselectedId=cekselectedId.replace(/\ /g,'');
-				
-				if (cekselectedId != ""){
-					
+				var cekselectedId = selectedId.replace(/\./g, '');
+				cekselectedId = cekselectedId.replace(/\ /g, '');
+
+				if (cekselectedId != "") {
+
 					dijit.byId(idSelect).set('value', selectedId);
 				}
-				
+
 			});
 }
 
@@ -151,15 +207,15 @@ function autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
 					"dojo/request", "dojo/json", "dojo/_base/array",
 					"dojo/domReady!" ], function(Memory, Select, on, request,
 					JSON, arrayUtil) {
-				
+
 				// get json data
 				request(
 						path + 'json/' + ajaxType + '?param='
 								+ dijit.byId(parentSelectId).get("value"), {
 							handleAs : "json" // < Parse data from JSON to a
-												// JavaScript object
+						// JavaScript object
 						}).then(function(data) {
-					
+
 					var datas = [];
 					if (optionALL == true)
 						datas.push({
@@ -173,7 +229,7 @@ function autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
 							"id" : item.key
 						});
 					});
-					
+
 					setSelect(datas, childSelectId, selectedId, optionALLText);
 
 				}, function(error) {
@@ -183,127 +239,140 @@ function autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
 			}); // end of on
 }
 
-function autoPop2(path, ajaxType, parentSelectId, childSelectId, childSelectId2,optionALL,
-		selectedId, optionALLText) {
+function autoPop2(path, ajaxType, parentSelectId, childSelectId,
+		childSelectId2, optionALL, selectedId, optionALLText) {
 	require(
 			[ "dojo/store/Memory", "dojo/on", "dijit/form/Select",
 					"dojo/request", "dojo/json", "dojo/_base/array",
 					"dojo/domReady!" ], function(Memory, Select, on, request,
 					JSON, arrayUtil) {
-				
+
 				// get json data
 				request(
 						path + 'json/' + ajaxType + '?param='
-								+ dijit.byId(parentSelectId).get("value")+ '&param2='
+								+ dijit.byId(parentSelectId).get("value")
+								+ '&param2='
 								+ dijit.byId(childSelectId).get("value"), {
 							handleAs : "json" // < Parse data from JSON to a
-												// JavaScript object
-						}).then(function(data) {
-					
-					var datas = [];
-					if (optionALL == true)
-						datas.push({
-							"name" : optionALLText,
-							"id" : " "
+						// JavaScript object
+						}).then(
+						function(data) {
+
+							var datas = [];
+							if (optionALL == true)
+								datas.push({
+									"name" : optionALLText,
+									"id" : " "
+								});
+
+							arrayUtil.forEach(data, function(item, i) {
+								datas.push({
+									"name" : item.value,
+									"id" : item.key
+								});
+							});
+
+							setSelect(datas, childSelectId2, selectedId,
+									optionALLText);
+
+						}, function(error) {
+							console.log("An error occurred: " + error);
 						});
-
-					arrayUtil.forEach(data, function(item, i) {
-						datas.push({
-							"name" : item.value,
-							"id" : item.key
-						});
-					});
-
-					setSelect(datas, childSelectId2, selectedId, optionALLText);
-
-				}, function(error) {
-					console.log("An error occurred: " + error);
-				});
 
 			}); // end of on
 }
 
-function autoPop3(path, ajaxType, parentSelectId, childSelectId, childSelectId2, childSelectId3,optionALL,
-		selectedId, optionALLText) {
+function autoPop3(path, ajaxType, parentSelectId, childSelectId,
+		childSelectId2, childSelectId3, optionALL, selectedId, optionALLText) {
 
 	require(
 			[ "dojo/store/Memory", "dojo/on", "dijit/form/Select",
 					"dojo/request", "dojo/json", "dojo/_base/array",
 					"dojo/domReady!" ], function(Memory, Select, on, request,
 					JSON, arrayUtil) {
-				
+
 				// get json data
 				request(
 						path + 'json/' + ajaxType + '?param='
-								+ dijit.byId(parentSelectId).get("value")+ '&param2='
-								+ dijit.byId(childSelectId).get("value")+ '&param3='
+								+ dijit.byId(parentSelectId).get("value")
+								+ '&param2='
+								+ dijit.byId(childSelectId).get("value")
+								+ '&param3='
 								+ dijit.byId(childSelectId2).get("value"), {
 							handleAs : "json" // < Parse data from JSON to a
-												// JavaScript object
-						}).then(function(data) {
-					
-					var datas = [];
-					if (optionALL == true)
-						datas.push({
-							"name" : optionALLText,
-							"id" : " "
+						// JavaScript object
+						}).then(
+						function(data) {
+
+							var datas = [];
+							if (optionALL == true)
+								datas.push({
+									"name" : optionALLText,
+									"id" : " "
+								});
+
+							arrayUtil.forEach(data, function(item, i) {
+								datas.push({
+									"name" : item.value,
+									"id" : item.key
+								});
+							});
+
+							setSelect(datas, childSelectId3, selectedId,
+									optionALLText);
+
+						}, function(error) {
+							console.log("An error occurred: " + error);
 						});
-
-					arrayUtil.forEach(data, function(item, i) {
-						datas.push({
-							"name" : item.value,
-							"id" : item.key
-						});
-					});
-
-					setSelect(datas, childSelectId3, selectedId, optionALLText);
-
-				}, function(error) {
-					console.log("An error occurred: " + error);
-				});
 
 			}); // end of on
 }
 
-function autoPop4(path, ajaxType, parentSelectId, childSelectId, childSelectId2, childSelectId3, childSelectId4, optionALL,
-		selectedId, optionALLText) {
+function autoPop4(path, ajaxType, parentSelectId, childSelectId,
+		childSelectId2, childSelectId3, childSelectId4, optionALL, selectedId,
+		optionALLText) {
 
 	require(
 			[ "dojo/store/Memory", "dojo/on", "dijit/form/Select",
 					"dojo/request", "dojo/json", "dojo/_base/array",
 					"dojo/domReady!" ], function(Memory, Select, on, request,
 					JSON, arrayUtil) {
-				
+
 				// get json data
 				request(
 						path + 'json/' + ajaxType + '?param='
-								+ dijit.byId(parentSelectId).get("value")+ '&param2='
-								+ dijit.byId(childSelectId).get("value")+ '&param3='
-								+ dijit.byId(childSelectId2).get("value")+ '&param4='
+								+ dijit.byId(parentSelectId).get("value")
+								+ '&param2='
+								+ dijit.byId(childSelectId).get("value")
+								+ '&param3='
+								+ dijit.byId(childSelectId2).get("value")
+								+ '&param4='
 								+ dijit.byId(childSelectId3).get("value"), {
 							handleAs : "json" // < Parse data from JSON to a
-												// JavaScript object
-						}).then(function(data) {
-					
-					var datas = [];
-					if (optionALL == true)
-						datas.push({
-							"name" : optionALLText,
-							"id" : " "
+						// JavaScript object
+						}).then(
+						function(data) {
+
+							var datas = [];
+							if (optionALL == true)
+								datas.push({
+									"name" : optionALLText,
+									"id" : " "
+								});
+
+							arrayUtil.forEach(data, function(item, i) {
+								datas.push({
+									"name" : item.value,
+									"id" : item.key
+								});
+							});
+
+							setSelect(datas, childSelectId4, selectedId,
+									optionALLText);
+
+						}, function(error) {
+							console.log("An error occurred: " + error);
 						});
-
-					arrayUtil.forEach(data, function(item, i) {
-						datas.push({
-							"name" : item.value,
-							"id" : item.key
-						});
-					});
-
-					setSelect(datas, childSelectId4, selectedId, optionALLText);
-
-				}, function(error) {
-					console.log("An error occurred: " + error);
-				});
 
 			}); // end of on
 }
@@ -311,267 +380,276 @@ function autoPop4(path, ajaxType, parentSelectId, childSelectId, childSelectId2,
 function autoPopMulti(path, ajaxType, parentSelectId, childSelectId, optionALL,
 		selectedId, optionALLText) {
 
-	require(
-			[ "dojo/store/Memory", "dojo/on", "dijit/form/MultiSelect", "dojo/dom", "dojo/_base/window", 
-					"dojo/request", "dojo/json", "dojo/_base/array",
-					"dojo/domReady!" ], function(Memory, MultiSelect, on,dom,win, request,
-					JSON, arrayUtil) {
-				
-				// get json data
-				request(
-						path + 'json/' + ajaxType + '?param='
-								+ dijit.byId(parentSelectId).get("value"), {
-							handleAs : "json" // < Parse data from JSON to a
-												// JavaScript object
-						}).then(function(data) {
-							 arrayUtil.forEach(data, function(item, i) {
-							        $('#'+childSelectId).multiSelect('addOption', { value: item.key, text: item.value });
-								});
-							   
-							 for (var i in selectedId) {
-								 $('#'+childSelectId).multiSelect('select', [selectedId[i]]); 
-								}
+	require([ "dojo/store/Memory", "dojo/on", "dijit/form/MultiSelect",
+			"dojo/dom", "dojo/_base/window", "dojo/request", "dojo/json",
+			"dojo/_base/array", "dojo/domReady!" ], function(Memory,
+			MultiSelect, on, dom, win, request, JSON, arrayUtil) {
+
+		// get json data
+		request(
+				path + 'json/' + ajaxType + '?param='
+						+ dijit.byId(parentSelectId).get("value"), {
+					handleAs : "json" // < Parse data from JSON to a
+				// JavaScript object
+				}).then(
+				function(data) {
+					arrayUtil.forEach(data, function(item, i) {
+						$('#' + childSelectId).multiSelect('addOption', {
+							value : item.key,
+							text : item.value
+						});
+					});
+
+					for ( var i in selectedId) {
+						$('#' + childSelectId).multiSelect('select',
+								[ selectedId[i] ]);
+					}
 
 				}, function(error) {
 					console.log("An error occurred: " + error);
 				});
-				
-			}); // end of on
+
+	}); // end of on
 }
 
-function autoPopMulti2(path, ajaxType, parentSelectId, childSelectId,  childSelectId2, optionALL,
-		selectedId, optionALLText) {
-	require(
-			[ "dojo/store/Memory", "dojo/on", "dijit/form/MultiSelect", "dojo/dom", "dojo/_base/window", 
-					"dojo/request", "dojo/json", "dojo/_base/array",
-					"dojo/domReady!" ], function(Memory, MultiSelect, on,dom,win, request,
-					JSON, arrayUtil) {
-				// get json data
-				request(
-						path + 'json/' + ajaxType + '?param='
-								+ dijit.byId(parentSelectId).get("value") + '&param2='
-								+ dijit.byId(childSelectId).get("value"), {
-							handleAs : "json" // < Parse data from JSON to a
-												// JavaScript object
-						}).then(function(data) {
-							 arrayUtil.forEach(data, function(item, i) {
-							        $('#'+childSelectId2).multiSelect('addOption', { value: item.key, text: item.value });
-								});
-							   
-							 for (var i in selectedId) {
-								 $('#'+childSelectId2).multiSelect('select', [selectedId[i]]); 
-								}
+function autoPopMulti2(path, ajaxType, parentSelectId, childSelectId,
+		childSelectId2, optionALL, selectedId, optionALLText) {
+	require([ "dojo/store/Memory", "dojo/on", "dijit/form/MultiSelect",
+			"dojo/dom", "dojo/_base/window", "dojo/request", "dojo/json",
+			"dojo/_base/array", "dojo/domReady!" ], function(Memory,
+			MultiSelect, on, dom, win, request, JSON, arrayUtil) {
+		// get json data
+		request(
+				path + 'json/' + ajaxType + '?param='
+						+ dijit.byId(parentSelectId).get("value") + '&param2='
+						+ dijit.byId(childSelectId).get("value"), {
+					handleAs : "json" // < Parse data from JSON to a
+				// JavaScript object
+				}).then(
+				function(data) {
+					arrayUtil.forEach(data, function(item, i) {
+						$('#' + childSelectId2).multiSelect('addOption', {
+							value : item.key,
+							text : item.value
+						});
+					});
+
+					for ( var i in selectedId) {
+						$('#' + childSelectId2).multiSelect('select',
+								[ selectedId[i] ]);
+					}
 
 				}, function(error) {
 					console.log("An error occurred: " + error);
 				});
-				
-			}); // end of on
+
+	}); // end of on
 }
 
-function autoPopMulti3(path, ajaxType, parentSelectId, childSelectId,  childSelectId2,  childSelectId3, optionALL,
-		selectedId, optionALLText) {
+function autoPopMulti3(path, ajaxType, parentSelectId, childSelectId,
+		childSelectId2, childSelectId3, optionALL, selectedId, optionALLText) {
 
-	require(
-			[ "dojo/store/Memory", "dojo/on", "dijit/form/MultiSelect", "dojo/dom", "dojo/_base/window", 
-					"dojo/request", "dojo/json", "dojo/_base/array",
-					"dojo/domReady!" ], function(Memory, MultiSelect, on,dom,win, request,
-					JSON, arrayUtil) {
-				// get json data
-				request(
-						path + 'json/' + ajaxType + '?param='
-								+ dijit.byId(parentSelectId).get("value") + '&param2='
-								+ dijit.byId(childSelectId).get("value")+ '&param3='
-								+ dijit.byId(childSelectId2).get("value"), {
-							handleAs : "json" // < Parse data from JSON to a
-												// JavaScript object
-						}).then(function(data) {
-							 arrayUtil.forEach(data, function(item, i) {
-							        $('#'+childSelectId3).multiSelect('addOption', { value: item.key, text: item.value });
-								});
-							   
-							 for (var i in selectedId) {
-								 $('#'+childSelectId3).multiSelect('select', [selectedId[i]]); 
-								}
+	require([ "dojo/store/Memory", "dojo/on", "dijit/form/MultiSelect",
+			"dojo/dom", "dojo/_base/window", "dojo/request", "dojo/json",
+			"dojo/_base/array", "dojo/domReady!" ], function(Memory,
+			MultiSelect, on, dom, win, request, JSON, arrayUtil) {
+		// get json data
+		request(
+				path + 'json/' + ajaxType + '?param='
+						+ dijit.byId(parentSelectId).get("value") + '&param2='
+						+ dijit.byId(childSelectId).get("value") + '&param3='
+						+ dijit.byId(childSelectId2).get("value"), {
+					handleAs : "json" // < Parse data from JSON to a
+				// JavaScript object
+				}).then(
+				function(data) {
+					arrayUtil.forEach(data, function(item, i) {
+						$('#' + childSelectId3).multiSelect('addOption', {
+							value : item.key,
+							text : item.value
+						});
+					});
+
+					for ( var i in selectedId) {
+						$('#' + childSelectId3).multiSelect('select',
+								[ selectedId[i] ]);
+					}
 
 				}, function(error) {
 					console.log("An error occurred: " + error);
 				});
-				
-			}); // end of on
+
+	}); // end of on
 }
 
-function autoPopMultiParam(path, ajaxType, parentSelectId, childSelectId, optionALL,
-		selectedId, optionALLText) {
+function autoPopMultiParam(path, ajaxType, parentSelectId, childSelectId,
+		optionALL, selectedId, optionALLText) {
 
-	require(
-			[ "dojo/store/Memory", "dojo/on", "dijit/form/MultiSelect", "dojo/dom", "dojo/_base/window", 
-					"dojo/request", "dojo/json", "dojo/_base/array",
-					"dojo/domReady!" ], function(Memory, MultiSelect, on,dom,win, request,
-					JSON, arrayUtil) {
-				
-				// get json data
-				request(
-						path + 'json/' + ajaxType + '?param='
-								+ dijit.byId(parentSelectId).get("value"), {
-							handleAs : "json" // < Parse data from JSON to a
-												// JavaScript object
-						}).then(function(data) {
-							var datas = [];
-							if (optionALL == true)
-								datas.push({
-									"name" : optionALLText,
-									"id" : " "
-								});
+	require([ "dojo/store/Memory", "dojo/on", "dijit/form/MultiSelect",
+			"dojo/dom", "dojo/_base/window", "dojo/request", "dojo/json",
+			"dojo/_base/array", "dojo/domReady!" ], function(Memory,
+			MultiSelect, on, dom, win, request, JSON, arrayUtil) {
 
-							arrayUtil.forEach(data, function(item, i) {
-								datas.push({
-									"name" : item.value,
-									"id" : item.key
-								});
-							});
-
-							setSelect(datas, childSelectId, selectedId, optionALLText);
-				}, function(error) {
-					console.log("An error occurred: " + error);
+		// get json data
+		request(
+				path + 'json/' + ajaxType + '?param='
+						+ dijit.byId(parentSelectId).get("value"), {
+					handleAs : "json" // < Parse data from JSON to a
+				// JavaScript object
+				}).then(function(data) {
+			var datas = [];
+			if (optionALL == true)
+				datas.push({
+					"name" : optionALLText,
+					"id" : " "
 				});
-				
-			}); // end of on
-}
 
-function autoPopMultiParam2(path, ajaxType, parentSelectId, childSelectId,  childSelectId2, optionALL,
-		selectedId, optionALLText) {
-	require(
-			[ "dojo/store/Memory", "dojo/on", "dijit/form/MultiSelect", "dojo/dom", "dojo/_base/window", 
-					"dojo/request", "dojo/json", "dojo/_base/array",
-					"dojo/domReady!" ], function(Memory, MultiSelect, on,dom,win, request,
-					JSON, arrayUtil) {
-				// get json data
-				request(
-						path + 'json/' + ajaxType + '?param='
-								+ dijit.byId(parentSelectId).get("value") + '&param2='
-								+ dijit.byId(childSelectId).get("value"), {
-							handleAs : "json" // < Parse data from JSON to a
-												// JavaScript object
-						}).then(function(data) {
-							var datas = [];
-							if (optionALL == true)
-								datas.push({
-									"name" : optionALLText,
-									"id" : " "
-								});
-
-							arrayUtil.forEach(data, function(item, i) {
-								datas.push({
-									"name" : item.value,
-									"id" : item.key
-								});
-							});
-
-							setSelect(datas, childSelectId2, selectedId, optionALLText);
-
-				}, function(error) {
-					console.log("An error occurred: " + error);
+			arrayUtil.forEach(data, function(item, i) {
+				datas.push({
+					"name" : item.value,
+					"id" : item.key
 				});
-				
-			}); // end of on
+			});
+
+			setSelect(datas, childSelectId, selectedId, optionALLText);
+		}, function(error) {
+			console.log("An error occurred: " + error);
+		});
+
+	}); // end of on
 }
 
-function autoPopMultiParam3(path, ajaxType, parentSelectId, childSelectId,  childSelectId2,  childSelectId3, optionALL,
-		selectedId, optionALLText) {
-
-	require(
-			[ "dojo/store/Memory", "dojo/on", "dijit/form/MultiSelect", "dojo/dom", "dojo/_base/window", 
-					"dojo/request", "dojo/json", "dojo/_base/array",
-					"dojo/domReady!" ], function(Memory, MultiSelect, on,dom,win, request,
-					JSON, arrayUtil) {
-				// get json data
-				request(
-						path + 'json/' + ajaxType + '?param='
-								+ dijit.byId(parentSelectId).get("value") + '&param2='
-								+ dijit.byId(childSelectId).get("value")+ '&param3='
-								+ dijit.byId(childSelectId2).get("value"), {
-							handleAs : "json" // < Parse data from JSON to a
-												// JavaScript object
-						}).then(function(data) {
-							
-							var datas = [];
-							if (optionALL == true)
-								datas.push({
-									"name" : optionALLText,
-									"id" : " "
-								});
-
-							arrayUtil.forEach(data, function(item, i) {
-								datas.push({
-									"name" : item.value,
-									"id" : item.key
-								});
-							});
-							setSelect(datas, childSelectId3, selectedId, optionALLText);
-							
-				}, function(error) {
-					console.log("An error occurred: " + error);
+function autoPopMultiParam2(path, ajaxType, parentSelectId, childSelectId,
+		childSelectId2, optionALL, selectedId, optionALLText) {
+	require([ "dojo/store/Memory", "dojo/on", "dijit/form/MultiSelect",
+			"dojo/dom", "dojo/_base/window", "dojo/request", "dojo/json",
+			"dojo/_base/array", "dojo/domReady!" ], function(Memory,
+			MultiSelect, on, dom, win, request, JSON, arrayUtil) {
+		// get json data
+		request(
+				path + 'json/' + ajaxType + '?param='
+						+ dijit.byId(parentSelectId).get("value") + '&param2='
+						+ dijit.byId(childSelectId).get("value"), {
+					handleAs : "json" // < Parse data from JSON to a
+				// JavaScript object
+				}).then(function(data) {
+			var datas = [];
+			if (optionALL == true)
+				datas.push({
+					"name" : optionALLText,
+					"id" : " "
 				});
-				
-			}); // end of on
-}
 
-function autoPopMultiParam4(path, ajaxType, parentSelectId, childSelectId,  childSelectId2,  childSelectId3, childSelectId4, optionALL,
-		selectedId, optionALLText) {
-
-	require(
-			[ "dojo/store/Memory", "dojo/on", "dijit/form/MultiSelect", "dojo/dom", "dojo/_base/window", 
-					"dojo/request", "dojo/json", "dojo/_base/array",
-					"dojo/domReady!" ], function(Memory, MultiSelect, on,dom,win, request,
-					JSON, arrayUtil) {
-				// get json data
-				request(
-						path + 'json/' + ajaxType + '?param='
-								+ dijit.byId(parentSelectId).get("value") + '&param2='
-								+ dijit.byId(childSelectId).get("value")+ '&param3='
-								+ dijit.byId(childSelectId2).get("value")+ '&param4='
-								+ dijit.byId(childSelectId3).get("value"), {
-							handleAs : "json" // < Parse data from JSON to a
-												// JavaScript object
-						}).then(function(data) {
-							
-							var datas = [];
-							if (optionALL == true)
-								datas.push({
-									"name" : optionALLText,
-									"id" : " "
-								});
-
-							arrayUtil.forEach(data, function(item, i) {
-								datas.push({
-									"name" : item.value,
-									"id" : item.key
-								});
-							});
-							setSelect(datas, childSelectId4, selectedId, optionALLText);
-							
-				}, function(error) {
-					console.log("An error occurred: " + error);
+			arrayUtil.forEach(data, function(item, i) {
+				datas.push({
+					"name" : item.value,
+					"id" : item.key
 				});
-				
-			}); // end of on
+			});
+
+			setSelect(datas, childSelectId2, selectedId, optionALLText);
+
+		}, function(error) {
+			console.log("An error occurred: " + error);
+		});
+
+	}); // end of on
 }
 
-function autoPopulateSelect(path, ajaxType, parentSelectId,
-		optionALL, optionALLText, selectedId, childSelectId) {
-	
+function autoPopMultiParam3(path, ajaxType, parentSelectId, childSelectId,
+		childSelectId2, childSelectId3, optionALL, selectedId, optionALLText) {
+
+	require([ "dojo/store/Memory", "dojo/on", "dijit/form/MultiSelect",
+			"dojo/dom", "dojo/_base/window", "dojo/request", "dojo/json",
+			"dojo/_base/array", "dojo/domReady!" ], function(Memory,
+			MultiSelect, on, dom, win, request, JSON, arrayUtil) {
+		// get json data
+		request(
+				path + 'json/' + ajaxType + '?param='
+						+ dijit.byId(parentSelectId).get("value") + '&param2='
+						+ dijit.byId(childSelectId).get("value") + '&param3='
+						+ dijit.byId(childSelectId2).get("value"), {
+					handleAs : "json" // < Parse data from JSON to a
+				// JavaScript object
+				}).then(function(data) {
+
+			var datas = [];
+			if (optionALL == true)
+				datas.push({
+					"name" : optionALLText,
+					"id" : " "
+				});
+
+			arrayUtil.forEach(data, function(item, i) {
+				datas.push({
+					"name" : item.value,
+					"id" : item.key
+				});
+			});
+			setSelect(datas, childSelectId3, selectedId, optionALLText);
+
+		}, function(error) {
+			console.log("An error occurred: " + error);
+		});
+
+	}); // end of on
+}
+
+function autoPopMultiParam4(path, ajaxType, parentSelectId, childSelectId,
+		childSelectId2, childSelectId3, childSelectId4, optionALL, selectedId,
+		optionALLText) {
+
+	require([ "dojo/store/Memory", "dojo/on", "dijit/form/MultiSelect",
+			"dojo/dom", "dojo/_base/window", "dojo/request", "dojo/json",
+			"dojo/_base/array", "dojo/domReady!" ], function(Memory,
+			MultiSelect, on, dom, win, request, JSON, arrayUtil) {
+		// get json data
+		request(
+				path + 'json/' + ajaxType + '?param='
+						+ dijit.byId(parentSelectId).get("value") + '&param2='
+						+ dijit.byId(childSelectId).get("value") + '&param3='
+						+ dijit.byId(childSelectId2).get("value") + '&param4='
+						+ dijit.byId(childSelectId3).get("value"), {
+					handleAs : "json" // < Parse data from JSON to a
+				// JavaScript object
+				}).then(function(data) {
+
+			var datas = [];
+			if (optionALL == true)
+				datas.push({
+					"name" : optionALLText,
+					"id" : " "
+				});
+
+			arrayUtil.forEach(data, function(item, i) {
+				datas.push({
+					"name" : item.value,
+					"id" : item.key
+				});
+			});
+			setSelect(datas, childSelectId4, selectedId, optionALLText);
+
+		}, function(error) {
+			console.log("An error occurred: " + error);
+		});
+
+	}); // end of on
+}
+
+function autoPopulateSelect(path, ajaxType, parentSelectId, optionALL,
+		optionALLText, selectedId, childSelectId) {
+
 	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
 			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
 			"dojo/domReady!" ], function(query, ready, domAttr, Select,
 			SimpleTextarea, on, parser) {
 		ready(function() {
-			
+
 			var s = dijit.byId(parentSelectId);
 			on(s, "change", function(e) {
-				
+
 				reset(childSelectId);
-				
+
 				autoPop(path, ajaxType, parentSelectId, childSelectId,
 						optionALL, selectedId, optionALLText);
 			}) // end of event handler
@@ -586,58 +664,61 @@ function autoPopulateSelect(path, ajaxType, parentSelectId,
 
 function autoPopulateSelect2(path, ajaxType, parentSelectId, optionALL,
 		optionALLText, selectedId, childSelectId, childSelectId2) {
-	
+
 	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
 			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
 			"dojo/domReady!" ], function(query, ready, domAttr, Select,
 			SimpleTextarea, on, parser) {
 		ready(function() {
 			var s = dijit.byId(parentSelectId);
-			
+
 			on(s, "change", function(e) {
-				
-				if(childSelectId!=null)reset(childSelectId);
-				if(childSelectId2!=null)reset(childSelectId2);
-				
+
+				if (childSelectId != null)
+					reset(childSelectId);
+				if (childSelectId2 != null)
+					reset(childSelectId2);
+
 				autoPop(path, ajaxType, parentSelectId, childSelectId,
 						optionALL, selectedId, optionALLText);
 			}) // end of event handler
-			
+
 			reset(childSelectId);
 			reset(childSelectId2);
 			autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
 					selectedId, optionALLText);
 		});
 		/*
-		*/
+		 */
 	}); // end of on
 
 }
 
-
-
-
 function autoPopulateSelect3(path, ajaxType, parentSelectId, optionALL,
-		optionALLText, selectedId, childSelectId, childSelectId2,childSelectId3) {
-	
+		optionALLText, selectedId, childSelectId, childSelectId2,
+		childSelectId3) {
+
 	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
 			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
 			"dojo/domReady!" ], function(query, ready, domAttr, Select,
 			SimpleTextarea, on, parser) {
 		ready(function() {
-			
+
 			var s = dijit.byId(parentSelectId);
-			
+
 			on(s, "change", function(e) {
-				
-				if(childSelectId!=null)reset(childSelectId);
-				if(childSelectId2!=null)reset(childSelectId2);
-				if(childSelectId3!=null)reset(childSelectId3);
-				
+
+				if (childSelectId != null)
+					reset(childSelectId);
+				if (childSelectId2 != null)
+					reset(childSelectId2);
+				if (childSelectId3 != null)
+					reset(childSelectId3);
+
 				autoPop(path, ajaxType, parentSelectId, childSelectId,
 						optionALL, selectedId, optionALLText);
 			}) // end of event handler
-			
+
 			reset(childSelectId);
 			reset(childSelectId2);
 			reset(childSelectId3);
@@ -645,33 +726,38 @@ function autoPopulateSelect3(path, ajaxType, parentSelectId, optionALL,
 					selectedId, optionALLText);
 		});
 		/*
-		*/
+		 */
 	}); // end of on
 
 }
 
 function autoPopulateSelect4(path, ajaxType, parentSelectId, optionALL,
-		optionALLText, selectedId, childSelectId, childSelectId2,childSelectId3,childSelectId4) {
-	
+		optionALLText, selectedId, childSelectId, childSelectId2,
+		childSelectId3, childSelectId4) {
+
 	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
 			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
 			"dojo/domReady!" ], function(query, ready, domAttr, Select,
 			SimpleTextarea, on, parser) {
 		ready(function() {
-			
+
 			var s = dijit.byId(parentSelectId);
-			
+
 			on(s, "change", function(e) {
-				
-				if(childSelectId!=null)reset(childSelectId);
-				if(childSelectId2!=null)reset(childSelectId2);
-				if(childSelectId3!=null)reset(childSelectId3);
-				if(childSelectId4!=null)reset(childSelectId4);
-				
+
+				if (childSelectId != null)
+					reset(childSelectId);
+				if (childSelectId2 != null)
+					reset(childSelectId2);
+				if (childSelectId3 != null)
+					reset(childSelectId3);
+				if (childSelectId4 != null)
+					reset(childSelectId4);
+
 				autoPop(path, ajaxType, parentSelectId, childSelectId,
 						optionALL, selectedId, optionALLText);
 			}) // end of event handler
-			
+
 			reset(childSelectId);
 			reset(childSelectId2);
 			reset(childSelectId3);
@@ -680,123 +766,131 @@ function autoPopulateSelect4(path, ajaxType, parentSelectId, optionALL,
 					selectedId, optionALLText);
 		});
 		/*
-		*/
+		 */
 	}); // end of on
 
 }
 
 function autoPopulateSelect5(path, ajaxType, parentSelectId, optionALL,
-		optionALLText, selectedId, childSelectId, childSelectId2,childSelectId3,childSelectId4,childSelectId5) {
+		optionALLText, selectedId, childSelectId, childSelectId2,
+		childSelectId3, childSelectId4, childSelectId5) {
 	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
 			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
 			"dojo/domReady!" ], function(query, ready, domAttr, Select,
 			SimpleTextarea, on, parser) {
 		ready(function() {
-			
-//			var s = dijit.byId(parentSelectId);
-			
-			/*on(s, "change", function(e) {
-				
-				if(childSelectId!=null)reset(childSelectId);
-				if(childSelectId2!=null)reset(childSelectId2);
-				if(childSelectId3!=null)reset(childSelectId3);
-				if(childSelectId4!=null)reset(childSelectId4);
-				if(childSelectId5!=null)reset(childSelectId5);
-				autoPop(path, ajaxType, parentSelectId, childSelectId,
-						optionALL, selectedId, optionALLText);
-			}) */// end of event handler
-			
+
+			// var s = dijit.byId(parentSelectId);
+
+			/*
+			 * on(s, "change", function(e) {
+			 * 
+			 * if(childSelectId!=null)reset(childSelectId);
+			 * if(childSelectId2!=null)reset(childSelectId2);
+			 * if(childSelectId3!=null)reset(childSelectId3);
+			 * if(childSelectId4!=null)reset(childSelectId4);
+			 * if(childSelectId5!=null)reset(childSelectId5); autoPop(path,
+			 * ajaxType, parentSelectId, childSelectId, optionALL, selectedId,
+			 * optionALLText); })
+			 */// end of event handler
 			reset(childSelectId);
 			reset(childSelectId2);
 			reset(childSelectId3);
 			reset(childSelectId4);
 			reset(childSelectId5);
-			
+
 			autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
 					selectedId, optionALLText);
 		});
 		/*
-		*/
+		 */
 	}); // end of on
 
 }
 
-function autoPopulateMultiSelect(path, ajaxType, parentSelectId,
-		optionALL, optionALLText, selectedId, childSelectId) {
-	
+function autoPopulateMultiSelect(path, ajaxType, parentSelectId, optionALL,
+		optionALLText, selectedId, childSelectId) {
+
 	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
 			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
 			"dojo/domReady!" ], function(query, ready, domAttr, Select,
 			SimpleTextarea, on, parser) {
 		ready(function() {
-			
+
 			var s = dijit.byId(parentSelectId);
 			on(s, "change", function(e) {
 				resetMultiSelect(childSelectId);
 				autoPopMulti(path, ajaxType, parentSelectId, childSelectId,
 						optionALL, selectedId, optionALLText);
-				
+
 			}) // end of event handler
 			resetMultiSelect(childSelectId);
 			autoPopMulti(path, ajaxType, parentSelectId, childSelectId,
 					optionALL, selectedId, optionALLText);
 		});
 	}); // end of on
-	 
+
 	/**/
 }
 
-
 function autoPopulateMultiSelect2(path, ajaxType, parentSelectId, optionALL,
 		optionALLText, selectedId, childSelectId, childSelectId2) {
-	
+
 	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
 			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
 			"dojo/domReady!" ], function(query, ready, domAttr, Select,
 			SimpleTextarea, on, parser) {
 		ready(function() {
 			var s = dijit.byId(parentSelectId);
-			
+
 			on(s, "change", function(e) {
-				
-				if(childSelectId!=null)reset(childSelectId);
-				if(childSelectId2!=null){resetMultiSelect(childSelectId2);}
-				
+
+				if (childSelectId != null)
+					reset(childSelectId);
+				if (childSelectId2 != null) {
+					resetMultiSelect(childSelectId2);
+				}
+
 				autoPop(path, ajaxType, parentSelectId, childSelectId,
 						optionALL, selectedId, optionALLText);
 			}) // end of event handler
-			
+
 			reset(childSelectId);
 			resetMultiSelect(childSelectId2);
 			autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
 					selectedId, optionALLText);
 		});
 		/*
-		*/
+		 */
 	}); // end of on
 
 }
 
 function autoPopulateMultiSelect3(path, ajaxType, parentSelectId, optionALL,
-		optionALLText, selectedId, childSelectId, childSelectId2, childSelectId3) {
-	
+		optionALLText, selectedId, childSelectId, childSelectId2,
+		childSelectId3) {
+
 	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
 			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
 			"dojo/domReady!" ], function(query, ready, domAttr, Select,
 			SimpleTextarea, on, parser) {
 		ready(function() {
 			var s = dijit.byId(parentSelectId);
-			
+
 			on(s, "change", function(e) {
-				
-				if(childSelectId!=null)reset(childSelectId);
-				if(childSelectId2!=null)reset(childSelectId2);
-				if(childSelectId3!=null){resetMultiSelect(childSelectId3);}
-				
+
+				if (childSelectId != null)
+					reset(childSelectId);
+				if (childSelectId2 != null)
+					reset(childSelectId2);
+				if (childSelectId3 != null) {
+					resetMultiSelect(childSelectId3);
+				}
+
 				autoPop(path, ajaxType, parentSelectId, childSelectId,
 						optionALL, selectedId, optionALLText);
 			}) // end of event handler
-			
+
 			reset(childSelectId);
 			reset(childSelectId2);
 			resetMultiSelect(childSelectId3);
@@ -804,41 +898,44 @@ function autoPopulateMultiSelect3(path, ajaxType, parentSelectId, optionALL,
 					selectedId, optionALLText);
 		});
 		/*
-		*/
+		 */
 	}); // end of on
 
 }
 
-function autoPopulateMultiParamSelectMulti(path, ajaxType, parentSelectId,parentSelectId2,parentSelectId3,
-		optionALL, optionALLText, selectedId, childSelectId) {
-	
+function autoPopulateMultiParamSelectMulti(path, ajaxType, parentSelectId,
+		parentSelectId2, parentSelectId3, optionALL, optionALLText, selectedId,
+		childSelectId) {
+
 	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
 			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
 			"dojo/domReady!" ], function(query, ready, domAttr, Select,
 			SimpleTextarea, on, parser) {
 		ready(function() {
-			
+
 			var s = dijit.byId(parentSelectId);
 			on(s, "change", function(e) {
 				resetMultiSelect(childSelectId);
 
-				autoPopMulti3(path, ajaxType, parentSelectId3, parentSelectId2,parentSelectId,childSelectId,
-						optionALL, selectedId, optionALLText);
-				
+				autoPopMulti3(path, ajaxType, parentSelectId3, parentSelectId2,
+						parentSelectId, childSelectId, optionALL, selectedId,
+						optionALLText);
+
 			}) // end of event handler
 			resetMultiSelect(childSelectId);
-			autoPopMulti3(path, ajaxType,  parentSelectId3, parentSelectId2,parentSelectId,childSelectId,
-					optionALL, selectedId, optionALLText);
+			autoPopMulti3(path, ajaxType, parentSelectId3, parentSelectId2,
+					parentSelectId, childSelectId, optionALL, selectedId,
+					optionALLText);
 		});
 	}); // end of on
-	 
+
 	/**/
 }
 
+function autoPopulateMultiParamSelectMulti2(path, ajaxType, ajaxType2,
+		parentSelectId, parentSelectId2, optionALL, optionALLText, selectedId,
+		childSelectId, childSelectId2) {
 
-function autoPopulateMultiParamSelectMulti2(path, ajaxType,ajaxType2, parentSelectId, parentSelectId2, optionALL,
-		optionALLText, selectedId, childSelectId, childSelectId2) {
-	
 	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
 			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
 			"dojo/domReady!" ], function(query, ready, domAttr, Select,
@@ -846,31 +943,36 @@ function autoPopulateMultiParamSelectMulti2(path, ajaxType,ajaxType2, parentSele
 		ready(function() {
 			var s = dijit.byId(parentSelectId);
 			on(s, "change", function(e) {
-				
-				if(childSelectId!=null)reset(childSelectId);
-				if(childSelectId2!=null){resetMultiSelect(childSelectId2);}
-				
-				autoPop2(path, ajaxType, parentSelectId2,parentSelectId,childSelectId,
-						optionALL, selectedId, optionALLText);
-				autoPopMulti3(path, ajaxType2,  parentSelectId2, parentSelectId,childSelectId,childSelectId2,
-						optionALL, selectedId, optionALLText);
+
+				if (childSelectId != null)
+					reset(childSelectId);
+				if (childSelectId2 != null) {
+					resetMultiSelect(childSelectId2);
+				}
+
+				autoPop2(path, ajaxType, parentSelectId2, parentSelectId,
+						childSelectId, optionALL, selectedId, optionALLText);
+				autoPopMulti3(path, ajaxType2, parentSelectId2, parentSelectId,
+						childSelectId, childSelectId2, optionALL, selectedId,
+						optionALLText);
 			}) // end of event handler
-			
+
 			reset(childSelectId);
 			resetMultiSelect(childSelectId2);
-			
-			autoPop2(path, ajaxType, parentSelectId2,parentSelectId,childSelectId,
-					optionALL, selectedId, optionALLText);
+
+			autoPop2(path, ajaxType, parentSelectId2, parentSelectId,
+					childSelectId, optionALL, selectedId, optionALLText);
 		});
 		/*
-		*/
+		 */
 	}); // end of on
 
 }
 
-function autoPopulateMultiParamSelectMulti3(path, ajaxType,ajaxType2,ajaxType3, parentSelectId, optionALL,
-		optionALLText, selectedId, childSelectId, childSelectId2, childSelectId3) {
-	
+function autoPopulateMultiParamSelectMulti3(path, ajaxType, ajaxType2,
+		ajaxType3, parentSelectId, optionALL, optionALLText, selectedId,
+		childSelectId, childSelectId2, childSelectId3) {
+
 	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
 			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
 			"dojo/domReady!" ], function(query, ready, domAttr, Select,
@@ -878,64 +980,71 @@ function autoPopulateMultiParamSelectMulti3(path, ajaxType,ajaxType2,ajaxType3, 
 		ready(function() {
 			var s = dijit.byId(parentSelectId);
 			on(s, "change", function(e) {
-				
-				if(childSelectId!=null)reset(childSelectId);
-				if(childSelectId2!=null)reset(childSelectId2);
-				if(childSelectId3!=null){resetMultiSelect(childSelectId3);}
-				
-				
+
+				if (childSelectId != null)
+					reset(childSelectId);
+				if (childSelectId2 != null)
+					reset(childSelectId2);
+				if (childSelectId3 != null) {
+					resetMultiSelect(childSelectId3);
+				}
+
 				autoPop(path, ajaxType, parentSelectId, childSelectId,
 						optionALL, selectedId, optionALLText);
-				autoPop2(path, ajaxType2, parentSelectId,childSelectId,childSelectId2,
-						optionALL, selectedId, optionALLText);
-				autoPopMulti3(path, ajaxType3,  parentSelectId, childSelectId,childSelectId2,childSelectId3,
-						optionALL, selectedId, optionALLText);
-				
+				autoPop2(path, ajaxType2, parentSelectId, childSelectId,
+						childSelectId2, optionALL, selectedId, optionALLText);
+				autoPopMulti3(path, ajaxType3, parentSelectId, childSelectId,
+						childSelectId2, childSelectId3, optionALL, selectedId,
+						optionALLText);
+
 			}) // end of event handler
-			
+
 			reset(childSelectId);
 			reset(childSelectId2);
 			resetMultiSelect(childSelectId3);
 			autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
 					selectedId, optionALLText);
-			
+
 		});
 		/*
-		*/
+		 */
 	}); // end of on
 
 }
 
-function autoPopulateMultiParamSelect(path, ajaxType, parentSelectId,parentSelectId2,parentSelectId3,
-		optionALL, optionALLText, selectedId, childSelectId) {
-	
+function autoPopulateMultiParamSelect(path, ajaxType, parentSelectId,
+		parentSelectId2, parentSelectId3, optionALL, optionALLText, selectedId,
+		childSelectId) {
+
 	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
 			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
 			"dojo/domReady!" ], function(query, ready, domAttr, Select,
 			SimpleTextarea, on, parser) {
 		ready(function() {
-			
+
 			var s = dijit.byId(parentSelectId);
 			on(s, "change", function(e) {
 				reset(childSelectId);
 
-				autoPopMultiParam3(path, ajaxType, parentSelectId3, parentSelectId2,parentSelectId,childSelectId,
+				autoPopMultiParam3(path, ajaxType, parentSelectId3,
+						parentSelectId2, parentSelectId, childSelectId,
 						optionALL, selectedId, optionALLText);
-				
+
 			}) // end of event handler
 			reset(childSelectId);
-			autoPopMultiParam3(path, ajaxType,  parentSelectId3, parentSelectId2,parentSelectId,childSelectId,
-					optionALL, selectedId, optionALLText);
+			autoPopMultiParam3(path, ajaxType, parentSelectId3,
+					parentSelectId2, parentSelectId, childSelectId, optionALL,
+					selectedId, optionALLText);
 		});
 	}); // end of on
-	 
+
 	/**/
 }
 
+function autoPopulateMultiParamSelect2(path, ajaxType, ajaxType2,
+		parentSelectId, parentSelectId2, optionALL, optionALLText, selectedId,
+		childSelectId, childSelectId2) {
 
-function autoPopulateMultiParamSelect2(path, ajaxType,ajaxType2, parentSelectId, parentSelectId2, optionALL,
-		optionALLText, selectedId, childSelectId, childSelectId2) {
-	
 	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
 			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
 			"dojo/domReady!" ], function(query, ready, domAttr, Select,
@@ -943,31 +1052,36 @@ function autoPopulateMultiParamSelect2(path, ajaxType,ajaxType2, parentSelectId,
 		ready(function() {
 			var s = dijit.byId(parentSelectId);
 			on(s, "change", function(e) {
-				
-				if(childSelectId!=null)reset(childSelectId);
-				if(childSelectId2!=null){reset(childSelectId2);}
-				
-				autoPop2(path, ajaxType, parentSelectId2,parentSelectId,childSelectId,
-						optionALL, selectedId, optionALLText);
-				autoPopMultiParam3(path, ajaxType2,  parentSelectId2, parentSelectId,childSelectId,childSelectId2,
+
+				if (childSelectId != null)
+					reset(childSelectId);
+				if (childSelectId2 != null) {
+					reset(childSelectId2);
+				}
+
+				autoPop2(path, ajaxType, parentSelectId2, parentSelectId,
+						childSelectId, optionALL, selectedId, optionALLText);
+				autoPopMultiParam3(path, ajaxType2, parentSelectId2,
+						parentSelectId, childSelectId, childSelectId2,
 						optionALL, selectedId, optionALLText);
 			}) // end of event handler
-			
+
 			reset(childSelectId);
 			reset(childSelectId2);
-			
-			autoPop2(path, ajaxType, parentSelectId2,parentSelectId,childSelectId,
-					optionALL, selectedId, optionALLText);
+
+			autoPop2(path, ajaxType, parentSelectId2, parentSelectId,
+					childSelectId, optionALL, selectedId, optionALLText);
 		});
 		/*
-		*/
+		 */
 	}); // end of on
 
 }
 
-function autoPopulateMultiParamSelect3(path, ajaxType,ajaxType2,ajaxType3, parentSelectId, optionALL,
-		optionALLText, selectedId, childSelectId, childSelectId2, childSelectId3) {
-	
+function autoPopulateMultiParamSelect3(path, ajaxType, ajaxType2, ajaxType3,
+		parentSelectId, optionALL, optionALLText, selectedId, childSelectId,
+		childSelectId2, childSelectId3) {
+
 	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
 			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
 			"dojo/domReady!" ], function(query, ready, domAttr, Select,
@@ -975,34 +1089,37 @@ function autoPopulateMultiParamSelect3(path, ajaxType,ajaxType2,ajaxType3, paren
 		ready(function() {
 			var s = dijit.byId(parentSelectId);
 			on(s, "change", function(e) {
-				
-				if(childSelectId!=null)reset(childSelectId);
-				if(childSelectId2!=null)reset(childSelectId2);
-				if(childSelectId3!=null){reset(childSelectId3);}
-				
-				
+
+				if (childSelectId != null)
+					reset(childSelectId);
+				if (childSelectId2 != null)
+					reset(childSelectId2);
+				if (childSelectId3 != null) {
+					reset(childSelectId3);
+				}
+
 				autoPop(path, ajaxType, parentSelectId, childSelectId,
 						optionALL, selectedId, optionALLText);
-				autoPop2(path, ajaxType2, parentSelectId,childSelectId,childSelectId2,
+				autoPop2(path, ajaxType2, parentSelectId, childSelectId,
+						childSelectId2, optionALL, selectedId, optionALLText);
+				autoPopMultiParam3(path, ajaxType3, parentSelectId,
+						childSelectId, childSelectId2, childSelectId3,
 						optionALL, selectedId, optionALLText);
-				autoPopMultiParam3(path, ajaxType3,  parentSelectId, childSelectId,childSelectId2,childSelectId3,
-						optionALL, selectedId, optionALLText);
-				
+
 			}) // end of event handler
-			
+
 			reset(childSelectId);
 			reset(childSelectId2);
 			reset(childSelectId3);
 			autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
 					selectedId, optionALLText);
-			
+
 		});
 		/*
-		*/
+		 */
 	}); // end of on
 
 }
-
 
 function autoCompleteSelect(path, ajaxType, inputId, selectId, minChar) {
 	// ajax autopopulate select box
@@ -1029,67 +1146,88 @@ function autoCompleteSelect(path, ajaxType, inputId, selectId, minChar) {
 			});
 }
 
-//6 - Tambahan Yusuf -----------------------------------------------------------------------
-function autoPopulateSelectJQuery(path, ajaxType, parentSelectId,optionALL, optionALLText, selectedId, childSelectId){
-	//ajax autopopulate select box 
-	$("#"+childSelectId).children().remove(); 
-	$("#"+parentSelectId).on('change',function(){
-		
-		$("#"+childSelectId).children().remove(); //remove all isinya
+// 6 - Tambahan Yusuf
+// -----------------------------------------------------------------------
+function autoPopulateSelectJQuery(path, ajaxType, parentSelectId, optionALL,
+		optionALLText, selectedId, childSelectId) {
+	// ajax autopopulate select box
+	$("#" + childSelectId).children().remove();
+	$("#" + parentSelectId).on(
+			'change',
+			function() {
 
-		//populate ulang
-		$.getJSON(path + 'json/' + ajaxType, { param:$("#"+parentSelectId).val()}, function(data) {
-			var html = '';
-			if(optionALLText==null)optionALLText="ALL";
-			if(optionALL == true) html = '<option value="">'+optionALLText+'</option>';
-		    var len = data.length;
-		    for (var i = 0; i< len; i++) {
-		    	if(selectedId!=null){
-		    		var select="";
-		    		if(selectedId==data[i].key){
-		    			select="selected=\"selected\"";		    			
-		    		}
-		    		html += '<option value="' + data[i].key + '" '+select+' >' + data[i].value + '</option>';
-		    	}else{
-		        	html += '<option value="' + data[i].key + '">' + data[i].value + '</option>';
-		        }
-		    }
-		    $("#"+childSelectId).append(html);
-		});
+				$("#" + childSelectId).children().remove(); // remove all isinya
 
-	});
+				// populate ulang
+				$.getJSON(path + 'json/' + ajaxType, {
+					param : $("#" + parentSelectId).val()
+				}, function(data) {
+					var html = '';
+					if (optionALLText == null)
+						optionALLText = "ALL";
+					if (optionALL == true)
+						html = '<option value="">' + optionALLText
+								+ '</option>';
+					var len = data.length;
+					for (var i = 0; i < len; i++) {
+						if (selectedId != null) {
+							var select = "";
+							if (selectedId == data[i].key) {
+								select = "selected=\"selected\"";
+							}
+							html += '<option value="' + data[i].key + '" '
+									+ select + ' >' + data[i].value
+									+ '</option>';
+						} else {
+							html += '<option value="' + data[i].key + '">'
+									+ data[i].value + '</option>';
+						}
+					}
+					$("#" + childSelectId).append(html);
+				});
+
+			});
 }
 
-function autoPopulateSelectJQuery2(path, ajaxType, parentSelectId,optionALL, optionALLText, selectedId, childSelectId, childSelectId2, childSelectId3){
-	//ajax autopopulate select box 
-	$(parentSelectId).change(function(){
-		$(childSelectId).children().remove(); //remove all isinya
-		$(childSelectId2).children().remove(); //remove all isinya
-		$(childSelectId3).children().remove(); //remove all isinya
-		
-		//populate ulang
-		$.getJSON(path + 'json/' + ajaxType, { param:$(parentSelectId).val()},  function(data) {
-			var html = '';
-			if(optionALLText==null)optionALLText="ALL";
-			if(optionALL == true) html = '<option value="">'+optionALLText+'</option>';
-		    var len = data.length;
-		    for (var i = 0; i< len; i++) {
-		    	if(selectedId!=null){
-		    		var select="";
-		    		if(selectedId==data[i].key){
-		    			select="selected=\"selected\"";		    			
-		    		}
-		    		html += '<option value="' + data[i].key + '" '+select+' >' + data[i].value + '</option>';
-		    	}else{
-		        	html += '<option value="' + data[i].key + '">' + data[i].value + '</option>';
-		        }
-		    }
-		    $(childSelectId).append(html);
-		});
-	});
+function autoPopulateSelectJQuery2(path, ajaxType, parentSelectId, optionALL,
+		optionALLText, selectedId, childSelectId, childSelectId2,
+		childSelectId3) {
+	// ajax autopopulate select box
+	$(parentSelectId).change(
+			function() {
+				$(childSelectId).children().remove(); // remove all isinya
+				$(childSelectId2).children().remove(); // remove all isinya
+				$(childSelectId3).children().remove(); // remove all isinya
+
+				// populate ulang
+				$.getJSON(path + 'json/' + ajaxType, {
+					param : $(parentSelectId).val()
+				}, function(data) {
+					var html = '';
+					if (optionALLText == null)
+						optionALLText = "ALL";
+					if (optionALL == true)
+						html = '<option value="">' + optionALLText
+								+ '</option>';
+					var len = data.length;
+					for (var i = 0; i < len; i++) {
+						if (selectedId != null) {
+							var select = "";
+							if (selectedId == data[i].key) {
+								select = "selected=\"selected\"";
+							}
+							html += '<option value="' + data[i].key + '" '
+									+ select + ' >' + data[i].value
+									+ '</option>';
+						} else {
+							html += '<option value="' + data[i].key + '">'
+									+ data[i].value + '</option>';
+						}
+					}
+					$(childSelectId).append(html);
+				});
+			});
 }
-
-
 
 function setting() {
 	$(".nominal").formatCurrency({
@@ -1140,11 +1278,11 @@ function setting() {
 				break; // cursor down
 			case 78:
 				break; // N (Opera 9.63+ maps the "." from the number key
-						// section to the "N" key too!) (See:
-						// http://unixpapa.com/js/key.html search for ". Del")
+			// section to the "N" key too!) (See:
+			// http://unixpapa.com/js/key.html search for ". Del")
 			case 110:
 				break; // . number block (Opera 9.63+ maps the "." from the
-						// number block to the "N" key (78) !!!)
+			// number block to the "N" key (78) !!!)
 			case 190:
 				break; // .
 			default:
@@ -1169,214 +1307,222 @@ function setting() {
 	});
 }
 
-function multiselect(multi_id){
-	$('#'+multi_id).multiSelect({
-		  selectableHeader: "<div class='multi'><a href='#' id='select-all-"+multi_id+"'>Select all >></a></div>",
-		  selectionHeader: "<div class='multi'><a href='#' id='deselect-all-"+multi_id+"'><< Deselect all</a></div>"
+function multiselect(multi_id) {
+	$('#' + multi_id)
+			.multiSelect(
+					{
+						selectableHeader : "<div class='multi'><a href='#' id='select-all-"
+								+ multi_id + "'>Select all >></a></div>",
+						selectionHeader : "<div class='multi'><a href='#' id='deselect-all-"
+								+ multi_id + "'><< Deselect all</a></div>"
+					});
+
+	$('#select-all-' + multi_id).click(function() {
+		$('#' + multi_id).multiSelect('select_all');
+		return false;
 	});
-	
-	$('#select-all-'+multi_id).click(function(){
-	 $('#'+multi_id).multiSelect('select_all');
-	  return false;
-	});
-	
-	$('#deselect-all-'+multi_id).click(function(){
-	  $('#'+multi_id).multiSelect('deselect_all');
-	  return false;
+
+	$('#deselect-all-' + multi_id).click(function() {
+		$('#' + multi_id).multiSelect('deselect_all');
+		return false;
 	});
 }
 
-function autoPopulateMultiParamSelect2FieldNoAll(path,optionALL,	optionALLText, parentSelectId, 
-		ajaxType,  childSelectId, selectedId,
-		ajaxType2, childSelectId2,selectedId2) {
-	
+function autoPopulateMultiParamSelect2FieldNoAll(path, optionALL,
+		optionALLText, parentSelectId, ajaxType, childSelectId, selectedId,
+		ajaxType2, childSelectId2, selectedId2) {
+
 	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
 			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
 			"dojo/domReady!" ], function(query, ready, domAttr, Select,
 			SimpleTextarea, on, parser) {
 		ready(function() {
-			
-			//untuk parent1
+
+			// untuk parent1
 			var s = dijit.byId(parentSelectId);
 			on(s, "change", function(e) {
-				
+
 				reset(childSelectId);
 				reset(childSelectId2);
-				
+
 				autoPop(path, ajaxType, parentSelectId, childSelectId,
 						optionALL, selectedId, optionALLText);
-				
+
 			}) // end of event handler
-			
-			//untuk parent2
+
+			// untuk parent2
 			var s2 = dijit.byId(childSelectId);
 			on(s2, "change", function(e) {
-				
+
 				reset(childSelectId2);
-				
-				autoPop2(path, ajaxType2, parentSelectId,childSelectId,childSelectId2,
-						optionALL, selectedId2, optionALLText);
-				
+
+				autoPop2(path, ajaxType2, parentSelectId, childSelectId,
+						childSelectId2, optionALL, selectedId2, optionALLText);
+
 			}) // end of event handler
-			
 
 			reset(childSelectId);
 			reset(childSelectId2);
-			
-			autoPop(path, ajaxType, parentSelectId, childSelectId,
-					optionALL, selectedId, optionALLText);
-			
+
+			autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
+					selectedId, optionALLText);
+
 		});
 		/*
-		*/
+		 */
 	}); // end of on
 
 }
 
-function autoPopulateMultiParamSelect2Field(path,optionALL,	optionALLText, parentSelectId, 
-		ajaxType,  childSelectId, selectedId,
-		ajaxType2, childSelectId2,selectedId2) {
-	
+function autoPopulateMultiParamSelect2Field(path, optionALL, optionALLText,
+		parentSelectId, ajaxType, childSelectId, selectedId, ajaxType2,
+		childSelectId2, selectedId2) {
+
 	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
 			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
 			"dojo/domReady!" ], function(query, ready, domAttr, Select,
 			SimpleTextarea, on, parser) {
 		ready(function() {
-			
-			//untuk parent1
+
+			// untuk parent1
 			var s = dijit.byId(parentSelectId);
 			on(s, "change", function(e) {
-				
+
 				reset(childSelectId);
 				reset(childSelectId2);
-				
+
 				autoPop(path, ajaxType, parentSelectId, childSelectId,
 						optionALL, selectedId, optionALLText);
-				autoPop2(path, ajaxType2, parentSelectId,childSelectId,childSelectId2,
-						optionALL, selectedId, optionALLText);
-				
+				autoPop2(path, ajaxType2, parentSelectId, childSelectId,
+						childSelectId2, optionALL, selectedId, optionALLText);
+
 			}) // end of event handler
-			
-			//untuk parent2
+
+			// untuk parent2
 			var s2 = dijit.byId(childSelectId);
 			on(s2, "change", function(e) {
-				
+
 				reset(childSelectId2);
-				
-				autoPop2(path, ajaxType2, parentSelectId,childSelectId,childSelectId2,
-						optionALL, selectedId2, optionALLText);
-				
+
+				autoPop2(path, ajaxType2, parentSelectId, childSelectId,
+						childSelectId2, optionALL, selectedId2, optionALLText);
+
 			}) // end of event handler
-			
 
 			reset(childSelectId);
 			reset(childSelectId2);
-			
-			autoPop(path, ajaxType, parentSelectId, childSelectId,
-					optionALL, selectedId, optionALLText);
-			autoPop2(path, ajaxType2, parentSelectId,childSelectId,childSelectId2,
-					optionALL, selectedId, optionALLText);
-			
+
+			autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
+					selectedId, optionALLText);
+			autoPop2(path, ajaxType2, parentSelectId, childSelectId,
+					childSelectId2, optionALL, selectedId, optionALLText);
+
 		});
 		/*
-		*/
+		 */
 	}); // end of on
 
 }
 
+function autoPopulateMultiParamSelect4Field(path, optionALL, optionALLText,
+		parentSelectId, ajaxType, childSelectId, selectedId, ajaxType2,
+		childSelectId2, selectedId2, ajaxType3, childSelectId3, selectedId3,
+		ajaxType4, childSelectId4, selectedId4) {
 
-
-function autoPopulateMultiParamSelect4Field(path,optionALL,	optionALLText, parentSelectId, 
-		ajaxType,  childSelectId, selectedId,
-		ajaxType2, childSelectId2,selectedId2,
-		ajaxType3, childSelectId3,selectedId3,
-		ajaxType4, childSelectId4,selectedId4) {
-	
 	require([ "dojo/query", "dojo/ready", "dojo/dom-attr", "dijit/form/Select",
 			"dijit/form/SimpleTextarea", "dojo/on", "dojo/parser",
 			"dojo/domReady!" ], function(query, ready, domAttr, Select,
 			SimpleTextarea, on, parser) {
 		ready(function() {
-			
-			//untuk parent1
+
+			// untuk parent1
 			var s = dijit.byId(parentSelectId);
 			on(s, "change", function(e) {
-				
+
 				reset(childSelectId);
 				reset(childSelectId2);
 				reset(childSelectId3);
 				reset(childSelectId4);
-				
+
 				autoPop(path, ajaxType, parentSelectId, childSelectId,
 						optionALL, selectedId, optionALLText);
-				autoPop2(path, ajaxType2, parentSelectId,childSelectId,childSelectId2,
+				autoPop2(path, ajaxType2, parentSelectId, childSelectId,
+						childSelectId2, optionALL, selectedId, optionALLText);
+				autoPop3(path, ajaxType3, parentSelectId, childSelectId,
+						childSelectId2, childSelectId3, optionALL, selectedId,
+						optionALLText);
+				autoPop4(path, ajaxType4, parentSelectId, childSelectId,
+						childSelectId2, childSelectId3, childSelectId4,
 						optionALL, selectedId, optionALLText);
-				autoPop3(path, ajaxType3, parentSelectId,childSelectId,childSelectId2,childSelectId3,
-						optionALL, selectedId, optionALLText);
-				autoPop4(path, ajaxType4,  parentSelectId, childSelectId,childSelectId2,childSelectId3,childSelectId4,
-						optionALL, selectedId, optionALLText);
-				
+
 			}) // end of event handler
-			
-			//untuk parent2
+
+			// untuk parent2
 			var s2 = dijit.byId(childSelectId);
 			on(s2, "change", function(e) {
-				
+
 				reset(childSelectId2);
 				reset(childSelectId3);
 				reset(childSelectId4);
-				
-				autoPop2(path, ajaxType2, parentSelectId,childSelectId,childSelectId2,
+
+				autoPop2(path, ajaxType2, parentSelectId, childSelectId,
+						childSelectId2, optionALL, selectedId2, optionALLText);
+				autoPop3(path, ajaxType3, parentSelectId, childSelectId,
+						childSelectId2, childSelectId3, optionALL, selectedId2,
+						optionALLText);
+				autoPop4(path, ajaxType4, parentSelectId, childSelectId,
+						childSelectId2, childSelectId3, childSelectId4,
 						optionALL, selectedId2, optionALLText);
-				autoPop3(path, ajaxType3, parentSelectId,childSelectId,childSelectId2,childSelectId3,
-						optionALL, selectedId2, optionALLText);
-				autoPop4(path, ajaxType4,  parentSelectId, childSelectId,childSelectId2,childSelectId3,childSelectId4,
-						optionALL, selectedId2, optionALLText);
-				
+
 			}) // end of event handler
-			
-			//untuk parent2
+
+			// untuk parent2
 			var s3 = dijit.byId(childSelectId2);
 			on(s3, "change", function(e) {
-				
+
 				reset(childSelectId3);
 				reset(childSelectId4);
-				
-				autoPop3(path, ajaxType3, parentSelectId,childSelectId,childSelectId2,childSelectId3,
+
+				autoPop3(path, ajaxType3, parentSelectId, childSelectId,
+						childSelectId2, childSelectId3, optionALL, selectedId3,
+						optionALLText);
+				autoPop4(path, ajaxType4, parentSelectId, childSelectId,
+						childSelectId2, childSelectId3, childSelectId4,
 						optionALL, selectedId3, optionALLText);
-				autoPop4(path, ajaxType4,  parentSelectId, childSelectId,childSelectId2,childSelectId3,childSelectId4,
-						optionALL, selectedId3, optionALLText);
-				
+
 			}) // end of event handler
-			
-			//untuk parent2
+
+			// untuk parent2
 			var s4 = dijit.byId(childSelectId3);
 			on(s4, "change", function(e) {
-				
+
 				reset(childSelectId4);
-				
-				autoPop4(path, ajaxType4,  parentSelectId, childSelectId,childSelectId2,childSelectId3,childSelectId4,
+
+				autoPop4(path, ajaxType4, parentSelectId, childSelectId,
+						childSelectId2, childSelectId3, childSelectId4,
 						optionALL, selectedId4, optionALLText);
-				
+
 			}) // end of event handler
 
 			reset(childSelectId);
 			reset(childSelectId2);
 			reset(childSelectId3);
 			reset(childSelectId4);
-			
-			autoPop(path, ajaxType, parentSelectId, childSelectId,
-					optionALL, selectedId, optionALLText);
-			autoPop2(path, ajaxType2, parentSelectId,childSelectId,childSelectId2,
-					optionALL, selectedId, optionALLText);
-			autoPop3(path, ajaxType3, parentSelectId,childSelectId,childSelectId2,childSelectId3,
-					optionALL, selectedId, optionALLText);
-			autoPop4(path, ajaxType4,  parentSelectId, childSelectId,childSelectId2,childSelectId3,childSelectId4,
-					optionALL, selectedId, optionALLText);
-			
+
+			autoPop(path, ajaxType, parentSelectId, childSelectId, optionALL,
+					selectedId, optionALLText);
+			autoPop2(path, ajaxType2, parentSelectId, childSelectId,
+					childSelectId2, optionALL, selectedId, optionALLText);
+			autoPop3(path, ajaxType3, parentSelectId, childSelectId,
+					childSelectId2, childSelectId3, optionALL, selectedId,
+					optionALLText);
+			autoPop4(path, ajaxType4, parentSelectId, childSelectId,
+					childSelectId2, childSelectId3, childSelectId4, optionALL,
+					selectedId, optionALLText);
+
 		});
 		/*
-		*/
+		 */
 	}); // end of on
 
 }

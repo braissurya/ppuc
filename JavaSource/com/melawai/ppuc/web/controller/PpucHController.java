@@ -305,23 +305,24 @@ public class PpucHController extends ParentController{
 		//FIXME : belum ada blok data hanya per divisi approval aja
 		int sizeNo = size == null ? 10000 : size.intValue();
 		final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-		uiModel.addAttribute("ppuchList",ppuchManager.selectPagingList(search,sortFieldName,sortOrder, firstResult, sizeNo,groupBy, nb, np, lk, gb, kb,null,null,new Integer []{PosisiDesc.PURCHASING}));
-		float nrOfPages = (float) ppuchManager.selectPagingCount(search,groupBy,nb, np, lk, gb, kb,null,null,new Integer []{PosisiDesc.PURCHASING}) / sizeNo;
+		uiModel.addAttribute("ppuchList",ppuchManager.selectPagingList(search,sortFieldName,sortOrder, firstResult, sizeNo,groupBy, nb, np, lk, gb, kb,null,null,new Integer []{PosisiDesc.PURCHASING, PosisiDesc.INPUT_REALIZATION, PosisiDesc.OVER_BUDGET}));
+		float nrOfPages = (float) ppuchManager.selectPagingCount(search,groupBy,nb, np, lk, gb, kb,null,null,new Integer []{PosisiDesc.PURCHASING, PosisiDesc.INPUT_REALIZATION,PosisiDesc.OVER_BUDGET}) / sizeNo;
 		uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
+	
 		addDateTimeFormatPatterns(uiModel);
 		populateEditForm(uiModel, nb, np, lk, gb, kb);
 		return "ppuch/listRealCabang";
 	}
-
+	
 	@RequestMapping(value = "/realisasi/cabang/noppuc/save",method = RequestMethod.POST, produces = "text/html")
 	public String saveRealCabang(@RequestParam(value = "ids", required = true) Integer [] ids,
-			@RequestParam(value = "no_batch", required = false) String no_batch,
-			@RequestParam(value = "no_ppuc", required = false) String no_ppuc,
-			@RequestParam(value = "divisi_kd", required = false) String divisi_kd,
-			@RequestParam(value = "subdiv_kd", required = false) String subdiv_kd,
-			@RequestParam(value = "dept_kd", required = false) String dept_kd,
-			@RequestParam(value = "lok_kd", required = false) String lok_kd,
-			@RequestParam(value = "tgl_ppuc", required = false) String tgl_ppuc,
+			@RequestParam(value = "no_batch", required = true) String no_batch,
+			@RequestParam(value = "no_ppuc", required = true) String no_ppuc,
+			@RequestParam(value = "divisi_kd", required = true) String divisi_kd,
+			@RequestParam(value = "subdiv_kd", required = true) String subdiv_kd,
+			@RequestParam(value = "dept_kd", required = true) String dept_kd,
+			@RequestParam(value = "lok_kd", required = true) String lok_kd,
+			@RequestParam(value = "tgl_ppuc", required = true) String tgl_ppuc,
 			Model uiModel, HttpServletRequest request) {
 			List<String> errorMessages=new ArrayList<String>();
 			String pesan="";
@@ -358,15 +359,15 @@ public class PpucHController extends ParentController{
 				
 			}else{
 				uiModel.addAttribute("errorMessages",Utils.errorListToString(errorMessages));
-				return "redirect:/trans/ppuch/realisasi/cabang/noppuc/"+encodeUrlPathSegment(no_ppuc, request)+"?form";
+				return "redirect:/trans/ppuch/realisasi/cabang/noppuc/"+encodeUrlPathSegment(no_ppuc, request)+"/input?form";
 			}
 			
-			return "redirect:/trans/ppuch/realisasi/cabang";
+			return "redirect:/trans/ppuch/realisasi/cabang/noppuc/"+encodeUrlPathSegment(no_ppuc, request)+"/input?form";
 		}
 
 
-	@RequestMapping(value = "/realisasi/cabang/noppuc/{no_ppuc}", params = "form", produces = "text/html")
-	public String updateFormRealisasiCabang(@PathVariable("no_ppuc") String no_ppuc, Model uiModel) {
+	@RequestMapping(value = "/realisasi/cabang/noppuc/{no_ppuc}/{cf}", params = "form", produces = "text/html")
+	public String updateFormRealisasiCabang(@PathVariable("no_ppuc") String no_ppuc,@PathVariable("cf") String cf, Model uiModel) {
 		List<PpucH> ppuchs=ppuchManager.getBynoppuc(no_ppuc);
 		if(!ppuchs.isEmpty()){
 			PpucH ppuch=ppuchs.get(0);
@@ -393,6 +394,7 @@ public class PpucHController extends ParentController{
 				}
 			}
 			ppuch.ppucds=tmp2;
+			if(cf.equals("confirm")) uiModel.addAttribute("confirm", cf);
 			populateEditForm(uiModel,ppuch);
 		}
 		return "ppuch/updateRealCabang";

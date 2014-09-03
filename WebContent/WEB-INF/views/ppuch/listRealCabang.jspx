@@ -4,6 +4,7 @@
 	<jsp:output omit-xml-declaration="yes" />
 	<spring:url value="/" var="path" />
 	<page:filter finderName="filter" path="/trans/ppuch/realisasi/cabang" id="filterHakBiaya"  label="filter">
+		
 		<table class="noborder">
 			<tr>
 				<td align="center" >
@@ -100,11 +101,6 @@
 				</td>
 			</tr>
 		</table>
-		
-		
-		
-		
-		
 	</page:filter>
 
 	<br/>
@@ -119,6 +115,7 @@
 				<th>User Confirm</th>
 				<th>Tgl Confirm</th>
 				<th class="utilbox"></th>
+				<th class="utilbox"></th>
 			</tr>
 			<c:forEach items="${ppuchList}" var="v" varStatus="vs">
 				<tr style="background-color: gray; color: white;">
@@ -131,8 +128,8 @@
 				<c:forEach items="${v.ppuchs}" var="vd" varStatus="vds">
 					<tr>
 						<td>
-							<spring:url value="/trans/ppuch/realisasi/cabang/noppuc/${vd.no_ppuc}?form" var="real_form_url" />
-							<a href="${real_form_url}">${vd.no_ppuc }</a>
+							<spring:url value="/trans/ppuch/realisasi/cabang/noppuc/${vd.no_ppuc}/input?form" var="real_form_url" />
+							<a href="javascript:doAction('${real_form_url}', 'Input Realisasi Cabang [NO PPUC : ${vd.no_ppuc}]',900,500,true);">${vd.no_ppuc }</a>
 						</td>
 						<td><fmt:formatDate value="${vd.tgl_ppuc }" pattern="${ppuch_tgl_ppuc_date_format}"/></td>
 						<td><span id="_${vd.no_ppuc }_${vd.lokasi.lok_nm}" class="hint">${vd.lok_kd } - ${vd.lokasi.lok_nm }</span>
@@ -161,16 +158,27 @@
 						<td class="utilbox">
 							<spring:url value="/resources/images/update.png" var="aktif_image_url" />
 							<c:set value="Click To Edit PPUC" var="label_aktif" />
-							<a href="${real_form_url}" alt="${label_aktif}" title="${label_aktif}"> <img alt="${label_aktif}" class="image" src="${aktif_image_url}" title="${label_aktif}" />
+							<a href="javascript:doAction('${real_form_url}', 'Input Realisasi Cabang [NO PPUC : ${vd.no_ppuc}]',900,500,true);" alt="${label_aktif}" title="${label_aktif}"> <img alt="${label_aktif}" class="image" src="${aktif_image_url}" title="${label_aktif}" />
 							</a>
 						</td>
+						<td class="utilbox">
+							<c:if test="${vd.posisi gt 21  }">
+							
+							<spring:url value="/trans/ppuch/realisasi/cabang/noppuc/${vd.no_ppuc}/confirm?form" var="confirm_form_url" />
+							<spring:url value="/resources/images/icons/filetick.gif" var="confirm_image_url" />
+							<c:set value="Click To Confirm Realization PPUC" var="label_aktif" />
+							<a href="javascript:doAction('${confirm_form_url}', 'Konfirmasi Realisasi Cabang [NO PPUC : ${vd.no_ppuc}]',900,500,true);" alt="${label_aktif}" title="${label_aktif}"> <img alt="${label_aktif}" class="image" src="${confirm_image_url}" title="${label_aktif}" />
+							</a>
+							</c:if>
+						</td>
+						
 						
 					</tr>
 				</c:forEach>
 			</c:forEach>
 			
 		</table>
-	
+		
 	</page:list>
 	
 	<script type="text/javascript">
@@ -185,4 +193,11 @@
 					"lokasi6","_lk_id","${lk}");
 			});
 	</script>
+	
+	<script type="text/javascript">
+		require(["dojo/parser", "dijit/form/Button", "dijit/Dialog"]);
+	</script>
+	
 </div>
+
+

@@ -9,6 +9,8 @@
   <spring:url value="/resources/dijit/themes/tundra/tundra.css" var="tundra_url" />
   <spring:url value="/resources/styles/ddlevelsmenu-base.css" var="ddlevelsmenu_base" />
   <spring:url value="/resources/styles/ddlevelsmenu-topbar.css" var="ddlevelsmenu_topbar" />
+  <spring:url value="/resources/styles/jquery.window.css" var="jquery_window_css" />
+  <spring:url value="/resources/styles/themes/black-tie/jquery-ui.css" var="jquery_ui_css" />
   
  
   <spring:url value="/resources/spring/Spring.js" var="spring_url" />
@@ -16,16 +18,19 @@
   <spring:url value="/resources/images/favicon.ico" var="favicon" />
   <spring:url value="/resources/static/ddlevelsmenu.js" var="ddlevelsmenu" />
   <spring:url value="/resources/static/default.js" var="default_url" />
-  <spring:url value="/resources/static/jquery-1.9.1.js" var="jquery_url" />
+  <spring:url value="/resources/static/jquery.js" var="jquery_url" />
   <spring:url value="/resources/static/jquery.formatCurrency-1.4.0.min.js" var="jquery_formatCurrency_url" />
- 
+  <spring:url value="/resources/static/jquery.window.min.js" var="jquery_window_js" />
+  <spring:url value="/resources/static/jquery-ui-1.10.0.custom.min.js" var="jquery_ui_js" />
+  
   
   <spring:url value="/resources" var="resourceUrl" />
   <link rel="stylesheet" type="text/css" href="${tundra_url}" />
   <link rel="stylesheet" type="text/css" media="screen" href="${roo_css_url}" />
   <link rel="stylesheet" type="text/css" href="${ddlevelsmenu_base }"  media="screen" />
   <link rel="stylesheet" type="text/css" href="${ddlevelsmenu_topbar }"  media="screen" />
-  
+  <link rel="stylesheet" type="text/css" href="${jquery_window_css }"  media="screen" />
+  <link id="jquery_ui_theme_loader" type="text/css" rel="stylesheet"  href="${jquery_ui_css }"  media="screen" />
   
 	
   <link rel="SHORTCUT ICON" href="${favicon}" />
@@ -48,6 +53,8 @@
   <script src="${spring_dojo_url}" type="text/javascript"><!-- required for FF3 and Opera --></script>
   <script src="${jquery_url}" type="text/javascript"> <!-- required for FF3 and Opera --></script>
   <script src="${jquery_formatCurrency_url}" type="text/javascript"> <!-- required for FF3 and Opera --></script>
+  <script src="${jquery_window_js}" type="text/javascript"> <!-- required for FF3 and Opera --></script>
+  <script src="${jquery_ui_js}" type="text/javascript"> <!-- required for FF3 and Opera --></script>
   <script src="${default_url}" type="text/javascript"><!-- required for FF3 and Opera --></script>
   
    

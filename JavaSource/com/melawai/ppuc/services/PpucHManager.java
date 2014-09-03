@@ -153,6 +153,7 @@ public class PpucHManager extends BaseService {
 			for(Integer ps:posisiGroup){
 				if(i==0) posGroup+=ps;
 				else posGroup+=", "+ps;
+				i++;
 			}
 			ppuch.posisiGroup=posGroup;
 		}
@@ -482,7 +483,7 @@ public class PpucHManager extends BaseService {
 			save(ppuch);
 			for(PpucD ppucd:ppuch.ppucds){
 				ppucd.setTgl_create(sysdate);
-				if(ppucd.total_real_cbg > ppucd.total)
+				if(ppucd.qty_real_cbg > ppucd.qty || ppucd.harga_real_cbg > ppucd.harga || ppucd.total_real_cbg > ppucd.total)
 					ppucd.setPosisi(PosisiDesc.OVER_BUDGET);
 				else
 					ppucd.setPosisi(PosisiDesc.INPUT_REALIZATION);
