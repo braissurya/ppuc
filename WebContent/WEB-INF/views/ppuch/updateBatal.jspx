@@ -61,7 +61,8 @@
 					<th>Harga</th>
 					<th>Total</th>
 					<th class="utilbox"></th>
-					<c:if test="${not empty confirm }"> <th class="utilbox"></th></c:if>
+					<th class="utilbox"></th>
+					<th class="utilbox"></th>
 				</tr>
 				<c:choose>
 					<c:when test="${not empty ppuch.ppucds }">
@@ -85,7 +86,7 @@
 								</c:otherwise>
 							</c:choose>
 							<c:choose>
-								<c:when test="${i.f_approval eq 1 }">
+								<c:when test="${i.f_approval eq 1 and empty i.tgl_realisasi}">
 									<tr>
 										<td>
 											<input type="hidden" name="ids" value="${s.count}"  /> 
@@ -95,108 +96,68 @@
 										<td><input type="hidden" name="kd_biaya_${s.count}" id="kd_biaya_${s.count}" value="${i.detailBiaya.kd_biaya}" />${i.detailBiaya.kd_biaya}</td>
 										<td><input type="hidden" name="keterangan_${s.count}" id="keterangan_${s.count}" value="${i.keterangan}" />${i.keterangan}</td>
 										<td><input type="hidden" name="ket_approve_${s.count}" id="ket_approve_${s.count}" value="${i.ket_approve}" />${i.ket_approve}</td>
-										
-										<c:choose>
-											 <c:when test="${i.posisi eq 31 or i.posisi eq 25 or i.posisi eq 21 }">
-											 	<td style="width: 86px;">
-													<input type="text" name="qty_${s.count}" id="_qty_${s.count}" rel="${s.count}" value="${qtyValue}" size="5" class="nominal" /> 
-													<input type="hidden" name="qty_old_${s.count}" id="_qty_old_${s.count}" value="${qtyApp }"/>
-													<img src="${path}resources/images/icons/info.png" alt="Info" id="_qty_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" /> 
-													<c:set var="pesan">QTY Approve : <fmt:formatNumber pattern="#,##0" value="${i.qty}" /><br/>QTY Input : <fmt:formatNumber pattern="#,##0" value="${i.qty_old}" /></c:set>
-													<util:tooltips label="${pesan }" connectId="_qty_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" position="aboveBelow"></util:tooltips>
-													
-												</td>
-												<td style="width: 128px;">
-													<input type="text" name="harga_${s.count}" id="_harga_${s.count}" rel="${s.count}" value="${hargaValue}" size="12" class="nominal" />
-													<input type="hidden" name="harga_old_${s.count}" id="_harga_old_${s.count}" value="${hargaApp}"/>
-													<img src="${path}resources/images/icons/info.png" alt="Info" id="_harga_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" /> 
-													<c:set var="pesan">Harga Approve : <fmt:formatNumber pattern="#,##0" value="${i.harga}" /><br/>Harga Input : <fmt:formatNumber pattern="#,##0" value="${i.harga_old}" /></c:set>
-													<util:tooltips label="${pesan }" connectId="_harga_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" position="aboveBelow"></util:tooltips>
-												</td>
-												<td style="width: 128px;">
-													<input type="text" name="total_${s.count}" id="_total_${s.count}" disabled="disabled" rel="${s.count}" value="${totalValue}" size="12" class="nominal"/>
-													<input type="hidden" name="total_old_${s.count}" id="_total_old_${s.count}" value="${totalApp}"/>
-													<img src="${path}resources/images/icons/info.png" alt="Info" id="_total_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" /> 
-													<c:set var="pesan">Total Approve : <fmt:formatNumber pattern="#,##0" value="${i.total}" /><br/>Total Input : <fmt:formatNumber pattern="#,##0" value="${i.total_old}" /></c:set>
-													<util:tooltips label="${pesan }" connectId="_total_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" position="aboveBelow"></util:tooltips>
-												</td>
-												<td class="utilbox">
-													<c:set value="none" var="dis"/>
-													 <c:if test="${i.posisi eq 25 }">
-													 	<c:set value="block" var="dis"/>
-													 </c:if>
-													 <img src="${path}resources/images/icons/coins_add.gif" id="_ob_${s.count}" alt="Over Budget" style="display: ${dis};cursor: help;"/> 
-													 <c:set var="pesan"><b>Over Budget</b> <br/> Will be Confirm To Division</c:set>
-													 <util:tooltips label="${pesan }" connectId="_ob_${s.count}" position="aboveBelow"></util:tooltips>
-												 </td>
-												 <c:if test="${not empty confirm }">
-													 <td class="utilbox">
-													 	
-													 	<c:choose>
-													 		 <c:when test="${i.posisi eq 31 }">
-													 		 	<c:set value="Click To Confirm Realisasi Cabang PPUC" var="label_aktif" />
-													 		 	<spring:message arguments="Confirm Realisasi Cabang PPUC ?" code="entity_global" var="confirm_label" htmlEscape="false" />
-																<c:set var="confirm_confirm_msg">
-																	<spring:escapeBody javaScriptEscape="true">
-																		<spring:message arguments="Realisasi Cabang PPUC" code="entity_global_confirm" />
-																	</spring:escapeBody>
-																</c:set>
-																<spring:url value="/resources/images/icons/filetick.gif" var="confirm_image_url" />
-																<a href="javascript:saveConfirm('${i.no_ppuc}','${i.kd_biaya }','${confirm_confirm_msg }');">
-																	<img src="${confirm_image_url}" alt="${fn:escapeXml(confirm_label)}" title="${fn:escapeXml(confirm_label)}"/>
-																</a>
-													 		 </c:when>
-													 		  <c:when test="${i.posisi eq 25 }">
-													 		  	<c:set value="Click To Confirm Over Budget" var="label_aktif" />
-													 		  	<spring:message arguments="Confirm Over Budget ?" code="entity_global" var="confirm_label" htmlEscape="false" />
-																<c:set var="confirm_confirm_msg">
-																	<spring:escapeBody javaScriptEscape="true">
-																		<spring:message arguments="Confirm Over Budget" code="entity_global_confirm" />
-																	</spring:escapeBody>
-																</c:set>
-																<spring:url value="/resources/images/icons/filetick.gif" var="confirm_image_url" />
-																<a href="javascript:saveConfirm('${i.no_ppuc}','${i.kd_biaya }','${confirm_confirm_msg }');">
-																	<img src="${confirm_image_url}" alt="${fn:escapeXml(confirm_label)}" title="${fn:escapeXml(confirm_label)}"/>
-																</a>
-													 		 </c:when>
-													 	</c:choose>
-													 </td>
-												 </c:if>
-											 </c:when>
-											 <c:otherwise>
-											 	<td colspan="4">
-													 <span class="hint" id="_hint_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}">
-													 	${i.posisi_desc }
-													 </span>
-													<c:set var="pesan">QTY Input : <fmt:formatNumber pattern="#,##0" value="${i.qty_old}" /></c:set>
-													<c:set var="pesan">${pesan}<br/>Harga Input : <fmt:formatNumber pattern="#,##0" value="${i.harga_old}" /></c:set>
-													<c:set var="pesan">${pesan}<br/>Total Input : <fmt:formatNumber pattern="#,##0" value="${i.total_old}" /></c:set>
-													<util:tooltips label="${pesan }" connectId="_hint_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" position="aboveBelow"></util:tooltips>
-												
-												</td>
-												<c:if test="${not empty confirm }"><td></td></c:if>
-											 </c:otherwise>
-										</c:choose>
-										
+									 	<td style="width: 86px;">
+											<input type="text" name="qty_${s.count}" id="_qty_${s.count}" rel="${s.count}" value="${qtyValue}" size="5" class="nominal" /> 
+											<input type="hidden" name="qty_old_${s.count}" id="_qty_old_${s.count}" value="${qtyApp }"/>
+											<img src="${path}resources/images/icons/info.png" alt="Info" id="_qty_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" /> 
+											<c:set var="pesan">QTY Approve : <fmt:formatNumber pattern="#,##0" value="${i.qty}" /><br/>QTY Input : <fmt:formatNumber pattern="#,##0" value="${i.qty_old}" /></c:set>
+											<util:tooltips label="${pesan }" connectId="_qty_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" position="aboveBelow"></util:tooltips>
+											
+										</td>
+										<td style="width: 128px;">
+											<input type="text" name="harga_${s.count}" id="_harga_${s.count}" rel="${s.count}" value="${hargaValue}" size="12" class="nominal" />
+											<input type="hidden" name="harga_old_${s.count}" id="_harga_old_${s.count}" value="${hargaApp}"/>
+											<img src="${path}resources/images/icons/info.png" alt="Info" id="_harga_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" /> 
+											<c:set var="pesan">Harga Approve : <fmt:formatNumber pattern="#,##0" value="${i.harga}" /><br/>Harga Input : <fmt:formatNumber pattern="#,##0" value="${i.harga_old}" /></c:set>
+											<util:tooltips label="${pesan }" connectId="_harga_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" position="aboveBelow"></util:tooltips>
+										</td>
+										<td style="width: 128px;">
+											<input type="text" name="total_${s.count}" id="_total_${s.count}" disabled="disabled" rel="${s.count}" value="${totalValue}" size="12" class="nominal"/>
+											<input type="hidden" name="total_old_${s.count}" id="_total_old_${s.count}" value="${totalApp}"/>
+											<img src="${path}resources/images/icons/info.png" alt="Info" id="_total_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" /> 
+											<c:set var="pesan">Total Approve : <fmt:formatNumber pattern="#,##0" value="${i.total}" /><br/>Total Input : <fmt:formatNumber pattern="#,##0" value="${i.total_old}" /></c:set>
+											<util:tooltips label="${pesan }" connectId="_total_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" position="aboveBelow"></util:tooltips>
+										</td>
+										<td class="utilbox">
+											<c:set value="none" var="dis"/>
+											 <c:if test="${i.posisi eq 25 }">
+											 	<c:set value="block" var="dis"/>
+											 </c:if>
+											 <img src="${path}resources/images/icons/coins_add.gif" id="_ob_${s.count}" alt="Over Budget" style="display: ${dis};cursor: help;"/> 
+											 <c:set var="pesan"><b>Over Budget</b> <br/> Will be Confirm To Division</c:set>
+											 <util:tooltips label="${pesan }" connectId="_ob_${s.count}" position="aboveBelow"></util:tooltips>
+										 </td>
+										 <td class="utilbox">
+									 		 	<c:set value="Click Batal PPUC" var="label_aktif" />
+									 		 	<spring:message arguments="Confirm Batal PPUC ?" code="entity_global" var="confirm_label" htmlEscape="false" />
+												<c:set var="confirm_confirm_msg">
+													<spring:escapeBody javaScriptEscape="true">
+														<spring:message arguments="Batal PPUC" code="entity_global_confirm" />
+													</spring:escapeBody>
+												</c:set>
+												<spring:url value="/resources/images/icons/cross_shield.png" var="confirm_image_url" />
+												<a href="javascript:saveConfirm('${i.no_ppuc}','${i.kd_biaya }','${confirm_confirm_msg }');">
+													<img src="${confirm_image_url}" alt="${fn:escapeXml(confirm_label)}" title="${fn:escapeXml(confirm_label)}"/>
+												</a>
+										 </td>
+										 <td>
+										 	<c:if test="${i.posisi eq 26 }">
+										 		<c:set value="Back Input Realisasi Cabang PPUC" var="label_aktif" />
+									 		 	<spring:message arguments="Back Input Realisasi Cabang PPUC ?" code="entity_global" var="confirm_label" htmlEscape="false" />
+												<c:set var="confirm_confirm_msg">
+													<spring:escapeBody javaScriptEscape="true">
+														<spring:message arguments="Back Input Realisasi Cabang PPUC" code="entity_global_confirm" />
+													</spring:escapeBody>
+												</c:set>
+												<spring:url value="/resources/images/icons/back_undo.png" var="confirm_image_url" />
+												<a href="javascript:saveConfirm('${i.no_ppuc}','${i.kd_biaya }','${confirm_confirm_msg }');">
+													<img src="${confirm_image_url}" alt="${fn:escapeXml(confirm_label)}" title="${fn:escapeXml(confirm_label)}"/>
+												</a>
+										 	</c:if>
+										 </td>
 									</tr>
 								</c:when>
-								<c:otherwise>
-									<tr >
-										<td><input type="hidden" name="kd_group_${s.count}" id="kd_group_${s.count}" value="${i.groupBiaya.kd_group }" /><input type="hidden" name="nm_group_${s.count}" id="nm_group_${s.count}" value="${i.groupBiaya.nm_group}" />${i.groupBiaya.nm_group}</td>
-										<td><input type="hidden" name="kd_biaya_${s.count}" id="kd_biaya_${s.count}" value="${i.detailBiaya.kd_biaya}" />${i.detailBiaya.kd_biaya}</td>
-										<td><input type="hidden" name="keterangan_${s.count}" id="keterangan_${s.count}" value="${i.keterangan}" />${i.keterangan}</td>
-										<td><input type="hidden" name="ket_approve_${s.count}" id="ket_approve_${s.count}" value="${i.ket_approve}" />${i.ket_approve}</td>
-										<td colspan="4">
-											 <span class="hint" id="_hint_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}"> Decline By Division Approval</span>
-											<c:set var="pesan">QTY Input : <fmt:formatNumber pattern="#,##0" value="${i.qty_old}" /></c:set>
-											<c:set var="pesan">${pesan}<br/>Harga Input : <fmt:formatNumber pattern="#,##0" value="${i.harga_old}" /></c:set>
-											<c:set var="pesan">${pesan}<br/>Total Input : <fmt:formatNumber pattern="#,##0" value="${i.total_old}" /></c:set>
-											<util:tooltips label="${pesan }" connectId="_hint_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" position="aboveBelow"></util:tooltips>
-										
-										</td>
-										<c:if test="${not empty confirm }"><td></td></c:if>
-									</tr>
-								</c:otherwise>
+								
 							</c:choose>
 							
 						</c:forEach>
@@ -267,11 +228,6 @@
 	
 	<input type="hidden" name="path" value="${path }" id="path"/>
 	<div class="submit" id="fu_com_melawai_ppuc_model_ppuch_submit">
-        <spring:message code="button_save" var="save_button" htmlEscape="false" />
-        <script type="text/javascript">Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'proceed', event:'onclick'}));</script>
-     	<c:if test="${empty confirm }">
-        	<input id="proceed" type="submit" value="${fn:escapeXml(save_button)}"/>
-        </c:if>
         <spring:message code="button_close" var="button_close" htmlEscape="false" />
         <input id="close" type="button" value="${fn:escapeXml(button_close)}" onclick="parent.closeAction();"/>
       </div>

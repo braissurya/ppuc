@@ -10,6 +10,12 @@
     <definition extends="default" name="ppuch/listRealCabang">
         <put-attribute name="body" value="/WEB-INF/views/ppuch/listRealCabang.jspx"/>
     </definition>
+     <definition extends="default" name="ppuch/listBatal">
+        <put-attribute name="body" value="/WEB-INF/views/ppuch/listBatal.jspx"/>
+    </definition>
+     <definition extends="default" name="ppuch/listRealOC">
+        <put-attribute name="body" value="/WEB-INF/views/ppuch/listRealOC.jspx"/>
+    </definition>
 	<definition extends="default" name="ppuch/show">
         <put-attribute name="body" value="/WEB-INF/views/ppuch/show.jspx"/>
     </definition>
@@ -21,6 +27,12 @@
     </definition>
     <definition extends="popup" name="ppuch/updateRealCabang">
         <put-attribute name="body" value="/WEB-INF/views/ppuch/updateRealCabang.jspx"/>
+    </definition>
+     <definition extends="popup" name="ppuch/updateBatal">
+        <put-attribute name="body" value="/WEB-INF/views/ppuch/updateBatal.jspx"/>
+    </definition>
+     <definition extends="popup" name="ppuch/updateRealOC">
+        <put-attribute name="body" value="/WEB-INF/views/ppuch/updateRealOC.jspx"/>
     </definition>
 </tiles-definitions>
 

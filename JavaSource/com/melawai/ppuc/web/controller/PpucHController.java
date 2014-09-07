@@ -305,13 +305,103 @@ public class PpucHController extends ParentController{
 		//FIXME : belum ada blok data hanya per divisi approval aja
 		int sizeNo = size == null ? 10000 : size.intValue();
 		final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-		uiModel.addAttribute("ppuchList",ppuchManager.selectPagingList(search,sortFieldName,sortOrder, firstResult, sizeNo,groupBy, nb, np, lk, gb, kb,null,null,new Integer []{PosisiDesc.PURCHASING, PosisiDesc.INPUT_REALIZATION, PosisiDesc.OVER_BUDGET}));
-		float nrOfPages = (float) ppuchManager.selectPagingCount(search,groupBy,nb, np, lk, gb, kb,null,null,new Integer []{PosisiDesc.PURCHASING, PosisiDesc.INPUT_REALIZATION,PosisiDesc.OVER_BUDGET}) / sizeNo;
+		uiModel.addAttribute("ppuchList",ppuchManager.selectPagingList(search,sortFieldName,sortOrder, firstResult, sizeNo,groupBy, nb, np, lk, gb, kb,null,null,new Integer []{PosisiDesc.PURCHASING, PosisiDesc.INPUT_REALIZATION, PosisiDesc.OVER_BUDGET, PosisiDesc.NEW_BUDGET, PosisiDesc.DECLINE_NEW_BUDGET}));
+		float nrOfPages = (float) ppuchManager.selectPagingCount(search,groupBy,nb, np, lk, gb, kb,null,null,new Integer []{PosisiDesc.PURCHASING, PosisiDesc.INPUT_REALIZATION,PosisiDesc.OVER_BUDGET, PosisiDesc.NEW_BUDGET, PosisiDesc.DECLINE_NEW_BUDGET}) / sizeNo;
 		uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
 	
 		addDateTimeFormatPatterns(uiModel);
 		populateEditForm(uiModel, nb, np, lk, gb, kb);
 		return "ppuch/listRealCabang";
+	}
+	
+	@RequestMapping(value = "/batal",produces = "text/html")
+	public String listBatal( @RequestParam(value = "groupBy", required = false) Integer groupBy, 
+							 @RequestParam(value = "nb", required = false) String nb,
+							 @RequestParam(value = "np", required = false) String np,
+							 @RequestParam(value = "lk", required = false) String lk,
+							 @RequestParam(value = "gb", required = false) String gb,
+							 @RequestParam(value = "kb", required = false) String kb,
+							 @RequestParam(value = "ps", required = false) Integer ps,
+							 @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size,@RequestParam(value = "search", required = false) String search, @RequestParam(value = "sortFieldName", required = false) String sortFieldName, @RequestParam(value = "sortOrder", required = false) String sortOrder, Model uiModel) {
+		if (page == null) {
+			page=1;
+		}
+		
+		if(groupBy==null)groupBy=2;
+		
+		if (Utils.isEmpty(nb))	nb = null;
+		else nb = nb.substring(nb.lastIndexOf(".") + 1);
+		
+		if (Utils.isEmpty(np)) 	np = null;
+		else np = np.substring(np.lastIndexOf(".") + 1);
+		
+		if (Utils.isEmpty(lk)) lk = null;
+		else lk = lk.substring(lk.lastIndexOf(".") + 1);
+		
+		if (Utils.isEmpty(gb))	gb = null;
+		else gb = gb.substring(gb.lastIndexOf(".") + 1);
+		
+		if (Utils.isEmpty(kb)) kb = null;
+		else kb = kb.substring(kb.lastIndexOf(".") + 1);
+		
+		if(groupBy==1) sortFieldName = "no_batch";
+		else  sortFieldName = "no_batch asc , no_ppuc";
+
+		//FIXME : belum ada blok data hanya per divisi approval aja
+		int sizeNo = size == null ? 10000 : size.intValue();
+		final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
+		uiModel.addAttribute("ppuchList",ppuchManager.selectPagingList(search,sortFieldName,sortOrder, firstResult, sizeNo,groupBy, nb, np, lk, gb, kb,null,null,new Integer []{PosisiDesc.PURCHASING, PosisiDesc.INPUT_REALIZATION, PosisiDesc.OVER_BUDGET, PosisiDesc.NEW_BUDGET, PosisiDesc.CONFIRM_OVER_BUDGET}));
+		float nrOfPages = (float) ppuchManager.selectPagingCount(search,groupBy,nb, np, lk, gb, kb,null,null,new Integer []{PosisiDesc.PURCHASING, PosisiDesc.INPUT_REALIZATION,PosisiDesc.OVER_BUDGET, PosisiDesc.NEW_BUDGET, PosisiDesc.CONFIRM_OVER_BUDGET}) / sizeNo;
+		uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
+	
+		addDateTimeFormatPatterns(uiModel);
+		populateEditForm(uiModel, nb, np, lk, gb, kb);
+		return "ppuch/listBatal";
+	}
+	
+	@RequestMapping(value = "/realisasi/oc",produces = "text/html")
+	public String listRealOC( @RequestParam(value = "groupBy", required = false) Integer groupBy, 
+							 @RequestParam(value = "nb", required = false) String nb,
+							 @RequestParam(value = "np", required = false) String np,
+							 @RequestParam(value = "lk", required = false) String lk,
+							 @RequestParam(value = "gb", required = false) String gb,
+							 @RequestParam(value = "kb", required = false) String kb,
+							 @RequestParam(value = "ps", required = false) Integer ps,
+							 @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size,@RequestParam(value = "search", required = false) String search, @RequestParam(value = "sortFieldName", required = false) String sortFieldName, @RequestParam(value = "sortOrder", required = false) String sortOrder, Model uiModel) {
+		if (page == null) {
+			page=1;
+		}
+		
+		if(groupBy==null)groupBy=2;
+		
+		if (Utils.isEmpty(nb))	nb = null;
+		else nb = nb.substring(nb.lastIndexOf(".") + 1);
+		
+		if (Utils.isEmpty(np)) 	np = null;
+		else np = np.substring(np.lastIndexOf(".") + 1);
+		
+		if (Utils.isEmpty(lk)) lk = null;
+		else lk = lk.substring(lk.lastIndexOf(".") + 1);
+		
+		if (Utils.isEmpty(gb))	gb = null;
+		else gb = gb.substring(gb.lastIndexOf(".") + 1);
+		
+		if (Utils.isEmpty(kb)) kb = null;
+		else kb = kb.substring(kb.lastIndexOf(".") + 1);
+		
+		if(groupBy==1) sortFieldName = "no_batch";
+		else  sortFieldName = "no_batch asc , no_ppuc";
+
+		//FIXME : belum ada blok data hanya per divisi approval aja
+		int sizeNo = size == null ? 10000 : size.intValue();
+		final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
+		uiModel.addAttribute("ppuchList",ppuchManager.selectPagingList(search,sortFieldName,sortOrder, firstResult, sizeNo,groupBy, nb, np, lk, gb, kb,null,null,new Integer []{PosisiDesc.INPUT_REAL_REALIZATION}));
+		float nrOfPages = (float) ppuchManager.selectPagingCount(search,groupBy,nb, np, lk, gb, kb,null,null,new Integer []{PosisiDesc.INPUT_REAL_REALIZATION}) / sizeNo;
+		uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
+	
+		addDateTimeFormatPatterns(uiModel);
+		populateEditForm(uiModel, nb, np, lk, gb, kb);
+		return "ppuch/listRealOC";
 	}
 	
 	@RequestMapping(value = "/realisasi/cabang/noppuc/save",method = RequestMethod.POST, produces = "text/html")
@@ -398,6 +488,74 @@ public class PpucHController extends ParentController{
 			populateEditForm(uiModel,ppuch);
 		}
 		return "ppuch/updateRealCabang";
+	}
+	
+	@RequestMapping(value = "/batal/noppuc/{no_ppuc}/{cf}", params = "form", produces = "text/html")
+	public String updateFormBatal(@PathVariable("no_ppuc") String no_ppuc,@PathVariable("cf") String cf, Model uiModel) {
+		List<PpucH> ppuchs=ppuchManager.getBynoppuc(no_ppuc);
+		if(!ppuchs.isEmpty()){
+			PpucH ppuch=ppuchs.get(0);
+			List<PpucD> tmp=new ArrayList<PpucD>();
+			for(PpucH pp:ppuchs){
+				tmp.addAll(pp.ppucds);
+			}
+			
+			List<PpucD> tmp2=new ArrayList<PpucD>();
+			for(PpucD pd:tmp){
+				if(tmp2.isEmpty())tmp2.add(pd);
+				else {
+					boolean add=true;
+					for (int i = 0; i < tmp2.size(); i++) {
+						if(pd.kd_biaya.equals(tmp2.get(i).kd_biaya)){
+							tmp2.get(i).qty+=pd.qty;
+							tmp2.get(i).no_ppuc+=";"+pd.no_ppuc;
+							add=false;
+							break;
+						}
+					}
+					
+					if(add)tmp2.add(pd);
+				}
+			}
+			ppuch.ppucds=tmp2;
+			if(cf.equals("confirm")) uiModel.addAttribute("confirm", cf);
+			populateEditForm(uiModel,ppuch);
+		}
+		return "ppuch/updateBatal";
+	}
+	
+	@RequestMapping(value = "/realisasi/oc/noppuc/{no_ppuc}/{cf}", params = "form", produces = "text/html")
+	public String updateFormRealisasiOC(@PathVariable("no_ppuc") String no_ppuc,@PathVariable("cf") String cf, Model uiModel) {
+		List<PpucH> ppuchs=ppuchManager.getBynoppuc(no_ppuc);
+		if(!ppuchs.isEmpty()){
+			PpucH ppuch=ppuchs.get(0);
+			List<PpucD> tmp=new ArrayList<PpucD>();
+			for(PpucH pp:ppuchs){
+				tmp.addAll(pp.ppucds);
+			}
+			
+			List<PpucD> tmp2=new ArrayList<PpucD>();
+			for(PpucD pd:tmp){
+				if(tmp2.isEmpty())tmp2.add(pd);
+				else {
+					boolean add=true;
+					for (int i = 0; i < tmp2.size(); i++) {
+						if(pd.kd_biaya.equals(tmp2.get(i).kd_biaya)){
+							tmp2.get(i).qty+=pd.qty;
+							tmp2.get(i).no_ppuc+=";"+pd.no_ppuc;
+							add=false;
+							break;
+						}
+					}
+					
+					if(add)tmp2.add(pd);
+				}
+			}
+			ppuch.ppucds=tmp2;
+			if(cf.equals("confirm")) uiModel.addAttribute("confirm", cf);
+			populateEditForm(uiModel,ppuch);
+		}
+		return "ppuch/updateRealOC";
 	}
 
 	@RequestMapping(value = "/batch",method = RequestMethod.PUT, produces = "text/html")
@@ -500,6 +658,30 @@ public class PpucHController extends ParentController{
 		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
 		uiModel.addAttribute("pesan", pesan);
 		return "redirect:/trans/ppuch";
+	}
+	
+	@RequestMapping(value = "/realisasi/cabang/confirm",method = RequestMethod.PUT, produces = "text/html")
+	public String confirmRealCabang( @RequestParam(value = "no_ppuc_confirm", required = true) String no_ppuc,  @RequestParam(value = "kd_biaya_confirm", required = true)String kd_biaya, Model uiModel, HttpServletRequest request) {
+		
+		PpucD ppucd=ppucdManager.get(null, null, null, null, no_ppuc, null, kd_biaya);
+		if(ppucd==null){
+			String errorMessages="No PPUC "+no_ppuc+" dengan Kode Biaya "+kd_biaya+" tidak ditemukan";
+			uiModel.asMap().clear();
+			uiModel.addAttribute("errorMessages", errorMessages);
+		}else{
+			String pesan=messageSource.getMessage("entity_success", new String[]{"Confirm Realisasi Cabang PPUC, No PPUC "+no_ppuc+" dengan Kode Biaya "+kd_biaya+","}, LocaleContextHolder.getLocale());
+			if(ppucd.getPosisi()==PosisiDesc.INPUT_REALIZATION){
+				pesan=messageSource.getMessage("entity_success", new String[]{"Confirm Realisasi Cabang PPUC, No PPUC "+no_ppuc+" dengan Kode Biaya "+kd_biaya+","}, LocaleContextHolder.getLocale());
+			}else if(ppucd.getPosisi()==PosisiDesc.OVER_BUDGET)
+				pesan=messageSource.getMessage("entity_success", new String[]{"Confirm Over Budget, No PPUC "+no_ppuc+" dengan Kode Biaya "+kd_biaya+","}, LocaleContextHolder.getLocale());
+			
+			ppuchManager.confirmRealCabang(ppucd);
+			uiModel.asMap().clear();
+			uiModel.addAttribute("pesan", pesan);
+		}
+		
+		
+		return "redirect:/trans/ppuch/realisasi/cabang/noppuc/"+encodeUrlPathSegment(no_ppuc, request)+"/confirm?form";
 	}
 	
 	void addDateTimeFormatPatterns(Model uiModel) {

@@ -163,6 +163,9 @@
 			<result property="ket_approve" column="pd_ket_approve" />
 			<result property="f_approval" column="pd_f_approval" />
 			<result property="no_realisasi" column="pd_no_realisasi" />
+			<result property="user_realisasi" column="pd_user_realisasi" />
+			<result property="tgl_realisasi" column="pd_tgl_realisasi" />
+			<result property="jam_realisasi" column="pd_jam_realisasi" />
 			<result property="qty_real_cbg" column="pd_qty_real_cbg" />
 			<result property="harga_real_cbg" column="pd_harga_real_cbg" />
 			<result property="total_real_cbg" column="pd_total_real_cbg" />
@@ -170,6 +173,16 @@
 			<result property="harga_real_oc" column="pd_harga_real_oc" />
 			<result property="total_real_oc" column="pd_total_real_oc" />
 			<result property="nilai_charge" column="pd_nilai_charge" />
+			<result property="f_batal" column="pd_f_batal" />
+			<result property="user_batal" column="pd_user_batal" />
+			<result property="tgl_batal" column="pd_tgl_batal" />
+			<result property="jam_batal" column="pd_jam_batal" />
+			<result property="alasan_batal" column="pd_alasan_batal" />
+			<result property="hp_asal_batal" column="pd_hp_asal_batal" />
+			<result property="hp_tujuan_batal" column="pd_hp_tujuan_batal" />
+			<result property="email_asal_batal" column="pd_email_asal_batal" />
+			<result property="email_tujuan_batal" column="pd_email_tujuan_batal" />
+			<result property="posisi_desc" column="pd_posisi_desc"/>
 			<association property="groupBiaya" javaType="GroupBiaya">
 				<id property="kd_group" column="gb_kd_group"  />  
 				<result property="nm_group" column="gb_nm_group" />
@@ -264,6 +277,9 @@
 		PD.F_APPROVAL as pd_f_approval,
 		PD.KET_APPROVE as pd_ket_approve,
 		PD.NO_REALISASI as pd_no_realisasi,
+		PD.USER_REALISASI as pd_user_realisasi,
+		PD.TGL_REALISASI as pd_tgl_realisasi,
+		PD.JAM_REALISASI as pd_jam_realisasi,
 		PD.QTY_REAL_CBG as pd_qty_real_cbg,
 		PD.HARGA_REAL_CBG as pd_harga_real_cbg,
 		PD.TOTAL_REAL_CBG as pd_total_real_cbg,
@@ -271,6 +287,16 @@
 		PD.HARGA_REAL_OC as pd_harga_real_oc,
 		PD.TOTAL_REAL_OC as pd_total_real_oc,
 		PD.NILAI_CHARGE as pd_nilai_charge,
+		PD.F_BATAL as pd_f_batal,
+		PD.USER_BATAL as pd_user_batal,
+		PD.TGL_BATAL as pd_tgl_batal,
+		PD.JAM_BATAL as pd_jam_batal,
+		PD.ALASAN_BATAL as pd_alasan_batal,
+		PD.HP_ASAL_BATAL as pd_hp_asal_batal,
+		PD.HP_TUJUAN_BATAL as pd_hp_tujuan_batal,
+		PD.EMAIL_ASAL_BATAL as pd_email_asal_batal,
+		PD.EMAIL_TUJUAN_BATAL as pd_email_tujuan_batal,
+		PPD.DESCRIPTION as pd_posisi_desc,
 		dc.DIVISI_KD as dc_divisi_kd,
 		dc.DIVISI_NM as dc_divisi_nm,
 		dac.DIVISI_KD as dac_divisi_kd,
@@ -331,6 +357,7 @@
 			select <include refid="defaultColoumn" /> from ppuc_h C
 			left outer join sys_posisi_dok P on C.POSISI = P.ID
 			left outer join ppuc_d PD on C.sys_no_ppuc = PD.sys_no_ppuc and C.tgl_ppuc = PD.tgl_ppuc and C.lok_kd = PD.lok_kd
+			left outer join sys_posisi_dok PPD on PD.POSISI = PPD.ID
 			left outer join divisi dc on C.divisi_kd = dc.divisi_kd
 			left outer join subdivisi sc on C.subdiv_kd = sc.subdiv_kd
 			left outer join departmen dpc on C.dept_kd = dpc.dept_kd
@@ -616,7 +643,7 @@
 	</select>
 
 	<!-- select berdasarkan paging parameter -->
-	<select id="selectPagingList" parameterType="PpucH" resultMap="PpucHMap">
+	<select id="selectPagingList" parameterType="PpucH" resultMap="PpucHMap" useCache="false">
 			SELECT x.* from (
 				select * from (
 					<include refid="selectQuery" />
@@ -633,7 +660,7 @@
 	</select>
 
 	<!-- select jumlah seluruh data yang akan di paging -->
-	<select id="selectPagingCount" parameterType="PpucH" resultType="Integer">
+	<select id="selectPagingCount" parameterType="PpucH" resultType="Integer" useCache="false">
 		select count(*) from(
 			SELECT x.* from (
 				select * from (
@@ -673,7 +700,7 @@
 	</sql>
 	
 	<!-- select berdasarkan paging parameter -->
-	<select id="selectPagingListSatu" parameterType="PpucH" resultType="PpucH">
+	<select id="selectPagingListSatu" parameterType="PpucH" resultType="PpucH" useCache="false">
 			SELECT x.* from (
 				select * from (
 					<include refid="selectQuerySatu" />
@@ -690,7 +717,7 @@
 	</select>
 
 	<!-- select jumlah seluruh data yang akan di paging -->
-	<select id="selectPagingCountSatu" parameterType="PpucH" resultType="Integer">
+	<select id="selectPagingCountSatu" parameterType="PpucH" resultType="Integer" useCache="false">
 		select count(*) from(
 			SELECT x.* from (
 				select * from (

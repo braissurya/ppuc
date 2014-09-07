@@ -149,7 +149,7 @@ public class PpucH extends BaseObject implements Serializable  {
 	@Size(max=100)
 	public String email_tujuan_conf_oc;
 
-	public Long f_batal;
+	public Integer f_batal;
 
 	@Size(max=50)
 	public String user_batal;
@@ -388,8 +388,8 @@ public class PpucH extends BaseObject implements Serializable  {
 	public String getEmail_tujuan_conf_oc(){ return email_tujuan_conf_oc; }
 	public void setEmail_tujuan_conf_oc(String email_tujuan_conf_oc){ this.email_tujuan_conf_oc = email_tujuan_conf_oc; }
 
-	public Long getF_batal(){ return f_batal; }
-	public void setF_batal(Long f_batal){ this.f_batal = f_batal; }
+	public Integer getF_batal(){ return f_batal; }
+	public void setF_batal(Integer f_batal){ this.f_batal = f_batal; }
 
 	public String getUser_batal(){ return user_batal; }
 	public void setUser_batal(String user_batal){ this.user_batal = user_batal; }

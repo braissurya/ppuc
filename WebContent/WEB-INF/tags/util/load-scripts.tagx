@@ -30,7 +30,7 @@
   <link rel="stylesheet" type="text/css" href="${ddlevelsmenu_base }"  media="screen" />
   <link rel="stylesheet" type="text/css" href="${ddlevelsmenu_topbar }"  media="screen" />
   <link rel="stylesheet" type="text/css" href="${jquery_window_css }"  media="screen" />
-  <link id="jquery_ui_theme_loader" type="text/css" rel="stylesheet"  href="${jquery_ui_css }"  media="screen" />
+  <link rel="stylesheet" type="text/css" href="${jquery_ui_css }"  media="screen" />
   
 	
   <link rel="SHORTCUT ICON" href="${favicon}" />

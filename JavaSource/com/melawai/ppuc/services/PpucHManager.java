@@ -166,7 +166,8 @@ public class PpucHManager extends BaseService {
 			int i=0;
 			String no_batch="";
 			PpucH tmp=new PpucH();
-			for(PpucH pp: ppuchMapper.selectPagingList(ppuch)){
+			List<PpucH> pphList=ppuchMapper.selectPagingList(ppuch);
+			for(PpucH pp: pphList){
 				if(no_batch.equals("")){//baru masuk
 					tmp=pp;
 					tmp.ppuchs.add(pp);
@@ -482,22 +483,52 @@ public class PpucHManager extends BaseService {
 			ppuch.setPosisi(PosisiDesc.INPUT_REALIZATION);
 			save(ppuch);
 			for(PpucD ppucd:ppuch.ppucds){
+				if(ppucd.getNo_realisasi()==null)
+					ppucd.setNo_realisasi(lokasiManager.getCounterRealisasi(ppucd.lok_kd, ppucd.dept_kd, ppucd.subdiv_kd, ppucd.divisi_kd));
+				
 				ppucd.setTgl_create(sysdate);
+				
 				if(ppucd.qty_real_cbg > ppucd.qty || ppucd.harga_real_cbg > ppucd.harga || ppucd.total_real_cbg > ppucd.total)
 					ppucd.setPosisi(PosisiDesc.OVER_BUDGET);
 				else
 					ppucd.setPosisi(PosisiDesc.INPUT_REALIZATION);
+				
 				ppucdManager.save(ppucd);
 			}
 		}
 		
 		//TODO :send email dan sms
-		for(PpucH ppuch:ppuchs){
+		/*for(PpucH ppuch:ppuchs){
 			for(PpucD ppucd:ppuch.ppucds){
 				
 			}
-		}
+		}*/
 		
+	}
+	
+	@Transactional
+	public void confirmRealCabang(PpucD ppucd) {
+		Date sysdate=selectSysdate();
+		ppucd.setTgl_create(sysdate);// ini untuk pancing biar bisa masuk ke update
+		if(ppucd.getPosisi()==PosisiDesc.INPUT_REALIZATION){
+			ppucd.setPosisi(PosisiDesc.INPUT_REAL_REALIZATION);
+			ppucd.setTgl_realisasi(sysdate);
+			ppucd.setUser_realisasi(CommonUtil.getCurrentUserId());
+		}else if(ppucd.getPosisi()==PosisiDesc.OVER_BUDGET)
+			ppucd.setPosisi(PosisiDesc.CONFIRM_OVER_BUDGET);
+		
+		ppucdManager.save(ppucd);
+		
+		PpucH ppuch=new PpucH(ppucd.divisi_kd, ppucd.subdiv_kd, ppucd.dept_kd, ppucd.lok_kd, ppucd.no_ppuc, ppucd.tgl_ppuc, ppucd.no_batch);
+		ppuch.setTgl_create(sysdate);
+	
+		if(selectCountTable("ppuc_d", "posisi in ("+PosisiDesc.INPUT_REALIZATION+","+PosisiDesc.OVER_BUDGET+","+PosisiDesc.CONFIRM_OVER_BUDGET+","+PosisiDesc.DECLINE_NEW_BUDGET+")")==0){
+			ppuch.setPosisi(PosisiDesc.INPUT_REAL_REALIZATION);
+		}
+			save(ppuch);
+			
+		
+		//TODO : kirim email & sms klo tidak ada error
 		
 	}
 }

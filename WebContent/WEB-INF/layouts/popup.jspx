@@ -13,12 +13,25 @@
 		
 		<spring:message code="application_name" var="app_name" htmlEscape="false"/>
 		<title><spring:message code="welcome_h3" arguments="${app_name}" /></title>
+		
+		<![CDATA[
+		  <script>
+			  require([ "dojo/query","dojo/on", "dojo/domReady!" ],
+						function(query, on) {	
+				  var pesan = '${param.pesan}${pesan}';
+					if(pesan!=''){
+						parent.needload('1');
+					}
+			});
+		  </script>
+		  ]]>
 	</head>
 	
   	<body class="tundra spring">
    		<div id="wrapper">
 		    <div id="main">
 	    		<tiles:insertAttribute name="body"/> 
+	    		
 		    </div>
 		</div>
 	</body>

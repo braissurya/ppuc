@@ -13,6 +13,7 @@ public class Posisi implements Serializable {
 		public static final Integer OVER_BUDGET = 25;
 		public static final Integer CONFIRM_OVER_BUDGET = 26;
 		public static final Integer NEW_BUDGET = 27;
+		public static final Integer DECLINE_NEW_BUDGET = 28;
 		public static final Integer INPUT_REALIZATION = 31;
 		public static final Integer CONFIRM_REALIZATION = 32;
 		public static final Integer TRANSFER_ACCOUNTING = 40;

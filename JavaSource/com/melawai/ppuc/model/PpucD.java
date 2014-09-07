@@ -11,6 +11,8 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.melawai.ppuc.utils.Utils;
+
 /**
  * GENERATE BY BraisSpringMVCHelp
  * @since		: Thu Jun 19 23:42:37 ICT 2014
@@ -74,6 +76,16 @@ public class PpucD extends BaseObject implements Serializable  {
 
 	@Size(max=25)
 	public String no_realisasi;
+	
+	@Size(max=50)
+	public String user_realisasi;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style="MM")
+	public Date tgl_realisasi;
+
+	@Size(max=8)
+	public String jam_realisasi;
 
 	public Long qty_real_cbg;
 
@@ -88,6 +100,33 @@ public class PpucD extends BaseObject implements Serializable  {
 	public Double total_real_oc;
 
 	public Double nilai_charge;
+	
+	public Integer f_batal;
+
+	@Size(max=50)
+	public String user_batal;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style="MM")
+	public Date tgl_batal;
+
+	@Size(max=8)
+	public String jam_batal;
+
+	@Size(max=65535)
+	public String alasan_batal;
+
+	@Size(max=25)
+	public String hp_asal_batal;
+
+	@Size(max=25)
+	public String hp_tujuan_batal;
+
+	@Size(max=100)
+	public String email_asal_batal;
+
+	@Size(max=100)
+	public String email_tujuan_batal;
 
 	//****************** COLOMN FROM TABLE END HERE ******************/
 
@@ -100,6 +139,8 @@ public class PpucD extends BaseObject implements Serializable  {
 	
 	public GroupBiaya groupBiaya;
 	public DetailBiaya detailBiaya;
+	
+	public String posisi_desc;
 	//****************** OTHERS END HERE ******************/
 
 
@@ -298,6 +339,191 @@ public class PpucD extends BaseObject implements Serializable  {
 
 	public void setF_approval(Integer f_approval) {
 		this.f_approval = f_approval;
+	}
+
+
+
+
+	public String getUser_realisasi() {
+		return user_realisasi;
+	}
+
+
+
+
+	public void setUser_realisasi(String user_realisasi) {
+		this.user_realisasi = user_realisasi;
+	}
+
+
+
+
+	public Date getTgl_realisasi() {
+		return tgl_realisasi;
+	}
+
+
+
+
+	public void setTgl_realisasi(Date tgl_realisasi) {
+		this.tgl_realisasi = tgl_realisasi;
+	}
+
+
+
+
+	public String getJam_realisasi() {
+		return jam_realisasi;
+	}
+
+
+
+
+	public void setJam_realisasi(String jam_realisasi) {
+		this.jam_realisasi = jam_realisasi;
+	}
+
+
+
+
+	public Integer getF_batal() {
+		return f_batal;
+	}
+
+
+
+
+	public void setF_batal(Integer f_batal) {
+		this.f_batal = f_batal;
+	}
+
+
+
+
+	public String getUser_batal() {
+		return user_batal;
+	}
+
+
+
+
+	public void setUser_batal(String user_batal) {
+		this.user_batal = user_batal;
+	}
+
+
+
+
+	public Date getTgl_batal() {
+		return tgl_batal;
+	}
+
+
+
+
+	public void setTgl_batal(Date tgl_batal) {
+		this.tgl_batal = tgl_batal;
+		if (tgl_batal != null) {
+			this.jam_batal = Utils.convertDateToString(tgl_batal, jam_format);
+		}
+	}
+
+
+
+
+	public String getJam_batal() {
+		return jam_batal;
+	}
+
+
+
+
+	public void setJam_batal(String jam_batal) {
+		this.jam_batal = jam_batal;
+	}
+
+
+
+
+	public String getAlasan_batal() {
+		return alasan_batal;
+	}
+
+
+
+
+	public void setAlasan_batal(String alasan_batal) {
+		this.alasan_batal = alasan_batal;
+	}
+
+
+
+
+	public String getHp_asal_batal() {
+		return hp_asal_batal;
+	}
+
+
+
+
+	public void setHp_asal_batal(String hp_asal_batal) {
+		this.hp_asal_batal = hp_asal_batal;
+	}
+
+
+
+
+	public String getHp_tujuan_batal() {
+		return hp_tujuan_batal;
+	}
+
+
+
+
+	public void setHp_tujuan_batal(String hp_tujuan_batal) {
+		this.hp_tujuan_batal = hp_tujuan_batal;
+	}
+
+
+
+
+	public String getEmail_asal_batal() {
+		return email_asal_batal;
+	}
+
+
+
+
+	public void setEmail_asal_batal(String email_asal_batal) {
+		this.email_asal_batal = email_asal_batal;
+	}
+
+
+
+
+	public String getEmail_tujuan_batal() {
+		return email_tujuan_batal;
+	}
+
+
+
+
+	public void setEmail_tujuan_batal(String email_tujuan_batal) {
+		this.email_tujuan_batal = email_tujuan_batal;
+	}
+
+
+
+
+	public String getPosisi_desc() {
+		return posisi_desc;
+	}
+
+
+
+
+	public void setPosisi_desc(String posisi_desc) {
+		this.posisi_desc = posisi_desc;
 	}
 
 	//****************** GETTER SETTER END HERE ******************/

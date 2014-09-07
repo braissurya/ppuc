@@ -166,7 +166,7 @@
 											 <c:otherwise>
 											 	<td colspan="4">
 													 <span class="hint" id="_hint_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}">
-													 	${i.posisi_desc }
+													 	${i.posisi_desc } ${i.posisi }
 													 </span>
 													<c:set var="pesan">QTY Input : <fmt:formatNumber pattern="#,##0" value="${i.qty_old}" /></c:set>
 													<c:set var="pesan">${pesan}<br/>Harga Input : <fmt:formatNumber pattern="#,##0" value="${i.harga_old}" /></c:set>

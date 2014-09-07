@@ -1,3 +1,5 @@
+var needReload="";
+
 $(document).ready(function() {
 	setting();
 });
@@ -110,7 +112,7 @@ function doAction(linknya, title, width, height, reload, popup) {
 				height : height, // window height
 				onClose : function(wnd) { // a callback function while user
 											// click close button
-					location.reload(true);
+					reloadParent();
 				},
 				showModal : true,
 				showRoundCorner : true,
@@ -138,8 +140,15 @@ function doAction(linknya, title, width, height, reload, popup) {
 
 }
 
+function reloadParent(){
+	if(this.needReload != "") location.reload(true);
+}
+
+function needload(reload){
+	this.needReload=reload;
+}
+
 function closeAction() {
-	// $("#element_to_pop_up").bPopup().close();
 	$.window.closeAll();
 	return false;
 }

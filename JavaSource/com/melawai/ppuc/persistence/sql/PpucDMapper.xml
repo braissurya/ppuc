@@ -34,6 +34,9 @@
 		<result property="f_approval" column="f_approval" />
 		<result property="ket_approve" column="ket_approve" />
 		<result property="no_realisasi" column="no_realisasi" />
+		<result property="user_realisasi" column="user_realisasi" />
+		<result property="tgl_realisasi" column="tgl_realisasi" />
+		<result property="jam_realisasi" column="jam_realisasi" />
 		<result property="qty_real_cbg" column="qty_real_cbg" />
 		<result property="harga_real_cbg" column="harga_real_cbg" />
 		<result property="total_real_cbg" column="total_real_cbg" />
@@ -43,6 +46,16 @@
 		<result property="nilai_charge" column="nilai_charge" />
 		<result property="user_create" column="user_create" />
 		<result property="tgl_create" column="tgl_create" />
+		<result property="f_batal" column="f_batal" />
+		<result property="user_batal" column="user_batal" />
+		<result property="tgl_batal" column="tgl_batal" />
+		<result property="jam_batal" column="jam_batal" />
+		<result property="alasan_batal" column="alasan_batal" />
+		<result property="hp_asal_batal" column="hp_asal_batal" />
+		<result property="hp_tujuan_batal" column="hp_tujuan_batal" />
+		<result property="email_asal_batal" column="email_asal_batal" />
+		<result property="email_tujuan_batal" column="email_tujuan_batal" />
+		<result property="posisi_desc" column="posisi_desc"/>
 	</resultMap>
 
 	<!-- nama kolom yang ingin ditampilkan -->
@@ -67,6 +80,9 @@
 		C.F_APPROVAL as f_approval,
 		C.KET_APPROVE as ket_approve,
 		C.NO_REALISASI as no_realisasi,
+		C.USER_REALISASI as user_realisasi,
+		C.TGL_REALISASI as tgl_realisasi,
+		C.JAM_REALISASI as jam_realisasi,
 		C.QTY_REAL_CBG as qty_real_cbg,
 		C.HARGA_REAL_CBG as harga_real_cbg,
 		C.TOTAL_REAL_CBG as total_real_cbg,
@@ -75,7 +91,17 @@
 		C.TOTAL_REAL_OC as total_real_oc,
 		C.NILAI_CHARGE as nilai_charge,
 		C.SYS_USER_CREATE as user_create,
-		C.SYS_TGL_CREATE as tgl_create
+		C.SYS_TGL_CREATE as tgl_create,
+		C.F_BATAL as f_batal,
+		C.USER_BATAL as user_batal,
+		C.TGL_BATAL as tgl_batal,
+		C.JAM_BATAL as jam_batal,
+		C.ALASAN_BATAL as alasan_batal,
+		C.HP_ASAL_BATAL as hp_asal_batal,
+		C.HP_TUJUAN_BATAL as hp_tujuan_batal,
+		C.EMAIL_ASAL_BATAL as email_asal_batal,
+		C.EMAIL_TUJUAN_BATAL as email_tujuan_batal,
+		P.DESCRIPTION as posisi_desc
 	</sql>
 
 	<!-- query select, dengan kolom yang default di atas, apabila mau ditambahkan join juga bisa disini
@@ -83,6 +109,7 @@
 	<sql id="selectQuery">
 		select * from (
 			select <include refid="defaultColoumn" /> from ppuc_d C
+			left outer join sys_posisi_dok P on C.POSISI = P.ID
 		)T
 	</sql>
 
@@ -133,6 +160,9 @@
 			F_APPROVAL,
 			KET_APPROVE,
 			NO_REALISASI,
+			USER_REALISASI,
+			TGL_REALISASI,
+			JAM_REALISASI,
 			QTY_REAL_CBG,
 			HARGA_REAL_CBG,
 			TOTAL_REAL_CBG,
@@ -141,7 +171,16 @@
 			TOTAL_REAL_OC,
 			NILAI_CHARGE,
 			SYS_USER_CREATE,
-			SYS_TGL_CREATE
+			SYS_TGL_CREATE,
+			F_BATAL,
+			USER_BATAL,
+			TGL_BATAL,
+			JAM_BATAL,
+			ALASAN_BATAL,
+			HP_ASAL_BATAL,
+			HP_TUJUAN_BATAL,
+			EMAIL_ASAL_BATAL,
+			EMAIL_TUJUAN_BATAL
 		) values (
 			#{divisi_kd},
 			#{subdiv_kd},
@@ -163,6 +202,9 @@
 			#{f_approval},
 			#{ket_approve},
 			#{no_realisasi},
+			#{user_realisasi},
+			#{tgl_realisasi},
+			#{jam_realisasi},
 			#{qty_real_cbg},
 			#{harga_real_cbg},
 			#{total_real_cbg},
@@ -171,7 +213,16 @@
 			#{total_real_oc},
 			#{nilai_charge},
 			#{user_create},
-			#{tgl_create}
+			#{tgl_create},
+			#{f_batal},
+			#{user_batal},
+			#{tgl_batal},
+			#{jam_batal},
+			#{alasan_batal},
+			#{hp_asal_batal},
+			#{hp_tujuan_batal},
+			#{email_asal_batal},
+			#{email_tujuan_batal}
 		)
 	</insert>
 
@@ -199,6 +250,9 @@
 			<if test="f_approval != null">F_APPROVAL = #{f_approval}, </if>
 			<if test="ket_approve != null">KET_APPROVE = #{ket_approve}, </if>
 			<if test="no_realisasi != null">NO_REALISASI = #{no_realisasi}, </if>
+			<if test="user_realisasi != null">USER_REALISASI = #{user_realisasi}, </if>
+			<if test="tgl_realisasi != null">TGL_REALISASI = #{tgl_realisasi}, </if>
+			<if test="jam_realisasi != null">JAM_REALISASI = #{jam_realisasi}, </if>
 			<if test="qty_real_cbg != null">QTY_REAL_CBG = #{qty_real_cbg}, </if>
 			<if test="harga_real_cbg != null">HARGA_REAL_CBG = #{harga_real_cbg}, </if>
 			<if test="total_real_cbg != null">TOTAL_REAL_CBG = #{total_real_cbg}, </if>
@@ -206,6 +260,15 @@
 			<if test="harga_real_oc != null">HARGA_REAL_OC = #{harga_real_oc}, </if>
 			<if test="total_real_oc != null">TOTAL_REAL_OC = #{total_real_oc}, </if>
 			<if test="nilai_charge != null">NILAI_CHARGE = #{nilai_charge}, </if>
+			<if test="f_batal != null">F_BATAL = #{f_batal}, </if>
+			<if test="user_batal != null">USER_BATAL = #{user_batal}, </if>
+			<if test="tgl_batal != null">TGL_BATAL = #{tgl_batal}, </if>
+			<if test="jam_batal != null">JAM_BATAL = #{jam_batal}, </if>
+			<if test="alasan_batal != null">ALASAN_BATAL = #{alasan_batal}, </if>
+			<if test="hp_asal_batal != null">HP_ASAL_BATAL = #{hp_asal_batal}, </if>
+			<if test="hp_tujuan_batal != null">HP_TUJUAN_BATAL = #{hp_tujuan_batal}, </if>
+			<if test="email_asal_batal != null">EMAIL_ASAL_BATAL = #{email_asal_batal}, </if>
+			<if test="email_tujuan_batal != null">EMAIL_TUJUAN_BATAL = #{email_tujuan_batal}, </if>
 		</set>
 		WHERE  
 			DIVISI_KD= #{divisi_kd} 
@@ -251,7 +314,7 @@
 	</select>
 
 	<!-- select berdasarkan paging parameter -->
-	<select id="selectPagingList" parameterType="PpucD" resultMap="PpucDMap">
+	<select id="selectPagingList" parameterType="PpucD" resultMap="PpucDMap" >
 			SELECT x.* from (
 				select * from (
 					<include refid="selectQuery" />
@@ -268,7 +331,7 @@
 	</select>
 
 	<!-- select jumlah seluruh data yang akan di paging -->
-	<select id="selectPagingCount" parameterType="PpucD" resultType="Integer">
+	<select id="selectPagingCount" parameterType="PpucD" resultType="Integer" >
 		select count(*) from(
 			SELECT x.* from (
 				select * from (
