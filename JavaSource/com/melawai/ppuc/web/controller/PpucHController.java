@@ -350,8 +350,8 @@ public class PpucHController extends ParentController{
 		//FIXME : belum ada blok data hanya per divisi approval aja
 		int sizeNo = size == null ? 10000 : size.intValue();
 		final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-		uiModel.addAttribute("ppuchList",ppuchManager.selectPagingList(search,sortFieldName,sortOrder, firstResult, sizeNo,groupBy, nb, np, lk, gb, kb,null,null,new Integer []{PosisiDesc.PURCHASING, PosisiDesc.INPUT_REALIZATION, PosisiDesc.OVER_BUDGET, PosisiDesc.NEW_BUDGET, PosisiDesc.CONFIRM_OVER_BUDGET}));
-		float nrOfPages = (float) ppuchManager.selectPagingCount(search,groupBy,nb, np, lk, gb, kb,null,null,new Integer []{PosisiDesc.PURCHASING, PosisiDesc.INPUT_REALIZATION,PosisiDesc.OVER_BUDGET, PosisiDesc.NEW_BUDGET, PosisiDesc.CONFIRM_OVER_BUDGET}) / sizeNo;
+		uiModel.addAttribute("ppuchList",ppuchManager.selectPagingList(search,sortFieldName,sortOrder, firstResult, sizeNo,groupBy, nb, np, lk, gb, kb,null,null,new Integer []{PosisiDesc.PURCHASING, PosisiDesc.INPUT_REALIZATION, PosisiDesc.OVER_BUDGET,  PosisiDesc.CONFIRM_OVER_BUDGET}));
+		float nrOfPages = (float) ppuchManager.selectPagingCount(search,groupBy,nb, np, lk, gb, kb,null,null,new Integer []{PosisiDesc.PURCHASING, PosisiDesc.INPUT_REALIZATION,PosisiDesc.OVER_BUDGET,  PosisiDesc.CONFIRM_OVER_BUDGET}) / sizeNo;
 		uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
 	
 		addDateTimeFormatPatterns(uiModel);
@@ -414,46 +414,42 @@ public class PpucHController extends ParentController{
 			@RequestParam(value = "lok_kd", required = true) String lok_kd,
 			@RequestParam(value = "tgl_ppuc", required = true) String tgl_ppuc,
 			Model uiModel, HttpServletRequest request) {
-			List<String> errorMessages=new ArrayList<String>();
-			String pesan="";
-			List<PpucH> lsPPuch=new ArrayList<PpucH>();
-			
-			PpucH ppuch=new PpucH(divisi_kd,
-								  subdiv_kd, 
-								  dept_kd, 
-								  lok_kd, 
-								  no_ppuc, 
-								  Utils.convertStringToDate(tgl_ppuc,DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale())),
-								  no_batch);
-			for(Integer id:ids){
-				PpucD ppucd= ppucdManager.get(divisi_kd, subdiv_kd, dept_kd, lok_kd, no_ppuc, ppuch.tgl_ppuc, ServletRequestUtils.getStringParameter(request, "kd_biaya_"+id,null));
-				
-				ppucd.qty_real_cbg=CommonUtil.convertToLong(ServletRequestUtils.getStringParameter(request, "qty_"+ id, null));
-				ppucd.harga_real_cbg=CommonUtil.convertCurrencyToDouble(ServletRequestUtils.getStringParameter(request, "harga_"+ id, null));
-				
-				if(ppucd.qty_real_cbg==null)errorMessages.add("Harap Isi QTY pada baris "+id);
-				if(ppucd.harga_real_cbg==null)errorMessages.add("Harap Isi Harga pada baris "+id);
-				
-				if(!errorMessages.isEmpty())break;
-				
-				ppucd.total_real_cbg=ppucd.qty_real_cbg*ppucd.harga_real_cbg;
-				
-				
-				ppuch.ppucds.add(ppucd);
-			}
-			lsPPuch.add(ppuch);
-			
-			if(errorMessages.isEmpty()){
-				ppuchManager.saveAllRealCabang(lsPPuch);
-				uiModel.addAttribute("pesan", messageSource.getMessage("entity_success", new String[]{"Realisasi Cabang PPUC"}, LocaleContextHolder.getLocale()));
-				
-			}else{
-				uiModel.addAttribute("errorMessages",Utils.errorListToString(errorMessages));
-				return "redirect:/trans/ppuch/realisasi/cabang/noppuc/"+encodeUrlPathSegment(no_ppuc, request)+"/input?form";
-			}
-			
-			return "redirect:/trans/ppuch/realisasi/cabang/noppuc/"+encodeUrlPathSegment(no_ppuc, request)+"/input?form";
+		List<String> errorMessages = new ArrayList<String>();
+		String pesan = "";
+		List<PpucH> lsPPuch = new ArrayList<PpucH>();
+
+		PpucH ppuch = new PpucH(divisi_kd, subdiv_kd, dept_kd, lok_kd, no_ppuc, Utils.convertStringToDate(tgl_ppuc, DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale())), no_batch);
+		for (Integer id : ids) {
+			PpucD ppucd = ppucdManager.get(divisi_kd, subdiv_kd, dept_kd, lok_kd, no_ppuc, ppuch.tgl_ppuc, ServletRequestUtils.getStringParameter(request, "kd_biaya_" + id, null));
+
+			ppucd.qty_real_cbg = CommonUtil.convertToLong(ServletRequestUtils.getStringParameter(request, "qty_" + id, null));
+			ppucd.harga_real_cbg = CommonUtil.convertCurrencyToDouble(ServletRequestUtils.getStringParameter(request, "harga_" + id, null));
+
+			if (ppucd.qty_real_cbg == null)
+				errorMessages.add("Harap Isi QTY pada baris " + id);
+			if (ppucd.harga_real_cbg == null)
+				errorMessages.add("Harap Isi Harga pada baris " + id);
+
+			if (!errorMessages.isEmpty())
+				break;
+
+			ppucd.total_real_cbg = ppucd.qty_real_cbg * ppucd.harga_real_cbg;
+
+			ppuch.ppucds.add(ppucd);
 		}
+		lsPPuch.add(ppuch);
+
+		if (errorMessages.isEmpty()) {
+			ppuchManager.saveAllRealCabang(lsPPuch);
+			uiModel.addAttribute("pesan", messageSource.getMessage("entity_success", new String[] { "Realisasi Cabang PPUC" }, LocaleContextHolder.getLocale()));
+
+		} else {
+			uiModel.addAttribute("errorMessages", Utils.errorListToString(errorMessages));
+			return "redirect:/trans/ppuch/realisasi/cabang/noppuc/" + encodeUrlPathSegment(no_ppuc, request) + "/input?form";
+		}
+
+		return "redirect:/trans/ppuch/realisasi/cabang/noppuc/" + encodeUrlPathSegment(no_ppuc, request) + "/input?form";
+	}
 
 
 	@RequestMapping(value = "/realisasi/cabang/noppuc/{no_ppuc}/{cf}", params = "form", produces = "text/html")
@@ -536,19 +532,21 @@ public class PpucHController extends ParentController{
 			
 			List<PpucD> tmp2=new ArrayList<PpucD>();
 			for(PpucD pd:tmp){
-				if(tmp2.isEmpty())tmp2.add(pd);
-				else {
-					boolean add=true;
-					for (int i = 0; i < tmp2.size(); i++) {
-						if(pd.kd_biaya.equals(tmp2.get(i).kd_biaya)){
-							tmp2.get(i).qty+=pd.qty;
-							tmp2.get(i).no_ppuc+=";"+pd.no_ppuc;
-							add=false;
-							break;
+				if(pd.kd_biaya.equals(cf)){
+					if(tmp2.isEmpty())tmp2.add(pd);
+					else {
+						boolean add=true;
+						for (int i = 0; i < tmp2.size(); i++) {
+							if(pd.kd_biaya.equals(tmp2.get(i).kd_biaya)){
+								tmp2.get(i).qty+=pd.qty;
+								tmp2.get(i).no_ppuc+=";"+pd.no_ppuc;
+								add=false;
+								break;
+							}
 						}
+						
+						if(add)tmp2.add(pd);
 					}
-					
-					if(add)tmp2.add(pd);
 				}
 			}
 			ppuch.ppucds=tmp2;
@@ -682,6 +680,30 @@ public class PpucHController extends ParentController{
 		
 		
 		return "redirect:/trans/ppuch/realisasi/cabang/noppuc/"+encodeUrlPathSegment(no_ppuc, request)+"/confirm?form";
+	}
+	
+	@RequestMapping(value = "/batal/confirm",method = RequestMethod.PUT, produces = "text/html")
+	public String confirmBatal( @RequestParam(value = "no_ppuc_confirm", required = true) String no_ppuc,  @RequestParam(value = "kd_biaya_confirm", required = true)String kd_biaya,@RequestParam(value = "jns_confirm", required = true)String jns_confirm, Model uiModel, HttpServletRequest request) {
+		
+		PpucD ppucd=ppucdManager.get(null, null, null, null, no_ppuc, null, kd_biaya);
+		if(ppucd==null){
+			String errorMessages="No PPUC "+no_ppuc+" dengan Kode Biaya "+kd_biaya+" tidak ditemukan";
+			uiModel.asMap().clear();
+			uiModel.addAttribute("errorMessages", errorMessages);
+		}else{
+			String pesan="";
+			if(jns_confirm.equals("c")){
+				pesan=messageSource.getMessage("entity_success", new String[]{"Confirm Batal PPUC, No PPUC "+no_ppuc+" dengan Kode Biaya "+kd_biaya+","}, LocaleContextHolder.getLocale());
+			}else if(jns_confirm.equals("t"))
+				pesan=messageSource.getMessage("entity_success", new String[]{"Tolak Batal PPUC, No PPUC "+no_ppuc+" dengan Kode Biaya "+kd_biaya+","}, LocaleContextHolder.getLocale());
+			
+			ppuchManager.confirmBatal(ppucd,jns_confirm);
+			uiModel.asMap().clear();
+			uiModel.addAttribute("pesan", pesan);
+		}
+		
+		
+		return "redirect:/trans/ppuch/batal/noppuc/"+encodeUrlPathSegment(no_ppuc, request)+"/confirm?form";
 	}
 	
 	void addDateTimeFormatPatterns(Model uiModel) {

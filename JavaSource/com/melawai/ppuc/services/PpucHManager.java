@@ -531,4 +531,30 @@ public class PpucHManager extends BaseService {
 		//TODO : kirim email & sms klo tidak ada error
 		
 	}
+	
+	@Transactional
+	public void confirmBatal(PpucD ppucd, String jns_con) {
+		Date sysdate=selectSysdate();
+		ppucd.setTgl_create(sysdate);// ini untuk pancing biar bisa masuk ke update
+		if(jns_con.equals("c")){
+			ppucd.setPosisi(PosisiDesc.NEW_BUDGET);
+			ppucd.setTgl_batal(sysdate);
+			ppucd.setUser_batal(CommonUtil.getCurrentUserId());
+		}else if(jns_con.equals("t"))
+			ppucd.setPosisi(PosisiDesc.DECLINE_NEW_BUDGET);
+		
+		ppucdManager.save(ppucd);
+		
+		PpucH ppuch=new PpucH(ppucd.divisi_kd, ppucd.subdiv_kd, ppucd.dept_kd, ppucd.lok_kd, ppucd.no_ppuc, ppucd.tgl_ppuc, ppucd.no_batch);
+		ppuch.setTgl_create(sysdate);
+	
+		if(selectCountTable("ppuc_d", "posisi <> "+PosisiDesc.NEW_BUDGET)==0){
+			ppuch.setPosisi(PosisiDesc.NEW_BUDGET);
+		}
+			save(ppuch);
+			
+		
+		//TODO : kirim email & sms klo tidak ada error
+		
+	}
 }
