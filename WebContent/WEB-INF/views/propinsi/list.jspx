@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
-    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
-    <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_com_melawai_ppuc_model_propinsi"  items="${propinsiList}" >
-        <table:table data="${propinsiList}" id="l_com_melawai_ppuc_model_Propinsi" typeIdFieldName="itemId" path="/master/propinsi" >
-       <table:column id="c_com_melawai_ppuc_model_propinsi_propinsi" property="propinsi" label="Propinsi" />
-       <table:column id="c_com_melawai_ppuc_model_propinsi_user_create" property="user_create" label="User Create" />
-       <table:column id="c_com_melawai_ppuc_model_propinsi_jam_create" property="jam_create" label="Jam Create" />
-        </table:table>
-    </page:list>
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	<page:list id="pl_com_melawai_ppuc_model_propinsi" items="${propinsiList}" upload="true" path="/master/propinsi">
+		<table:table data="${propinsiList}" id="l_com_melawai_ppuc_model_Propinsi" typeIdFieldName="itemId" path="/master/propinsi" upload="true">
+			<table:column id="c_com_melawai_ppuc_model_propinsi_propinsi" property="propinsi" label="Propinsi" />
+			<table:column id="c_com_melawai_ppuc_model_propinsi_user_create" property="user_create" label="User Create" />
+			<table:column id="c_com_melawai_ppuc_model_propinsi_jam_create" property="jam_create" label="Jam Create" />
+		</table:table>
+	</page:list>
 </div>
 

@@ -557,4 +557,19 @@ public class PpucHManager extends BaseService {
 		//TODO : kirim email & sms klo tidak ada error
 		
 	}
+	
+	@Transactional
+	public void saveRealOC(PpucH ppuch) {
+		User currentUser =CommonUtil.getCurrentUser();
+		Date sysdate=selectSysdate();
+		
+		save(ppuch);
+		
+		ppucdManager.save(ppuch.ppucd);
+		
+		//save ke realisasi
+		
+		
+		
+	}
 }

@@ -13,5 +13,8 @@
 	<definition extends="default" name="propinsi/update">
         <put-attribute name="body" value="/WEB-INF/views/propinsi/update.jspx"/>
     </definition>
+    <definition extends="default" name="propinsi/upload">
+        <put-attribute name="body" value="/WEB-INF/views/propinsi/upload.jspx"/>
+    </definition>
 </tiles-definitions>
 

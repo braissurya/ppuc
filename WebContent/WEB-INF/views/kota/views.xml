@@ -13,5 +13,8 @@
 	<definition extends="default" name="kota/update">
         <put-attribute name="body" value="/WEB-INF/views/kota/update.jspx"/>
     </definition>
+    <definition extends="default" name="kota/upload">
+        <put-attribute name="body" value="/WEB-INF/views/kota/upload.jspx"/>
+    </definition>
 </tiles-definitions>
 

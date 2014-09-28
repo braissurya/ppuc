@@ -1,5 +1,6 @@
 	package com.melawai.ppuc.web.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
@@ -13,14 +14,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -29,16 +33,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
-import com.melawai.ppuc.model.HakApprove;
-import com.melawai.ppuc.model.Posisi;
+import com.melawai.ppuc.model.Audittrail;
 import com.melawai.ppuc.model.Posisi.PosisiDesc;
 import com.melawai.ppuc.model.PpucD;
 import com.melawai.ppuc.model.PpucH;
 import com.melawai.ppuc.model.User;
 import com.melawai.ppuc.model.UserDivisi;
-import com.melawai.ppuc.services.GroupBiayaManager;
 import com.melawai.ppuc.services.PpucDManager;
 import com.melawai.ppuc.services.PpucHManager;
 import com.melawai.ppuc.services.UserDivisiManager;
@@ -520,8 +523,72 @@ public class PpucHController extends ParentController{
 		return "ppuch/updateBatal";
 	}
 	
-	@RequestMapping(value = "/realisasi/oc/noppuc/{no_ppuc}/{cf}", params = "form", produces = "text/html")
-	public String updateFormRealisasiOC(@PathVariable("no_ppuc") String no_ppuc,@PathVariable("cf") String cf, Model uiModel) {
+	//contoh upload file
+	@RequestMapping(value= {"/realisasi/oc/noppuc/save"}, method=RequestMethod.POST) //mapping request saat user submit /upload ke function ini (POST)
+	public String saveRealOC(HttpServletRequest httpServletRequest,@ModelAttribute("ppuch")PpucH ppuch,BindingResult bindingResult, Model uiModel, RedirectAttributes ra) throws IOException{
+		BindException errors = new BindException(bindingResult);
+
+		DataBinder binder = new DataBinder(ppuch.upload);
+		binder.setValidator(this.uploadValidator);
+		binder.validate();
+
+		List<String> errorMessage = new ArrayList<String>();
+
+		if (binder.getBindingResult().hasErrors()) {
+			errors.rejectValue("upload.uploadFile", null, Utils.errorBinderToList(binder.getBindingResult(), messageSource).get(0));
+		} else {
+			
+			// validasi
+			ValidationUtils.rejectIfEmptyOrWhitespace(bindingResult, "ppucd.qty_real_oc",  "NotEmpty", new String[]{"QTY Realisasi OC"},null);
+			ValidationUtils.rejectIfEmptyOrWhitespace(bindingResult, "ppucd.harga_real_oc",  "NotEmpty", new String[]{"Harga Realisasi OC"},null);
+		}
+
+		if (errors.hasErrors() || !errorMessage.isEmpty()) {
+			errorMessage.addAll(Utils.errorBinderToList(errors, messageSource));
+			errors.rejectValue("upload.uploadFile", null, Utils.errorListToString(errorMessage).replace("<br/>", ";"));
+			uiModel.addAttribute("errorMessages", Utils.errorListToString(errorMessage));
+			populateEditForm(uiModel, ppuch);
+			ppuchManager.audittrail(Audittrail.Activity.EXIM, Audittrail.EximType.FAILED, ppuch.getClass().getSimpleName(), ppuch.upload.getOriginalFilename(),
+					CommonUtil.getIpAddr(httpServletRequest), errorMessage.toString(), CommonUtil.getCurrentUser(), null);
+			return "propinsi/upload";
+		}
+
+		uiModel.asMap().clear();
+		ppuchManager.audittrail(Audittrail.Activity.EXIM, Audittrail.EximType.SUCCESS, ppuch.getClass().getSimpleName(), ppuch.upload.getOriginalFilename(),
+				CommonUtil.getIpAddr(httpServletRequest), "IMPORT DATA SUCCESS", CommonUtil.getCurrentUser(), null);
+		ppuchManager.save(ppuch);
+		
+		Date sekarang = ppuchManager.selectSysdate();
+		// nama file yang ingin disimpan
+		String filename = ppuch.ppucd.no_realisasi + "." + ppuch.upload.getFileExt();
+
+		// buat directory di server bila belum ada
+		String path = props.getProperty("dir.realisasi") + "\\";
+		File directory = new File(path);
+		if (!directory.exists())
+			directory.mkdirs();
+
+		// buat file di directory yg sudah dibuat diatas, dan diisi dengan
+		// data yang sama dgn yg diupload
+
+		File file = null;
+		// copy file ke server
+		try {
+			file = new File(path + filename);
+			FileUtils.writeByteArrayToFile(file, ppuch.upload.uploadFile.getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();
+			errorMessage.add(" (filename= " + ppuch.upload.getOriginalFilename() + ")\n" + Utils.errorExtract(e));
+		}
+		
+		String pesan = "File [" + ppuch.upload.getOriginalFilename() + "] berhasil diupload";
+		ra.addFlashAttribute("pesan", pesan);
+
+		return "redirect:/realisasi/oc/noppuc/"+ppuch.no_ppuc+"/"+ppuch.ppucd.kd_biaya;
+	}
+	
+	@RequestMapping(value = "/realisasi/oc/noppuc/{no_ppuc}/{kd_biaya}", params = "form", produces = "text/html")
+	public String updateFormRealisasiOC(@PathVariable("no_ppuc") String no_ppuc,@PathVariable("kd_biaya") String kd_biaya, Model uiModel) {
 		List<PpucH> ppuchs=ppuchManager.getBynoppuc(no_ppuc);
 		if(!ppuchs.isEmpty()){
 			PpucH ppuch=ppuchs.get(0);
@@ -532,7 +599,7 @@ public class PpucHController extends ParentController{
 			
 			List<PpucD> tmp2=new ArrayList<PpucD>();
 			for(PpucD pd:tmp){
-				if(pd.kd_biaya.equals(cf)){
+				if(pd.kd_biaya.equals(kd_biaya)){
 					if(tmp2.isEmpty())tmp2.add(pd);
 					else {
 						boolean add=true;
@@ -550,7 +617,7 @@ public class PpucHController extends ParentController{
 				}
 			}
 			ppuch.ppucds=tmp2;
-			if(cf.equals("confirm")) uiModel.addAttribute("confirm", cf);
+			if(kd_biaya.equals("confirm")) uiModel.addAttribute("confirm", kd_biaya);
 			populateEditForm(uiModel,ppuch);
 		}
 		return "ppuch/updateRealOC";

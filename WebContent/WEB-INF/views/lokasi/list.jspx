@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
-    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
-    <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_com_melawai_ppuc_model_lokasi"  items="${lokasiList}" upload="true" path="/master/lokasi" >
-        <table:table data="${lokasiList}" id="l_com_melawai_ppuc_model_Lokasi" typeIdFieldName="itemId" path="/master/lokasi" upload="true" >
-       <table:column id="c_com_melawai_ppuc_model_lokasi_lok_kd" property="lok_kd" label="Lok Kd" />
-       <table:column id="c_com_melawai_ppuc_model_lokasi_divisi_kd" property="divisi_kd" label="Divisi Kd" />
-       <table:column id="c_com_melawai_ppuc_model_lokasi_subdiv_kd" property="subdiv_kd" label="Subdiv Kd" />
-       <table:column id="c_com_melawai_ppuc_model_lokasi_dept_kd" property="dept_kd" label="Dept Kd" />
-       <table:column id="c_com_melawai_ppuc_model_lokasi_lok_nm" property="lok_nm" label="Lok Nm" />
-       <table:column id="c_com_melawai_ppuc_model_lokasi_propinsi" property="propinsi" label="Propinsi" />
-       <table:column id="c_com_melawai_ppuc_model_lokasi_kota" property="kota" label="Kota" />
-       <table:column id="c_com_melawai_ppuc_model_lokasi_email" property="email" label="Email" />
-       <table:column id="c_com_melawai_ppuc_model_lokasi_tgl_tutup" property="tgl_tutup" label="Tgl Tutup" />
-       <table:column id="c_com_melawai_ppuc_model_lokasi_user_update" property="user_update" label="User Update" />
-       <table:column id="c_com_melawai_ppuc_model_lokasi_tgl_update" property="tgl_update" label="Tgl Update" />
-       <table:column id="c_com_melawai_ppuc_model_lokasi_user_create" property="user_create" label="User Create" />
-       <table:column id="c_com_melawai_ppuc_model_lokasi_tgl_create" property="tgl_create" label="Tgl Create" />
-        </table:table>
-    </page:list>
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	<page:list id="pl_com_melawai_ppuc_model_lokasi" items="${lokasiList}" upload="true" path="/master/lokasi">
+		<table:table data="${lokasiList}" id="l_com_melawai_ppuc_model_Lokasi" typeIdFieldName="itemId" path="/master/lokasi" upload="true">
+			<table:column id="c_com_melawai_ppuc_model_lokasi_lok_kd" property="lok_kd" label="Lok Kd" />
+			<table:column id="c_com_melawai_ppuc_model_lokasi_divisi_kd" property="divisi_kd" label="Divisi Kd" />
+			<table:column id="c_com_melawai_ppuc_model_lokasi_subdiv_kd" property="subdiv_kd" label="Subdiv Kd" />
+			<table:column id="c_com_melawai_ppuc_model_lokasi_dept_kd" property="dept_kd" label="Dept Kd" />
+			<table:column id="c_com_melawai_ppuc_model_lokasi_lok_nm" property="lok_nm" label="Lok Nm" />
+			<table:column id="c_com_melawai_ppuc_model_lokasi_propinsi" property="propinsi" label="Propinsi" />
+			<table:column id="c_com_melawai_ppuc_model_lokasi_kota" property="kota" label="Kota" />
+			<table:column id="c_com_melawai_ppuc_model_lokasi_email" property="email" label="Email" />
+			<table:column id="c_com_melawai_ppuc_model_lokasi_tgl_tutup" property="tgl_tutup" label="Tgl Tutup" />
+			<table:column id="c_com_melawai_ppuc_model_lokasi_user_update" property="user_update" label="User Update" />
+			<table:column id="c_com_melawai_ppuc_model_lokasi_tgl_update" property="tgl_update" label="Tgl Update" />
+			<table:column id="c_com_melawai_ppuc_model_lokasi_user_create" property="user_create" label="User Create" />
+			<table:column id="c_com_melawai_ppuc_model_lokasi_tgl_create" property="tgl_create" label="Tgl Create" />
+		</table:table>
+	</page:list>
 </div>
 

@@ -2,8 +2,8 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_com_melawai_ppuc_model_kota"  items="${kotaList}" >
-        <table:table data="${kotaList}" id="l_com_melawai_ppuc_model_Kota" typeIdFieldName="itemId" path="/master/kota" >
+    <page:list id="pl_com_melawai_ppuc_model_kota"  items="${kotaList}" upload="true" path="/master/kota">
+        <table:table data="${kotaList}" id="l_com_melawai_ppuc_model_Kota" typeIdFieldName="itemId" path="/master/kota" upload="true">
        <table:column id="c_com_melawai_ppuc_model_kota_propinsi" property="propinsi" label="Propinsi" />
        <table:column id="c_com_melawai_ppuc_model_kota_kota" property="kota" label="Kota" />
        <table:column id="c_com_melawai_ppuc_model_kota_user_create" property="user_create" label="User Create" />

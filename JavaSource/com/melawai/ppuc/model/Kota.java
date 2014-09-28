@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 /**
  * GENERATE BY BraisSpringMVCHelp
  * @since		: Sun Jul 06 16:28:28 ICT 2014
@@ -17,11 +19,11 @@ public class Kota extends BaseObject implements Serializable  {
 	private static final long serialVersionUID = 5485925578667539846L;
 
 	//****************** COLOMN FROM TABLE START HERE ******************/
-	@NotNull
+	@NotEmpty
 	@Size(max=100)
 	public String propinsi;
 
-	@NotNull
+	@NotEmpty
 	@Size(max=100)
 	public String kota;
 
@@ -31,6 +33,8 @@ public class Kota extends BaseObject implements Serializable  {
 	//****************** OTHERS START HERE ******************/
 
 	public String itemId;
+	public Upload upload = new Upload();
+
 	//****************** OTHERS END HERE ******************/
 
 
@@ -38,6 +42,16 @@ public class Kota extends BaseObject implements Serializable  {
 	public Kota(){
 		//TODO: standard constructor free to change
 	}
+	
+	
+
+	public Kota(String propinsi, String kota) {
+		super();
+		this.propinsi = propinsi;
+		this.kota = kota;
+	}
+
+
 
 	//****************** CONSTRUCTOR END HERE ******************/
 
@@ -51,6 +65,14 @@ public class Kota extends BaseObject implements Serializable  {
 
 	public String getItemId() {return ""+propinsi+"/"+kota;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}
+
+	public Upload getUpload() {
+		return upload;
+	}
+
+	public void setUpload(Upload upload) {
+		this.upload = upload;
+	}
 
 	//****************** GETTER SETTER END HERE ******************/
 

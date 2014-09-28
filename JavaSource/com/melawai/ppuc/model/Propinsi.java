@@ -29,6 +29,8 @@ public class Propinsi extends BaseObject implements Serializable  {
 	//****************** OTHERS START HERE ******************/
 
 	public String itemId;
+	public Upload upload = new Upload();
+
 	//****************** OTHERS END HERE ******************/
 
 
@@ -36,6 +38,15 @@ public class Propinsi extends BaseObject implements Serializable  {
 	public Propinsi(){
 		//TODO: standard constructor free to change
 	}
+	
+	
+
+	public Propinsi(String propinsi) {
+		super();
+		this.propinsi = propinsi;
+	}
+
+
 
 	//****************** CONSTRUCTOR END HERE ******************/
 
@@ -46,6 +57,14 @@ public class Propinsi extends BaseObject implements Serializable  {
 
 	public String getItemId() {return ""+propinsi;	}
 	public void setItemId(String itemId) {this.itemId = itemId;}
+
+	public Upload getUpload() {
+		return upload;
+	}
+
+	public void setUpload(Upload upload) {
+		this.upload = upload;
+	}
 
 	//****************** GETTER SETTER END HERE ******************/
 

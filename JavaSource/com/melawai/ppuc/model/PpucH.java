@@ -219,6 +219,8 @@ public class PpucH extends BaseObject implements Serializable  {
 	@NotEmpty(message="At least one Detail Biaya is required")
 	public Integer[] idx;
 	
+	public Upload upload = new Upload();
+	
 	//****************** OTHERS END HERE ******************/
 
 
@@ -646,6 +648,18 @@ public class PpucH extends BaseObject implements Serializable  {
 
 	public void setPpuchs(List<PpucH> ppuchs) {
 		this.ppuchs = ppuchs;
+	}
+
+
+
+	public Upload getUpload() {
+		return upload;
+	}
+
+
+
+	public void setUpload(Upload upload) {
+		this.upload = upload;
 	}
 
 	//****************** GETTER SETTER END HERE ******************/

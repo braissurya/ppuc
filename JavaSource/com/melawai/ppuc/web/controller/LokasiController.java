@@ -15,7 +15,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomBooleanEditor;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
@@ -35,7 +34,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import au.com.bytecode.opencsv.CSVReader;
 
 import com.melawai.ppuc.model.Audittrail;
-import com.melawai.ppuc.model.Departmen;
 import com.melawai.ppuc.model.Lokasi;
 import com.melawai.ppuc.model.Upload;
 import com.melawai.ppuc.services.LokasiManager;

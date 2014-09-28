@@ -28,7 +28,10 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
 		p:dataSource-ref="dataSource"
 		p:mapperLocations="classpath*:com/melawai/ppuc/persistence/sql/*.xml"
+		p:configLocation="WEB-INF/context/mybatis-config.xml"
 		p:typeAliasesPackage="com.melawai.ppuc.model" />
+		
+
 
 	<!-- scan for mappers and let them be autowired --> 
 	<!-- p:basePackage = scan semua mapper disini -->

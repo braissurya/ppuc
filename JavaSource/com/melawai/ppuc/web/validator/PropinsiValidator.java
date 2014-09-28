@@ -1,6 +1,7 @@
 package com.melawai.ppuc.web.validator;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -14,7 +15,8 @@ import com.melawai.ppuc.model.Propinsi;
  * @Description	: Validator for table Propinsi
  * @Revision	:
  */
-public class PropinsiValidator extends LocalValidatorFactoryBean implements Validator {
+@Component
+public class PropinsiValidator implements Validator {
 	
 	private static Logger logger = Logger.getLogger(PropinsiValidator.class);
 
@@ -25,7 +27,7 @@ public class PropinsiValidator extends LocalValidatorFactoryBean implements Vali
 
 	@Override
 	public void validate(Object obj, Errors e) {
-		// TODO Auto-generated method stub
+		ValidationUtils.rejectIfEmptyOrWhitespace(e, "propinsi",  "NotEmpty", new String[]{"Propinsi"},null);
 	}
 
 }
