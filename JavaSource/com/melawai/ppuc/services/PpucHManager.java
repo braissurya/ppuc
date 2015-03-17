@@ -17,6 +17,7 @@ import com.melawai.ppuc.model.HakApprove;
 import com.melawai.ppuc.model.Posisi.PosisiDesc;
 import com.melawai.ppuc.model.PpucD;
 import com.melawai.ppuc.model.PpucH;
+import com.melawai.ppuc.model.Realisasi;
 import com.melawai.ppuc.model.Subdivisi;
 import com.melawai.ppuc.model.User;
 import com.melawai.ppuc.persistence.PpucHMapper;
@@ -70,7 +71,7 @@ public class PpucHManager extends BaseService {
 	public List<PpucH> get(String no_batch) {
 		return ppuchMapper.get(null, null, null, null, null, null, no_batch);
 	}
-	
+
 	public List<PpucH> getBynoppuc(String no_ppuc) {
 		return ppuchMapper.get(null, null, null, null, no_ppuc, null, null);
 	}
@@ -93,32 +94,38 @@ public class PpucHManager extends BaseService {
 		PpucH tmp = get(divisi_kd, subdiv_kd, dept_kd, lok_kd, no_ppuc, tgl_ppuc);
 		Set<AudittrailDetail> changes = CommonUtil.changes(tmp, null);
 		ppuchMapper.remove(divisi_kd, subdiv_kd, dept_kd, lok_kd, no_ppuc, tgl_ppuc);
-		audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.DELETE, tmp.getClass().getSimpleName(), tmp.getItemId(), CommonUtil.getIpAddr(httpServletRequest), "DELETE PPUCH",
-				CommonUtil.getCurrentUser(), changes);
+		audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.DELETE, tmp.getClass().getSimpleName(), tmp.getItemId(), CommonUtil.getIpAddr(httpServletRequest), "DELETE PPUCH", CommonUtil.getCurrentUser(), changes);
 	}
 
 	/** Ambil jumlah seluruh data **/
-	public int selectPagingCount(String search, Integer type, String nb, String np, String lk, String gb, String kb,Integer posisi_min,Integer posisi,Integer [] posisiGroup) {
+	public int selectPagingCount(String search, Integer type, String nb, String np, String lk, String gb, String kb, Integer posisi_min, Integer posisi, Integer[] posisiGroup) {
 		PpucH ppuch = new PpucH();
 		ppuch.setSearch(search);
-		
-		if(!Utils.isEmpty(nb))ppuch.setNo_batch(nb);
-		if(!Utils.isEmpty(np))ppuch.setNo_ppuc(np);
-		if(!Utils.isEmpty(lk))ppuch.setLok_kd(lk);
-		if(!Utils.isEmpty(gb))ppuch.setKd_group(gb);
-		if(!Utils.isEmpty(kb))ppuch.setKd_biaya(kb);
-		
+
+		if (!Utils.isEmpty(nb))
+			ppuch.setNo_batch(nb);
+		if (!Utils.isEmpty(np))
+			ppuch.setNo_ppuc(np);
+		if (!Utils.isEmpty(lk))
+			ppuch.setLok_kd(lk);
+		if (!Utils.isEmpty(gb))
+			ppuch.setKd_group(gb);
+		if (!Utils.isEmpty(kb))
+			ppuch.setKd_biaya(kb);
+
 		ppuch.setPosisi_min(posisi_min);
 		ppuch.setPosisi(posisi);
-		
-		if(posisiGroup!=null){
-			String posGroup="";
-			int i=0;
-			for(Integer ps:posisiGroup){
-				if(i==0) posGroup+=ps;
-				else posGroup+=", "+ps;
+
+		if (posisiGroup != null) {
+			String posGroup = "";
+			int i = 0;
+			for (Integer ps : posisiGroup) {
+				if (i == 0)
+					posGroup += ps;
+				else
+					posGroup += ", " + ps;
 			}
-			ppuch.posisiGroup=posGroup;
+			ppuch.posisiGroup = posGroup;
 		}
 
 		if (type == 1)
@@ -128,63 +135,73 @@ public class PpucHManager extends BaseService {
 	}
 
 	/** Ambil data paging **/
-	public List<PpucH> selectPagingList(String search, String sort, String sortOrder, int page, int rowcount, Integer type, String nb, String np, String lk, String gb, String kb,Integer posisi_min,Integer posisi,Integer [] posisiGroup) {
+	public List<PpucH> selectPagingList(String search, String sort, String sortOrder, int page, int rowcount, Integer type, String nb, String np, String lk, String gb, String kb, Integer posisi_min, Integer posisi, Integer[] posisiGroup) {
 		PpucH ppuch = new PpucH();
 		ppuch.setSearch(search);
-		
-		if(sortOrder==null)sortOrder="asc";
+
+		if (sortOrder == null)
+			sortOrder = "asc";
 		if (sort != null)
 			ppuch.setSort(sort + " " + sortOrder);
 		ppuch.setPage(page);
 		ppuch.setRowcount(rowcount);
-		
-		if(!Utils.isEmpty(nb))ppuch.setNo_batch(nb);
-		if(!Utils.isEmpty(np))ppuch.setNo_ppuc(np);
-		if(!Utils.isEmpty(lk))ppuch.setLok_kd(lk);
-		if(!Utils.isEmpty(gb))ppuch.setKd_group(gb);
-		if(!Utils.isEmpty(kb))ppuch.setKd_biaya(kb);
-		
+
+		if (!Utils.isEmpty(nb))
+			ppuch.setNo_batch(nb);
+		if (!Utils.isEmpty(np))
+			ppuch.setNo_ppuc(np);
+		if (!Utils.isEmpty(lk))
+			ppuch.setLok_kd(lk);
+		if (!Utils.isEmpty(gb))
+			ppuch.setKd_group(gb);
+		if (!Utils.isEmpty(kb))
+			ppuch.setKd_biaya(kb);
+
 		ppuch.setPosisi_min(posisi_min);
 		ppuch.setPosisi(posisi);
-		
-		if(posisiGroup!=null){
-			String posGroup="";
-			int i=0;
-			for(Integer ps:posisiGroup){
-				if(i==0) posGroup+=ps;
-				else posGroup+=", "+ps;
+
+		if (posisiGroup != null) {
+			String posGroup = "";
+			int i = 0;
+			for (Integer ps : posisiGroup) {
+				if (i == 0)
+					posGroup += ps;
+				else
+					posGroup += ", " + ps;
 				i++;
 			}
-			ppuch.posisiGroup=posGroup;
+			ppuch.posisiGroup = posGroup;
 		}
-		
+
 		if (type == 1)
 			return ppuchMapper.selectPagingListSatu(ppuch);
-		else if (type == 2){
-			List<PpucH> ppucHs=new ArrayList<PpucH>();
-			
-			int i=0;
-			String no_batch="";
-			PpucH tmp=new PpucH();
-			List<PpucH> pphList=ppuchMapper.selectPagingList(ppuch);
-			for(PpucH pp: pphList){
-				if(no_batch.equals("")){//baru masuk
-					tmp=pp;
+		else if (type == 2) {
+			List<PpucH> ppucHs = new ArrayList<PpucH>();
+
+			int i = 0;
+			String no_batch = "";
+			PpucH tmp = new PpucH();
+			List<PpucH> pphList = ppuchMapper.selectPagingList(ppuch);
+			for (PpucH pp : pphList) {
+				if (no_batch.equals("")) {// baru masuk
+					tmp = pp;
 					tmp.ppuchs.add(pp);
-					no_batch=pp.no_batch;
-				}else if(no_batch.equals(pp.no_batch)){ // klo no batch masih sama masuk ke group sebelumnya;
+					no_batch = pp.no_batch;
+				} else if (no_batch.equals(pp.no_batch)) { // klo no batch masih
+															// sama masuk ke
+															// group sebelumnya;
 					tmp.ppuchs.add(pp);
-				}else{// klo sudah beda buat group baru  
+				} else {// klo sudah beda buat group baru
 					ppucHs.add(tmp);
-					tmp=pp;
+					tmp = pp;
 					tmp.ppuchs.add(pp);
-					no_batch=pp.no_batch;
+					no_batch = pp.no_batch;
 				}
 			}
 			ppucHs.add(tmp);
-			
+
 			return ppucHs;
-		}else {
+		} else {
 			return ppuchMapper.selectPagingList(ppuch);
 		}
 	}
@@ -192,7 +209,7 @@ public class PpucHManager extends BaseService {
 	/** Save Model **/
 	@Transactional
 	public PpucH save(PpucH ppuch) {
-		if (ppuch.getTgl_create()==null) {
+		if (ppuch.getTgl_create() == null) {
 			ppuch.setTgl_create(selectSysdate());
 			ppuch.setUser_create(CommonUtil.getCurrentUserId());
 
@@ -200,376 +217,423 @@ public class PpucHManager extends BaseService {
 
 			ppuchMapper.insert(ppuch);
 
-			audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.ADD, ppuch.getClass().getSimpleName(), ppuch.getItemId(), CommonUtil.getIpAddr(httpServletRequest), "ADD PPUCH",
-					CommonUtil.getCurrentUser(), changes);
+			audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.ADD, ppuch.getClass().getSimpleName(), ppuch.getItemId(), CommonUtil.getIpAddr(httpServletRequest), "ADD PPUCH", CommonUtil.getCurrentUser(), changes);
 		} else {
 			ppuch.setTgl_update(selectSysdate());
 			ppuch.setUser_update(CommonUtil.getCurrentUserId());
 
-			Set<AudittrailDetail> changes = CommonUtil.changes(ppuch,  get(ppuch.divisi_kd, ppuch.subdiv_kd, ppuch.dept_kd, ppuch.lok_kd, ppuch.no_ppuc, ppuch.tgl_ppuc));
+			Set<AudittrailDetail> changes = CommonUtil.changes(ppuch, get(ppuch.divisi_kd, ppuch.subdiv_kd, ppuch.dept_kd, ppuch.lok_kd, ppuch.no_ppuc, ppuch.tgl_ppuc));
 
 			ppuchMapper.update(ppuch);
 
-			audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.UPDATE, ppuch.getClass().getSimpleName(), ppuch.getItemId(), CommonUtil.getIpAddr(httpServletRequest),
-					"UPDATE PPUCH", CommonUtil.getCurrentUser(), changes);
+			audittrail(Audittrail.Activity.TRANS, Audittrail.TransType.UPDATE, ppuch.getClass().getSimpleName(), ppuch.getItemId(), CommonUtil.getIpAddr(httpServletRequest), "UPDATE PPUCH", CommonUtil.getCurrentUser(), changes);
 		}
 
 		return ppuch;
 	}
+
 	/** Others Method **/
-	
+
 	@Transactional
 	public PpucH saveAll(PpucH ppuch) {
-		List<HakApprove> lsHakApprove=new ArrayList<HakApprove>();
-		for(PpucD ppucd:ppuch.ppucds){
-			HakApprove hakapp=hakApproveManager.get(null,null,null, null, ppucd.kd_group, ppucd.kd_biaya,1);
-			if(!lsHakApprove.isEmpty()){
-				boolean add=true;
+		List<HakApprove> lsHakApprove = new ArrayList<HakApprove>();
+		for (PpucD ppucd : ppuch.ppucds) {
+			HakApprove hakapp = hakApproveManager.get(null, null, null, null, ppucd.kd_group, ppucd.kd_biaya, 1);
+			if (!lsHakApprove.isEmpty()) {
+				boolean add = true;
 				for (int i = 0; i < lsHakApprove.size(); i++) {
-					HakApprove tmp=lsHakApprove.get(i);
-					if(tmp.divisi_kd.equals(hakapp.divisi_kd) ){//jika dalam satu inputan data PPUC, ada divisi tujuan approval lebih dari satu, maka secara otomatis system akan memecah transaksi inputan cabang menjadi beberapa nomor PPUC
+					HakApprove tmp = lsHakApprove.get(i);
+					if (tmp.divisi_kd.equals(hakapp.divisi_kd)) {// jika dalam
+																	// satu
+																	// inputan
+																	// data
+																	// PPUC, ada
+																	// divisi
+																	// tujuan
+																	// approval
+																	// lebih
+																	// dari
+																	// satu,
+																	// maka
+																	// secara
+																	// otomatis
+																	// system
+																	// akan
+																	// memecah
+																	// transaksi
+																	// inputan
+																	// cabang
+																	// menjadi
+																	// beberapa
+																	// nomor
+																	// PPUC
 						lsHakApprove.get(i).ppucds.add(ppucd);
-						add=false;
+						add = false;
 						break;
 					}
 				}
-				
-				if(add){
-					hakapp.ppucds=new ArrayList<PpucD>();
+
+				if (add) {
+					hakapp.ppucds = new ArrayList<PpucD>();
 					hakapp.ppucds.add(ppucd);
 					lsHakApprove.add(hakapp);
 				}
-			}else{
-				hakapp.ppucds=new ArrayList<PpucD>();
+			} else {
+				hakapp.ppucds = new ArrayList<PpucD>();
 				hakapp.ppucds.add(ppucd);
 				lsHakApprove.add(hakapp);
 			}
 		}
-		
+
 		if (Utils.isEmpty(ppuch.no_batch)) {
-			String no_batch=lokasiManager.getCounterBatch(ppuch.lok_kd, ppuch.dept_kd, ppuch.subdiv_kd, ppuch.divisi_kd);
-			ppuch.no_batch=no_batch;
-			
-			User currentUser=CommonUtil.getCurrentUser();
+			String no_batch = lokasiManager.getCounterBatch(ppuch.lok_kd, ppuch.dept_kd, ppuch.subdiv_kd, ppuch.divisi_kd);
+			ppuch.no_batch = no_batch;
+
+			User currentUser = CommonUtil.getCurrentUser();
 			ppuch.setEmail_asal_create(currentUser.getEmail());
 			ppuch.setHp_asal_create(currentUser.getNo_hp());
-			
-			for(HakApprove hakApprove : lsHakApprove){//jika dalam satu inputan data PPUC, ada divisi tujuan approval lebih dari satu, maka secara otomatis system akan memecah transaksi inputan cabang menjadi beberapa nomor PPUC
-				String no_ppuc=lokasiManager.getCounterPPUC(ppuch.lok_kd, ppuch.dept_kd, ppuch.subdiv_kd, ppuch.divisi_kd);
-				int no=0;
-				for(PpucD ppucd:hakApprove.ppucds){
-					DetailBiaya detailBiaya=detailBiayaManager.get(ppucd.kd_biaya);
-					if(detailBiaya.f_putus==0){//akan create record transaksi 'ppuc-h' dan 'ppuc-d' sebanyak qty yang diinput 
-						Integer qty=ppucd.qty.intValue();
+
+			for (HakApprove hakApprove : lsHakApprove) {// jika dalam satu
+														// inputan data PPUC,
+														// ada divisi tujuan
+														// approval lebih dari
+														// satu, maka secara
+														// otomatis system akan
+														// memecah transaksi
+														// inputan cabang
+														// menjadi beberapa
+														// nomor PPUC
+				String no_ppuc = lokasiManager.getCounterPPUC(ppuch.lok_kd, ppuch.dept_kd, ppuch.subdiv_kd, ppuch.divisi_kd);
+				int no = 0;
+				for (PpucD ppucd : hakApprove.ppucds) {
+					DetailBiaya detailBiaya = detailBiayaManager.get(ppucd.kd_biaya);
+					if (detailBiaya.f_putus == 0) {// akan create record
+													// transaksi 'ppuc-h' dan
+													// 'ppuc-d' sebanyak qty
+													// yang diinput
+						Integer qty = ppucd.qty.intValue();
 						for (int i = 0; i < qty; i++) {
-							ppuch.no_ppuc=lokasiManager.getCounterPPUC(ppuch.lok_kd, ppuch.dept_kd, ppuch.subdiv_kd, ppuch.divisi_kd);
-							
-							ppuch.hp_tujuan_create=hakApprove.user.no_hp;
-							ppuch.email_tujuan_create=hakApprove.user.email;
-							ppuch.divisi_kd_apprv=hakApprove.divisi_kd;
-							ppuch.subdiv_kd_apprv=hakApprove.subdiv_kd;
-							ppuch.dept_kd_apprv=hakApprove.dept_kd;
-							ppuch.posisi=PosisiDesc.INPUT_PPUC;
-							ppuch.tgl_create=null;
+							ppuch.no_ppuc = lokasiManager.getCounterPPUC(ppuch.lok_kd, ppuch.dept_kd, ppuch.subdiv_kd, ppuch.divisi_kd);
+
+							ppuch.hp_tujuan_create = hakApprove.user.no_hp;
+							ppuch.email_tujuan_create = hakApprove.user.email;
+							ppuch.divisi_kd_apprv = hakApprove.divisi_kd;
+							ppuch.subdiv_kd_apprv = hakApprove.subdiv_kd;
+							ppuch.dept_kd_apprv = hakApprove.dept_kd;
+							ppuch.posisi = PosisiDesc.INPUT_PPUC;
+							ppuch.tgl_create = null;
 							save(ppuch);
-							
-							ppucd.no_ppuc=ppuch.no_ppuc;
-							ppucd.no_batch=no_batch;
-							ppucd.qty=1l;
-							ppucd.tgl_create=null;
-							ppucd.posisi=PosisiDesc.INPUT_PPUC;
+
+							ppucd.no_ppuc = ppuch.no_ppuc;
+							ppucd.no_batch = no_batch;
+							ppucd.qty = 1l;
+							ppucd.tgl_create = null;
+							ppucd.posisi = PosisiDesc.INPUT_PPUC;
 							ppucdManager.save(ppucd);
 						}
-					}else{
-						if(no==0){
-							ppuch.no_ppuc=no_ppuc;
-							ppuch.hp_tujuan_create=hakApprove.user.no_hp;
-							ppuch.email_tujuan_create=hakApprove.user.email;
-							ppuch.divisi_kd_apprv=hakApprove.divisi_kd;
-							ppuch.subdiv_kd_apprv=hakApprove.subdiv_kd;
-							ppuch.dept_kd_apprv=hakApprove.dept_kd;
-							ppuch.posisi=1;
-							ppuch.tgl_create=null;
+					} else {
+						if (no == 0) {
+							ppuch.no_ppuc = no_ppuc;
+							ppuch.hp_tujuan_create = hakApprove.user.no_hp;
+							ppuch.email_tujuan_create = hakApprove.user.email;
+							ppuch.divisi_kd_apprv = hakApprove.divisi_kd;
+							ppuch.subdiv_kd_apprv = hakApprove.subdiv_kd;
+							ppuch.dept_kd_apprv = hakApprove.dept_kd;
+							ppuch.posisi = 1;
+							ppuch.tgl_create = null;
 							save(ppuch);
 						}
-						ppucd.no_ppuc=no_ppuc;
-						ppucd.no_batch=no_batch;
-						ppucd.tgl_create=null;
-						ppucd.posisi=PosisiDesc.INPUT_PPUC;
+						ppucd.no_ppuc = no_ppuc;
+						ppucd.no_batch = no_batch;
+						ppucd.tgl_create = null;
+						ppucd.posisi = PosisiDesc.INPUT_PPUC;
 						ppucdManager.save(ppucd);
 						no++;
-						
+
 					}
 				}
-			}	
+			}
 		} else {
-			List<PpucH> ppuchs=get(ppuch.no_batch);
-			List<PpucD> tmp=new ArrayList<PpucD>();
-			for(PpucH pp:ppuchs){
+			List<PpucH> ppuchs = get(ppuch.no_batch);
+			List<PpucD> tmp = new ArrayList<PpucD>();
+			for (PpucH pp : ppuchs) {
 				tmp.addAll(pp.ppucds);
 			}
-			
-			//delete ppucd
-			for(PpucD ppucd:tmp){
+
+			// delete ppucd
+			for (PpucD ppucd : tmp) {
 				ppucdManager.remove(ppucd.divisi_kd, ppucd.subdiv_kd, ppucd.dept_kd, ppucd.lok_kd, ppucd.no_ppuc, ppucd.tgl_ppuc, ppucd.kd_biaya);
 			}
-			
-			for(PpucH pp:ppuchs){
+
+			for (PpucH pp : ppuchs) {
 				remove(pp.divisi_kd, pp.subdiv_kd, pp.dept_kd, pp.lok_kd, pp.no_ppuc, pp.tgl_ppuc);
 			}
-			
-			String no_batch=ppuch.no_batch;
-			
-			User currentUser=CommonUtil.getCurrentUser();
+
+			String no_batch = ppuch.no_batch;
+
+			User currentUser = CommonUtil.getCurrentUser();
 			ppuch.setEmail_asal_create(currentUser.getEmail());
 			ppuch.setHp_asal_create(currentUser.getNo_hp());
-			
-			for(HakApprove hakApprove : lsHakApprove){//jika dalam satu inputan data PPUC, ada divisi tujuan approval lebih dari satu, maka secara otomatis system akan memecah transaksi inputan cabang menjadi beberapa nomor PPUC
-				String no_ppuc=null;
-				for(PpucD ppucd:hakApprove.ppucds){
-					if(!Utils.isEmpty(ppucd.no_ppuc)){
-						DetailBiaya detailBiaya=detailBiayaManager.get(ppucd.kd_biaya);
-						if(detailBiaya.f_putus!=0){
-							no_ppuc=ppucd.no_ppuc;
+
+			for (HakApprove hakApprove : lsHakApprove) {// jika dalam satu
+														// inputan data PPUC,
+														// ada divisi tujuan
+														// approval lebih dari
+														// satu, maka secara
+														// otomatis system akan
+														// memecah transaksi
+														// inputan cabang
+														// menjadi beberapa
+														// nomor PPUC
+				String no_ppuc = null;
+				for (PpucD ppucd : hakApprove.ppucds) {
+					if (!Utils.isEmpty(ppucd.no_ppuc)) {
+						DetailBiaya detailBiaya = detailBiayaManager.get(ppucd.kd_biaya);
+						if (detailBiaya.f_putus != 0) {
+							no_ppuc = ppucd.no_ppuc;
 							break;
 						}
 					}
 				}
-				
-				if(Utils.isEmpty(no_ppuc))no_ppuc=lokasiManager.getCounterPPUC(ppuch.lok_kd, ppuch.dept_kd, ppuch.subdiv_kd, ppuch.divisi_kd);
-				int no=0;
-				for(PpucD ppucd:hakApprove.ppucds){
-					DetailBiaya detailBiaya=detailBiayaManager.get(ppucd.kd_biaya);
-					if(detailBiaya.f_putus==0){//akan create record transaksi 'ppuc-h' dan 'ppuc-d' sebanyak qty yang diinput 
-						Integer qty=ppucd.qty.intValue();
-						if(ppucd.no_ppuc==null)ppucd.no_ppuc="";
-						String [] splitNo=ppucd.no_ppuc.split(";");
+
+				if (Utils.isEmpty(no_ppuc))
+					no_ppuc = lokasiManager.getCounterPPUC(ppuch.lok_kd, ppuch.dept_kd, ppuch.subdiv_kd, ppuch.divisi_kd);
+				int no = 0;
+				for (PpucD ppucd : hakApprove.ppucds) {
+					DetailBiaya detailBiaya = detailBiayaManager.get(ppucd.kd_biaya);
+					if (detailBiaya.f_putus == 0) {// akan create record
+													// transaksi 'ppuc-h' dan
+													// 'ppuc-d' sebanyak qty
+													// yang diinput
+						Integer qty = ppucd.qty.intValue();
+						if (ppucd.no_ppuc == null)
+							ppucd.no_ppuc = "";
+						String[] splitNo = ppucd.no_ppuc.split(";");
 						for (int i = 0; i < qty; i++) {
-							if(splitNo.length==0){
-								ppuch.no_ppuc=lokasiManager.getCounterPPUC(ppuch.lok_kd, ppuch.dept_kd, ppuch.subdiv_kd, ppuch.divisi_kd);
-							}else{
-								if(i>=splitNo.length){
-									ppuch.no_ppuc=lokasiManager.getCounterPPUC(ppuch.lok_kd, ppuch.dept_kd, ppuch.subdiv_kd, ppuch.divisi_kd);
-								}else{
-									ppuch.no_ppuc=splitNo[i];
-									
-									if(Utils.isEmpty(ppuch.no_ppuc))ppuch.no_ppuc=lokasiManager.getCounterPPUC(ppuch.lok_kd, ppuch.dept_kd, ppuch.subdiv_kd, ppuch.divisi_kd);
+							if (splitNo.length == 0) {
+								ppuch.no_ppuc = lokasiManager.getCounterPPUC(ppuch.lok_kd, ppuch.dept_kd, ppuch.subdiv_kd, ppuch.divisi_kd);
+							} else {
+								if (i >= splitNo.length) {
+									ppuch.no_ppuc = lokasiManager.getCounterPPUC(ppuch.lok_kd, ppuch.dept_kd, ppuch.subdiv_kd, ppuch.divisi_kd);
+								} else {
+									ppuch.no_ppuc = splitNo[i];
+
+									if (Utils.isEmpty(ppuch.no_ppuc))
+										ppuch.no_ppuc = lokasiManager.getCounterPPUC(ppuch.lok_kd, ppuch.dept_kd, ppuch.subdiv_kd, ppuch.divisi_kd);
 								}
 							}
-							
-							ppuch.hp_tujuan_create=hakApprove.user.no_hp;
-							ppuch.email_tujuan_create=hakApprove.user.email;
-							ppuch.divisi_kd_apprv=hakApprove.divisi_kd;
-							ppuch.subdiv_kd_apprv=hakApprove.subdiv_kd;
-							ppuch.dept_kd_apprv=hakApprove.dept_kd;
-							ppuch.posisi=PosisiDesc.INPUT_PPUC;
-							ppuch.tgl_create=null;
-							save(ppuch);//harusnya selalu insert
-							
-							ppucd.no_ppuc=ppuch.no_ppuc;
-							ppucd.no_batch=no_batch;
-							ppucd.qty=1l;
-							ppucd.tgl_create=null;
-							ppucd.posisi=PosisiDesc.INPUT_PPUC;
-							ppucdManager.save(ppucd);//harusnya selalu insert
+
+							ppuch.hp_tujuan_create = hakApprove.user.no_hp;
+							ppuch.email_tujuan_create = hakApprove.user.email;
+							ppuch.divisi_kd_apprv = hakApprove.divisi_kd;
+							ppuch.subdiv_kd_apprv = hakApprove.subdiv_kd;
+							ppuch.dept_kd_apprv = hakApprove.dept_kd;
+							ppuch.posisi = PosisiDesc.INPUT_PPUC;
+							ppuch.tgl_create = null;
+							save(ppuch);// harusnya selalu insert
+
+							ppucd.no_ppuc = ppuch.no_ppuc;
+							ppucd.no_batch = no_batch;
+							ppucd.qty = 1l;
+							ppucd.tgl_create = null;
+							ppucd.posisi = PosisiDesc.INPUT_PPUC;
+							ppucdManager.save(ppucd);// harusnya selalu insert
 						}
-					}else{
-						if(no==0){
-							ppuch.no_ppuc=no_ppuc;
-							ppuch.hp_tujuan_create=hakApprove.user.no_hp;
-							ppuch.email_tujuan_create=hakApprove.user.email;
-							ppuch.divisi_kd_apprv=hakApprove.divisi_kd;
-							ppuch.subdiv_kd_apprv=hakApprove.subdiv_kd;
-							ppuch.dept_kd_apprv=hakApprove.dept_kd;
-							ppuch.posisi=PosisiDesc.INPUT_PPUC;
-							ppuch.tgl_create=null;
-							save(ppuch);//harusnya selalu insert
+					} else {
+						if (no == 0) {
+							ppuch.no_ppuc = no_ppuc;
+							ppuch.hp_tujuan_create = hakApprove.user.no_hp;
+							ppuch.email_tujuan_create = hakApprove.user.email;
+							ppuch.divisi_kd_apprv = hakApprove.divisi_kd;
+							ppuch.subdiv_kd_apprv = hakApprove.subdiv_kd;
+							ppuch.dept_kd_apprv = hakApprove.dept_kd;
+							ppuch.posisi = PosisiDesc.INPUT_PPUC;
+							ppuch.tgl_create = null;
+							save(ppuch);// harusnya selalu insert
 						}
-						ppucd.no_ppuc=ppuch.no_ppuc;
-						ppucd.no_batch=no_batch;
-						ppucd.tgl_create=null;
-						ppucd.posisi=PosisiDesc.INPUT_PPUC;
-						ppucdManager.save(ppucd);//harusnya selalu insert
+						ppucd.no_ppuc = ppuch.no_ppuc;
+						ppucd.no_batch = no_batch;
+						ppucd.tgl_create = null;
+						ppucd.posisi = PosisiDesc.INPUT_PPUC;
+						ppucdManager.save(ppucd);// harusnya selalu insert
 						no++;
-						
+
 					}
 				}
-			}	
-		} 
+			}
+		}
 		return ppuch;
 	}
 
 	@Transactional
 	public void remove(String no_batch) {
-		List<PpucH> ppuchs=get(no_batch);
-		List<PpucD> tmp=new ArrayList<PpucD>();
-		for(PpucH pp:ppuchs){
+		List<PpucH> ppuchs = get(no_batch);
+		List<PpucD> tmp = new ArrayList<PpucD>();
+		for (PpucH pp : ppuchs) {
 			tmp.addAll(pp.ppucds);
 		}
-		
-		//delete ppucd
-		for(PpucD ppucd:tmp){
+
+		// delete ppucd
+		for (PpucD ppucd : tmp) {
 			ppucdManager.remove(ppucd.divisi_kd, ppucd.subdiv_kd, ppucd.dept_kd, ppucd.lok_kd, ppucd.no_ppuc, ppucd.tgl_ppuc, ppucd.kd_biaya);
 		}
-		
-		for(PpucH pp:ppuchs){
+
+		for (PpucH pp : ppuchs) {
 			remove(pp.divisi_kd, pp.subdiv_kd, pp.dept_kd, pp.lok_kd, pp.no_ppuc, pp.tgl_ppuc);
 		}
 	}
-	
+
 	@Transactional
 	public void confirmInput(String no_batch) {
-		List<PpucH> ppuchs=get(no_batch);
-		List<PpucD> tmp=new ArrayList<PpucD>();
-		Date sysdate= selectSysdate();
-		for(PpucH pp:ppuchs){
-			pp.posisi = PosisiDesc.APPROVAL_PPUC;//ke posisi
+		List<PpucH> ppuchs = get(no_batch);
+		List<PpucD> tmp = new ArrayList<PpucD>();
+		Date sysdate = selectSysdate();
+		for (PpucH pp : ppuchs) {
+			pp.posisi = PosisiDesc.APPROVAL_PPUC;// ke posisi
 			pp.user_confirm = CommonUtil.getCurrentUserId();
 			pp.tgl_confirm = sysdate;
-			for(PpucD ppucd:pp.ppucds){
-				ppucd.setTgl_create(sysdate);// ini untuk pancing biar bisa masuk ke update
+			for (PpucD ppucd : pp.ppucds) {
+				ppucd.setTgl_create(sysdate);// ini untuk pancing biar bisa
+												// masuk ke update
 				ppucd.setPosisi(pp.posisi);
 				ppucdManager.save(ppucd);
 			}
 			save(pp);
 		}
-		
-		//TODO : kirim email & sms klo tidak ada error
-		
+
+		// TODO : kirim email & sms klo tidak ada error
+
 	}
-	
-	
+
 	@Transactional
 	public void saveAllApproval(List<PpucH> ppuchs) {
-		User currentUser =CommonUtil.getCurrentUser();
-		Date sysdate=selectSysdate();
-		for(PpucH ppuch:ppuchs){
+		User currentUser = CommonUtil.getCurrentUser();
+		Date sysdate = selectSysdate();
+		for (PpucH ppuch : ppuchs) {
 			ppuch.setTgl_approve(sysdate);
 			ppuch.setTgl_create(sysdate);
 			ppuch.setUser_approve(currentUser.getUser_id());
 			ppuch.setPosisi(PosisiDesc.PURCHASING);
 			save(ppuch);
-			for(PpucD ppucd:ppuch.ppucds){
+			for (PpucD ppucd : ppuch.ppucds) {
 				ppucd.setTgl_create(sysdate);
-				if(ppucd.qty==0){
+				if (ppucd.qty == 0) {
 					ppucd.setPosisi(PosisiDesc.DECLINE_PPUC);
 					ppucd.setF_approval(0);
-				}else{
+				} else {
 					ppucd.setPosisi(ppuch.posisi);
 					ppucd.setF_approval(1);
 				}
 				ppucdManager.save(ppucd);
 			}
 		}
-		
-		//TODO :send email dan sms
-		for(PpucH ppuch:ppuchs){
-			for(PpucD ppucd:ppuch.ppucds){
-				
+
+		// TODO :send email dan sms
+		for (PpucH ppuch : ppuchs) {
+			for (PpucD ppucd : ppuch.ppucds) {
+
 			}
 		}
-		
-		
+
 	}
-	
+
 	@Transactional
 	public void saveAllRealCabang(List<PpucH> ppuchs) {
-		User currentUser =CommonUtil.getCurrentUser();
-		Date sysdate=selectSysdate();
-		for(PpucH ppuch:ppuchs){
+		User currentUser = CommonUtil.getCurrentUser();
+		Date sysdate = selectSysdate();
+		for (PpucH ppuch : ppuchs) {
 			ppuch.setTgl_approve(sysdate);
 			ppuch.setTgl_create(sysdate);
 			ppuch.setUser_approve(currentUser.getUser_id());
 			ppuch.setPosisi(PosisiDesc.INPUT_REALIZATION);
 			save(ppuch);
-			for(PpucD ppucd:ppuch.ppucds){
-				if(ppucd.getNo_realisasi()==null)
+			for (PpucD ppucd : ppuch.ppucds) {
+				if (ppucd.getNo_realisasi() == null){
 					ppucd.setNo_realisasi(lokasiManager.getCounterRealisasi(ppucd.lok_kd, ppucd.dept_kd, ppucd.subdiv_kd, ppucd.divisi_kd));
-				
+				}
 				ppucd.setTgl_create(sysdate);
-				
-				if(ppucd.qty_real_cbg > ppucd.qty || ppucd.harga_real_cbg > ppucd.harga || ppucd.total_real_cbg > ppucd.total)
+
+				if (ppucd.qty_real_cbg > ppucd.qty || ppucd.harga_real_cbg > ppucd.harga || ppucd.total_real_cbg > ppucd.total)
 					ppucd.setPosisi(PosisiDesc.OVER_BUDGET);
 				else
 					ppucd.setPosisi(PosisiDesc.INPUT_REALIZATION);
-				
+
 				ppucdManager.save(ppucd);
 			}
 		}
-		
-		//TODO :send email dan sms
-		/*for(PpucH ppuch:ppuchs){
-			for(PpucD ppucd:ppuch.ppucds){
-				
-			}
-		}*/
-		
+
+		// TODO :send email dan sms
+		/*
+		 * for(PpucH ppuch:ppuchs){ for(PpucD ppucd:ppuch.ppucds){
+		 * 
+		 * } }
+		 */
+
 	}
-	
+
 	@Transactional
 	public void confirmRealCabang(PpucD ppucd) {
-		Date sysdate=selectSysdate();
-		ppucd.setTgl_create(sysdate);// ini untuk pancing biar bisa masuk ke update
-		if(ppucd.getPosisi()==PosisiDesc.INPUT_REALIZATION){
+		Date sysdate = selectSysdate();
+		ppucd.setTgl_create(sysdate);// ini untuk pancing biar bisa masuk ke
+										// update
+		if (ppucd.getPosisi() == PosisiDesc.INPUT_REALIZATION) {
 			ppucd.setPosisi(PosisiDesc.INPUT_REAL_REALIZATION);
 			ppucd.setTgl_realisasi(sysdate);
 			ppucd.setUser_realisasi(CommonUtil.getCurrentUserId());
-		}else if(ppucd.getPosisi()==PosisiDesc.OVER_BUDGET)
+		} else if (ppucd.getPosisi() == PosisiDesc.OVER_BUDGET)
 			ppucd.setPosisi(PosisiDesc.CONFIRM_OVER_BUDGET);
-		
+
 		ppucdManager.save(ppucd);
-		
-		PpucH ppuch=new PpucH(ppucd.divisi_kd, ppucd.subdiv_kd, ppucd.dept_kd, ppucd.lok_kd, ppucd.no_ppuc, ppucd.tgl_ppuc, ppucd.no_batch);
+
+		PpucH ppuch = new PpucH(ppucd.divisi_kd, ppucd.subdiv_kd, ppucd.dept_kd, ppucd.lok_kd, ppucd.no_ppuc, ppucd.tgl_ppuc, ppucd.no_batch);
 		ppuch.setTgl_create(sysdate);
-	
-		if(selectCountTable("ppuc_d", "posisi in ("+PosisiDesc.INPUT_REALIZATION+","+PosisiDesc.OVER_BUDGET+","+PosisiDesc.CONFIRM_OVER_BUDGET+","+PosisiDesc.DECLINE_NEW_BUDGET+")")==0){
+
+		if (selectCountTable("ppuc_d", "posisi in (" + PosisiDesc.INPUT_REALIZATION + "," + PosisiDesc.OVER_BUDGET + "," + PosisiDesc.CONFIRM_OVER_BUDGET + "," + PosisiDesc.DECLINE_NEW_BUDGET + ")") == 0) {
 			ppuch.setPosisi(PosisiDesc.INPUT_REAL_REALIZATION);
-		}
-			save(ppuch);
 			
-		
-		//TODO : kirim email & sms klo tidak ada error
-		
+		}
+		save(ppuch);
+
+		// TODO : kirim email & sms klo tidak ada error
+
 	}
-	
+
 	@Transactional
 	public void confirmBatal(PpucD ppucd, String jns_con) {
-		Date sysdate=selectSysdate();
-		ppucd.setTgl_create(sysdate);// ini untuk pancing biar bisa masuk ke update
-		if(jns_con.equals("c")){
+		Date sysdate = selectSysdate();
+		ppucd.setTgl_create(sysdate);// ini untuk pancing biar bisa masuk ke
+										// update
+		if (jns_con.equals("c")) {
 			ppucd.setPosisi(PosisiDesc.NEW_BUDGET);
 			ppucd.setTgl_batal(sysdate);
 			ppucd.setUser_batal(CommonUtil.getCurrentUserId());
-		}else if(jns_con.equals("t"))
+		} else if (jns_con.equals("t"))
 			ppucd.setPosisi(PosisiDesc.DECLINE_NEW_BUDGET);
-		
+
 		ppucdManager.save(ppucd);
-		
-		PpucH ppuch=new PpucH(ppucd.divisi_kd, ppucd.subdiv_kd, ppucd.dept_kd, ppucd.lok_kd, ppucd.no_ppuc, ppucd.tgl_ppuc, ppucd.no_batch);
+
+		PpucH ppuch = new PpucH(ppucd.divisi_kd, ppucd.subdiv_kd, ppucd.dept_kd, ppucd.lok_kd, ppucd.no_ppuc, ppucd.tgl_ppuc, ppucd.no_batch);
 		ppuch.setTgl_create(sysdate);
-	
-		if(selectCountTable("ppuc_d", "posisi <> "+PosisiDesc.NEW_BUDGET)==0){
+
+		if (selectCountTable("ppuc_d", "posisi <> " + PosisiDesc.NEW_BUDGET) == 0) {
 			ppuch.setPosisi(PosisiDesc.NEW_BUDGET);
 		}
-			save(ppuch);
-			
-		
-		//TODO : kirim email & sms klo tidak ada error
-		
+		save(ppuch);
+
+		// TODO : kirim email & sms klo tidak ada error
+
 	}
-	
+
 	@Transactional
 	public void saveRealOC(PpucH ppuch) {
-		User currentUser =CommonUtil.getCurrentUser();
-		Date sysdate=selectSysdate();
-		
+		User currentUser = CommonUtil.getCurrentUser();
+		Date sysdate = selectSysdate();
+
 		save(ppuch);
-		
+
 		ppucdManager.save(ppuch.ppucd);
-		
-		//save ke realisasi
-		
-		
-		
+
+		// save ke realisasi
+
 	}
 }

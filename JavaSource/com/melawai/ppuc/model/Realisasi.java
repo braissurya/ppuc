@@ -23,6 +23,8 @@ import com.melawai.ppuc.model.BaseObject;
 
 public class Realisasi extends BaseObject implements Serializable  {
 
+	private static final long serialVersionUID = 614119730593360114L;
+
 	//****************** COLOMN FROM TABLE START HERE ******************/
 	@NotNull
 	@Size(max=3)

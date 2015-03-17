@@ -125,6 +125,11 @@ public class DivisiController extends ParentController {
 		return "divisi/update";
 	}
 
+	void addDateTimeFormatPatterns(Model uiModel) {
+		uiModel.addAttribute("divisi_tgl_update_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("divisi_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+	}
+
 	@RequestMapping(value = "/{divisi_kd}", method = RequestMethod.DELETE, produces = "text/html")
 	public String delete(@PathVariable("divisi_kd") String divisi_kd, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size,
 			Model uiModel) {
@@ -142,11 +147,6 @@ public class DivisiController extends ParentController {
 		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
 		uiModel.addAttribute("pesan", pesan);
 		return "redirect:/master/divisi";
-	}
-
-	void addDateTimeFormatPatterns(Model uiModel) {
-		uiModel.addAttribute("divisi_tgl_update_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("divisi_tgl_create_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
 	}
 
 	void populateEditForm(Model uiModel, Divisi divisi) {

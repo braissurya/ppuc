@@ -40,6 +40,7 @@ import com.melawai.ppuc.model.Audittrail;
 import com.melawai.ppuc.model.Posisi.PosisiDesc;
 import com.melawai.ppuc.model.PpucD;
 import com.melawai.ppuc.model.PpucH;
+import com.melawai.ppuc.model.Upload;
 import com.melawai.ppuc.model.User;
 import com.melawai.ppuc.model.UserDivisi;
 import com.melawai.ppuc.services.PpucDManager;
@@ -527,7 +528,7 @@ public class PpucHController extends ParentController{
 	@RequestMapping(value= {"/realisasi/oc/noppuc/save"}, method=RequestMethod.POST) //mapping request saat user submit /upload ke function ini (POST)
 	public String saveRealOC(HttpServletRequest httpServletRequest,@ModelAttribute("ppuch")PpucH ppuch,BindingResult bindingResult, Model uiModel, RedirectAttributes ra) throws IOException{
 		BindException errors = new BindException(bindingResult);
-
+		ppuch.upload = new Upload(null, 5000000, true, "*.pdf,*.png,*.jpg,*.gif,*.jpeg,*.tif");
 		DataBinder binder = new DataBinder(ppuch.upload);
 		binder.setValidator(this.uploadValidator);
 		binder.validate();
@@ -588,7 +589,7 @@ public class PpucHController extends ParentController{
 	}
 	
 	@RequestMapping(value = "/realisasi/oc/noppuc/{no_ppuc}/{kd_biaya}", params = "form", produces = "text/html")
-	public String updateFormRealisasiOC(@PathVariable("no_ppuc") String no_ppuc,@PathVariable("kd_biaya") String kd_biaya, Model uiModel) {
+	public String updateFormRealOC(@PathVariable("no_ppuc") String no_ppuc,@PathVariable("kd_biaya") String kd_biaya, Model uiModel) {
 		List<PpucH> ppuchs=ppuchManager.getBynoppuc(no_ppuc);
 		if(!ppuchs.isEmpty()){
 			PpucH ppuch=ppuchs.get(0);
@@ -616,7 +617,8 @@ public class PpucHController extends ParentController{
 					}
 				}
 			}
-			ppuch.ppucds=tmp2;
+//			ppuch.ppucds=tmp2;
+			ppuch.upload = new Upload(null, 5000000, true, "*.pdf,*.png,*.jpg,*.gif,*.jpeg,*.tif");
 			if(kd_biaya.equals("confirm")) uiModel.addAttribute("confirm", kd_biaya);
 			populateEditForm(uiModel,ppuch);
 		}

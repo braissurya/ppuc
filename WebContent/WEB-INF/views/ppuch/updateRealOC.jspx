@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:spring="http://www.springframework.org/tags"  xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:form="http://www.springframework.org/tags/form" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"  xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:fm="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page"  version="2.0">
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:spring="http://www.springframework.org/tags" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:form="http://www.springframework.org/tags/form" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:fm="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<spring:url value="/" var="path" />
-    <jsp:output omit-xml-declaration="yes"/>
-    <util:panel id="fu_com_melawai_ppuc_model_ppuch"  title="Verifikasi Realisasi OC" openPane="true">
-      <spring:url value="/trans/ppuch/realisasi/cabang/confirm" var="confirm_form_url" /> 
-      <c:set var="putPOST" value="PUT"/>
-      <c:if test="${empty confirm }">
-	      <spring:url value="/trans/ppuch/realisasi/cabang/noppuc/save" var="confirm_form_url"/>
-	      <c:set var="putPOST" value="POST"/>
-      </c:if>
-      
-      
-      <form:form action="${confirm_form_url}" name="formpost" method="${putPOST}" modelAttribute="ppuch" enctype="multipart/form-data" >
+	<jsp:output omit-xml-declaration="yes" />
+	<util:panel id="fu_com_melawai_ppuc_model_ppuch" title="Verifikasi Realisasi OC" openPane="true">
+		<spring:url value="/trans/ppuch/realisasi/oc/noppuc/save" var="confirm_form_url" />
+
+		<form:form action="${confirm_form_url}" name="formpost" method="POST" modelAttribute="ppuch" enctype="multipart/form-data">
 			<c:choose>
 				<c:when test="${not empty ppuch.ppucds }">
 					<c:forEach items="${ppuch.ppucds}" var="i" varStatus="s">
@@ -41,10 +37,12 @@
 														</c:otherwise>
 													</c:choose>
 													<div class="" id="">
-														<label for="tgl_ppuc" class="label">KD Group</label> <span class="doubleDot">:</span> <input type="hidden" name="ids" value="${s.count}" /> <input type="text" name="kd_group_${s.count}" id="kd_group_${s.count}" value="${i.groupBiaya.kd_group }" disabled="disabled" />
+														<label for="tgl_ppuc" class="label">KD Group</label> <span class="doubleDot">:</span> <input type="hidden" name="ids" value="${s.count}" /> <input type="text" name="kd_group_${s.count}"
+															id="kd_group_${s.count}" value="${i.groupBiaya.kd_group }" disabled="disabled" />
 													</div> <br />
 													<div class="" id="">
-														<label class="label">KD Biaya</label> <span class="doubleDot">:</span> <input type="text" name="kd_biaya_${s.count}" id="kd_biaya_${s.count}" value="${i.detailBiaya.kd_biaya}" disabled="disabled" />
+														<label class="label">KD Biaya</label> <span class="doubleDot">:</span> <input type="text" name="kd_biaya_${s.count}" id="kd_biaya_${s.count}" value="${i.detailBiaya.kd_biaya}"
+															disabled="disabled" />
 														<form:hidden path="kd_biaya" />
 													</div> <br />
 													<div class="" id="">
@@ -55,45 +53,14 @@
 														<label class="label">Ket. Approve</label> <span class="doubleDot">:</span>
 														<TEXTAREA rows="3" cols="30" disabled="disabled">${i.ket_approve}</TEXTAREA>
 													</div> <br />
-													<div class="" id="">
-														<label class="label">QTY Verifikasi</label> <span class="doubleDot">:</span> <input type="text" name="qty_${s.count}" id="_qty_${s.count}" rel="${s.count}" value="${qtyValue}" size="5" class="nominal" /> <input type="hidden" name="qty_old_${s.count}" id="_qty_old_${s.count}"
-															value="${qtyApp }" /> <img src="${path}resources/images/icons/info.png" alt="Info" id="_qty_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" />
-														<c:set var="pesan">QTY Approve : <fmt:formatNumber pattern="#,##0" value="${i.qty}" />
-															<br />QTY Input : <fmt:formatNumber pattern="#,##0" value="${i.qty_old}" />
-														</c:set>
-														<util:tooltips label="${pesan }" connectId="_qty_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" position="aboveBelow"></util:tooltips>
-
-													</div> <br />
-													<div class="" id="">
-														<label class="label">Harga Verifikasi</label> <span class="doubleDot">:</span> <input type="text" name="harga_${s.count}" id="_harga_${s.count}" rel="${s.count}" value="${hargaValue}" size="12" class="nominal" /> <input type="hidden" name="harga_old_${s.count}"
-															id="_harga_old_${s.count}" value="${hargaApp}" /> <img src="${path}resources/images/icons/info.png" alt="Info" id="_harga_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" />
-														<c:set var="pesan">Harga Approve : <fmt:formatNumber pattern="#,##0" value="${i.harga}" />
-															<br />Harga Input : <fmt:formatNumber pattern="#,##0" value="${i.harga_old}" />
-														</c:set>
-														<util:tooltips label="${pesan }" connectId="_harga_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" position="aboveBelow"></util:tooltips>
-													</div> <br />
-													<div class="" id="">
-														<label class="label">Total Verifikasi</label> <span class="doubleDot">:</span> <input type="text" name="total_${s.count}" id="_total_${s.count}" disabled="disabled" rel="${s.count}" value="${totalValue}" size="12" class="nominal" /> <input type="hidden" name="total_old_${s.count}"
-															id="_total_old_${s.count}" value="${totalApp}" /> <img src="${path}resources/images/icons/info.png" alt="Info" id="_total_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" />
-														<c:set var="pesan">Total Approve : <fmt:formatNumber pattern="#,##0" value="${i.total}" />
-															<br />Total Input : <fmt:formatNumber pattern="#,##0" value="${i.total_old}" />
-														</c:set>
-														<util:tooltips label="${pesan }" connectId="_total_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" position="aboveBelow"></util:tooltips>
-														<!-- <c:set value=" " var="dis"/>
-											 <img src="${path}resources/images/icons/coins_add.gif" id="_ob_${s.count}" alt="Over Budget" style="display: ${dis};cursor: help;"/> 
-											 <c:set var="pesan"><b>Over Budget</b> <br/> Will be Confirm To Division</c:set>
-											 <util:tooltips label="${pesan }" connectId="_ob_${s.count}" position="aboveBelow"></util:tooltips> -->
-													</div> <br />
-													<div class="" id="">
-														<label class="label">Bukti</label> <span class="doubleDot">:</span> <input type="file" name="file_image" />
-													</div> <br /></td>
+												</td>
 											</tr>
 										</table>
 
 										<br />
 									</div>
 								</td>
-								<td style="vertical-align: top;">
+								<td style="vertical-align: top;" >
 									<div class="" id="">
 										<label class="label">No Realisasi</label> <span class="doubleDot">:</span> <input type="text" value="${i.no_realisasi}" disabled="disabled" />
 										<form:hidden path="ppucd.no_realisasi" />
@@ -106,7 +73,8 @@
 										<label class="label">No PPUC</label> <span class="doubleDot">:</span> <input type="text" value="${ppuch.no_ppuc}" disabled="disabled" />
 									</div> <br />
 									<div class="" id="">
-										<label class="label">Lokasi</label> <span class="doubleDot">:</span> <input type="text" value="${ppuch.lok_kd} - ${ppuch.lokasi.lok_nm}" disabled="disabled" /> <img src="${path}resources/images/icons/info.png" alt="Info" id="_lokasi" />
+										<label class="label">Lokasi</label> <span class="doubleDot">:</span> <input type="text" value="${ppuch.lok_kd} - ${ppuch.lokasi.lok_nm}" disabled="disabled" /> <img
+											src="${path}resources/images/icons/info.png" alt="Info" id="_lokasi" />
 										<c:set var="pesan">Divisi : ${ppuch.divisi.divisi_nm }<br />Sub Divisi : ${ppuch.subdivisi.subdiv_nm }<br />Departmen : ${ppuch.departmen.dept_nm }<br />Lokasi : ${ppuch.lokasi.lok_nm }</c:set>
 										<util:tooltips label="${pesan }" connectId="_lokasi" position="aboveBelow"></util:tooltips>
 									</div> <br />
@@ -115,6 +83,44 @@
 										<fmt:formatDate value="${ppuch.tgl_ppuc}" pattern="${ppuch_tgl_ppuc_date_format}" var="tgl_ppuc" />
 										<input type="text" value="${tgl_ppuc }" disabled="disabled" />
 									</div>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+										<div class="" id="">
+											<label class="label">QTY Verifikasi</label> <span class="doubleDot">:</span> <input type="text" name="qty_${s.count}" id="_qty_${s.count}" rel="${s.count}" size="5" class="nominal" /> <input
+												type="hidden" name="qty_old_${s.count}" id="_qty_old_${s.count}" value="${qtyApp }" /> <img src="${path}resources/images/icons/info.png" alt="Info"
+												id="_qty_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" />
+												 <field:input field="ppucds.qty_real_oc" label="QTY Verifikasi" id="_qty_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" required="true"  max="50"/>
+											<c:set var="pesan">QTY Approve : <fmt:formatNumber pattern="#,##0" value="${i.qty}" />
+												<br />QTY Input : <fmt:formatNumber pattern="#,##0" value="${i.qty_old}" />
+											</c:set>
+											<util:tooltips label="${pesan }" connectId="_qty_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" position="aboveBelow"></util:tooltips>
+
+										</div> <br />
+										<div class="" id="">
+											<label class="label">Harga Verifikasi</label> <span class="doubleDot">:</span> <input type="text" name="harga_${s.count}" id="_harga_${s.count}" rel="${s.count}" size="12"
+												class="nominal" /> <input type="hidden" name="harga_old_${s.count}" id="_harga_old_${s.count}" value="${hargaApp}" /> <img src="${path}resources/images/icons/info.png" alt="Info"
+												id="_harga_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" />
+											<c:set var="pesan">Harga Approve : <fmt:formatNumber pattern="#,##0" value="${i.harga}" />
+												<br />Harga Input : <fmt:formatNumber pattern="#,##0" value="${i.harga_old}" />
+											</c:set>
+											<util:tooltips label="${pesan }" connectId="_harga_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" position="aboveBelow"></util:tooltips>
+										</div> <br />
+										<div class="" id="">
+											<label class="label">Total Verifikasi</label> <span class="doubleDot">:</span> <input type="text" name="total_${s.count}" id="_total_${s.count}" disabled="disabled" rel="${s.count}"
+												value="${totalValue}" size="12" class="nominal" /> <input type="hidden" name="total_old_${s.count}" id="_total_old_${s.count}" value="${totalApp}" /> <img
+												src="${path}resources/images/icons/info.png" alt="Info" id="_total_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" />
+											<c:set var="pesan">Total Approve : <fmt:formatNumber pattern="#,##0" value="${i.total}" />
+												<br />Total Input : <fmt:formatNumber pattern="#,##0" value="${i.total_old}" />
+											</c:set>
+											<util:tooltips label="${pesan }" connectId="_total_${i.groupBiaya.kd_group}_${i.detailBiaya.kd_biaya}" position="aboveBelow"></util:tooltips>
+
+										</div> <br />
+										<div class="" id="">
+											<label class="label">Bukti</label> <span class="doubleDot">:</span>
+											<field:input field="upload.uploadFile" type="file" label="File Upload" id="c_com_melawai_ppuc_model_divisi_upload_uploadFile" required="true" formatFile="${ppuch.upload.filetypeAllow }" />
+										</div> <br />
 								</td>
 							</tr>
 						</table>
@@ -139,66 +145,75 @@
 
 				});
 			</script>
-	<script type="text/javascript">
-		function saveConfirm(no_ppuc, kd_biaya, confirmText) {
-			if (confirm(confirmText)) {
-				$('#no_ppuc_confirm').val(no_ppuc);
-				$('#kd_biaya_confirm').val(kd_biaya);
-				formpost.submit();
-			}
-		}
-
-		$(document).ready(
-				function() {
-					function syncPrice(idx) {
-
-						var qty = Number(isNaN(replaceComma($('#_qty_' + idx)
-								.val())) ? 0 : replaceComma($('#_qty_' + idx)
-								.val()));
-						var harga = parseFloat(replaceComma($('#_harga_' + idx)
-								.val()));
-						var total = qty * harga;
-
-						$('#_total_' + idx).val(formatCurrency(total));
-
-						var qty_old = parseFloat(replaceComma($(
-								'#_qty_old_' + idx).val()));
-						var harga_old = parseFloat(replaceComma($(
-								'#_harga_old_' + idx).val()));
-						var total_old = parseFloat(replaceComma($(
-								'#_total_old_' + idx).val()));
-
-						if (qty > qty_old)
-							$('#_ob_' + idx).show();
-						else if (harga > harga_old)
-							$('#_ob_' + idx).show();
-						else if (total > total_old)
-							$('#_ob_' + idx).show();
-						else
-							$('#_ob_' + idx).hide();
+			<script type="text/javascript">
+				function saveConfirm(no_ppuc, kd_biaya, confirmText) {
+					if (confirm(confirmText)) {
+						$('#no_ppuc_confirm').val(no_ppuc);
+						$('#kd_biaya_confirm').val(kd_biaya);
+						formpost.submit();
 					}
+				}
 
-					$("#table_wrapper").delegate('input:text', 'keyup',
-							function(e) {
-								syncPrice($(this).attr("rel"));
-							});
+				$(document)
+						.ready(
+								function() {
+									function syncPrice(idx) {
 
-				});
-	</script>
-	
-	<input type="hidden" name="path" value="${path }" id="path"/>
-	<div class="submit" id="fu_com_melawai_ppuc_model_ppuch_submit">
-        <spring:message code="button_save" var="save_button" htmlEscape="false" />
-        <script type="text/javascript">Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'proceed', event:'onclick'}));</script>
-     	<c:if test="${empty confirm }">
-        	<input id="proceed" type="submit" value="${fn:escapeXml(save_button)}"/>
-        </c:if>
-        <spring:message code="button_close" var="button_close" htmlEscape="false" />
-        <input id="close" type="button" value="${fn:escapeXml(button_close)}" onclick="parent.closeAction();"/>
-      </div>
+										var qty = Number(isNaN(replaceComma($(
+												'#_qty_' + idx).val())) ? 0
+												: replaceComma($('#_qty_' + idx)
+														.val()));
+										var harga = parseFloat(replaceComma($(
+												'#_harga_' + idx).val()));
+										var total = qty * harga;
 
- 	</form:form>
-</util:panel>
+										$('#_total_' + idx).val(
+												formatCurrency(total));
+
+										var qty_old = parseFloat(replaceComma($(
+												'#_qty_old_' + idx).val()));
+										var harga_old = parseFloat(replaceComma($(
+												'#_harga_old_' + idx).val()));
+										var total_old = parseFloat(replaceComma($(
+												'#_total_old_' + idx).val()));
+
+										if (qty > qty_old)
+											$('#_ob_' + idx).show();
+										else if (harga > harga_old)
+											$('#_ob_' + idx).show();
+										else if (total > total_old)
+											$('#_ob_' + idx).show();
+										else
+											$('#_ob_' + idx).hide();
+									}
+
+									$("#table_wrapper").delegate('input:text',
+											'keyup', function(e) {
+												syncPrice($(this).attr("rel"));
+											});
+
+								});
+			</script>
+
+			<input type="hidden" name="path" value="${path }" id="path" />
+			<div class="submit" id="fu_com_melawai_ppuc_model_ppuch_submit">
+				<spring:message code="button_save" var="save_button" htmlEscape="false" />
+				<script type="text/javascript">
+					Spring.addDecoration(new Spring.ValidateAllDecoration({
+						elementId : 'proceed',
+						event : 'onclick'
+					}));
+				</script>
+				<input id="proceed" type="submit" value="${fn:escapeXml(save_button)}" />
+				<field:input field="upload.maxSize" type="hidden" id="c_com_melawai_ppuc_model_divisi_upload_maxSize" />
+				<field:input field="upload.required" type="hidden" id="c_com_melawai_ppuc_model_divisi_upload_required" />
+				<field:input field="upload.filetypeAllow" type="hidden" id="c_com_melawai_ppuc_model_divisi_upload_filetypeAllow" />
+				<spring:message code="button_close" var="button_close" htmlEscape="false" />
+				<input id="close" type="button" value="${fn:escapeXml(button_close)}" onclick="parent.closeAction();" />
+			</div>
+
+		</form:form>
+	</util:panel>
 
 </div>
 

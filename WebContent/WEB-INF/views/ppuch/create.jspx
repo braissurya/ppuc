@@ -123,6 +123,7 @@
 					
 				</td>
 				<td>
+					
 					<input type="hidden" name="no_ppuc" id="_no_ppuc_id" />
 					<span class="submit" id="filterHakBiaya_filter_submit" style="margin-left: 15px;">
 						<input type="button" name="add" class="add" id="add" value="ADD"/>
@@ -131,6 +132,8 @@
 			</tr>
 		</table>
 		<div id="table_wrapper">
+			<span class="remove"></span>
+			<span class="edit"></span>
 			<table class="gridTables" id="listTable" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<th>PPUC No</th>

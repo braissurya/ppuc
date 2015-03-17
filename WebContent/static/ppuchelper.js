@@ -95,24 +95,7 @@ $(document).ready(function(){
 		
 	}
 	
-	$('#table_wrapper').on('click',"#remove", function() {
-		deleteRow($(this),'/trans/ppuch/json/removeData');
-	});
 	
-	$('#table_wrapper').on('click',"#edit", function() {
-		var id=$(this).attr('rel');
-		setSelectValue('_kd_group_id', $('#kd_group_'+id).val());
-		$('#_qty_id').val($('#qty_'+id).val());
-		$('#_harga_id').val($('#harga_'+id).val());
-		$('#_keterangan_id').val($('#keterangan_'+id).val());
-		$('#_no_ppuc_id').val($('#no_ppuc_'+id).val());
-		$("#_kd_group_id").focus().select();
-		autoPop($('#path').val(), "detailbiaya_ppuc", "_kd_group_id", "_kd_biaya_id", false,
-				$('#kd_biaya_'+id).val(), "");
-//		setSelectValue('_kd_biaya_id', $('#kd_biaya_'+id).val());
-		
-		deleteRow($(this),'/trans/ppuch/json/removeData');
-	});
 	
 	function addRow(dis){
 		if($('#_kd_group_id').val()=='-- choose KD Group --') {
@@ -157,6 +140,23 @@ $(document).ready(function(){
 		addRow($(this));
 	});
 	
-
+	$('#table_wrapper').on('click',"#remove", function() {
+		deleteRow($(this),'/trans/ppuch/json/removeData');
+	});
+	
+	$('#table_wrapper').on('click',"#edit", function() {
+		var id=$(this).attr('rel');
+		setSelectValue('_kd_group_id', $('#kd_group_'+id).val());
+		$('#_qty_id').val($('#qty_'+id).val());
+		$('#_harga_id').val($('#harga_'+id).val());
+		$('#_keterangan_id').val($('#keterangan_'+id).val());
+		$('#_no_ppuc_id').val($('#no_ppuc_'+id).val());
+		$("#_kd_group_id").focus().select();
+		autoPop($('#path').val(), "detailbiaya_ppuc", "_kd_group_id", "_kd_biaya_id", false,
+				$('#kd_biaya_'+id).val(), "");
+//		setSelectValue('_kd_biaya_id', $('#kd_biaya_'+id).val());
+		
+		deleteRow($(this),'/trans/ppuch/json/removeData');
+	});
 	
 });

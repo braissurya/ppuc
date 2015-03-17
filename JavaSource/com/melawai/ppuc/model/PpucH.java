@@ -220,6 +220,7 @@ public class PpucH extends BaseObject implements Serializable  {
 	public Integer[] idx;
 	
 	public Upload upload = new Upload();
+	public Realisasi realisasi = new Realisasi();
 	
 	//****************** OTHERS END HERE ******************/
 
@@ -660,6 +661,18 @@ public class PpucH extends BaseObject implements Serializable  {
 
 	public void setUpload(Upload upload) {
 		this.upload = upload;
+	}
+
+
+
+	public Realisasi getRealisasi() {
+		return realisasi;
+	}
+
+
+
+	public void setRealisasi(Realisasi realisasi) {
+		this.realisasi = realisasi;
 	}
 
 	//****************** GETTER SETTER END HERE ******************/

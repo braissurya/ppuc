@@ -37,7 +37,7 @@
 	<!-- p:basePackage = scan semua mapper disini -->
 	<bean id="dbMapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer" 
 		p:basePackage="com.melawai.ppuc.persistence" 
-		p:sqlSessionFactory-ref="sqlSessionFactory" />
+		p:sqlSessionFactoryBeanName="sqlSessionFactory" />
 		
 	
 </beans>
